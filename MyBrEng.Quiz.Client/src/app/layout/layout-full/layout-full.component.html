@@ -1,0 +1,37 @@
+<mat-toolbar>
+    <div class="app-container toolbar">
+        <span class="title" routerLink="">QuizTime</span>
+        <button mat-button routerLink="/quiz" class="nav-link" routerLinkActive="active">Тесты</button>
+        <button mat-button routerLink="/student" class="nav-link" routerLinkActive="active">Ученики</button>
+        <div class="spacer"></div>
+        <button mat-icon-button [matMenuTriggerFor]="optionsMenu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+</mat-toolbar>
+
+<mat-menu #optionsMenu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="themeMenu">
+        <mat-icon>palette</mat-icon>
+        Цветовая схема
+    </button>
+</mat-menu>
+
+<mat-menu #themeMenu="matMenu">
+    <button mat-menu-item (click)="setSystemTheme()">
+        <mat-icon>settings</mat-icon>
+        Системная
+    </button>
+    <button mat-menu-item (click)="setLightTheme()">
+        <mat-icon>light_mode</mat-icon>
+        Светлая
+    </button>
+    <button mat-menu-item (click)="setDarkTheme()">
+        <mat-icon>dark_mode</mat-icon>
+        Тёмная
+    </button>
+</mat-menu>
+
+<div class="app-container">
+    <ng-content></ng-content>
+</div>

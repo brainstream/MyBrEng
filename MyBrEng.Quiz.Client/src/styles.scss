@@ -1,0 +1,134 @@
+@use 'sass:map';
+@use "@angular/material" as mat;
+
+mat.$theme-ignore-duplication-warnings: true;
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+@include mat.core();
+
+$app-primary: mat.define-palette(mat.$deep-orange-palette);
+$app-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$app-warn: mat.define-palette(mat.$red-palette);
+
+$app-light-theme: mat.define-light-theme(
+    (
+        color: (
+            primary: $app-primary,
+            accent: $app-accent,
+            warn: $app-warn,
+        ),
+    )
+);
+
+$app-dark-theme: mat.define-dark-theme(
+    (
+        color: (
+            primary: $app-primary,
+            accent: $app-accent,
+            warn: $app-warn,
+        ),
+    )
+);
+
+@mixin global-theme($theme) {
+    $color-config: mat.get-color-config($theme);
+    $accent-palette: map.get($color-config, 'accent');
+    $warn-palette: map.get($color-config, 'warn');
+    $background-palette: map.get($color-config, 'background');
+    $foreground-palette: map.get($color-config, 'foreground');
+
+    body {
+        background-color: mat.get-color-from-palette($background-palette, background);
+        color: mat.get-color-from-palette($foreground-palette, text);
+    }
+
+    a {
+        color: mat.get-color-from-palette($accent-palette, A200);
+    }
+
+    .text-muted {
+        color: mat.get-color-from-palette($foreground-palette, disabled-text);
+    }
+
+    .mdc-snackbar {
+        &.info {
+            .mdc-snackbar__surface {
+                background-color: mat.get-color-from-palette($accent-palette, default);
+            }
+            
+            .mat-mdc-snack-bar-label {
+                color: mat.get-color-from-palette($accent-palette, default-contrast);
+            }
+
+            .mat-simple-snackbar-action {
+                color: mat.get-color-from-palette($accent-palette, default-contrast);
+            }
+        }
+
+        &.error {
+            .mdc-snackbar__surface {
+                background-color: mat.get-color-from-palette($warn-palette, default);
+            }
+            
+            .mat-mdc-snack-bar-label {
+                color: mat.get-color-from-palette($warn-palette, default-contrast);
+            }
+
+            .mat-simple-snackbar-action {
+                color: mat.get-color-from-palette($warn-palette, default-contrast);
+            }
+        }
+    }
+
+    .cdk-overlay-backdrop.solid {
+        background-color: mat.get-color-from-palette($background-palette, background);
+    }
+}
+
+@include mat.all-component-densities($app-light-theme);
+
+@mixin dark-colors {
+    @include mat.all-component-colors($app-dark-theme);
+    @include global-theme($app-dark-theme);
+}
+
+@mixin light-colors {
+    @include mat.all-component-colors($app-light-theme);
+    @include global-theme($app-light-theme);
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        @include dark-colors;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    html {
+        @include light-colors;
+    }
+}
+
+html {
+    &.dark {
+        @include dark-colors;
+    }
+
+    &.light {
+        @include light-colors;
+    }
+}
+
+.app-container {
+    width: 1024px;
+    margin: 0 auto;
+}
