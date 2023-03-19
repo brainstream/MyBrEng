@@ -13,6 +13,10 @@ import { QuizRoutingModule } from './quiz-routing.module';
 import { LayoutModule } from '@app/layout';
 import { QuizEditFormComponent } from './quiz-edit-form';
 import { QuizListItemComponent } from './quiz-list-item';
+import { StoreModule } from '@ngrx/store';
+import { quizzesReducer } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { QuizzesEffects } from './store/quizzes-effects';
 
 @NgModule({
   declarations: [
@@ -24,6 +28,12 @@ import { QuizListItemComponent } from './quiz-list-item';
   imports: [
     CommonModule,
     FormsModule,
+    StoreModule.forFeature('quizzes', [
+      quizzesReducer
+    ]),
+    EffectsModule.forFeature([
+      QuizzesEffects
+    ]),
     MatButtonModule,
     MatIconModule,
     MatBottomSheetModule,
