@@ -9,6 +9,7 @@
         "src/app/*"
       ]
     },
+    "strictPropertyInitialization": false,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,

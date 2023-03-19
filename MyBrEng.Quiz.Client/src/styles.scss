@@ -1,5 +1,6 @@
-@use 'sass:map';
+@use "sass:map";
 @use "@angular/material" as mat;
+@use "./app/layout/layout-full/layout-full.component-theme" as layout-full;
 
 mat.$theme-ignore-duplication-warnings: true;
 
@@ -99,11 +100,13 @@ $app-dark-theme: mat.define-dark-theme(
 @mixin dark-colors {
     @include mat.all-component-colors($app-dark-theme);
     @include global-theme($app-dark-theme);
+    @include layout-full.theme($app-dark-theme);
 }
 
 @mixin light-colors {
     @include mat.all-component-colors($app-light-theme);
     @include global-theme($app-light-theme);
+    @include layout-full.theme($app-light-theme);
 }
 
 @media (prefers-color-scheme: dark) {

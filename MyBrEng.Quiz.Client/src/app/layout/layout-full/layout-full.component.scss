@@ -1,6 +1,11 @@
+$toolbar-height: 54px;
+
 .toolbar {
     display: flex;
     align-items: center;
+    width: 100%;
+    height: $toolbar-height;
+    position: fixed;
 
     > *:not(:last-child) {
         margin-right: 0.5rem;
@@ -13,11 +18,25 @@
 
     .nav-link {
         &.active {
-            background: rgba(0, 0, 0, .2);
+            background: rgba(0, 0, 0, 0.2);
         }
     }
 
     .spacer {
         flex-grow: 1;
+    }
+}
+
+.layout-full-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: $toolbar-height;
+    overflow: auto;
+
+    .layout-full-content {
+        padding: 0 1rem;
+        min-height: 100%;
     }
 }
