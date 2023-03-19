@@ -9,11 +9,11 @@ import { QuizEditFormComponent } from '../quiz-edit-form';
   styleUrls: ['./quiz-list.component.scss']
 })
 export class QuizListComponent {
-  quizes: IQuiz[] = [];
+  quizzes: IQuiz[] = [];
 
   constructor(private readonly bottomSheet: MatBottomSheet) {
     for (let i = 0; i < 100; ++i) {
-      this.quizes.push({
+      this.quizzes.push({
         id: `q${i}`,
         title: `Quiz #${i}`,
         description: `Description of the Quiz #${i}`
