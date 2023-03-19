@@ -14,6 +14,7 @@ builder.Services.AddOpenApiDocument(config =>
     {
         document.Info.Version = "Version 1";
         document.Info.Title = "MyBrEng API v1";
+        document.Info.Description = "The OpenAPI interface for the MyBrEng application group";
     };
 });
 builder.Services.AddMediatR(config =>
@@ -33,13 +34,17 @@ builder.Services.AddVersionedApiExplorer(setup =>
 });
 
 var app = builder.Build();
+if (builder.Environment.IsProduction())
+{
+    app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+}
 app.UseApiVersioning();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints => {
+app.UseEndpoints(endpoints =>
+{
     endpoints.MapControllers();
     endpoints.MapHealthChecks("/health");
 });
