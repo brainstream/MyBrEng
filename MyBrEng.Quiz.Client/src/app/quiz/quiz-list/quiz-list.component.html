@@ -7,6 +7,6 @@
     </ng-container>
 
     <mat-nav-list>
-        <app-quiz-list-item *ngFor="let quiz of quizzes" [quiz]="quiz"></app-quiz-list-item>
+        <app-quiz-list-item *ngFor="let quiz of quizzes$ | async" [quiz]="quiz"></app-quiz-list-item>
     </mat-nav-list>
 </app-layout-full>

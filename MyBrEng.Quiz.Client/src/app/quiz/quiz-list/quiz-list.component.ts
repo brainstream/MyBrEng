@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { IQuiz } from '@app/shared';
+import { QuizDto } from '@app/web-api';
+import { Store } from '@ngrx/store';
+import { Observable, tap } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
+import { QuizzesActions, QuizzesSelectors } from '../store';
 
 @Component({
   selector: 'app-quiz-list',
@@ -9,16 +12,14 @@ import { QuizEditFormComponent } from '../quiz-edit-form';
   styleUrls: ['./quiz-list.component.scss']
 })
 export class QuizListComponent {
-  quizzes: IQuiz[] = [];
+  quizzes$: Observable<QuizDto[]>;
 
-  constructor(private readonly bottomSheet: MatBottomSheet) {
-    for (let i = 0; i < 100; ++i) {
-      this.quizzes.push({
-        id: `q${i}`,
-        title: `Quiz #${i}`,
-        description: `Description of the Quiz #${i}`
-      });
-    }
+  constructor(
+    store$: Store,
+    private readonly bottomSheet: MatBottomSheet
+  ) {
+    this.quizzes$ = store$.select(QuizzesSelectors.list).pipe(tap(console.log));
+    store$.dispatch(QuizzesActions.loadList());
   }
 
   showCreateQuizForm() {

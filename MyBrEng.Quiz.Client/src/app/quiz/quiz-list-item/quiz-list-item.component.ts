@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IQuiz } from '@app/shared';
+import { QuizDto } from '@app/web-api';
 
 @Component({
   selector: 'app-quiz-list-item',
@@ -7,5 +7,5 @@ import { IQuiz } from '@app/shared';
   styleUrls: ['./quiz-list-item.component.scss']
 })
 export class QuizListItemComponent {
-  @Input() quiz: IQuiz;
+  @Input() quiz: QuizDto;
 }

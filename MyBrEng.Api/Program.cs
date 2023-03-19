@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 
+const string corsPolicy = "MYBRENG_CORS";
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -32,13 +34,23 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.GroupNameFormat = "VVV";
     setup.SubstituteApiVersionInUrl = true;
 });
+builder.Services.AddCors(options => {
+    options.AddPolicy(corsPolicy, corsBuilder => {
+        var clients = builder.Configuration.GetSection("Clients").Get<string[]>();
+        corsBuilder
+            .WithOrigins(clients)
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 var app = builder.Build();
 if (builder.Environment.IsProduction())
 {
     app.UseHttpsRedirection();
-
 }
+app.UseCors(corsPolicy);
 app.UseApiVersioning();
 app.UseRouting();
 app.UseAuthentication();

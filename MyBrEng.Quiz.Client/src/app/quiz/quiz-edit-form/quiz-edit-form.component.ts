@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { IQuiz } from '@app/shared';
+import { QuizDto } from '@app/web-api';
 
 @Component({
   selector: 'app-quiz-edit-form',
@@ -13,7 +13,7 @@ export class QuizEditFormComponent {
 
   constructor(
     private readonly bottomSheet:  MatBottomSheetRef,
-    @Inject(MAT_BOTTOM_SHEET_DATA) quiz?: IQuiz
+    @Inject(MAT_BOTTOM_SHEET_DATA) quiz?: Partial<QuizDto>
   ) {
     this.title = quiz?.title ?? '';
     this.description = quiz?.description ?? '';

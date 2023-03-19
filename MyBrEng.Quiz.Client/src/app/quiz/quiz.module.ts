@@ -28,9 +28,7 @@ import { QuizzesEffects } from './store/quizzes-effects';
   imports: [
     CommonModule,
     FormsModule,
-    StoreModule.forFeature('quizzes', [
-      quizzesReducer
-    ]),
+    StoreModule.forFeature('quizzes', quizzesReducer),
     EffectsModule.forFeature([
       QuizzesEffects
     ]),
