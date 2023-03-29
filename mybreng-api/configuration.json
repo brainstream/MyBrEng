@@ -1,0 +1,5 @@
+{
+  "SQLALCHEMY_DATABASE_URI": "mysql://mybreng:Iehoo7choo1f@localhost/mybreng",
+  "SECRET_KEY": "secret-key-goes-here",
+  "REMEMBER_COOKIE_NAME": ".auth-mybreng"
+}

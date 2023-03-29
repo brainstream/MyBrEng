@@ -11,6 +11,6 @@ class QuizDto:
 
 
 class QuizDtoSchema(Schema):
-    id = fields.UUID()
-    title = fields.Str()
-    description = fields.Str(allow_none=True)
+    id = fields.UUID(required=True)
+    title = fields.String(required=True)
+    description = fields.String(allow_none=True)
