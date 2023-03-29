@@ -1,0 +1,8 @@
+dependency-injector
+flask
+flask-sqlalchemy
+mysqlclient
+apispec
+apispec_webframeworks
+marshmallow
+flask-swagger-ui
