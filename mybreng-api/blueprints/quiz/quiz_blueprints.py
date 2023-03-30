@@ -25,6 +25,6 @@ def quiz_list():
             application/json:
               schema:
                 type: array
-                items: Quiz
+                items: QuizDto
     """
     return jsonify(_quizzes)
