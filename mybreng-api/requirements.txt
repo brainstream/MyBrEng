@@ -1,8 +1,9 @@
-dependency-injector
 flask
+flask-cors
 flask-sqlalchemy
+flask-swagger-ui
+dependency-injector
 mysqlclient
 apispec
 apispec_webframeworks
 marshmallow
-flask-swagger-ui

@@ -1,5 +1,5 @@
 {
-    "inputSpec": "http://localhost:5076/openapi/mybreng_v1.json",
+    "inputSpec": "http://localhost:5000/static/swagger.json",
     "outputDir": "./src/app/web-api",
     "generatorName": "typescript-angular",
     "supportsES6": true,

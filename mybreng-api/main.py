@@ -1,9 +1,10 @@
 import json
 from flask import Flask, jsonify
+from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
-from flask_swagger_ui import get_swaggerui_blueprint
 from blueprints.quiz import quiz_blueprint, quiz_list
 from dtos import QuizDtoSchema
 
@@ -31,12 +32,12 @@ def create_app() -> Flask:
         ],
     )
 
-    spec.components.schema("Quiz", schema=QuizDtoSchema)
+    spec.components.schema("QuizDto", schema=QuizDtoSchema)
 
     # di = DI()
     flask = Flask(__name__)
     flask.config.from_file('configuration.json', load=json.load)
-    flask.register_blueprint(quiz_blueprint, url_prefix='/quiz')
+    flask.register_blueprint(quiz_blueprint, url_prefix='/api/v1/quiz')
     # di.init_resources()
     # db.init_app(flask)
     # login_manager = LoginManager()
@@ -63,6 +64,8 @@ def create_app() -> Flask:
     @flask.errorhandler(401)
     def resource_not_found(_):
         return jsonify(error='401 Unauthorized'), 401
+
+    CORS(flask, resources={r'/api/*': {'origins': 'http://localhost:4200'}})
 
     return flask
 
