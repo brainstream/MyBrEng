@@ -1,4 +1,4 @@
-<app-layout-full>
+<app-layout-full [loading]="loading$ | async">
     <ng-container navbar>
         <button mat-flat-button color="primary" (click)="showCreateQuizForm()">
             <mat-icon>add</mat-icon>

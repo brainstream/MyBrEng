@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ThemeService } from '@app/shared';
 
 @Component({
@@ -7,6 +7,8 @@ import { ThemeService } from '@app/shared';
   styleUrls: ['./layout-full.component.scss']
 })
 export class LayoutFullComponent {
+  @Input() loading: boolean | null = null;
+
   constructor(private readonly theme: ThemeService) {
   }
 
