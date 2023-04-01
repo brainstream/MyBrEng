@@ -1,4 +1,4 @@
-import { QuizDto } from "@app/web-api";
+import { QuizDto, QuizDetailedDto } from "@app/web-api";
 
 export const enum LoadingStatus {
     None,
@@ -7,7 +7,15 @@ export const enum LoadingStatus {
     Error
 }
 
+export class RemoteData<T> {
+    constructor(
+        public readonly data: T, 
+        public readonly loading: LoadingStatus
+    ) {
+    }
+}
+
 export interface IQuizzesState {
-    readonly list: QuizDto[];
-    readonly loading: LoadingStatus;
+    readonly list: RemoteData<QuizDto[]>;
+    readonly details: RemoteData<QuizDetailedDto | null>;
 }

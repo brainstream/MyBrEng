@@ -20,7 +20,7 @@ export class QuizListComponent {
     private readonly bottomSheet: MatBottomSheet
   ) {
     this.quizzes$ = store$.select(QuizzesSelectors.list);
-    this.loading$ = store$.select(QuizzesSelectors.loading).pipe(
+    this.loading$ = store$.select(QuizzesSelectors.listLoading).pipe(
       map((l) => l === LoadingStatus.Loading)
     );
     store$.dispatch(QuizzesActions.loadList());

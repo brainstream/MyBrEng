@@ -5,8 +5,8 @@ from flask_cors import CORS
 from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
-from blueprints.quiz import quiz_blueprint, quiz_list
-from dtos import QuizDtoSchema
+from blueprints.quiz import quiz_blueprint, quiz_list, quiz_details
+from dtos import QuizDtoSchema, QuizQuestionDtoSchema, QuizDetailedDtoSchema
 
 
 def create_app() -> Flask:
@@ -32,7 +32,10 @@ def create_app() -> Flask:
         ],
     )
 
-    spec.components.schema("QuizDto", schema=QuizDtoSchema)
+    spec.components\
+        .schema("QuizDto", schema=QuizDtoSchema)\
+        .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema)\
+        .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema)
 
     # di = DI()
     flask = Flask(__name__)
@@ -45,6 +48,7 @@ def create_app() -> Flask:
     #
     with flask.test_request_context():
         spec.path(view=quiz_list)
+        spec.path(view=quiz_details)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

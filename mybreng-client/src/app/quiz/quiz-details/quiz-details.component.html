@@ -1,3 +1,7 @@
-<app-layout-full>
-    Quiz details
+<app-layout-full [loading]="loading$ | async">
+    <div class="details"  *ngIf="quiz$ | async as quiz">
+        <h1 class="title">{{ quiz.title }}</h1>
+
+        <div class="description">{{ quiz.description }}</div>
+    </div>
 </app-layout-full>

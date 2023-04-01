@@ -18,19 +18,29 @@ export class QuizzesEffects {
 
     loadList$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.loadList),
-        concatLatestFrom(() => this.store$.select(QuizzesSelectors.loading)),
+        concatLatestFrom(() => this.store$.select(QuizzesSelectors.listLoading)),
         switchMap(([_, loading]) => {
             if (loading == LoadingStatus.None) {
                 return concat(
-                     of(QuizzesActions.startLoading()),
+                     of(QuizzesActions.startListLoading()),
                      this.quizService.quizList().pipe(
-                         map(result => QuizzesActions.finishLoading({ result })),
-                         catchError(() => of(QuizzesActions.finishLoading({ result: 'error' })))
+                         map(result => QuizzesActions.finishListLoading({ result })),
+                         catchError(() => of(QuizzesActions.finishListLoading({ result: 'error' })))
                      )
                 );
             } else {
                 return EMPTY;
             }
         })
+    ));
+
+    loadDetails$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.loadDetails),
+        switchMap(({ id }) => 
+            this.quizService.quizDetails(id).pipe(
+                map(result => QuizzesActions.finishDetailsLoading({ result })),
+                catchError(() => of(QuizzesActions.finishDetailsLoading({ result: 'error' })))
+            )
+        )
     ));
 }

@@ -1,24 +1,37 @@
-
+import { QuizDetailedDto, QuizDto } from "@app/web-api";
 import { createReducer, on } from "@ngrx/store";
 import { QuizzesActions } from "./quizzes-actions";
-import { IQuizzesState, LoadingStatus } from "./quizzes-state";
+import { IQuizzesState, LoadingStatus, RemoteData } from "./quizzes-state";
 
 export const quizzesReducer = createReducer(
     createDefaultState(),
-    on(QuizzesActions.startLoading, (state) => ({
+    on(QuizzesActions.startListLoading, (state) => ({
         ...state,
-        loading: LoadingStatus.Loading
+        list: new RemoteData<QuizDto[]>([], LoadingStatus.Loading)
     })),
-    on(QuizzesActions.finishLoading, (state, { result }) => ({
+    on(QuizzesActions.finishListLoading, (state, { result }) => ({
         ...state,
-        loading: result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded,
-        list: result === 'error' ? [] : result
-    }))
+        list: new RemoteData<QuizDto[]>(
+            result === 'error' ? [] : result,
+            result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded
+        )
+    })),
+    on(QuizzesActions.startDetailsLoading, (state) => ({
+        ...state,
+        details: new RemoteData<QuizDetailedDto | null>(null, LoadingStatus.Loading)
+    })),
+    on(QuizzesActions.finishDetailsLoading, (state, { result }) => ({
+        ...state,
+        details: new RemoteData<QuizDetailedDto | null>(
+            result === 'error' ? null : result,
+            result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded
+        )
+    })),
 );
 
 function createDefaultState(): IQuizzesState {
     return {
-        list: [],
-        loading: LoadingStatus.None
+        list: new RemoteData<QuizDto[]>([], LoadingStatus.None),
+        details: new RemoteData<QuizDetailedDto | null>(null, LoadingStatus.None)
     };
 }
