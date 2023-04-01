@@ -3,10 +3,10 @@ from dataclasses import dataclass
 from marshmallow import Schema, fields
 
 
-class QuizQuestionType(int, Enum):
-    SINGLE_CHOICE: int = 0
-    MULTIPLE_CHOICE: int = 1
-    FREE_TEXT: int = 2
+class QuizQuestionType(str, Enum):
+    SINGLE_CHOICE: str = 'SINGLE_CHOICE'
+    MULTIPLE_CHOICE: str = 'MULTIPLE_CHOICE'
+    FREE_TEXT: str = 'FREE_TEXT'
 
 
 @dataclass()

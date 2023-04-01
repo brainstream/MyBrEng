@@ -1,5 +1,5 @@
 .details {
-    padding-top: 1rem;
+    padding: 1rem 0;
 
     .title {
         margin-top: 0;
@@ -8,5 +8,14 @@
 
     .description {
         white-space: pre-line;
+    }
+
+    .question-list {
+        margin-top: 1rem;
+
+        .question {
+            margin-bottom: 1rem;
+            display: block;
+        }
     }
 }

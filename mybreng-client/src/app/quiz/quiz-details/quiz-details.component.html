@@ -3,5 +3,13 @@
         <h1 class="title">{{ quiz.title }}</h1>
 
         <div class="description">{{ quiz.description }}</div>
+
+        <div class="question-list" *ngIf="quiz.questions">
+            <app-quiz-question 
+                class="question"
+                *ngFor="let question of quiz.questions"
+                [question]="question"
+            ></app-quiz-question>
+        </div>
     </div>
 </app-layout-full>

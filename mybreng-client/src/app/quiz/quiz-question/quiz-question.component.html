@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-header>
+        <div class="header">
+            <mat-chip class="ordianal">
+                {{question.ordinal_number}}
+            </mat-chip>
+            <mat-card-subtitle>{{question.type | questionTypeName}}</mat-card-subtitle>
+        </div>
+    </mat-card-header>
+    <mat-card-content [innerHTML]="question.text"></mat-card-content>
+</mat-card>
