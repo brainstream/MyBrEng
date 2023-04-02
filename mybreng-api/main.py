@@ -7,6 +7,8 @@ from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
 from blueprints.quiz import quiz_blueprint, quiz_list, quiz_details
 from dtos import QuizDtoSchema, QuizQuestionDtoSchema, QuizDetailedDtoSchema
+from di import DI
+from database import db
 
 
 def create_app() -> Flask:
@@ -37,12 +39,12 @@ def create_app() -> Flask:
         .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema)\
         .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema)
 
-    # di = DI()
+    di = DI()
     flask = Flask(__name__)
     flask.config.from_file('configuration.json', load=json.load)
     flask.register_blueprint(quiz_blueprint, url_prefix='/api/v1/quiz')
-    # di.init_resources()
-    # db.init_app(flask)
+    di.init_resources()
+    db.init_app(flask)
     # login_manager = LoginManager()
     # login_manager.init_app(flask)
     #
