@@ -1,5 +1,5 @@
-from database import QuizTable, QuizQuestionTable
-from dtos import QuizDto, QuizDetailedDto, QuizQuestionDto, QuizQuestionType
+from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable
+from dtos import QuizDto, QuizDetailedDto, QuizQuestionDto, QuizQuestionType, QuizQuestionAnswerDto
 
 
 # noinspection PyMethodMayBeStatic
@@ -29,7 +29,8 @@ class QuizFacade:
             question.id,
             question.text,
             self._map_to_question_type(question.type),
-            question.ordinal_number
+            question.ordinal_number,
+            [self._map_to_question_answer(answer) for answer in question.answers]
         )
 
     def _map_to_question_type(self, db_type: int) -> QuizQuestionType:
@@ -40,3 +41,6 @@ class QuizFacade:
                 return QuizQuestionType.FREE_TEXT
             case _:
                 return QuizQuestionType.SINGLE_CHOICE
+
+    def _map_to_question_answer(self, answer: QuizAnswerVariantTable) -> QuizQuestionAnswerDto:
+        return QuizQuestionAnswerDto(answer.id, answer.text, answer.is_correct)

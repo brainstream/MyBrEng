@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
+from sqlalchemy import Boolean, String
+
 db = SQLAlchemy()
 
 
@@ -21,7 +23,7 @@ class QuizTable(db.Model):
     description = db.Column('Description', db.String)
     owner_id = db.Column('Owner', db.ForeignKey('User.Id'))
     owner = db.relationship('UserTable', backref=db.backref('User', uselist=False))
-    questions = db.relationship("QuizQuestionTable", backref=db.backref('QuizQuestion', uselist=False))
+    questions = db.relationship('QuizQuestionTable', backref=db.backref('QuizQuestion', uselist=True))
 
     def __repr__(self):
         return f'<Quiz: {self.title}>'
@@ -34,6 +36,18 @@ class QuizQuestionTable(db.Model):
     type = db.Column('Type', db.Integer)
     ordinal_number = db.Column('OrdinalNumber', db.Integer)
     quiz_id = db.Column('Quiz', db.ForeignKey('Quiz.Id'))
+    answers = db.relationship('QuizAnswerVariantTable', backref=db.backref('QuizAnswerVariant', uselist=True))
 
     def __repr__(self):
-        return f'<Quiz Question: {self.description[:20]}>'
+        return f'<Quiz Question: {self.text[:20]}>'
+
+
+class QuizAnswerVariantTable(db.Model):
+    __tablename__ = 'QuizAnswerVariant'
+    id = db.Column('Id', db.String(38), primary_key=True)
+    text = db.Column('Text', db.String(150))
+    is_correct = db.Column('IsRight', db.Boolean)
+    question_id = db.Column('Question', db.ForeignKey('QuizQuestion.Id'))
+
+    def __repr__(self):
+        return f'<Quiz Answer Variant: {self.text[:20]}>'

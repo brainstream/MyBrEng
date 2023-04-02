@@ -1,6 +1,7 @@
 from enum import Enum
 from dataclasses import dataclass
 from marshmallow import Schema, fields
+from .quiz_question_answer_dto import QuizQuestionAnswerDtoSchema, QuizQuestionAnswerDto
 
 
 class QuizQuestionType(str, Enum):
@@ -15,6 +16,7 @@ class QuizQuestionDto:
     text: str
     type: QuizQuestionType
     ordinal_number: int
+    answers: list[QuizQuestionAnswerDto]
 
 
 class QuizQuestionDtoSchema(Schema):
@@ -22,3 +24,4 @@ class QuizQuestionDtoSchema(Schema):
     text = fields.String(required=True)
     type = fields.Enum(QuizQuestionType, required=True)
     ordinal_number = fields.Integer(required=True)
+    answers = fields.Nested(QuizQuestionAnswerDtoSchema, many=True)

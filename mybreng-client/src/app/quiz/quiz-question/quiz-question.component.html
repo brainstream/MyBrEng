@@ -7,5 +7,20 @@
             <mat-card-subtitle>{{question.type | questionTypeName}}</mat-card-subtitle>
         </div>
     </mat-card-header>
-    <mat-card-content [innerHTML]="question.text"></mat-card-content>
+    <mat-card-content>
+        <div class="question-text" [innerHTML]="question.text"></div>
+        <div class="answers">
+            <div class="answer-row" *ngFor="let answer of question.answers">
+                <span class="answer-mark">
+                    <mat-icon *ngIf="answer.is_correct; else notCorrect">check</mat-icon>
+                    <ng-template #notCorrect>
+                        <mat-icon>clear</mat-icon>
+                    </ng-template>
+                </span>
+                <div class="answer-text">
+                    {{answer.text}}
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
 </mat-card>

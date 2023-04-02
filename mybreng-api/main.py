@@ -6,7 +6,7 @@ from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
 from blueprints.quiz import quiz_blueprint, quiz_list, quiz_details
-from dtos import QuizDtoSchema, QuizQuestionDtoSchema, QuizDetailedDtoSchema
+from dtos import QuizDtoSchema, QuizQuestionDtoSchema, QuizDetailedDtoSchema, QuizQuestionAnswerDtoSchema
 from di import DI
 from database import db
 
@@ -35,8 +35,8 @@ def create_app() -> Flask:
     )
 
     spec.components\
-        .schema("QuizDto", schema=QuizDtoSchema)\
-        .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema)\
+        .schema("QuizDto", schema=QuizDtoSchema) \
+        .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema) \
         .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema)
 
     di = DI()
