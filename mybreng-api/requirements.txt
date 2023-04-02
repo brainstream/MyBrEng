@@ -2,6 +2,7 @@ flask
 flask-cors
 flask-sqlalchemy
 flask-swagger-ui
+flask-login
 dependency-injector
 mysqlclient
 apispec
