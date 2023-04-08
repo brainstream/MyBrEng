@@ -1,6 +1,5 @@
 import { NgModule, isDevMode, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +10,7 @@ import { ThemeService } from './shared';
 import { appInitializerFactory } from './app-initializer-factory';
 import { ApiModule } from './web-api';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './auth';
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
+    AuthModule,
     ApiModule
   ],
   providers: [{

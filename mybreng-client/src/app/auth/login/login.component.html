@@ -1,0 +1,22 @@
+<div *ngIf="loading; else form" mat-dialog-content class="loading">
+    <mat-spinner color="primary"></mat-spinner>
+</div>
+
+<ng-template #form>
+    <form (submit)="submit()">
+        <h1 mat-dialog-title>Аутентификация</h1>
+        <mat-dialog-content class="fields">
+            <mat-form-field>
+                <mat-label>Адрес электронной почты</mat-label>
+                <input matInput required autocomplete="email" type="email" name="email" [(ngModel)]="email" />
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Пароль</mat-label>
+                <input matInput required autocomplete="off" type="password" name="password" [(ngModel)]="password" />
+            </mat-form-field>
+        </mat-dialog-content>
+        <mat-dialog-actions [align]="'end'">
+            <button mat-flat-button>Отправить</button>
+        </mat-dialog-actions>
+    </form>
+</ng-template>

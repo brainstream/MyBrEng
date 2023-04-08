@@ -26,6 +26,8 @@ $app-light-theme: mat.define-light-theme(
             accent: $app-accent,
             warn: $app-warn,
         ),
+        typography: mat.define-typography-config(),
+        density: 0,
     )
 );
 
@@ -36,6 +38,8 @@ $app-dark-theme: mat.define-dark-theme(
             accent: $app-accent,
             warn: $app-warn,
         ),
+        typography: mat.define-typography-config(),
+        density: 0,
     )
 );
 
@@ -97,22 +101,22 @@ $app-dark-theme: mat.define-dark-theme(
 @include mat.all-component-densities($app-light-theme);
 
 @mixin dark-colors {
-    @include mat.all-component-colors($app-dark-theme);
     @include global-theme($app-dark-theme);
 }
 
 @mixin light-colors {
-    @include mat.all-component-colors($app-light-theme);
     @include global-theme($app-light-theme);
 }
 
 @media (prefers-color-scheme: dark) {
+    @include mat.all-component-themes($app-dark-theme);
     html {
         @include dark-colors;
     }
 }
 
 @media (prefers-color-scheme: light) {
+    @include mat.all-component-themes($app-light-theme);
     html {
         @include light-colors;
     }
@@ -120,10 +124,12 @@ $app-dark-theme: mat.define-dark-theme(
 
 html {
     &.dark {
+        @include mat.all-component-colors($app-dark-theme);
         @include dark-colors;
     }
 
     &.light {
+        @include mat.all-component-colors($app-light-theme);
         @include light-colors;
     }
 }

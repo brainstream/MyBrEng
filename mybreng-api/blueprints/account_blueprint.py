@@ -1,8 +1,8 @@
 from dependency_injector.wiring import Provide, inject
-from flask import make_response
+from flask import make_response, request
 from flask.blueprints import Blueprint
 from di import DI
-from dtos import LogInDto
+from flask_login import login_user
 from facades import UserFacade
 
 account_blueprint = Blueprint('account', __name__)
@@ -10,7 +10,7 @@ account_blueprint = Blueprint('account', __name__)
 
 @account_blueprint.route('/login', methods=['POST'])
 @inject
-def account_login(credentials: LogInDto, user_facade: UserFacade = Provide[DI.user_facade]):
+def account_login(user_facade: UserFacade = Provide[DI.user_facade]):
     """
     ---
     post:
@@ -28,9 +28,12 @@ def account_login(credentials: LogInDto, user_facade: UserFacade = Provide[DI.us
         401:
           description: Failed to log in
     """
-    user = user_facade.get_user_by_email_and_password(credentials.email, credentials.password)
+    request_data = request.get_json()
+    email = request_data['email']
+    password = request_data['password']
+    user = user_facade.get_user_by_email_and_password(email, password)
     if user is None:
         return make_response('', 401)
     else:
-        user_facade.log_in(user)
+        login_user(user, remember=True)
         return make_response('', 200)
