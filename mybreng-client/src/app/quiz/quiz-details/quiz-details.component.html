@@ -1,15 +1,38 @@
 <app-layout-full [loading]="loading$ | async">
-    <div class="details"  *ngIf="quiz$ | async as quiz">
+    <ng-container navbar>
+        <button mat-flat-button color="primary" [matMenuTriggerFor]="editMenu">
+            <mat-icon>menu</mat-icon>
+            Правка
+        </button>
+    </ng-container>
+
+    <div class="details" *ngIf="quiz">
         <h1 class="title">{{ quiz.title }}</h1>
 
         <div class="description">{{ quiz.description }}</div>
 
         <div class="question-list" *ngIf="quiz.questions">
-            <app-quiz-question 
-                class="question"
-                *ngFor="let question of quiz.questions"
-                [question]="question"
-            ></app-quiz-question>
+            <app-quiz-question class="question" *ngFor="let question of quiz.questions"
+                [question]="question"></app-quiz-question>
         </div>
     </div>
 </app-layout-full>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item>
+        <mat-icon>add</mat-icon>
+        Добавить вопрос
+    </button>
+    <button mat-menu-item>
+        <mat-icon>sort</mat-icon>
+        Изменить порядок вопросов
+    </button>
+    <button mat-menu-item (click)="editQuiz()">
+        <mat-icon>edit</mat-icon>
+        Редактировать
+    </button>
+    <button mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        Удалить тест
+    </button>
+</mat-menu>

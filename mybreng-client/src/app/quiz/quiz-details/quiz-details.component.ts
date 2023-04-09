@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QuizDetailedDto } from '@app/web-api';
+import { QuizDetailedDto, QuizEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subscription } from 'rxjs';
 import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { QuizEditFormComponent } from '../quiz-edit-form';
 
 @Component({
   selector: 'app-quiz-details',
@@ -12,15 +14,16 @@ import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
   private paramsSubscription: Subscription | undefined;
+  private quizSubscription: Subscription | undefined;
 
-  readonly quiz$: Observable<QuizDetailedDto | null>;
+  quiz: QuizDetailedDto | null;
   readonly loading$: Observable<boolean>;
 
   constructor(
     private readonly route: ActivatedRoute,
-    private readonly store$: Store
+    private readonly store$: Store,
+    private readonly bottomSheet: MatBottomSheet
   ) {
-    this.quiz$ = store$.select(QuizzesSelectors.details);
     this.loading$ = store$
       .select(QuizzesSelectors.detailsLoading)
       .pipe(
@@ -35,12 +38,35 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         if (id) {
           this.store$.dispatch(QuizzesActions.loadDetails({ id }))
         }
-      }
-    );
+      });
+    this.quizSubscription = this.store$.select(QuizzesSelectors.details)
+      .subscribe(quiz => this.quiz = quiz);
   }
 
   ngOnDestroy(): void {
     this.paramsSubscription?.unsubscribe();
-    this.paramsSubscription = undefined;
+    delete this.paramsSubscription;
+    this.quizSubscription?.unsubscribe();
+    delete this.quizSubscription;
+  }
+
+  editQuiz() {
+    const quiz = this.quiz;
+    if(!quiz) {
+      return;
+    }
+    const bs = this.bottomSheet
+      .open(QuizEditFormComponent, {
+        data: quiz,
+      });
+      const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
+        if (result) {
+          this.store$.dispatch(QuizzesActions.editDetails({
+            id: quiz.id,
+            ...result
+          }))
+        }
+        subscription.unsubscribe();
+      });
   }
 }

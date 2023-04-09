@@ -1,10 +1,10 @@
 from dependency_injector.wiring import Provide, inject
-from flask import jsonify, make_response
+from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 
 from di import DI
-from dtos import UserDto
+from dtos import QuizEditDto
 from facades import QuizFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
@@ -32,7 +32,7 @@ def quiz_list(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
     return jsonify(quiz_facade.get_quizzes(current_user.id))
 
 
-@quiz_blueprint.route('/details/<quiz_id>')
+@quiz_blueprint.route('/details/<quiz_id>', methods=['GET'])
 @login_required
 @inject
 def quiz_details(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
@@ -63,3 +63,36 @@ def quiz_details(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]
         return jsonify(quiz)
     else:
         return make_response('', 404)
+
+
+@quiz_blueprint.route('/details/<quiz_id>', methods=['PUT'])
+@login_required
+@inject
+def quiz_edit(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
+    """
+    ---
+    put:
+      operationId: quiz_edit
+      tags: [Quiz]
+      description: Edits a quiz main info
+      requestBody:
+        content:
+          application/json:
+            schema: QuizEditDto
+      parameters:
+      - in: path
+        name: quiz_id
+        schema:
+          type: string
+          format: uuid
+          description: Quiz ID
+      responses:
+        200:
+          description: Quiz edited successfully
+        404:
+          description: Quiz with specified ID not found
+    """
+    request_data = request.get_json()
+    dto = QuizEditDto(request_data['title'], request_data['description'])
+    status = 404 if quiz_facade.edit_quiz(quiz_id, current_user.id, dto) is None else 200
+    return make_response('', status)

@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 import { QuizListComponent } from './quiz-list';
 import { QuizDetailsComponent } from './quiz-details/';
 import { QuizRoutingModule } from './quiz-routing.module';
@@ -46,6 +47,7 @@ import { QuestionTypeNamePipe } from './question-type-name.pipe';
     MatInputModule,
     MatCardModule,
     MatChipsModule,
+    MatMenuModule,
     QuizRoutingModule,
     LayoutModule
   ]

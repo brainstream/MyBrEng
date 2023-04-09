@@ -1,4 +1,4 @@
-import { QuizDetailedDto, QuizDto } from "@app/web-api";
+import { QuizDetailedDto, QuizDto, QuizEditDto } from "@app/web-api";
 import { createAction, props } from "@ngrx/store";
 
 export namespace QuizzesActions {
@@ -22,5 +22,17 @@ export namespace QuizzesActions {
     export const finishDetailsLoading = createAction(
         '[Quizzes] Finish Details Loading',
         props<{ result: QuizDetailedDto | 'error' }>()
+    );
+    export const editDetails = createAction(
+        '[Quizzes] Edit Details',
+        props<QuizEditDto & { id: string }>()
+    );
+    export const startDetailsEditing = createAction(
+        '[Quizzes] Start Details Editing',
+        props<{ id: string }>()
+    );
+    export const finishDetailsEditing= createAction(
+        '[Quizzes] Finish Details Editing',
+        props<{ id: string, result: QuizEditDto | 'error' }>()
     );
 }

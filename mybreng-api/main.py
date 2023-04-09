@@ -6,8 +6,19 @@ from flask_login import LoginManager
 from apispec import APISpec
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
-from blueprints import account_blueprint, account_login, quiz_blueprint, quiz_list, quiz_details
-from dtos import QuizDtoSchema, QuizQuestionDtoSchema, QuizDetailedDtoSchema, UserDtoSchema, LogInDtoSchema
+from blueprints import \
+    account_blueprint, \
+    account_login, \
+    quiz_blueprint, \
+    quiz_list, \
+    quiz_details, \
+    quiz_edit
+from dtos import QuizDtoSchema,\
+    QuizQuestionDtoSchema, \
+    QuizDetailedDtoSchema, \
+    UserDtoSchema, \
+    LogInDtoSchema, \
+    QuizEditDtoSchema
 from di import DI
 from database import db
 
@@ -44,7 +55,8 @@ def create_app() -> Flask:
         .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema) \
         .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema) \
         .schema("UserDto", schema=UserDtoSchema) \
-        .schema("LogInDto", schema=LogInDtoSchema)
+        .schema("LogInDto", schema=LogInDtoSchema) \
+        .schema("QuizEditDto", schema=QuizEditDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -60,6 +72,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_list)
         spec.path(view=quiz_details)
         spec.path(view=account_login)
+        spec.path(view=quiz_edit)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

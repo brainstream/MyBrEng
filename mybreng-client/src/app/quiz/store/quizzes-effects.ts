@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { QuizService } from "@app/web-api";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { concat, EMPTY, map, switchMap, of, catchError } from "rxjs";
+import { concat, EMPTY, map, switchMap, of, catchError, exhaustMap } from "rxjs";
 import { QuizzesActions } from "./quizzes-actions";
 import { QuizzesSelectors } from "./quizzes-selectors";
 import { LoadingStatus } from "./quizzes-state";
@@ -42,5 +42,30 @@ export class QuizzesEffects {
                 catchError(() => of(QuizzesActions.finishDetailsLoading({ result: 'error' })))
             )
         )
+    ));
+
+    editDetails$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.editDetails),
+        exhaustMap((data) => {
+            return concat(
+                of(QuizzesActions.startDetailsEditing({ id: data.id })),
+                this.quizService.quizEdit(data.id, {
+                    title: data.title,
+                    description: data.description
+                }).pipe(
+                    map(() => QuizzesActions.finishDetailsEditing({
+                        id: data.id,
+                        result: {
+                            title: data.title,
+                            description: data.description
+                        }
+                    })),
+                    catchError(() => of(QuizzesActions.finishDetailsEditing({
+                        id: data.id,
+                        result: 'error' 
+                    })))
+                )
+            )
+        })
     ));
 }

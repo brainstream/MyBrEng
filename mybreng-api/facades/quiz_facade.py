@@ -1,5 +1,10 @@
-from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable
-from dtos import QuizDto, QuizDetailedDto, QuizQuestionDto, QuizQuestionType, QuizQuestionAnswerDto
+from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable, db
+from dtos import QuizDto, \
+    QuizDetailedDto, \
+    QuizQuestionDto, \
+    QuizQuestionType, \
+    QuizQuestionAnswerDto, \
+    QuizEditDto
 
 
 # noinspection PyMethodMayBeStatic
@@ -15,6 +20,15 @@ class QuizFacade:
         if quiz is None:
             return None
         return self._map_to_quiz_details(quiz)
+
+    def edit_quiz(self, quiz_id: str, owner_id: str, dto: QuizEditDto) -> str | None:
+        quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
+        if quiz is None:
+            return None
+        quiz.title = dto.title
+        quiz.description = dto.description
+        db.session.commit()
+        return quiz.id
 
     def _map_to_quiz_details(self, quiz: QuizTable) -> QuizDetailedDto:
         return QuizDetailedDto(

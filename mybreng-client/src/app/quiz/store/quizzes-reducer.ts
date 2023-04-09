@@ -27,6 +27,43 @@ export const quizzesReducer = createReducer(
             result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded
         )
     })),
+    on(QuizzesActions.startDetailsEditing, (state, { id }) => {
+        if (state.details.data?.id !== id) {
+            return state;
+        }
+        return {
+            ...state,
+            details: {
+                ...state.details,
+                loading: LoadingStatus.Loading
+            }
+        };
+    }),
+    on(QuizzesActions.finishDetailsEditing, (state, { id, result }) => {
+        if (state.details.data?.id !== id) {
+            return state;
+        }
+        if (result === 'error') {
+            return {
+                ...state,
+                details: {
+                    ...state.details,
+                    loading: LoadingStatus.Error
+                }
+            };
+        }
+        return {
+            ...state,
+            details: {
+                loading: LoadingStatus.Loaded,
+                data: {
+                    ...state.details.data,
+                    title: result.title,
+                    description: result.description
+                }
+            }
+        };
+    })
 );
 
 function createDefaultState(): IQuizzesState {
