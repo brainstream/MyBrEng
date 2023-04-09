@@ -56,11 +56,13 @@ export const quizzesReducer = createReducer(
             ...state,
             list: {
                 ...state.list,
-                data: state.list.data.map(quiz => quiz.id === id ? {
-                    ...quiz,
-                    title: result.title,
-                    description: result.description
-                } : quiz)
+                data: state.list.data.map(quiz =>
+                    quiz.id === id ? {
+                        ...quiz,
+                        title: result.title,
+                        description: result.description
+                    } : quiz
+                )
             },
             details: {
                 loading: LoadingStatus.Loaded,

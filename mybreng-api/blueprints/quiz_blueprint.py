@@ -96,3 +96,36 @@ def quiz_edit(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
     dto = QuizEditDto(request_data['title'], request_data['description'])
     status = 404 if quiz_facade.edit_quiz(quiz_id, current_user.id, dto) is None else 200
     return make_response('', status)
+
+
+@quiz_blueprint.route('/question/<quiz_id>', methods=['POST'])
+@login_required
+@inject
+def quiz_add_question(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
+    """
+    ---
+    post:
+      operationId: quiz_add_question
+      tags: [Quiz]
+      description: Adds a new question into quiz
+      requestBody:
+        content:
+          application/json:
+            schema: QuizQuestionCreateDto
+      parameters:
+      - in: path
+        name: quiz_id
+        schema:
+          type: string
+          format: uuid
+          description: Quiz ID
+      responses:
+        200:
+          description: Question added successfully
+          content:
+            application/json:
+              schema: QuizDetailedDto
+        404:
+          description: Quiz with specified ID not found
+    """
+    ...

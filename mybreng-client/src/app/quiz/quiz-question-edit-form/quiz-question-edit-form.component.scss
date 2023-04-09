@@ -1,0 +1,13 @@
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+.actions {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+
+    > * {
+        margin-left: 0.5rem;
+    }
+}

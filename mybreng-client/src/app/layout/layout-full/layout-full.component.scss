@@ -1,6 +1,6 @@
 $toolbar-height: 54px;
 
-.toolbar {
+.layout-full-toolbar {
     display: flex;
     align-items: center;
     width: 100%;
@@ -11,18 +11,18 @@ $toolbar-height: 54px;
         margin-right: 0.5rem;
     }
 
-    .title {
+    .layout-full-toolbar-title {
         cursor: pointer;
         font-size: 1.3rem;
     }
 
-    .nav-link {
+    .layout-full-toolbar-nav-link {
         &.active {
             background: rgba(0, 0, 0, 0.2);
         }
     }
 
-    .spacer {
+    .layout-full-toolbar-spacer {
         flex-grow: 1;
     }
 }

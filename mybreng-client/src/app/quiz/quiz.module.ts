@@ -10,6 +10,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 import { QuizListComponent } from './quiz-list';
 import { QuizDetailsComponent } from './quiz-details/';
 import { QuizRoutingModule } from './quiz-routing.module';
@@ -22,6 +23,7 @@ import { quizzesReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { QuizzesEffects } from './store/quizzes-effects';
 import { QuestionTypeNamePipe } from './question-type-name.pipe';
+import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { QuestionTypeNamePipe } from './question-type-name.pipe';
     QuizEditFormComponent,
     QuizListItemComponent,
     QuizQuestionComponent,
-    QuestionTypeNamePipe
+    QuestionTypeNamePipe,
+    QuizQuestionEditFormComponent
   ],
   imports: [
     CommonModule,
@@ -48,6 +51,7 @@ import { QuestionTypeNamePipe } from './question-type-name.pipe';
     MatCardModule,
     MatChipsModule,
     MatMenuModule,
+    MatSelectModule,
     QuizRoutingModule,
     LayoutModule
   ]

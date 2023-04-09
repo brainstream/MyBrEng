@@ -1,9 +1,25 @@
-<mat-toolbar class="toolbar">
+<mat-toolbar class="layout-full-toolbar" color="primary">
     <span class="title" routerLink="">QuizTime</span>
-    <button mat-button routerLink="/quiz" class="nav-link" routerLinkActive="active">Тесты</button>
-    <button mat-button routerLink="/student" class="nav-link" routerLinkActive="active">Ученики</button>
+    <button 
+        mat-flat-button 
+        color="primary"
+        routerLink="/quiz" 
+        class="layout-full-toolbar-nav-link" 
+        routerLinkActive="active"
+    >
+        Тесты
+    </button>
+    <button 
+        mat-flat-button
+        color="primary"
+        routerLink="/student"
+        class="layout-full-toolbar-nav-link"
+        routerLinkActive="active"
+    >
+        Ученики
+    </button>
     
-    <div class="spacer"></div>
+    <div class="layout-full-toolbar-spacer"></div>
 
     <ng-content select="[navbar]"></ng-content>
 

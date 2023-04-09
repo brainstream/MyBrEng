@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QuizDetailedDto, QuizEditDto } from '@app/web-api';
+import { QuizDetailedDto, QuizEditDto, QuizQuestionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subscription } from 'rxjs';
 import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
+import { QuizQuestionEditFormComponent } from '../quiz-question-edit-form';
 
 @Component({
   selector: 'app-quiz-details',
@@ -16,8 +17,9 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   private paramsSubscription: Subscription | undefined;
   private quizSubscription: Subscription | undefined;
 
-  quiz: QuizDetailedDto | null;
   readonly loading$: Observable<boolean>;
+  quiz: QuizDetailedDto | null;
+  editQuestionId: string | null = null;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -52,21 +54,38 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
   editQuiz() {
     const quiz = this.quiz;
-    if(!quiz) {
+    if (!quiz) {
       return;
     }
     const bs = this.bottomSheet
       .open(QuizEditFormComponent, {
         data: quiz,
       });
-      const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
-        if (result) {
-          this.store$.dispatch(QuizzesActions.editDetails({
-            id: quiz.id,
-            ...result
-          }))
-        }
-        subscription.unsubscribe();
-      });
+    const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
+      if (result) {
+        this.store$.dispatch(QuizzesActions.editDetails({
+          id: quiz.id,
+          ...result
+        }))
+      }
+      subscription.unsubscribe();
+    });
+  }
+
+  deleteQuiz() {
+  }
+
+  addQuestion() {
+  }
+
+  changeQuestionOrder() {
+  }
+
+  editQuestion(question: QuizQuestionDto | null) {
+    this.editQuestionId = question?.id ?? null;
+  }
+
+  deleteQuestion(question: QuizQuestionDto) {
+    
   }
 }

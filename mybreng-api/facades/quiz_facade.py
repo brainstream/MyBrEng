@@ -2,9 +2,9 @@ from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable, db
 from dtos import QuizDto, \
     QuizDetailedDto, \
     QuizQuestionDto, \
-    QuizQuestionType, \
     QuizQuestionAnswerDto, \
     QuizEditDto
+from dtos.quiz_quiestion_type import QuizQuestionType
 
 
 # noinspection PyMethodMayBeStatic

@@ -1,7 +1,7 @@
 <app-layout-full [loading]="loading$ | async">
     <ng-container navbar>
-        <button mat-flat-button color="primary" [matMenuTriggerFor]="editMenu">
-            <mat-icon>menu</mat-icon>
+        <button mat-flat-button [matMenuTriggerFor]="editMenu">
+            <mat-icon>edit</mat-icon>
             Правка
         </button>
     </ng-container>
@@ -12,18 +12,32 @@
         <div class="description">{{ quiz.description }}</div>
 
         <div class="question-list" *ngIf="quiz.questions">
-            <app-quiz-question class="question" *ngFor="let question of quiz.questions"
-                [question]="question"></app-quiz-question>
+            <ng-container *ngFor="let question of quiz.questions">
+                <app-quiz-question-edit-form
+                    *ngIf="question.id === editQuestionId; else questionView"
+                    [question]="question"
+                    (cancelRequested)="editQuestion(null)"
+                    class="question">
+                </app-quiz-question-edit-form>
+                <ng-template #questionView>
+                    <app-quiz-question
+                        class="question"
+                        [question]="question"
+                        (editRequested)="editQuestion($event)"
+                        (deleteRequested)="deleteQuestion($event)">
+                    </app-quiz-question>
+                </ng-template>
+            </ng-container>
         </div>
     </div>
 </app-layout-full>
 
 <mat-menu #editMenu="matMenu">
-    <button mat-menu-item>
+    <button mat-menu-item (click)="addQuestion()">
         <mat-icon>add</mat-icon>
         Добавить вопрос
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="changeQuestionOrder()">
         <mat-icon>sort</mat-icon>
         Изменить порядок вопросов
     </button>
@@ -31,7 +45,7 @@
         <mat-icon>edit</mat-icon>
         Редактировать
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="deleteQuiz()">
         <mat-icon>delete</mat-icon>
         Удалить тест
     </button>

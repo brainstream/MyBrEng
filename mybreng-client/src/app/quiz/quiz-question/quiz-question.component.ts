@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { QuizQuestionDto } from '@app/web-api';
 
 @Component({
@@ -8,4 +8,14 @@ import { QuizQuestionDto } from '@app/web-api';
 })
 export class QuizQuestionComponent {
   @Input() question: QuizQuestionDto;
+  @Output() editRequested = new EventEmitter<QuizQuestionDto>();
+  @Output() deleteRequested = new EventEmitter<QuizQuestionDto>();
+
+  edit() {
+    this.editRequested.emit(this.question);
+  }
+
+  delete() {
+    this.deleteRequested.emit(this.question);
+  }
 }

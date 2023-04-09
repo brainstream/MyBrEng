@@ -4,7 +4,10 @@
             <mat-chip class="ordianal">
                 {{question.ordinal_number + 1}}
             </mat-chip>
-            <mat-card-subtitle>{{question.type | questionTypeName}}</mat-card-subtitle>
+            <mat-card-subtitle class="question-title">{{question.type | questionTypeName}}</mat-card-subtitle>
+            <button mat-icon-button [matMenuTriggerFor]="editMenu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
         </div>
     </mat-card-header>
     <mat-card-content>
@@ -24,3 +27,8 @@
         </div>
     </mat-card-content>
 </mat-card>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="edit()"><mat-icon>edit</mat-icon>Редактировать</button>
+    <button mat-menu-item color="warn" (click)="delete()"><mat-icon>delete</mat-icon>Удалить</button>
+</mat-menu>
