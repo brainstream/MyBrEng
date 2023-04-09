@@ -1,4 +1,4 @@
-import { QuizDetailedDto, QuizDto } from "@app/web-api";
+import { QuizDetailedDto, QuizDto, QuizEditDto } from "@app/web-api";
 import { createReducer, on } from "@ngrx/store";
 import { QuizzesActions } from "./quizzes-actions";
 import { IQuizzesState, LoadingStatus, RemoteData } from "./quizzes-state";
@@ -54,6 +54,14 @@ export const quizzesReducer = createReducer(
         }
         return {
             ...state,
+            list: {
+                ...state.list,
+                data: state.list.data.map(quiz => quiz.id === id ? {
+                    ...quiz,
+                    title: result.title,
+                    description: result.description
+                } : quiz)
+            },
             details: {
                 loading: LoadingStatus.Loaded,
                 data: {
