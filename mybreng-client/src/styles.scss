@@ -15,8 +15,8 @@ body {
 
 @include mat.core();
 
-$app-primary: mat.define-palette(mat.$indigo-palette);
-$app-accent: mat.define-palette(mat.$green-palette);
+$app-primary: mat.define-palette(mat.$blue-gray-palette, A700, A400, 900, A700);
+$app-accent: mat.define-palette(mat.$blue-palette);
 $app-warn: mat.define-palette(mat.$red-palette);
 
 $app-light-theme: mat.define-light-theme(
@@ -95,6 +95,18 @@ $app-dark-theme: mat.define-dark-theme(
 
     .cdk-overlay-backdrop.solid {
         background-color: mat.get-color-from-palette($background-palette, background);
+    }
+
+    .mdc-text-field {
+        &:not(.mdc-text-field--disabled) {
+            .mdc-floating-label {
+                color: mat.get-color-from-palette($foreground-palette, hint-text);
+            }
+        }
+        
+        .mdc-text-field__input {
+            caret-color: mat.get-color-from-palette($foreground-palette, secondary-text);
+        }
     }
 }
 

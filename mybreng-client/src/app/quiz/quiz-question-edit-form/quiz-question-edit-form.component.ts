@@ -7,10 +7,31 @@ import { QuizQuestionDto } from '@app/web-api';
   styleUrls: ['./quiz-question-edit-form.component.scss']
 })
 export class QuizQuestionEditFormComponent {
-  @Input() question: QuizQuestionDto;
   @Output() cancelRequested = new EventEmitter<QuizQuestionDto>();
+  
+  questionType: QuizQuestionDto.TypeEnum | null = null;
+  questionText: string | null = null;
+  answers: Array<{
+    text: string,
+    isCorrect: boolean
+  }> = [];
+
+  @Input() set question(q: QuizQuestionDto) {
+    this.questionType = q.type;
+    this.questionText = q.text;
+    if (q.answers) {
+      this.answers = q.answers.map(a => ({
+        isCorrect: a.is_correct,
+        text: a.text
+      }));
+    }
+  }
 
   cancel() {
     this.cancelRequested.emit(this.question);
+  }
+
+  get questionTypes(): QuizQuestionDto.TypeEnum[] {
+    return Object.values(QuizQuestionDto.TypeEnum);
   }
 }

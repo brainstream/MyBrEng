@@ -11,6 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { QuizListComponent } from './quiz-list';
 import { QuizDetailsComponent } from './quiz-details/';
 import { QuizRoutingModule } from './quiz-routing.module';
@@ -52,6 +54,8 @@ import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
     MatChipsModule,
     MatMenuModule,
     MatSelectModule,
+    MatCheckboxModule,
+    MatTooltipModule,
     QuizRoutingModule,
     LayoutModule
   ]

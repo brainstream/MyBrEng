@@ -1,4 +1,4 @@
-.mat-mdc-form-field {
+.full-width {
     width: 100%;
 }
 
@@ -10,4 +10,13 @@
     > * {
         margin-left: 0.5rem;
     }
+}
+
+.correct-answer-mark,
+.delete-answer-btn {
+    margin: 0 0.3rem;
+}
+
+.delete-answer-btn {
+    margin: 0 1rem;
 }
