@@ -15,8 +15,74 @@ body {
 
 @include mat.core();
 
-$app-primary: mat.define-palette(mat.$blue-gray-palette, A700, A400, 900, A700);
-$app-accent: mat.define-palette(mat.$blue-palette);
+$app-blue-palette: (
+    50 : #eaf0fb,
+    100 : #cadbf5,
+    200 : #a7c3ef,
+    300 : #83aae9,
+    400 : #6998e4,
+    500 : #4e86df,
+    600 : #477edb,
+    700 : #3d73d7,
+    800 : #3569d2,
+    900 : #2556ca,
+    A100 : #ffffff,
+    A200 : #d3dfff,
+    A400 : #a0baff,
+    A700 : #86a7ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$app-orange-palette: (
+    50 : #f8f0e4,
+    100 : #ecdabb,
+    200 : #e0c18e,
+    300 : #d4a861,
+    400 : #ca953f,
+    500 : #c1821d,
+    600 : #bb7a1a,
+    700 : #b36f15,
+    800 : #ab6511,
+    900 : #9e520a,
+    A100 : #ffe2cb,
+    A200 : #ffc598,
+    A400 : #ffa965,
+    A700 : #ff9b4c,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$app-primary: mat.define-palette($app-blue-palette);
+$app-accent: mat.define-palette($app-orange-palette);
 $app-warn: mat.define-palette(mat.$red-palette);
 
 $app-light-theme: mat.define-light-theme(
@@ -95,18 +161,6 @@ $app-dark-theme: mat.define-dark-theme(
 
     .cdk-overlay-backdrop.solid {
         background-color: mat.get-color-from-palette($background-palette, background);
-    }
-
-    .mdc-text-field {
-        &:not(.mdc-text-field--disabled) {
-            .mdc-floating-label {
-                color: mat.get-color-from-palette($foreground-palette, hint-text);
-            }
-        }
-        
-        .mdc-text-field__input {
-            caret-color: mat.get-color-from-palette($foreground-palette, secondary-text);
-        }
     }
 }
 
