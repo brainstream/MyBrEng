@@ -81,8 +81,8 @@ $app-orange-palette: (
     )
 );
 
-$app-primary: mat.define-palette($app-blue-palette);
-$app-accent: mat.define-palette($app-orange-palette);
+$app-primary: mat.define-palette($app-orange-palette);
+$app-accent: mat.define-palette($app-blue-palette);
 $app-warn: mat.define-palette(mat.$red-palette);
 
 $app-light-theme: mat.define-light-theme(

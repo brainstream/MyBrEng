@@ -26,6 +26,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { QuizzesEffects } from './store/quizzes-effects';
 import { QuestionTypeNamePipe } from './question-type-name.pipe';
 import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
+import { MarkdownModule } from '@app/markdown';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
     MatCheckboxModule,
     MatTooltipModule,
     QuizRoutingModule,
+    MarkdownModule,
     LayoutModule
   ]
 })

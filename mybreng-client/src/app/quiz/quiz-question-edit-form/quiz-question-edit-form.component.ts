@@ -34,4 +34,8 @@ export class QuizQuestionEditFormComponent {
   get questionTypes(): QuizQuestionDto.TypeEnum[] {
     return Object.values(QuizQuestionDto.TypeEnum);
   }
+
+  get canAnswersBeMarkedAsCorrect(): boolean {
+    return this.questionType != QuizQuestionDto.TypeEnum.FreeText;
+  }
 }

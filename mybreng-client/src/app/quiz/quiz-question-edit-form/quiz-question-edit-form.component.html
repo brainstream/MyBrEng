@@ -2,7 +2,7 @@
     <mat-card-content>
         <mat-form-field class="full-width">
             <mat-label>Тип</mat-label>
-            <mat-select matInput autocomplete="off" required="">
+            <mat-select matInput autocomplete="off" required="" [(ngModel)]="questionType">
                 <mat-option *ngFor="let type of questionTypes" [value]="type">
                     {{type | questionTypeName}}
                 </mat-option>
@@ -16,6 +16,7 @@
         <div *ngFor="let answer of answers">
             <mat-form-field class="full-width">
                 <mat-checkbox matPrefix 
+                    *ngIf="canAnswersBeMarkedAsCorrect"
                     [(ngModel)]="answer.isCorrect"
                     [matTooltip]="answer.isCorrect ? 'Правильный ответ' : 'Неправильный ответ'"
                     class="correct-answer-mark">
@@ -24,7 +25,6 @@
                 <button matSuffix
                     mat-icon-button
                     matTooltip="Удалить ответ"
-                    color="warn"
                     class="delete-answer-btn"
                 >
                     <mat-icon>delete</mat-icon>

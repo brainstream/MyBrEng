@@ -11,7 +11,7 @@
         </div>
     </mat-card-header>
     <mat-card-content>
-        <div class="question-text" [innerHTML]="question.text"></div>
+        <app-markdown class="question-text" [source]="question.text"></app-markdown>
         <div class="answers">
             <div class="answer-row" *ngFor="let answer of question.answers">
                 <span class="answer-mark">
