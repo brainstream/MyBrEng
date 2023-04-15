@@ -1,5 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { QuizQuestionDto } from '@app/web-api';
+import { QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
+import { QuizzesActions } from '../store';
+
+
+type Answer = {
+  id?: string,
+  text: string,
+  isCorrect: boolean
+};
+
 
 @Component({
   selector: 'app-quiz-question-edit-form',
@@ -7,35 +16,67 @@ import { QuizQuestionDto } from '@app/web-api';
   styleUrls: ['./quiz-question-edit-form.component.scss']
 })
 export class QuizQuestionEditFormComponent {
+  private questionId: string;
+
   @Output() cancelRequested = new EventEmitter<QuizQuestionDto>();
+  @Output() saveRequested = new EventEmitter<QuizQuestionEditDto>();
   
-  questionType: QuizQuestionDto.TypeEnum | null = null;
+  questionType: QuizQuestionDto.QuestionTypeEnum | null = null;
   questionText: string | null = null;
-  answers: Array<{
-    text: string,
-    isCorrect: boolean
-  }> = [];
+  answers: Answer[] = [];
+
+  @Input() quizId: string;
 
   @Input() set question(q: QuizQuestionDto) {
-    this.questionType = q.type;
+    this.questionType = q.question_type;
     this.questionText = q.text;
+    this.questionId = q.id;
     if (q.answers) {
       this.answers = q.answers.map(a => ({
+        id: a.id,
         isCorrect: a.is_correct,
         text: a.text
       }));
     }
   }
 
+  save() {
+    this.saveRequested.emit({
+      id: this.questionId,
+      quiz_id: this.quizId,
+      text: this.questionText ?? '',
+      question_type: this.questionType ?? QuizQuestionEditDto.QuestionTypeEnum.SingleChoice,
+      answers: this.answers.map(a => ({
+        id: a.id,
+        is_correct: a.isCorrect,
+        text: a.text
+      }))
+    });
+  }
+
   cancel() {
     this.cancelRequested.emit(this.question);
   }
 
-  get questionTypes(): QuizQuestionDto.TypeEnum[] {
-    return Object.values(QuizQuestionDto.TypeEnum);
+  addAnswer() {
+    this.answers.push({
+      text: '',
+      isCorrect: false
+    })
+  }
+
+  deleteAnswer(answer: Answer) {
+    const idx = this.answers.indexOf(answer);
+    if(idx >= 0) {
+      this.answers.splice(idx, 1);
+    }
+  }
+
+  get questionTypes(): QuizQuestionDto.QuestionTypeEnum[] {
+    return Object.values(QuizQuestionDto.QuestionTypeEnum);
   }
 
   get canAnswersBeMarkedAsCorrect(): boolean {
-    return this.questionType != QuizQuestionDto.TypeEnum.FreeText;
+    return this.questionType != QuizQuestionDto.QuestionTypeEnum.FreeText;
   }
 }

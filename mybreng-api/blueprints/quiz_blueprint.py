@@ -2,9 +2,8 @@ from dependency_injector.wiring import Provide, inject
 from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
-
 from di import DI
-from dtos import QuizEditDto
+from dtos import QuizEditDto, QuizQuestionEditDtoSchema
 from facades import QuizFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
@@ -65,67 +64,68 @@ def quiz_details(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]
         return make_response('', 404)
 
 
-@quiz_blueprint.route('/details/<quiz_id>', methods=['PUT'])
+@quiz_blueprint.route('/details', methods=['POST'])
 @login_required
 @inject
-def quiz_edit(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
+def quiz_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
     """
     ---
-    put:
-      operationId: quiz_edit
+    post:
+      operationId: quiz_save
       tags: [Quiz]
-      description: Edits a quiz main info
+      description: Edits or creates a quiz
       requestBody:
         content:
           application/json:
             schema: QuizEditDto
-      parameters:
-      - in: path
-        name: quiz_id
-        schema:
-          type: string
-          format: uuid
-          description: Quiz ID
       responses:
         200:
-          description: Quiz edited successfully
+          description: Quiz saved successfully
         404:
           description: Quiz with specified ID not found
     """
     request_data = request.get_json()
-    dto = QuizEditDto(request_data['title'], request_data['description'])
-    status = 404 if quiz_facade.edit_quiz(quiz_id, current_user.id, dto) is None else 200
+    dto = QuizEditDto(
+        request_data['id'],
+        request_data['title'],
+        request_data['description']
+    )
+    if dto.id is None:
+        quiz_facade.create_quiz(current_user.id, dto)
+        status = 200
+    else:
+        status = 404 if quiz_facade.edit_quiz(current_user.id, dto) is None else 200
     return make_response('', status)
 
 
-@quiz_blueprint.route('/question/<quiz_id>', methods=['POST'])
+@quiz_blueprint.route('/question', methods=['POST'])
 @login_required
 @inject
-def quiz_add_question(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
+def quiz_question_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
     """
     ---
     post:
-      operationId: quiz_add_question
+      operationId: quiz_question_save
       tags: [Quiz]
-      description: Adds a new question into quiz
+      description: Edits or creates a quiz question
       requestBody:
         content:
           application/json:
-            schema: QuizQuestionCreateDto
-      parameters:
-      - in: path
-        name: quiz_id
-        schema:
-          type: string
-          format: uuid
-          description: Quiz ID
+            schema: QuizQuestionEditDto
       responses:
         200:
-          description: Question added successfully
+          description: Question saved successfully
           content:
             application/json:
-              schema: QuizDetailedDto
+              schema: QuizQuestionDto
         404:
           description: Quiz with specified ID not found
     """
-    ...
+    schema = QuizQuestionEditDtoSchema()
+    dto = schema.load(request.get_json())
+    result = quiz_facade.create_question(current_user.id, dto) if dto.id is None \
+        else quiz_facade.edit_question(current_user.id, dto)
+    if result is None:
+        return make_response('', 404)
+    else:
+        return jsonify(result)

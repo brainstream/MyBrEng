@@ -8,7 +8,7 @@ from .quiz_quiestion_type import QuizQuestionType
 class QuizQuestionDto:
     id: str
     text: str
-    type: QuizQuestionType
+    question_type: QuizQuestionType
     ordinal_number: int
     answers: list[QuizQuestionAnswerDto]
 
@@ -16,6 +16,6 @@ class QuizQuestionDto:
 class QuizQuestionDtoSchema(Schema):
     id = fields.UUID(required=True)
     text = fields.String(required=True)
-    type = fields.Enum(QuizQuestionType, required=True)
+    question_type = fields.Enum(QuizQuestionType, required=True)
     ordinal_number = fields.Integer(required=True)
     answers = fields.Nested(QuizQuestionAnswerDtoSchema, many=True)

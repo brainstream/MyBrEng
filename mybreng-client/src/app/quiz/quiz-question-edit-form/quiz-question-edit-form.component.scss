@@ -5,9 +5,13 @@
 .actions {
     margin-top: 1rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 
-    > * {
+    .group-left > button {
+        margin-right: 0.5rem;
+    }
+
+    .group-right > button {
         margin-left: 0.5rem;
     }
 }

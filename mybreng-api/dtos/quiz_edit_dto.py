@@ -4,10 +4,12 @@ from dataclasses import dataclass
 
 @dataclass()
 class QuizEditDto:
+    id: str
     title: str
     description: str | None
 
 
 class QuizEditDtoSchema(Schema):
+    id = fields.UUID(required=False)
     title = fields.String(required=True)
     description = fields.String(required=False)

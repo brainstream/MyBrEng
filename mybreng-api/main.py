@@ -12,15 +12,15 @@ from blueprints import \
     quiz_blueprint, \
     quiz_list, \
     quiz_details, \
-    quiz_edit, \
-    quiz_add_question
-from dtos import QuizDtoSchema,\
+    quiz_save, \
+    quiz_question_save
+from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
     UserDtoSchema, \
     LogInDtoSchema, \
     QuizEditDtoSchema, \
-    QuizQuestionCreateDtoSchema
+    QuizQuestionEditDtoSchema
 from di import DI
 from database import db
 
@@ -52,14 +52,14 @@ def create_app() -> Flask:
         ],
     )
 
-    spec.components\
+    spec.components \
         .schema("QuizDto", schema=QuizDtoSchema) \
         .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema) \
         .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema) \
         .schema("UserDto", schema=UserDtoSchema) \
         .schema("LogInDto", schema=LogInDtoSchema) \
         .schema("QuizEditDto", schema=QuizEditDtoSchema) \
-        .schema("QuizQuestionCreateDto", schema=QuizQuestionCreateDtoSchema)
+        .schema("QuizQuestionEditDto", schema=QuizQuestionEditDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -75,8 +75,8 @@ def create_app() -> Flask:
         spec.path(view=quiz_list)
         spec.path(view=quiz_details)
         spec.path(view=account_login)
-        spec.path(view=quiz_edit)
-        spec.path(view=quiz_add_question)
+        spec.path(view=quiz_save)
+        spec.path(view=quiz_question_save)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 
@@ -111,4 +111,7 @@ def create_app() -> Flask:
 app = application = create_app()
 
 if __name__ == '__main__':
+    import logging
+    logging.basicConfig()
+    logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     app.run()

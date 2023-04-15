@@ -34,6 +34,7 @@ class QuizQuestionTable(db.Model):
     type = db.Column('Type', db.Integer)
     ordinal_number = db.Column('OrdinalNumber', db.Integer)
     quiz_id = db.Column('Quiz', db.ForeignKey('Quiz.Id'))
+    quiz = db.relationship('QuizTable')
     answers = db.relationship('QuizAnswerVariantTable', backref=db.backref('QuizAnswerVariant', uselist=True))
 
     def __repr__(self):
