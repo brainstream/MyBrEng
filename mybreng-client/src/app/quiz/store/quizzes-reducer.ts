@@ -27,7 +27,7 @@ export const quizzesReducer = createReducer(
             result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded
         )
     })),
-    on(QuizzesActions.startDetailsEditing, (state, { id }) => {
+    on(QuizzesActions.startDetailsSaving, (state, { id }) => {
         if (state.details.data?.id !== id) {
             return state;
         }
@@ -39,11 +39,11 @@ export const quizzesReducer = createReducer(
             }
         };
     }),
-    on(QuizzesActions.finishDetailsEditing, (state, { id, result }) => {
-        if (state.details.data?.id !== id) {
+    on(QuizzesActions.finishDetailsSaving, (state, { result }) => {
+        if (state.details.data?.id !== result.id) {
             return state;
         }
-        if (result === 'error') {
+        if ('error' in result || result.id === undefined) {
             return {
                 ...state,
                 details: {
@@ -57,22 +57,26 @@ export const quizzesReducer = createReducer(
             list: {
                 ...state.list,
                 data: state.list.data.map(quiz =>
-                    quiz.id === id ? {
+                    quiz.id === result.id ? {
                         ...quiz,
                         title: result.title,
                         description: result.description
                     } : quiz
                 )
             },
-            details: {
+            details: {                
                 loading: LoadingStatus.Loaded,
                 data: {
                     ...state.details.data,
+                    id: result.id,
                     title: result.title,
                     description: result.description
                 }
             }
         };
+    }),
+    on(QuizzesActions.finishQuestionSaving, (state, { result }) => {
+        return state;
     })
 );
 

@@ -5,13 +5,13 @@ import { QuizQuestionDto } from '@app/web-api';
   name: 'questionTypeName'
 })
 export class QuestionTypeNamePipe implements PipeTransform {
-  transform(value: QuizQuestionDto.TypeEnum): string {
+  transform(value: QuizQuestionDto.QuestionTypeEnum): string {
     switch (value) {
-      case QuizQuestionDto.TypeEnum.SingleChoice:
+      case QuizQuestionDto.QuestionTypeEnum.SingleChoice:
         return 'Выбор единственного варианта';
-      case QuizQuestionDto.TypeEnum.MultipleChoice:
+      case QuizQuestionDto.QuestionTypeEnum.MultipleChoice:
         return 'Выбор нескольких вариантов';
-      case QuizQuestionDto.TypeEnum.FreeText:
+      case QuizQuestionDto.QuestionTypeEnum.FreeText:
         return 'Ввод текста';
       default:
         return '';

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { QuizDetailedDto, QuizEditDto, QuizQuestionDto } from '@app/web-api';
+import { QuizDetailedDto, QuizEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subscription } from 'rxjs';
 import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
@@ -63,9 +63,11 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
       });
     const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
       if (result) {
-        this.store$.dispatch(QuizzesActions.editDetails({
-          id: quiz.id,
-          ...result
+        this.store$.dispatch(QuizzesActions.saveDetails({
+          quiz: {
+            id: quiz.id,
+            ...result
+          }
         }))
       }
       subscription.unsubscribe();
@@ -85,7 +87,12 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.editQuestionId = question?.id ?? null;
   }
 
+  saveQuestion(question: QuizQuestionEditDto) {
+    this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
+    this.editQuestionId = null;
+  }
+
   deleteQuestion(question: QuizQuestionDto) {
-    
+
   }
 }

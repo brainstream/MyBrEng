@@ -1,5 +1,16 @@
-import { QuizDetailedDto, QuizDto, QuizEditDto } from "@app/web-api";
+import { 
+    QuizDetailedDto,
+    QuizDto, 
+    QuizEditDto, 
+    QuizQuestionDto, 
+    QuizQuestionEditDto 
+} from "@app/web-api";
 import { createAction, props } from "@ngrx/store";
+
+
+export type QuizSaveResult = QuizEditDto | { id?: string, error: true };
+export type QuizQuestionSaveResult = QuizQuestionDto | { id?: string, error: true };
+
 
 export namespace QuizzesActions {
     export const loadList = createAction(
@@ -23,16 +34,29 @@ export namespace QuizzesActions {
         '[Quizzes] Finish Details Loading',
         props<{ result: QuizDetailedDto | 'error' }>()
     );
-    export const editDetails = createAction(
-        '[Quizzes] Edit Details',
-        props<QuizEditDto & { id: string }>()
+    export const saveDetails = createAction(
+        '[Quizzes] Save Details',
+        props<{ quiz: QuizEditDto }>()
     );
-    export const startDetailsEditing = createAction(
-        '[Quizzes] Start Details Editing',
-        props<{ id: string }>()
+    export const startDetailsSaving = createAction(
+        '[Quizzes] Start Details Saving',
+        props<{ id?: string }>()
     );
-    export const finishDetailsEditing= createAction(
-        '[Quizzes] Finish Details Editing',
-        props<{ id: string, result: QuizEditDto | 'error' }>()
+
+    export const finishDetailsSaving = createAction(
+        '[Quizzes] Finish Details Saving',
+        props<{ result: QuizSaveResult }>()
+    );
+    export const saveQuestion = createAction(
+        '[Quizzes] Save Question',
+        props<{ question: QuizQuestionEditDto }>()
+    );
+    export const startQuestionSaving = createAction(
+        '[Quizzes] Start Question Saving',
+        props<{ id?: string }>()
+    );
+    export const finishQuestionSaving = createAction(
+        '[Quizzes] Finish Question Saving',
+        props<{ result: QuizQuestionSaveResult }>()
     );
 }

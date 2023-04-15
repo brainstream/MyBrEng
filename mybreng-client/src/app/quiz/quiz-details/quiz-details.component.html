@@ -16,7 +16,9 @@
                 <app-quiz-question-edit-form
                     *ngIf="question.id === editQuestionId; else questionView"
                     [question]="question"
+                    [quizId]="quiz.id"
                     (cancelRequested)="editQuestion(null)"
+                    (saveRequested)="saveQuestion($event)"
                     class="question">
                 </app-quiz-question-edit-form>
                 <ng-template #questionView>

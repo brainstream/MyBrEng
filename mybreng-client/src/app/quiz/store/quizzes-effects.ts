@@ -22,11 +22,11 @@ export class QuizzesEffects {
         switchMap(([_, loading]) => {
             if (loading == LoadingStatus.None) {
                 return concat(
-                     of(QuizzesActions.startListLoading()),
-                     this.quizService.quizList().pipe(
-                         map(result => QuizzesActions.finishListLoading({ result })),
-                         catchError(() => of(QuizzesActions.finishListLoading({ result: 'error' })))
-                     )
+                    of(QuizzesActions.startListLoading()),
+                    this.quizService.quizList().pipe(
+                        map(result => QuizzesActions.finishListLoading({ result })),
+                        catchError(() => of(QuizzesActions.finishListLoading({ result: 'error' })))
+                    )
                 );
             } else {
                 return EMPTY;
@@ -36,7 +36,7 @@ export class QuizzesEffects {
 
     loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.loadDetails),
-        switchMap(({ id }) => 
+        switchMap(({ id }) =>
             this.quizService.quizDetails(id).pipe(
                 map(result => QuizzesActions.finishDetailsLoading({ result })),
                 catchError(() => of(QuizzesActions.finishDetailsLoading({ result: 'error' })))
@@ -44,25 +44,46 @@ export class QuizzesEffects {
         )
     ));
 
-    editDetails$ = createEffect(() => this.actions$.pipe(
-        ofType(QuizzesActions.editDetails),
-        exhaustMap((data) => {
+    saveDetails$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.saveDetails),
+        exhaustMap(({ quiz }) => {
             return concat(
-                of(QuizzesActions.startDetailsEditing({ id: data.id })),
-                this.quizService.quizEdit(data.id, {
-                    title: data.title,
-                    description: data.description
+                of(QuizzesActions.startDetailsSaving({ id: quiz.id })),
+                this.quizService.quizSave({
+                    id: quiz.id,
+                    title: quiz.title,
+                    description: quiz.description
                 }).pipe(
-                    map(() => QuizzesActions.finishDetailsEditing({
-                        id: data.id,
+                    map(() => QuizzesActions.finishDetailsSaving({
                         result: {
-                            title: data.title,
-                            description: data.description
+                            id: quiz.id,
+                            title: quiz.title,
+                            description: quiz.description
                         }
                     })),
-                    catchError(() => of(QuizzesActions.finishDetailsEditing({
-                        id: data.id,
-                        result: 'error' 
+                    catchError(() => of(QuizzesActions.finishDetailsSaving({
+                        result: {
+                            id: quiz.id,
+                            error: true
+                        }
+                    })))
+                )
+            )
+        })
+    ));
+
+    saveQuestion$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.saveQuestion),
+        exhaustMap(({ question }) => {
+            return concat(
+                of(QuizzesActions.startQuestionSaving({ id: question.id })),
+                this.quizService.quizQuestionSave(question).pipe(
+                    map(result => QuizzesActions.finishQuestionSaving({ result })),
+                    catchError(() => of(QuizzesActions.finishQuestionSaving({
+                        result: {
+                            id: question.id,
+                            error: true
+                        }
                     })))
                 )
             )
