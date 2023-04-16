@@ -1,7 +1,7 @@
 import uuid
 
 from database import db, QuizTable, QuizQuestionTable, QuizAnswerVariantTable
-from dtos import QuizQuestionEditDto
+from dtos import QuizQuestionEditDto, QuizQuestionAnswerEditDto
 from mappers import map_quiz_question_to_dto, map_question_type_to_db_question_type
 
 
@@ -12,19 +12,23 @@ class QuizQuestionFacade:
         if quiz is None:
             return None
         question = QuizQuestionTable()
+        question.id = str(uuid.uuid4())
         question.quiz_id = quiz.id
         question.text = dto.text
         question.type = map_question_type_to_db_question_type(dto.question_type)
-        last_question = max(quiz.questions, key=lambda q: q.ordianl_number)
-        question.ordinal_number = 0 if last_question is None else last_question.ordianl_number + 1
-        question.answers = [QuizAnswerVariantTable(
-            str(uuid.uuid4()),
-            a.text,
-            a.is_correct
-        ) for a in dto.answers]
+        last_question = max(quiz.questions, key=lambda q: q.ordinal_number)
+        question.ordinal_number = 0 if last_question is None else last_question.ordinal_number + 1
+        question.answers = [self._create_answer_variant(a) for a in dto.answers]
         db.session.add(question)
         db.session.commit()
         return map_quiz_question_to_dto(question)
+
+    def _create_answer_variant(self, dto: QuizQuestionAnswerEditDto) -> QuizAnswerVariantTable:
+        answer = QuizAnswerVariantTable()
+        answer.id = str(uuid.uuid4())
+        answer.text = dto.text
+        answer.is_correct = dto.is_correct
+        return  answer
 
     def edit_question(self, owner_id: str, dto: QuizQuestionEditDto):
         question = QuizQuestionTable.query \

@@ -30,12 +30,24 @@
                     </app-quiz-question>
                 </ng-template>
             </ng-container>
+
+            <div id="new-quiz-question">
+                <app-quiz-question-edit-form
+                    *ngIf="newQuestion"
+                    [question]="newQuestion"
+                    [quizId]="quiz.id"
+                    (cancelRequested)="cancellAddQuestion()"
+                    (saveRequested)="saveNewQuestion($event)"
+                    class="question">
+                </app-quiz-question-edit-form>
+            </div>
+            
         </div>
     </div>
 </app-layout-full>
 
 <mat-menu #editMenu="matMenu">
-    <button mat-menu-item (click)="addQuestion()">
+    <button mat-menu-item (click)="addQuestion()" [disabled]="newQuestion">
         <mat-icon>add</mat-icon>
         Добавить вопрос
     </button>

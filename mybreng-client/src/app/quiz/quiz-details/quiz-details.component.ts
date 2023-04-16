@@ -20,6 +20,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   readonly loading$: Observable<boolean>;
   quiz: QuizDetailedDto | null;
   editQuestionId: string | null = null;
+  newQuestion: QuizQuestionDto | null = null;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -78,6 +79,25 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   }
 
   addQuestion() {
+    this.newQuestion = {
+      id: '',
+      ordinal_number: -1,
+      question_type: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
+      text: '',
+      answers: []
+    };
+    setTimeout(() => {
+      document.querySelector('#new-quiz-question')?.scrollIntoView();
+    }, 0);    
+  }
+
+  cancellAddQuestion() {
+    this.newQuestion = null;
+  }
+
+  saveNewQuestion(question: QuizQuestionEditDto) {
+    this.newQuestion = null;
+    this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
   }
 
   changeQuestionOrder() {

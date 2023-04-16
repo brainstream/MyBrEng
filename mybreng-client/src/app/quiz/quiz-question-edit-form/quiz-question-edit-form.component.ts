@@ -16,7 +16,7 @@ type Answer = {
   styleUrls: ['./quiz-question-edit-form.component.scss']
 })
 export class QuizQuestionEditFormComponent {
-  private questionId: string;
+  private questionId: string | undefined;
 
   @Output() cancelRequested = new EventEmitter<QuizQuestionDto>();
   @Output() saveRequested = new EventEmitter<QuizQuestionEditDto>();
@@ -30,7 +30,9 @@ export class QuizQuestionEditFormComponent {
   @Input() set question(q: QuizQuestionDto) {
     this.questionType = q.question_type;
     this.questionText = q.text;
-    this.questionId = q.id;
+    if (q.id !== '') {
+      this.questionId = q.id;
+    }
     if (q.answers) {
       this.answers = q.answers.map(a => ({
         id: a.id,
