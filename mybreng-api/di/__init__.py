@@ -1,5 +1,5 @@
 from dependency_injector import containers, providers
-from facades import QuizFacade, UserFacade
+from facades import QuizFacade, UserFacade, QuizQuestionFacade
 
 
 class DI(containers.DeclarativeContainer):
@@ -9,4 +9,5 @@ class DI(containers.DeclarativeContainer):
     ])
     config = providers.Configuration()
     quiz_facade = providers.Factory(QuizFacade)
+    quiz_question_facade = providers.Factory(QuizQuestionFacade)
     user_facade = providers.Factory(UserFacade)

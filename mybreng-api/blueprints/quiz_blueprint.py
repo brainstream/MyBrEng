@@ -4,7 +4,7 @@ from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 from di import DI
 from dtos import QuizEditDto, QuizQuestionEditDtoSchema
-from facades import QuizFacade
+from facades import QuizFacade, QuizQuestionFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
 
@@ -101,7 +101,7 @@ def quiz_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
 @quiz_blueprint.route('/question', methods=['POST'])
 @login_required
 @inject
-def quiz_question_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
+def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.quiz_question_facade]):
     """
     ---
     post:
@@ -123,8 +123,8 @@ def quiz_question_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
     """
     schema = QuizQuestionEditDtoSchema()
     dto = schema.load(request.get_json())
-    result = quiz_facade.create_question(current_user.id, dto) if dto.id is None \
-        else quiz_facade.edit_question(current_user.id, dto)
+    result = quiz_question_facade.create_question(current_user.id, dto) if dto.id is None \
+        else quiz_question_facade.edit_question(current_user.id, dto)
     if result is None:
         return make_response('', 404)
     else:
