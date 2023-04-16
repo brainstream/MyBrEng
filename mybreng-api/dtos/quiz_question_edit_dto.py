@@ -27,8 +27,8 @@ class QuizQuestionAnswerEditDtoSchema(Schema):
 
     @post_load
     def make_answer(self, data, **kwargs):
-        answer = QuizQuestionAnswerEditDto(**data)
-        answer.id = str(answer.id)
+        answer_id = str(data['id']) if 'id' in data else ''
+        answer = QuizQuestionAnswerEditDto(answer_id, data['text'], data['is_correct'])
         return answer
 
 

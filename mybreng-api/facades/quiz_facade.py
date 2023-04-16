@@ -1,3 +1,5 @@
+import uuid
+
 from database import \
     db, \
     QuizTable, \
@@ -51,6 +53,11 @@ class QuizFacade:
         question.type = self._map_from_question_type(dto.question_type)
         last_question = max(quiz.questions, key=lambda q: q.ordianl_number)
         question.ordinal_number = 0 if last_question is None else last_question.ordianl_number + 1
+        question.answers = [QuizAnswerVariantTable(
+            str(uuid.uuid4()),
+            a.text,
+            a.is_correct
+        ) for a in dto.answers]
         db.session.add(question)
         db.session.commit()
         return self._map_to_quiz_question(question)
@@ -65,6 +72,7 @@ class QuizFacade:
             return None
         question.text = dto.text
         question.type = self._map_from_question_type(dto.question_type)
+        self._map_answers(question, dto)
         db.session.commit()
         return self._map_to_quiz_question(question)
 
@@ -109,3 +117,17 @@ class QuizFacade:
     def _map_to_question_answer(self, answer: QuizAnswerVariantTable) -> QuizQuestionAnswerDto:
         return QuizQuestionAnswerDto(answer.id, answer.text, answer.is_correct)
 
+    def _map_answers(self, question: QuizQuestionTable, dto: QuizQuestionEditDto):
+        for q_answer in question.answers:
+            an = next(filter(lambda a: a.id == q_answer.id, dto.answers), None)
+            if an is None:
+                db.session.delete(q_answer)
+            else:
+                q_answer.text = an.text
+                q_answer.is_correct = an.is_correct
+        for an in filter(lambda a: a.id == '', dto.answers):
+            an_tbl = QuizAnswerVariantTable()
+            an_tbl.id = uuid.uuid4()
+            an_tbl.text = an.text
+            an_tbl.is_correct = an.is_correct
+            question.answers.append(an_tbl)

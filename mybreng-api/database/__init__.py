@@ -21,7 +21,7 @@ class QuizTable(db.Model):
     description = db.Column('Description', db.String)
     owner_id = db.Column('Owner', db.ForeignKey('User.Id'))
     owner = db.relationship('UserTable', backref=db.backref('User', uselist=False))
-    questions = db.relationship('QuizQuestionTable', backref=db.backref('QuizQuestion', uselist=True))
+    questions = db.relationship('QuizQuestionTable', back_populates='quiz')
 
     def __repr__(self):
         return f'<Quiz: {self.title}>'
@@ -34,7 +34,7 @@ class QuizQuestionTable(db.Model):
     type = db.Column('Type', db.Integer)
     ordinal_number = db.Column('OrdinalNumber', db.Integer)
     quiz_id = db.Column('Quiz', db.ForeignKey('Quiz.Id'))
-    quiz = db.relationship('QuizTable')
+    quiz = db.relationship('QuizTable', back_populates='questions')
     answers = db.relationship('QuizAnswerVariantTable', backref=db.backref('QuizAnswerVariant', uselist=True))
 
     def __repr__(self):

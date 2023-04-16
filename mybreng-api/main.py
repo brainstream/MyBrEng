@@ -111,7 +111,7 @@ def create_app() -> Flask:
 app = application = create_app()
 
 if __name__ == '__main__':
-    import logging
-    logging.basicConfig()
-    logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+    # import logging
+    # logging.basicConfig()
+    # logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
     app.run()

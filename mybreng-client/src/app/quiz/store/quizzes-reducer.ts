@@ -1,4 +1,4 @@
-import { QuizDetailedDto, QuizDto, QuizEditDto } from "@app/web-api";
+import { QuizDetailedDto, QuizDto, QuizEditDto, QuizQuestionDto } from "@app/web-api";
 import { createReducer, on } from "@ngrx/store";
 import { QuizzesActions } from "./quizzes-actions";
 import { IQuizzesState, LoadingStatus, RemoteData } from "./quizzes-state";
@@ -64,7 +64,7 @@ export const quizzesReducer = createReducer(
                     } : quiz
                 )
             },
-            details: {                
+            details: {
                 loading: LoadingStatus.Loaded,
                 data: {
                     ...state.details.data,
@@ -75,8 +75,30 @@ export const quizzesReducer = createReducer(
             }
         };
     }),
+    on(QuizzesActions.startQuestionSaving, (state, _) => ({
+        ...state,
+        details: {
+            ...state.details,
+            loading: LoadingStatus.Loading
+        }
+    })),
     on(QuizzesActions.finishQuestionSaving, (state, { result }) => {
-        return state;
+        if (!state.details?.data) {
+            return state;
+        }
+        return { 
+            ...state, 
+            details: 'error' in result ? {
+                ...state.details,
+                loading: LoadingStatus.Error
+            } : {
+                data: {
+                    ...state.details.data,
+                    questions: applyQuestion(state.details.data?.questions, result)
+                },
+                loading: LoadingStatus.Loaded
+            }
+        };
     })
 );
 
@@ -96,4 +118,18 @@ function prepareDetails(quiz: QuizDetailedDto): QuizDetailedDto {
         ...quiz,
         questions
     };
+}
+
+function applyQuestion(list: QuizQuestionDto[] | undefined, question: QuizQuestionDto): QuizQuestionDto[] {
+    if (list === undefined) {
+        return [question];
+    }
+    const idx = list.findIndex(q => q.id === question.id);
+    if (idx < 0) {
+        return [...list, question];
+    } else {
+        const result = [...list];
+        result.splice(idx, 1, question);
+        return result;
+    }
 }
