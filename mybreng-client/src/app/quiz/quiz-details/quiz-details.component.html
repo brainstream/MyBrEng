@@ -13,7 +13,7 @@
 
         <div class="question-list" *ngIf="quiz.questions">
             <div 
-                *ngFor="let question of quiz.questions"
+                *ngFor="let question of quiz.questions; index as idx"
                 [@collapseOnLeave]
                 [@expandOnEnter]
             >
@@ -29,6 +29,7 @@
                     <app-quiz-question
                         class="question"
                         [question]="question"
+                        [position]="idx + 1"
                         (editRequested)="editQuestion($event)"
                         (deleteRequested)="deleteQuestion($event)">
                     </app-quiz-question>

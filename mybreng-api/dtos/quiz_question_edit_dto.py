@@ -34,7 +34,7 @@ class QuizQuestionAnswerEditDtoSchema(Schema):
 
 class QuizQuestionEditDtoSchema(Schema):
     quiz_id = fields.UUID(required=True)
-    id = fields.UUID(required=False, allow_none=True)
+    id = fields.UUID(required=False)
     question_type = fields.Enum(QuizQuestionType, required=True)
     text = fields.String(required=True)
     answers = fields.Nested(QuizQuestionAnswerEditDtoSchema, many=True)

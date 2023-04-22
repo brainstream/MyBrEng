@@ -88,7 +88,6 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   addQuestion() {
     this.newQuestion = {
       id: '',
-      ordinal_number: -1,
       question_type: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
       text: '',
       answers: []

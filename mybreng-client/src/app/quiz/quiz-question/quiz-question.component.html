@@ -2,7 +2,7 @@
     <mat-card-header>
         <div class="header">
             <mat-chip class="ordianal">
-                {{question.ordinal_number + 1}}
+                {{position}}
             </mat-chip>
             <mat-card-subtitle class="question-title">{{question.question_type | questionTypeName}}</mat-card-subtitle>
             <button mat-icon-button [matMenuTriggerFor]="editMenu">

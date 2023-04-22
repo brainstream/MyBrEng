@@ -1,6 +1,6 @@
 from database import db, QuizTable
-from dtos import QuizDto, QuizDetailedDto, QuizEditDto
-from mappers import map_quiz_question_to_dto, map_quiz_to_detailed_dto
+from dtos import QuizDto,  QuizEditDto
+from mappers import map_quiz_to_detailed_dto
 
 
 # noinspection PyMethodMayBeStatic

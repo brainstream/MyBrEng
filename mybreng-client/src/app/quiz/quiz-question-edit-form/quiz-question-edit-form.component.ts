@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
-import { QuizzesActions } from '../store';
 
 
 type Answer = {

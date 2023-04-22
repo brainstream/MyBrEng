@@ -8,6 +8,7 @@ import { QuizQuestionDto } from '@app/web-api';
 })
 export class QuizQuestionComponent {
   @Input() question: QuizQuestionDto;
+  @Input() position: number;
   @Output() editRequested = new EventEmitter<QuizQuestionDto>();
   @Output() deleteRequested = new EventEmitter<QuizQuestionDto>();
 

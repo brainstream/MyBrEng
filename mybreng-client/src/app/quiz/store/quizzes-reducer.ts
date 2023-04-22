@@ -23,7 +23,7 @@ export const quizzesReducer = createReducer(
     on(QuizzesActions.finishDetailsLoading, (state, { result }) => ({
         ...state,
         details: new RemoteData<QuizDetailedDto | null>(
-            result === 'error' ? null : prepareDetails(result),
+            result === 'error' ? null : result,
             result === 'error' ? LoadingStatus.Error : LoadingStatus.Loaded
         )
     })),
@@ -131,17 +131,6 @@ function createDefaultState(): IQuizzesState {
     return {
         list: new RemoteData<QuizDto[]>([], LoadingStatus.None),
         details: new RemoteData<QuizDetailedDto | null>(null, LoadingStatus.None)
-    };
-}
-
-function prepareDetails(quiz: QuizDetailedDto): QuizDetailedDto {
-    const questions = quiz.questions ? [...quiz.questions] : [];
-    if (quiz.questions) {
-        questions.sort((left, right) => left.ordinal_number < right.ordinal_number ? -1 : 1)
-    }
-    return {
-        ...quiz,
-        questions
     };
 }
 

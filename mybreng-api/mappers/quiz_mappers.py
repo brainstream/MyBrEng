@@ -20,7 +20,6 @@ def map_quiz_question_to_dto(question: QuizQuestionTable) -> QuizQuestionDto:
         question.id,
         question.text,
         map_db_question_type_to_question_type(question.type),
-        question.ordinal_number,
         [map_answer_variant_to_dto(answer) for answer in question.answers]
     )
 
