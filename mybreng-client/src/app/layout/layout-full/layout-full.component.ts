@@ -1,5 +1,6 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from '@app/common';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-layout-full',
@@ -8,9 +9,23 @@ import { ThemeService } from '@app/common';
   encapsulation: ViewEncapsulation.None
 })
 export class LayoutFullComponent {
-  @Input() loading: boolean | null = null;
+  @ViewChild('loading', {static: true}) loadingTemplate: TemplateRef<any>;
 
-  constructor(private readonly theme: ThemeService) {
+  constructor(
+    private readonly theme: ThemeService,
+    private readonly dialog: MatDialog
+  ) {
+  }
+
+  @Input() set loading(value: boolean | null) {
+    if (value) {
+      this.dialog.open(this.loadingTemplate, {
+        disableClose: true,
+        panelClass: 'layout-full-loading'
+      });
+    } else {
+      this.dialog.closeAll();
+    }
   }
 
   setSystemTheme() {

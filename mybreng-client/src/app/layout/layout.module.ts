@@ -9,6 +9,7 @@ import { LayoutSimpleComponent } from './layout-simple';
 import { LayoutFullComponent } from './layout-full';
 import { RouterModule } from '@angular/router';
 import { CommonModule as AppCommonModule } from '@app/common';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CommonModule as AppCommonModule } from '@app/common';
   imports: [
     CommonModule,
     RouterModule,
+    MatDialogModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

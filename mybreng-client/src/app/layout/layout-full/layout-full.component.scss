@@ -39,11 +39,12 @@ $toolbar-height: 54px;
         padding: 0 1rem;
         min-height: 100%;
     }
-
-    .layout-full-loading {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        height: 100%;
-    }
 }
+
+.layout-full-loading {
+    .mat-mdc-dialog-surface {
+         background: none !important;
+         box-shadow: none !important;
+     } 
+ }
+ 
