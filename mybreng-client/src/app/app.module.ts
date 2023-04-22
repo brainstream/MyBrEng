@@ -6,11 +6,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { ThemeService } from './shared';
+import { ThemeService } from './common';
 import { appInitializerFactory } from './app-initializer-factory';
 import { ApiModule } from './web-api';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth';
+import { CommonModule as AppCommonModule } from '@app/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AuthModule } from './auth';
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
     HttpClientModule,
     AuthModule,
-    ApiModule
+    ApiModule,
+    AppCommonModule
   ],
   providers: [{
     provide: APP_INITIALIZER,

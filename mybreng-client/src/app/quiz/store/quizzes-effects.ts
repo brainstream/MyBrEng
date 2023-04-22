@@ -89,4 +89,21 @@ export class QuizzesEffects {
             )
         })
     ));
+
+    deleteQuestion$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.deleteQuestion),
+        exhaustMap(({ id }) => {
+            return concat(
+                of(QuizzesActions.startQuestionDeletion({ id })),
+                this.quizService.quizQuestionDelete(id).pipe(
+                    map(_ => QuizzesActions.finishQuestionDeletion({ 
+                        result: { id }
+                    })),
+                    catchError(() => of(QuizzesActions.finishQuestionDeletion({
+                        result: { id, error: true }
+                    })))
+                )
+            )
+        })
+    ));
 }

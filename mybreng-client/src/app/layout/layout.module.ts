@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LayoutSimpleComponent } from './layout-simple';
 import { LayoutFullComponent } from './layout-full';
 import { RouterModule } from '@angular/router';
+import { CommonModule as AppCommonModule } from '@app/common';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    AppCommonModule
   ]
 })
 export class LayoutModule { }

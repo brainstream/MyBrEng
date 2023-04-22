@@ -6,7 +6,7 @@ import { map, Observable, Subscription } from 'rxjs';
 import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { QuizQuestionEditFormComponent } from '../quiz-question-edit-form';
+import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
 
 @Component({
   selector: 'app-quiz-details',
@@ -25,7 +25,8 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly store$: Store,
-    private readonly bottomSheet: MatBottomSheet
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly confirmDialog: ConfirmDialogService
   ) {
     this.loading$ = store$
       .select(QuizzesSelectors.detailsLoading)
@@ -112,7 +113,23 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.editQuestionId = null;
   }
 
-  deleteQuestion(question: QuizQuestionDto) {
-
+  async deleteQuestion(question: QuizQuestionDto) {
+    const result = await this.confirmDialog.show({
+      text: 'Вы действительно хотите удалить вопрос?',
+      buttons: {
+        yes: {
+          text: 'Удалить',
+          icon: 'delete',
+          color: 'warn'
+        },
+        no: {
+          text: 'Отменить',
+          color: 'default'
+        }
+      }
+    });
+    if(result.button === ConfirmDialogButton.Yes) {
+      this.store$.dispatch(QuizzesActions.deleteQuestion({ id: question.id }));
+    }
   }
 }

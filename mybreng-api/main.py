@@ -13,7 +13,8 @@ from blueprints import \
     quiz_list, \
     quiz_details, \
     quiz_save, \
-    quiz_question_save
+    quiz_question_save, \
+    quiz_question_delete
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
@@ -77,6 +78,7 @@ def create_app() -> Flask:
         spec.path(view=account_login)
         spec.path(view=quiz_save)
         spec.path(view=quiz_question_save)
+        spec.path(view=quiz_question_delete)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

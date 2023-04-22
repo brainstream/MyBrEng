@@ -58,3 +58,15 @@ class QuizQuestionFacade:
             an_tbl.text = an.text
             an_tbl.is_correct = an.is_correct
             question.answers.append(an_tbl)
+
+    def delete_question(self, owner_id: str, question_id: str):
+        question = QuizQuestionTable.query \
+            .filter_by(id=question_id) \
+            .join(QuizQuestionTable.quiz) \
+            .filter(QuizTable.owner_id == owner_id) \
+            .first()
+        if question is None:
+            return False
+        db.session.delete(question)
+        db.session.commit()
+        return True

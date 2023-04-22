@@ -99,6 +99,31 @@ export const quizzesReducer = createReducer(
                 loading: LoadingStatus.Loaded
             }
         };
+    }),
+    on(QuizzesActions.startQuestionDeletion, (state, _) => ({
+        ...state,
+        details: {
+            ...state.details,
+            loading: LoadingStatus.Loading
+        }
+    })),
+    on(QuizzesActions.finishQuestionDeletion, (state, { result }) => {
+        if (!state.details?.data) {
+            return state;
+        }
+        return { 
+            ...state, 
+            details: 'error' in result ? {
+                ...state.details,
+                loading: LoadingStatus.Error
+            } : {
+                data: {
+                    ...state.details.data,
+                    questions: excludeQuestion(state.details.data?.questions, result.id)
+                },
+                loading: LoadingStatus.Loaded
+            }
+        };
     })
 );
 
@@ -132,4 +157,17 @@ function applyQuestion(list: QuizQuestionDto[] | undefined, question: QuizQuesti
         result.splice(idx, 1, question);
         return result;
     }
+}
+
+function excludeQuestion(list: QuizQuestionDto[] | undefined, id: string): QuizQuestionDto[] | undefined {
+    if (list === undefined) {
+        return undefined;
+    }
+    let result = list;
+    const idx = result.findIndex(q => q.id === id);
+    if (idx >= 0) {
+        result = [...result];
+        result.splice(idx, 1);
+    }
+    return result;
 }

@@ -27,6 +27,7 @@ import { QuizzesEffects } from './store/quizzes-effects';
 import { QuestionTypeNamePipe } from './question-type-name.pipe';
 import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
 import { MarkdownModule } from '@app/markdown';
+import { CommonModule as AppCommonModule } from '@app/common';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { MarkdownModule } from '@app/markdown';
     MatTooltipModule,
     QuizRoutingModule,
     MarkdownModule,
-    LayoutModule
+    LayoutModule,
+    AppCommonModule
   ]
 })
 export class QuizModule { }

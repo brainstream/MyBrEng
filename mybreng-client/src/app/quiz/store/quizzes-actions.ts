@@ -10,6 +10,7 @@ import { createAction, props } from "@ngrx/store";
 
 export type QuizSaveResult = QuizEditDto | { id?: string, error: true };
 export type QuizQuestionSaveResult = QuizQuestionDto | { id?: string, error: true };
+export type QuizQuestionDeletionResult = { id: string, error?: true };
 
 
 export namespace QuizzesActions {
@@ -42,7 +43,6 @@ export namespace QuizzesActions {
         '[Quizzes] Start Details Saving',
         props<{ id?: string }>()
     );
-
     export const finishDetailsSaving = createAction(
         '[Quizzes] Finish Details Saving',
         props<{ result: QuizSaveResult }>()
@@ -58,5 +58,17 @@ export namespace QuizzesActions {
     export const finishQuestionSaving = createAction(
         '[Quizzes] Finish Question Saving',
         props<{ result: QuizQuestionSaveResult }>()
+    );
+    export const deleteQuestion = createAction(
+        '[Quizzes] Delete Question',
+        props<{ id: string }>()
+    );
+    export const startQuestionDeletion = createAction(
+        '[Quizzes] Start Question Deletion',
+        props<{ id: string }>()
+    );
+    export const finishQuestionDeletion = createAction(
+        '[Quizzes] Finish Question Deletion',
+        props<{ result: QuizQuestionDeletionResult }>()
     );
 }

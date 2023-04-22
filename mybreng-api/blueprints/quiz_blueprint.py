@@ -129,3 +129,30 @@ def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.qui
         return make_response('', 404)
     else:
         return jsonify(result)
+
+
+@quiz_blueprint.route('/question/<question_id>', methods=['DELETE'])
+@login_required
+@inject
+def quiz_question_delete(question_id: str, quiz_question_facade: QuizQuestionFacade = Provide[DI.quiz_question_facade]):
+    """
+    ---
+    delete:
+      operationId: quiz_question_delete
+      tags: [Quiz]
+      description: Deletes a quiz question
+      parameters:
+      - in: path
+        name: question_id
+        schema:
+          type: string
+          format: uuid
+          description: Question ID to delete
+      responses:
+        200:
+          description: Question deleted successfully
+        404:
+          description: Question with specified ID not found
+    """
+    result = quiz_question_facade.delete_question(current_user.id, question_id)
+    return make_response('', 200 if result else 404)

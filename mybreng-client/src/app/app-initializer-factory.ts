@@ -1,4 +1,4 @@
-import { ThemeService } from './shared';
+import { ThemeService } from './common';
 
 export function appInitializerFactory(
     theme: ThemeService

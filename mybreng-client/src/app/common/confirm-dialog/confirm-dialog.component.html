@@ -1,0 +1,14 @@
+<div class="text">
+    {{text}}
+</div>
+
+<mat-divider></mat-divider>
+
+<div class="actions">
+    <button mat-raised-button [color]="noColor" (click)="no()">
+        <mat-icon>{{noIcon}}</mat-icon> {{noText}}
+    </button>
+    <button mat-raised-button [color]="yesColor" (click)="yes()">
+        <mat-icon>{{yesIcon}}</mat-icon> {{yesText}}
+    </button>
+</div>

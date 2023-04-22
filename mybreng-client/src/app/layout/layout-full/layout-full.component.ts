@@ -1,5 +1,5 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { ThemeService } from '@app/shared';
+import { ThemeService } from '@app/common';
 
 @Component({
   selector: 'app-layout-full',
