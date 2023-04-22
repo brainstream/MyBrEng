@@ -5,70 +5,29 @@ import {
     QuizQuestionDto, 
     QuizQuestionEditDto 
 } from "@app/web-api";
-import { createAction, props } from "@ngrx/store";
-
+import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
 export type QuizSaveResult = QuizEditDto | { id?: string, error: true };
 export type QuizQuestionSaveResult = QuizQuestionDto | { id?: string, error: true };
 export type QuizQuestionDeletionResult = { id: string, error?: true };
 
-
-export namespace QuizzesActions {
-    export const loadList = createAction(
-        '[Quizzes] Load List'
-    );
-    export const startListLoading = createAction(
-        '[Quizzes] Start List Loading'
-    );
-    export const finishListLoading = createAction(
-        '[Quizzes] Finish List Loading',
-        props<{ result: QuizDto[] | 'error' }>()
-    );
-    export const loadDetails = createAction(
-        '[Quizzes] Load Details',
-        props<{ id: string }>()
-    );
-    export const startDetailsLoading = createAction(
-        '[Quizzes] Start Details Loading'
-    );
-    export const finishDetailsLoading = createAction(
-        '[Quizzes] Finish Details Loading',
-        props<{ result: QuizDetailedDto | 'error' }>()
-    );
-    export const saveDetails = createAction(
-        '[Quizzes] Save Details',
-        props<{ quiz: QuizEditDto }>()
-    );
-    export const startDetailsSaving = createAction(
-        '[Quizzes] Start Details Saving',
-        props<{ id?: string }>()
-    );
-    export const finishDetailsSaving = createAction(
-        '[Quizzes] Finish Details Saving',
-        props<{ result: QuizSaveResult }>()
-    );
-    export const saveQuestion = createAction(
-        '[Quizzes] Save Question',
-        props<{ question: QuizQuestionEditDto }>()
-    );
-    export const startQuestionSaving = createAction(
-        '[Quizzes] Start Question Saving',
-        props<{ id?: string }>()
-    );
-    export const finishQuestionSaving = createAction(
-        '[Quizzes] Finish Question Saving',
-        props<{ result: QuizQuestionSaveResult }>()
-    );
-    export const deleteQuestion = createAction(
-        '[Quizzes] Delete Question',
-        props<{ id: string }>()
-    );
-    export const startQuestionDeletion = createAction(
-        '[Quizzes] Start Question Deletion',
-        props<{ id: string }>()
-    );
-    export const finishQuestionDeletion = createAction(
-        '[Quizzes] Finish Question Deletion',
-        props<{ result: QuizQuestionDeletionResult }>()
-    );
-}
+export const QuizzesActions = createActionGroup({
+    source: 'Quizzes',
+    events: {
+        'Load List': emptyProps(),
+        'Start List Loading': emptyProps(),
+        'Finish List Loading': props<{ result: QuizDto[] | 'error' }>(),
+        'Load Details': props<{ id: string }>(),
+        'Start Details Loading': emptyProps(),
+        'Finish Details Loading': props<{ result: QuizDetailedDto | 'error' }>(),
+        'Save Details': props<{ quiz: QuizEditDto }>(),
+        'Start Details Saving': props<{ id?: string }>(),
+        'Finish Details Saving': props<{ result: QuizSaveResult }>(),
+        'Save Question': props<{ question: QuizQuestionEditDto }>(),
+        'Start Question Saving': props<{ id?: string }>(),
+        'Finish Question Saving': props<{ result: QuizQuestionSaveResult }>(),
+        'Delete Question': props<{ id: string }>(),
+        'Start Question Deletion': props<{ id: string }>(),
+        'Finish Question Deletion': props<{ result: QuizQuestionDeletionResult }>()
+    }
+});

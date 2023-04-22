@@ -7,11 +7,16 @@ import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
+import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 
 @Component({
   selector: 'app-quiz-details',
   templateUrl: './quiz-details.component.html',
-  styleUrls: ['./quiz-details.component.scss']
+  styleUrls: ['./quiz-details.component.scss'],
+  animations: [
+    collapseOnLeaveAnimation(),
+    expandOnEnterAnimation()
+  ]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
   private paramsSubscription: Subscription | undefined;
@@ -43,7 +48,8 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
           this.store$.dispatch(QuizzesActions.loadDetails({ id }))
         }
       });
-    this.quizSubscription = this.store$.select(QuizzesSelectors.details)
+    this.quizSubscription = this.store$
+      .select(QuizzesSelectors.details)
       .subscribe(quiz => this.quiz = quiz);
   }
 
@@ -67,10 +73,10 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
       if (result) {
         this.store$.dispatch(QuizzesActions.saveDetails({
           quiz: {
-            id: quiz.id,
-            ...result
+            ...result,
+            id: quiz.id
           }
-        }))
+        }));
       }
       subscription.unsubscribe();
     });
@@ -87,9 +93,13 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
       text: '',
       answers: []
     };
+    this.scrollToBottom();
+  }
+
+  scrollToBottom() {
     setTimeout(() => {
-      document.querySelector('#new-quiz-question')?.scrollIntoView();
-    }, 0);    
+      document.querySelector('#bottom')?.scrollIntoView();
+    }, 0);
   }
 
   cancellAddQuestion() {
@@ -128,7 +138,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         }
       }
     });
-    if(result.button === ConfirmDialogButton.Yes) {
+    if (result.button === ConfirmDialogButton.Yes) {
       this.store$.dispatch(QuizzesActions.deleteQuestion({ id: question.id }));
     }
   }

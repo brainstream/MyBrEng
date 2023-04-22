@@ -12,7 +12,11 @@
         <div class="description">{{ quiz.description }}</div>
 
         <div class="question-list" *ngIf="quiz.questions">
-            <ng-container *ngFor="let question of quiz.questions">
+            <div 
+                *ngFor="let question of quiz.questions"
+                [@collapseOnLeave]
+                [@expandOnEnter]
+            >
                 <app-quiz-question-edit-form
                     *ngIf="question.id === editQuestionId; else questionView"
                     [question]="question"
@@ -29,11 +33,12 @@
                         (deleteRequested)="deleteQuestion($event)">
                     </app-quiz-question>
                 </ng-template>
-            </ng-container>
+            </div>
 
-            <div id="new-quiz-question">
+            <div>
                 <app-quiz-question-edit-form
                     *ngIf="newQuestion"
+                    [@collapseOnLeave]
                     [question]="newQuestion"
                     [quizId]="quiz.id"
                     (cancelRequested)="cancellAddQuestion()"
@@ -41,7 +46,8 @@
                     class="question">
                 </app-quiz-question-edit-form>
             </div>
-            
+
+            <div id="bottom"></div>
         </div>
     </div>
 </app-layout-full>

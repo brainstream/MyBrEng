@@ -1,3 +1,5 @@
+import time
+
 from dependency_injector.wiring import Provide, inject
 from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
@@ -121,6 +123,7 @@ def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.qui
         404:
           description: Quiz with specified ID not found
     """
+    time.sleep(3)
     schema = QuizQuestionEditDtoSchema()
     dto = schema.load(request.get_json())
     result = quiz_question_facade.create_question(current_user.id, dto) if dto.id is None \
@@ -154,5 +157,6 @@ def quiz_question_delete(question_id: str, quiz_question_facade: QuizQuestionFac
         404:
           description: Question with specified ID not found
     """
+    time.sleep(3)
     result = quiz_question_facade.delete_question(current_user.id, question_id)
     return make_response('', 200 if result else 404)
