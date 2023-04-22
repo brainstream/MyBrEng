@@ -7,15 +7,14 @@ import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
-import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
+import { collapseOnLeaveAnimation } from 'angular-animations';
 
 @Component({
   selector: 'app-quiz-details',
   templateUrl: './quiz-details.component.html',
   styleUrls: ['./quiz-details.component.scss'],
   animations: [
-    collapseOnLeaveAnimation(),
-    expandOnEnterAnimation()
+    collapseOnLeaveAnimation()
   ]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {

@@ -15,7 +15,6 @@
             <div 
                 *ngFor="let question of quiz.questions; index as idx"
                 [@collapseOnLeave]
-                [@expandOnEnter]
             >
                 <app-quiz-question-edit-form
                     *ngIf="question.id === editQuestionId; else questionView"
