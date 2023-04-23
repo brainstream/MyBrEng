@@ -124,6 +124,31 @@ export const quizzesReducer = createReducer(
                 loading: LoadingStatus.Loaded
             }
         };
+    }),
+    on(QuizzesActions.startQuestionsReordering, (state, _) => ({
+        ...state,
+        details: {
+            ...state.details,
+            loading: LoadingStatus.Loading
+        }
+    })),
+    on(QuizzesActions.finishQuestionsReordering, (state, { result }) => {
+        if (!state.details?.data) {
+            return state;
+        }
+        return { 
+            ...state, 
+            details: 'error' in result ? {
+                ...state.details,
+                loading: LoadingStatus.Error
+            } : {
+                data: {
+                    ...state.details.data,
+                    questions: result.questions
+                },
+                loading: LoadingStatus.Loaded
+            }
+        };
     })
 );
 

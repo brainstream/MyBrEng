@@ -1,11 +1,9 @@
-import time
-
 from dependency_injector.wiring import Provide, inject
 from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 from di import DI
-from dtos import QuizEditDto, QuizQuestionEditDtoSchema
+from dtos import QuizEditDto, QuizQuestionEditDtoSchema, QuizQuestionPositionDtoSchema
 from facades import QuizFacade, QuizQuestionFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
@@ -158,3 +156,46 @@ def quiz_question_delete(question_id: str, quiz_question_facade: QuizQuestionFac
     """
     result = quiz_question_facade.delete_question(current_user.id, question_id)
     return make_response('', 200 if result else 404)
+
+
+@quiz_blueprint.route('/reorder-questions/<quiz_id>', methods=['POST'])
+@login_required
+@inject
+def quiz_reorder_questions(quiz_id: str, quiz_question_facade: QuizQuestionFacade = Provide[DI.quiz_question_facade]):
+    """
+    ---
+    post:
+      operationId: quiz_reorder_questions
+      tags: [Quiz]
+      description: Reorders questions in the quiz
+      parameters:
+      - in: path
+        name: quiz_id
+        schema:
+          type: string
+          format: uuid
+          description: Quiz ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items: QuizQuestionPositionDto
+      responses:
+        200:
+          description: Questions reordered successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items: QuizQuestionDto
+        404:
+          description: Quiz or question with specified ID not found
+    """
+    schema = QuizQuestionPositionDtoSchema()
+    questions = schema.load(request.get_json(), many=True)
+    result = quiz_question_facade.reorder_questions(current_user.id, quiz_id, questions)
+    if result is None:
+        return make_response('', 404)
+    else:
+        return jsonify(result)

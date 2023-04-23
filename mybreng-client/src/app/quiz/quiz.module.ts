@@ -13,6 +13,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DragDropModule } from '@angular/cdk/drag-drop'; 
 import { QuizListComponent } from './quiz-list';
 import { QuizDetailsComponent } from './quiz-details/';
 import { QuizRoutingModule } from './quiz-routing.module';
@@ -28,6 +30,7 @@ import { QuestionTypeNamePipe } from './question-type-name.pipe';
 import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
 import { MarkdownModule } from '@app/markdown';
 import { CommonModule as AppCommonModule } from '@app/common';
+import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-sort.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ import { CommonModule as AppCommonModule } from '@app/common';
     QuizListItemComponent,
     QuizQuestionComponent,
     QuestionTypeNamePipe,
-    QuizQuestionEditFormComponent
+    QuizQuestionEditFormComponent,
+    QuizQuestionSortComponent
   ],
   imports: [
     CommonModule,
@@ -58,6 +62,8 @@ import { CommonModule as AppCommonModule } from '@app/common';
     MatSelectModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatDialogModule,
+    DragDropModule,
     QuizRoutingModule,
     MarkdownModule,
     LayoutModule,

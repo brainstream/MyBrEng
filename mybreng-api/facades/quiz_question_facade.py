@@ -1,7 +1,6 @@
 import uuid
-
 from database import db, QuizTable, QuizQuestionTable, QuizAnswerVariantTable
-from dtos import QuizQuestionEditDto, QuizQuestionAnswerEditDto
+from dtos import QuizQuestionEditDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionPositionDto
 from mappers import map_quiz_question_to_dto, map_question_type_to_db_question_type
 
 
@@ -70,3 +69,18 @@ class QuizQuestionFacade:
         db.session.delete(question)
         db.session.commit()
         return True
+
+    def reorder_questions(self, owner_id: str, quiz_id: str, questions_positions: list[QuizQuestionPositionDto]) -> list[QuizQuestionDto] | None:
+        questions = QuizQuestionTable.query \
+            .join(QuizQuestionTable.quiz) \
+            .filter(QuizTable.owner_id == owner_id, QuizTable.id == quiz_id) \
+            .all()
+        if questions is None:
+            return None
+        for idx, qp in enumerate(sorted(questions_positions, key=lambda q: q.index)):
+            question = next(filter(lambda q: q.id == qp.id, questions), None)
+            if question is None:
+                return None
+            question.ordinal_number = idx
+        db.session.commit()
+        return [map_quiz_question_to_dto(q) for q in sorted(questions, key=lambda q: q.ordinal_number)]

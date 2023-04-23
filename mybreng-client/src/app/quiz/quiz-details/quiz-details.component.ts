@@ -8,6 +8,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
 import { collapseOnLeaveAnimation } from 'angular-animations';
+import { MatDialog } from '@angular/material/dialog';
+import { QuizQuestionSortComponent } from '../quiz-question-sort';
 
 @Component({
   selector: 'app-quiz-details',
@@ -30,7 +32,8 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly store$: Store,
     private readonly bottomSheet: MatBottomSheet,
-    private readonly confirmDialog: ConfirmDialogService
+    private readonly confirmDialog: ConfirmDialogService,
+    private readonly dialog: MatDialog
   ) {
     this.loading$ = store$
       .select(QuizzesSelectors.detailsLoading)
@@ -109,7 +112,13 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
   }
 
-  changeQuestionOrder() {
+  reorderQuestion() {
+    this.dialog.open(QuizQuestionSortComponent, {
+      data: {
+        quizId: this.quiz?.id,
+        questions: this.quiz?.questions
+      }
+    });
   }
 
   editQuestion(question: QuizQuestionDto | null) {

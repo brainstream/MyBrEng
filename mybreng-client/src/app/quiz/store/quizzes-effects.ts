@@ -106,4 +106,21 @@ export class QuizzesEffects {
             )
         })
     ));
+
+    reorderQuestions$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.reorderQuestions),
+        exhaustMap(({ questions, quizId }) => {
+            return concat(
+                of(QuizzesActions.startQuestionsReordering({ quizId })),
+                this.quizService.quizReorderQuestions(quizId, questions).pipe(
+                    map(q => QuizzesActions.finishQuestionsReordering({ 
+                        result: { quizId, questions: q }
+                    })),
+                    catchError(() => of(QuizzesActions.finishQuestionsReordering({
+                        result: { quizId, error: true }
+                    })))
+                )
+            )
+        })
+    ));
 }

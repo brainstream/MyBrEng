@@ -14,14 +14,16 @@ from blueprints import \
     quiz_details, \
     quiz_save, \
     quiz_question_save, \
-    quiz_question_delete
+    quiz_question_delete, \
+    quiz_reorder_questions
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
     UserDtoSchema, \
     LogInDtoSchema, \
     QuizEditDtoSchema, \
-    QuizQuestionEditDtoSchema
+    QuizQuestionEditDtoSchema, \
+    QuizQuestionPositionDtoSchema
 from di import DI
 from database import db
 
@@ -54,13 +56,14 @@ def create_app() -> Flask:
     )
 
     spec.components \
-        .schema("QuizDto", schema=QuizDtoSchema) \
-        .schema("QuizQuestionDto", schema=QuizQuestionDtoSchema) \
-        .schema("QuizDetailedDto", schema=QuizDetailedDtoSchema) \
-        .schema("UserDto", schema=UserDtoSchema) \
-        .schema("LogInDto", schema=LogInDtoSchema) \
-        .schema("QuizEditDto", schema=QuizEditDtoSchema) \
-        .schema("QuizQuestionEditDto", schema=QuizQuestionEditDtoSchema)
+        .schema('QuizDto', schema=QuizDtoSchema) \
+        .schema('QuizQuestionDto', schema=QuizQuestionDtoSchema) \
+        .schema('QuizDetailedDto', schema=QuizDetailedDtoSchema) \
+        .schema('UserDto', schema=UserDtoSchema) \
+        .schema('LogInDto', schema=LogInDtoSchema) \
+        .schema('QuizEditDto', schema=QuizEditDtoSchema) \
+        .schema('QuizQuestionEditDto', schema=QuizQuestionEditDtoSchema) \
+        .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -79,6 +82,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_save)
         spec.path(view=quiz_question_save)
         spec.path(view=quiz_question_delete)
+        spec.path(view=quiz_reorder_questions)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

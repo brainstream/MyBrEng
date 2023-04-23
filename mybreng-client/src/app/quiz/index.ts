@@ -5,3 +5,4 @@ export * from './quiz-list';
 export * from './quiz-list-item';
 export * from './quiz-question';
 export * from './question-type-name.pipe';
+export * from './quiz-question-sort';

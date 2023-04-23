@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "@angular/material" as mat;
+@use "app/quiz/quiz-question-sort/quiz-question-sort.component-theme" as quiz-question-sort;
 
 mat.$theme-ignore-duplication-warnings: true;
 
@@ -168,10 +169,12 @@ $app-dark-theme: mat.define-dark-theme(
 
 @mixin dark-colors {
     @include global-theme($app-dark-theme);
+    @include quiz-question-sort.theme($app-dark-theme);
 }
 
 @mixin light-colors {
     @include global-theme($app-light-theme);
+    @include quiz-question-sort.theme($app-light-theme);
 }
 
 @media (prefers-color-scheme: dark) {
