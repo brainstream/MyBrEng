@@ -18,9 +18,9 @@ export class QuizzesEffects {
 
     loadList$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.loadList),
-        concatLatestFrom(() => this.store$.select(QuizzesSelectors.listLoading)),
-        switchMap(([_, loading]) => {
-            if (loading == LoadingStatus.None) {
+        concatLatestFrom(() => this.store$.select(QuizzesSelectors.list)),
+        switchMap(([_, list]) => {
+            if (list.length == 0) {
                 return concat(
                     of(QuizzesActions.startListLoading()),
                     this.quizService.quizList().pipe(

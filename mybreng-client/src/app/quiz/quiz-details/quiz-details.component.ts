@@ -35,11 +35,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     private readonly confirmDialog: ConfirmDialogService,
     private readonly dialog: MatDialog
   ) {
-    this.loading$ = store$
-      .select(QuizzesSelectors.detailsLoading)
-      .pipe(
-        map((status) => status === LoadingStatus.Loading)
-      );
+    this.loading$ = store$.select(QuizzesSelectors.loading);
   }
 
   ngOnInit(): void {

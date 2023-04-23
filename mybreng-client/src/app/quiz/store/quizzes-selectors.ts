@@ -3,8 +3,7 @@ import { IQuizzesState } from "./quizzes-state";
 
 export namespace QuizzesSelectors {
     const feature = createFeatureSelector<IQuizzesState>('quizzes');
-    export const list = createSelector(feature, state => state.list.data);
-    export const listLoading = createSelector(feature, state => state.list.loading);
-    export const details = createSelector(feature, state => state.details.data);
-    export const detailsLoading = createSelector(feature, state => state.details.loading);
+    export const loading = createSelector(feature, state => state.loadingCounter != 0);
+    export const list = createSelector(feature, state => state.list);
+    export const details = createSelector(feature, state => state.details);
 }
