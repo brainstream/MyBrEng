@@ -18,6 +18,7 @@ export type QuizQuestionsReorderingResult =
 export const QuizzesActions = createActionGroup({
     source: 'Quizzes',
     events: {
+        'Set Error': props<{ message: string }>(),
         'Load List': emptyProps(),
         'Start List Loading': emptyProps(),
         'Finish List Loading': props<{ result: QuizDto[] | 'error' }>(),

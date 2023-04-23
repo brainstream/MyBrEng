@@ -207,3 +207,27 @@ html {
     width: 1024px;
     margin: 0 auto;
 }
+
+.system-message {
+    border-radius: 4px;
+
+    &__error {
+        .mdc-snackbar__surface {
+            background-color: mat.get-color-from-palette($app-warn, default) !important;
+        }
+
+        .mat-mdc-snack-bar-label, .mat-mdc-snack-bar-action {
+            color: mat.get-color-from-palette($app-warn, default-contrast) !important;
+        }
+    }
+
+    &__info {
+        .mdc-snackbar__surface {
+            background-color: mat.get-color-from-palette($app-accent, default) !important;
+        }
+
+        .mat-mdc-snack-bar-label, .mat-mdc-snack-bar-action {
+            color: mat.get-color-from-palette($app-accent, default-contrast) !important;
+        }
+    }
+}
