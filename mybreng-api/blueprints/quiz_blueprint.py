@@ -3,7 +3,7 @@ from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 from di import DI
-from dtos import QuizEditDto, QuizQuestionEditDtoSchema, QuizQuestionPositionDtoSchema
+from dtos import QuizEditDto, QuizQuestionEditDtoSchema, QuizQuestionPositionDtoSchema, QuizDto
 from facades import QuizFacade, QuizQuestionFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
@@ -81,21 +81,21 @@ def quiz_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
       responses:
         200:
           description: Quiz saved successfully
+          content:
+            application/json:
+              schema: QuizDto
         404:
           description: Quiz with specified ID not found
     """
     request_data = request.get_json()
     dto = QuizEditDto(
-        request_data['id'],
+        request_data['id'] if 'id' in request_data else None,
         request_data['title'],
         request_data['description']
     )
-    if dto.id is None:
-        quiz_facade.create_quiz(current_user.id, dto)
-        status = 200
-    else:
-        status = 404 if quiz_facade.edit_quiz(current_user.id, dto) is None else 200
-    return make_response('', status)
+    result = quiz_facade.create_quiz(current_user.id, dto) if dto.id is None else \
+        quiz_facade.edit_quiz(current_user.id, dto)
+    return make_response('', 404) if result is None else jsonify(result)
 
 
 @quiz_blueprint.route('/question', methods=['POST'])

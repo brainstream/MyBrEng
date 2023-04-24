@@ -1,7 +1,7 @@
-import { QuizQuestionDto } from "@app/web-api";
+import { QuizDto, QuizQuestionDto } from "@app/web-api";
 import { createReducer, on } from "@ngrx/store";
 import { QuizzesActions } from "./quizzes-actions";
-import { IQuizzesState, LoadingStatus, RemoteData } from "./quizzes-state";
+import { IQuizzesState } from "./quizzes-state";
 
 export const quizzesReducer = createReducer(
     createDefaultState(),
@@ -28,7 +28,7 @@ export const quizzesReducer = createReducer(
         loadingCounter: incrementLoading(state.loadingCounter)
     })),
     on(QuizzesActions.finishDetailsSaving, (state, { result }) => {
-        if (state.details?.id !== result.id || result.id === undefined || 'error' in result) {
+        if (result.id === undefined || 'error' in result) {
             return {
                 ...state,
                 loadingCounter: decrementLoading(state.loadingCounter)
@@ -37,14 +37,8 @@ export const quizzesReducer = createReducer(
         return {
             ...state,
             loadingCounter: decrementLoading(state.loadingCounter),
-            list: state.list.map(quiz =>
-                quiz.id === result.id ? {
-                    ...quiz,
-                    title: result.title,
-                    description: result.description
-                } : quiz
-            ),
-            details: {
+            list: addOrChangeQuiz(state.list, result),
+            details: state.details?.id === result.id ? state.details : {
                 ...state.details,
                 id: result.id,
                 title: result.title,
@@ -68,7 +62,7 @@ export const quizzesReducer = createReducer(
             loadingCounter: decrementLoading(state.loadingCounter),
             details: {
                 ...state.details,
-                questions: applyQuestion(state.details?.questions, result)
+                questions: addOrChangeQuestion(state.details?.questions, result)
             }
         };
     }),
@@ -134,7 +128,18 @@ function decrementLoading(currentValue: number): number {
     return currentValue <= 0 ? 0 : currentValue - 1;
 }
 
-function applyQuestion(list: QuizQuestionDto[] | undefined, question: QuizQuestionDto): QuizQuestionDto[] {
+function addOrChangeQuiz(list: QuizDto[], quiz: QuizDto): QuizDto[] {
+    debugger
+    const idx = list.findIndex(q => q.id === quiz.id);
+    if (idx < 0) {
+        return [...list, quiz];
+    }
+    const result = [...list];
+    result.splice(idx, 1, quiz);
+    return result;
+}
+
+function addOrChangeQuestion(list: QuizQuestionDto[] | undefined, question: QuizQuestionDto): QuizQuestionDto[] {
     if (list === undefined) {
         return [question];
     }

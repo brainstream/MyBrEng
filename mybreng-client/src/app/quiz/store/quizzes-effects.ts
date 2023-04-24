@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { QuizService } from "@app/web-api";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { concat, EMPTY, map, switchMap, of, catchError, exhaustMap, tap } from "rxjs";
+import { concat, EMPTY, map, switchMap, of, catchError, tap } from "rxjs";
 import { QuizzesActions } from "./quizzes-actions";
 import { QuizzesSelectors } from "./quizzes-selectors";
 import { watchHttpErrors } from "@app/shared";
@@ -66,7 +66,7 @@ export class QuizzesEffects {
 
     saveDetails$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.saveDetails),
-        exhaustMap(({ quiz }) => {
+        switchMap(({ quiz }) => {
             return concat(
                 of(QuizzesActions.startDetailsSaving({ id: quiz.id })),
                 watchHttpErrors(this.quizService.quizSave({
@@ -75,13 +75,7 @@ export class QuizzesEffects {
                     description: quiz.description
                 }, 'events'))
                     .pipe(
-                        map(() => QuizzesActions.finishDetailsSaving({
-                            result: {
-                                id: quiz.id,
-                                title: quiz.title,
-                                description: quiz.description
-                            }
-                        })),
+                        map(result => QuizzesActions.finishDetailsSaving({ result })),
                         catchError(() => concat(
                             of(QuizzesActions.finishDetailsSaving({
                                 result: {
@@ -100,7 +94,7 @@ export class QuizzesEffects {
 
     saveQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.saveQuestion),
-        exhaustMap(({ question }) => {
+        switchMap(({ question }) => {
             return concat(
                 of(QuizzesActions.startQuestionSaving({ id: question.id })),
                 watchHttpErrors(this.quizService.quizQuestionSave(question, 'events'))
@@ -124,7 +118,7 @@ export class QuizzesEffects {
 
     deleteQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.deleteQuestion),
-        exhaustMap(({ id }) => {
+        switchMap(({ id }) => {
             return concat(
                 of(QuizzesActions.startQuestionDeletion({ id })),
                 watchHttpErrors(this.quizService.quizQuestionDelete(id, 'events'))
@@ -147,7 +141,7 @@ export class QuizzesEffects {
 
     reorderQuestions$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.reorderQuestions),
-        exhaustMap(({ questions, quizId }) => {
+        switchMap(({ questions, quizId }) => {
             return concat(
                 of(QuizzesActions.startQuestionsReordering({ quizId })),
                 watchHttpErrors(this.quizService.quizReorderQuestions(quizId, questions, 'events'))

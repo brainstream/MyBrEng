@@ -8,7 +8,7 @@ import {
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
-export type QuizSaveResult = QuizEditDto | { id?: string, error: true };
+export type QuizSaveResult = QuizDto | { id?: string, error: true };
 export type QuizQuestionSaveResult = QuizQuestionDto | { id?: string, error: true };
 export type QuizQuestionDeletionResult = { id: string, error?: true };
 export type QuizQuestionsReorderingResult = 

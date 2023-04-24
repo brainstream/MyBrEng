@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass()
 class QuizEditDto:
-    id: str
+    id: str | None
     title: str
     description: str | None
 

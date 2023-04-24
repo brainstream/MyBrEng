@@ -42,14 +42,15 @@ export class QuizQuestionEditFormComponent {
   }
 
   save() {
+    const questionType = this.questionType ?? QuizQuestionEditDto.QuestionTypeEnum.SingleChoice
     this.saveRequested.emit({
       id: this.questionId,
       quiz_id: this.quizId,
       text: this.questionText ?? '',
-      question_type: this.questionType ?? QuizQuestionEditDto.QuestionTypeEnum.SingleChoice,
+      question_type: questionType,
       answers: this.answers.map(a => ({
         id: a.id,
-        is_correct: a.isCorrect,
+        is_correct: questionType === 'FREE_TEXT' ? true : a.isCorrect,
         text: a.text
       }))
     });

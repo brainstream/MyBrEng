@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { QuizDto } from '@app/web-api';
+import { QuizDto, QuizEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { map, Observable, tap } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
@@ -16,7 +16,7 @@ export class QuizListComponent {
   loading$: Observable<boolean>;
 
   constructor(
-    store$: Store,
+    private readonly store$: Store,
     private readonly bottomSheet: MatBottomSheet
   ) {
     this.quizzes$ = store$.select(QuizzesSelectors.list);
@@ -25,6 +25,12 @@ export class QuizListComponent {
   }
 
   showCreateQuizForm() {
-    this.bottomSheet.open(QuizEditFormComponent);
+    const bs = this.bottomSheet.open(QuizEditFormComponent);
+    const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
+      subscription.unsubscribe();
+      if (result) {
+        this.store$.dispatch(QuizzesActions.saveDetails({ quiz: result }));
+      }
+    });
   }
 }
