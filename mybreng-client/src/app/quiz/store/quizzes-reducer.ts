@@ -38,12 +38,12 @@ export const quizzesReducer = createReducer(
             ...state,
             loadingCounter: decrementLoading(state.loadingCounter),
             list: addOrChangeQuiz(state.list, result),
-            details: state.details?.id === result.id ? state.details : {
+            details: state.details?.id === result.id ? {
                 ...state.details,
                 id: result.id,
                 title: result.title,
                 description: result.description
-            }
+            } : state.details 
         };
     }),
     on(QuizzesActions.startQuestionSaving, (state, _) => ({
