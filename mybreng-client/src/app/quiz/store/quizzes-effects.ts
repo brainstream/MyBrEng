@@ -67,99 +67,91 @@ export class QuizzesEffects {
 
     saveDetails$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.saveDetails),
-        switchMap(({ quiz }) => {
-            return concat(
-                of(QuizzesActions.startDetailsSaving({ id: quiz.id })),
-                watchHttpErrors(this.quizService.quizSave({
-                    id: quiz.id,
-                    title: quiz.title,
-                    description: quiz.description
-                }, 'events'))
-                    .pipe(
-                        map(result => QuizzesActions.finishDetailsSaving({ result })),
-                        catchError(() => concat(
-                            of(QuizzesActions.finishDetailsSaving({
-                                result: {
-                                    id: quiz.id,
-                                    error: true
-                                }
-                            })),
-                            of(QuizzesActions.setError({
-                                message: 'Во время сохранения теста произошла ошибка'
-                            }))
-                        ))
-                    )
-            )
-        })
+        switchMap(({ quiz }) => concat(
+            of(QuizzesActions.startDetailsSaving({ id: quiz.id })),
+            watchHttpErrors(this.quizService.quizSave({
+                id: quiz.id,
+                title: quiz.title,
+                description: quiz.description
+            }, 'events'))
+                .pipe(
+                    map(result => QuizzesActions.finishDetailsSaving({ result })),
+                    catchError(() => concat(
+                        of(QuizzesActions.finishDetailsSaving({
+                            result: {
+                                id: quiz.id,
+                                error: true
+                            }
+                        })),
+                        of(QuizzesActions.setError({
+                            message: 'Во время сохранения теста произошла ошибка'
+                        }))
+                    ))
+                )
+        ))
     ));
 
     saveQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.saveQuestion),
-        switchMap(({ question }) => {
-            return concat(
-                of(QuizzesActions.startQuestionSaving({ id: question.id })),
-                watchHttpErrors(this.quizService.quizQuestionSave(question, 'events'))
-                    .pipe(
-                        map(result => QuizzesActions.finishQuestionSaving({ result })),
-                        catchError(() => concat(
-                            of(QuizzesActions.finishQuestionSaving({
-                                result: {
-                                    id: question.id,
-                                    error: true
-                                }
-                            })),
-                            of(QuizzesActions.setError({
-                                message: 'Во время сохранения вопроса произошла ошибка'
-                            }))
-                        ))
-                    )
-            )
-        })
+        switchMap(({ question }) => concat(
+            of(QuizzesActions.startQuestionSaving({ id: question.id })),
+            watchHttpErrors(this.quizService.quizQuestionSave(question, 'events'))
+                .pipe(
+                    map(result => QuizzesActions.finishQuestionSaving({ result })),
+                    catchError(() => concat(
+                        of(QuizzesActions.finishQuestionSaving({
+                            result: {
+                                id: question.id,
+                                error: true
+                            }
+                        })),
+                        of(QuizzesActions.setError({
+                            message: 'Во время сохранения вопроса произошла ошибка'
+                        }))
+                    ))
+                )
+        ))
     ));
 
     deleteQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.deleteQuestion),
-        switchMap(({ id }) => {
-            return concat(
-                of(QuizzesActions.startQuestionDeletion({ id })),
-                watchHttpErrors(this.quizService.quizQuestionDelete(id, 'events'))
-                    .pipe(
-                        map(_ => QuizzesActions.finishQuestionDeletion({
-                            result: { id }
+        switchMap(({ id }) => concat(
+            of(QuizzesActions.startQuestionDeletion({ id })),
+            watchHttpErrors(this.quizService.quizQuestionDelete(id, 'events'))
+                .pipe(
+                    map(_ => QuizzesActions.finishQuestionDeletion({
+                        result: { id }
+                    })),
+                    catchError(() => concat(
+                        of(QuizzesActions.finishQuestionDeletion({
+                            result: { id, error: true }
                         })),
-                        catchError(() => concat(
-                            of(QuizzesActions.finishQuestionDeletion({
-                                result: { id, error: true }
-                            })),
-                            of(QuizzesActions.setError({
-                                message: 'Во время удаления вопроса произошла ошибка'
-                            }))
-                        ))
-                    )
-            )
-        })
+                        of(QuizzesActions.setError({
+                            message: 'Во время удаления вопроса произошла ошибка'
+                        }))
+                    ))
+                )
+        ))
     ));
 
     reorderQuestions$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.reorderQuestions),
-        switchMap(({ questions, quizId }) => {
-            return concat(
-                of(QuizzesActions.startQuestionsReordering({ quizId })),
-                watchHttpErrors(this.quizService.quizReorderQuestions(quizId, questions, 'events'))
-                    .pipe(
-                        map(q => QuizzesActions.finishQuestionsReordering({
-                            result: { quizId, questions: q }
+        switchMap(({ questions, quizId }) => concat(
+            of(QuizzesActions.startQuestionsReordering({ quizId })),
+            watchHttpErrors(this.quizService.quizReorderQuestions(quizId, questions, 'events'))
+                .pipe(
+                    map(q => QuizzesActions.finishQuestionsReordering({
+                        result: { quizId, questions: q }
+                    })),
+                    catchError(() => concat(
+                        of(QuizzesActions.finishQuestionsReordering({
+                            result: { quizId, error: true }
                         })),
-                        catchError(() => concat(
-                            of(QuizzesActions.finishQuestionsReordering({
-                                result: { quizId, error: true }
-                            })),
-                            of(QuizzesActions.setError({
-                                message: 'Во время сохранения порядка вопросов произошла ошибка'
-                            }))
-                        ))
-                    )
-            )
-        })
+                        of(QuizzesActions.setError({
+                            message: 'Во время сохранения порядка вопросов произошла ошибка'
+                        }))
+                    ))
+                )
+        ))
     ));
 }
