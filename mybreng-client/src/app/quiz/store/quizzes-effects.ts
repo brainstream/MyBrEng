@@ -29,7 +29,9 @@ export class QuizzesEffects {
         ofType(QuizzesActions.loadList),
         concatLatestFrom(() => this.store$.select(QuizzesSelectors.isListLoaded)),
         switchMap(([_, isListLoaded]) => {
-            if (!isListLoaded) {
+            if (isListLoaded) {
+                return EMPTY;
+            } else {
                 return concat(
                     of(QuizzesActions.startListLoading()),
                     watchHttpErrors(this.quizService.quizList('events'))
@@ -43,8 +45,6 @@ export class QuizzesEffects {
                             ))
                         )
                 );
-            } else {
-                return EMPTY;
             }
         })
     ));
