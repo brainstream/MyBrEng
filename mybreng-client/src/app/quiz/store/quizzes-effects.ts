@@ -51,7 +51,8 @@ export class QuizzesEffects {
 
     loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.loadDetails),
-        switchMap(({ id }) =>
+        switchMap(({ id }) => concat(
+            of(QuizzesActions.startDetailsLoading()),
             watchHttpErrors(this.quizService.quizDetails(id, 'events'))
                 .pipe(
                     map(result => QuizzesActions.finishDetailsLoading({ result })),
@@ -62,7 +63,7 @@ export class QuizzesEffects {
                         }))
                     ))
                 )))
-    );
+    ));
 
     saveDetails$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.saveDetails),
@@ -153,7 +154,7 @@ export class QuizzesEffects {
                             of(QuizzesActions.finishQuestionsReordering({
                                 result: { quizId, error: true }
                             })),
-                            of(QuizzesActions.setError({ 
+                            of(QuizzesActions.setError({
                                 message: 'Во время сохранения порядка вопросов произошла ошибка'
                             }))
                         ))
