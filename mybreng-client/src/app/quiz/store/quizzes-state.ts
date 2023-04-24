@@ -17,6 +17,6 @@ export class RemoteData<T> {
 
 export interface IQuizzesState {
     readonly loadingCounter: number;
-    readonly list: QuizDto[];
+    readonly list: QuizDto[] | null;
     readonly details: QuizDetailedDto | null;
 }

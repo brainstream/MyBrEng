@@ -115,7 +115,7 @@ export const quizzesReducer = createReducer(
 function createDefaultState(): IQuizzesState {
     return {
         loadingCounter: 0,
-        list: [],
+        list: null,
         details: null
     };
 }
@@ -128,8 +128,10 @@ function decrementLoading(currentValue: number): number {
     return currentValue <= 0 ? 0 : currentValue - 1;
 }
 
-function addOrChangeQuiz(list: QuizDto[], quiz: QuizDto): QuizDto[] {
-    debugger
+function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[] | null {
+    if (list == null) {
+        return null;
+    }
     const idx = list.findIndex(q => q.id === quiz.id);
     if (idx < 0) {
         return [...list, quiz];
