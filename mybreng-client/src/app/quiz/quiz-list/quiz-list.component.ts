@@ -1,27 +1,43 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizDto, QuizEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { map, Observable, tap } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
+import { QuizzesActions, QuizzesSelectors } from '../store';
+import { QuizzesEventsService } from '../quizzes-events.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quiz-list',
   templateUrl: './quiz-list.component.html',
   styleUrls: ['./quiz-list.component.scss']
 })
-export class QuizListComponent {
-  quizzes$: Observable<QuizDto[]>;
-  loading$: Observable<boolean>;
+export class QuizListComponent implements OnInit, OnDestroy {
+  private quizCreatedSubscription: Subscription;
+  
+  readonly quizzes$: Observable<QuizDto[]>;
+  readonly loading$: Observable<boolean>;
 
   constructor(
     private readonly store$: Store,
-    private readonly bottomSheet: MatBottomSheet
+    private readonly bottomSheet: MatBottomSheet,
+    private readonly events: QuizzesEventsService,
+    private readonly router: Router
   ) {
     this.quizzes$ = store$.select(QuizzesSelectors.list);
     this.loading$ = store$.select(QuizzesSelectors.loading);
     store$.dispatch(QuizzesActions.loadList());
+  }
+  
+  ngOnInit(): void {
+    this.quizCreatedSubscription = this.events.quizSaved$.subscribe(quiz => {
+      this.router.navigate(['/quiz', quiz.id]);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.quizCreatedSubscription.unsubscribe();
   }
 
   showCreateQuizForm() {
