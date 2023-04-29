@@ -6,6 +6,7 @@
         routerLink="/quiz" 
         class="layout-full-toolbar-nav-link" 
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true  }"
     >
         Тесты
     </button>
@@ -15,6 +16,7 @@
         routerLink="/student"
         class="layout-full-toolbar-nav-link"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true  }"
     >
         Ученики
     </button>
