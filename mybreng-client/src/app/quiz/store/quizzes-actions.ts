@@ -1,3 +1,4 @@
+import { IPostponedEvent } from "@app/shared";
 import { 
     QuizDetailedDto,
     QuizDto, 
@@ -20,7 +21,7 @@ export const QuizzesActions = createActionGroup({
     source: 'Quizzes',
     events: {
         'Set Error': props<{ message: string }>(),
-        'Flush Events': emptyProps(),
+        'Flush Events': props<{ events: IPostponedEvent[] }>(),
         'Load List': emptyProps(),
         'Start List Loading': emptyProps(),
         'Finish List Loading': props<{ result: QuizDto[] | 'error' }>(),

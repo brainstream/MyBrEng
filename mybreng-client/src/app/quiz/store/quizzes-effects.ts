@@ -11,8 +11,6 @@ import { QuizzesEventsService } from "../quizzes-events.service";
 
 @Injectable()
 export class QuizzesEffects {
-    private readonly events = new Queue<Function>();
-
     constructor(
         private readonly actions$: Actions,
         private store$: Store,
@@ -31,10 +29,8 @@ export class QuizzesEffects {
 
     flushEvents$ = createEffect(() => this.actions$.pipe(
         ofType(QuizzesActions.flushEvents),
-        tap(() => {
-            for (let e = this.events.pop(); e; e = this.events.pop()) {
-                e();
-            }
+        tap(({ events }) => {
+            events.forEach(e => e.flush());
         })
     ), { dispatch: false });
 
@@ -88,15 +84,14 @@ export class QuizzesEffects {
                 description: quiz.description
             }, 'events'))
                 .pipe(
-                    switchMap(result => {
-                        this.events.push(() => {
-                            this.eventsService.quizSaved$.raise(result);
-                        });
-                        return from([
-                            QuizzesActions.finishDetailsSaving({ result }),
-                            QuizzesActions.flushEvents()
-                        ]);
-                    }),
+                    switchMap(result => from([
+                        QuizzesActions.finishDetailsSaving({ result }),
+                        QuizzesActions.flushEvents({
+                            events: [
+                                this.eventsService.quizSaved$.postpone(result)
+                            ]
+                        })
+                    ])),
                     catchError(() => from([
                         QuizzesActions.finishDetailsSaving({
                             result: {
@@ -118,15 +113,14 @@ export class QuizzesEffects {
             of(QuizzesActions.startQuizDeletion({ id })),
             watchHttpErrors(this.quizService.quizDelete(id, 'events'))
                 .pipe(
-                    switchMap(() => {
-                        this.events.push(() => {
-                            this.eventsService.quizDeleted$.raise({ id });
-                        });
-                        return from([
-                            QuizzesActions.finishQuizDeletion({ result: { id } }),
-                            QuizzesActions.flushEvents()
-                        ]);
-                    }),
+                    switchMap(() => from([
+                        QuizzesActions.finishQuizDeletion({ result: { id } }),
+                        QuizzesActions.flushEvents({
+                            events: [
+                                this.eventsService.quizDeleted$.postpone({ id })
+                            ]
+                        })
+                    ])),
                     catchError(() => from([
                         QuizzesActions.finishQuizDeletion({
                             result: { id, error: true }
@@ -145,15 +139,14 @@ export class QuizzesEffects {
             of(QuizzesActions.startQuestionSaving({ id: question.id })),
             watchHttpErrors(this.quizService.quizQuestionSave(question, 'events'))
                 .pipe(
-                    switchMap(result => {
-                        this.events.push(() => {
-                            this.eventsService.questionSaved$.raise({ question: result });
-                        });
-                        return from([
-                            QuizzesActions.finishQuestionSaving({ result }),
-                            QuizzesActions.flushEvents()
-                        ])
-                    }),
+                    switchMap(result => from([
+                        QuizzesActions.finishQuestionSaving({ result }),
+                        QuizzesActions.flushEvents({
+                            events: [
+                                this.eventsService.questionSaved$.postpone({ question: result })
+                            ]
+                        })
+                    ])),
                     catchError(() => from([
                         QuizzesActions.finishQuestionSaving({
                             result: {
