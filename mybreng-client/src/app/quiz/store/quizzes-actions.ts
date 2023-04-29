@@ -14,6 +14,7 @@ export type QuizQuestionDeletionResult = { id: string, error?: true };
 export type QuizQuestionsReorderingResult = 
     { quizId: string, questions: QuizQuestionDto[] } |
     { quizId: string, error: true };
+export type QuizDeletionResult = { id: string, error?: true };
 
 export const QuizzesActions = createActionGroup({
     source: 'Quizzes',
@@ -38,5 +39,8 @@ export const QuizzesActions = createActionGroup({
         'Reorder Questions': props<{ quizId: string, questions: QuizQuestionPositionDto[] }>(),
         'Start Questions Reordering': props<{ quizId: string }>(),
         'Finish Questions Reordering': props<{ result: QuizQuestionsReorderingResult }>(),
+        'Delete Quiz': props<{ id: string }>(),
+        'Start Quiz Deletion': props<{ id: string }>(),
+        'Finish Quiz Deletion': props<{ result: QuizDeletionResult }>()
     }
 });

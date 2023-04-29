@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuizDetailedDto, QuizEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { map, Observable, Subscription } from 'rxjs';
-import { LoadingStatus, QuizzesActions, QuizzesSelectors } from '../store';
+import { Observable, Subscription } from 'rxjs';
+import { QuizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
 import { collapseOnLeaveAnimation } from 'angular-animations';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizQuestionSortComponent } from '../quiz-question-sort';
+import { QuizzesEventsService } from '../quizzes-events.service';
 
 @Component({
   selector: 'app-quiz-details',
@@ -20,8 +21,7 @@ import { QuizQuestionSortComponent } from '../quiz-question-sort';
   ]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
-  private paramsSubscription: Subscription | undefined;
-  private quizSubscription: Subscription | undefined;
+  private readonly subscriptions: Subscription[] = [];
 
   readonly loading$: Observable<boolean>;
   quiz: QuizDetailedDto | null;
@@ -30,32 +30,36 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
     private readonly store$: Store,
     private readonly bottomSheet: MatBottomSheet,
     private readonly confirmDialog: ConfirmDialogService,
-    private readonly dialog: MatDialog
+    private readonly dialog: MatDialog,
+    private readonly events: QuizzesEventsService
   ) {
     this.loading$ = store$.select(QuizzesSelectors.loading);
   }
 
   ngOnInit(): void {
-    this.paramsSubscription = this.route.paramMap
-      .subscribe(params => {
+    this.subscriptions.push(this.route.paramMap.subscribe(params => {
         const id = params.get('id');
         if (id) {
           this.store$.dispatch(QuizzesActions.loadDetails({ id }))
         }
-      });
-    this.quizSubscription = this.store$
+      })
+    );
+    this.subscriptions.push(this.store$
       .select(QuizzesSelectors.details)
-      .subscribe(quiz => this.quiz = quiz);
+      .subscribe(quiz => this.quiz = quiz)
+    );
+    this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
+      this.router.navigate(['/quiz']);
+    }));
   }
 
   ngOnDestroy(): void {
-    this.paramsSubscription?.unsubscribe();
-    delete this.paramsSubscription;
-    this.quizSubscription?.unsubscribe();
-    delete this.quizSubscription;
+    this.subscriptions.forEach(s => s.unsubscribe());
+    this.subscriptions.splice(0, this.subscriptions.length);
   }
 
   editQuiz() {
@@ -80,7 +84,27 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  deleteQuiz() {
+  async deleteQuiz() {
+    if (!this.quiz) {
+      return;
+    }
+    const result = await this.confirmDialog.show({
+      text: 'Вы действительно хотите удалить этот тест?',
+      buttons: {
+        yes: {
+          text: 'Удалить',
+          icon: 'delete',
+          color: 'warn'
+        },
+        no: {
+          text: 'Отменить',
+          color: 'default'
+        }
+      }
+    });
+    if (result.button === ConfirmDialogButton.Yes) {
+      this.store$.dispatch(QuizzesActions.deleteQuiz({ id: this.quiz.id }));
+    }
   }
 
   addQuestion() {

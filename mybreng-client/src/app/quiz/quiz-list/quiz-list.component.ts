@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./quiz-list.component.scss']
 })
 export class QuizListComponent implements OnInit, OnDestroy {
-  private quizCreatedSubscription: Subscription;
+  private quizCreatedSubscription: Subscription | undefined;
   
   readonly quizzes$: Observable<QuizDto[]>;
   readonly loading$: Observable<boolean>;
@@ -37,7 +37,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.quizCreatedSubscription.unsubscribe();
+    this.quizCreatedSubscription?.unsubscribe();
   }
 
   showCreateQuizForm() {

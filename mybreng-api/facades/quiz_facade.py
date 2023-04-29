@@ -34,3 +34,11 @@ class QuizFacade:
         db.session.add(quiz)
         db.session.commit()
         return map_quiz_to_dto(quiz)
+
+    def delete_quiz(self, owner_id: str, quiz_id: str) -> bool:
+        quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
+        if quiz is None:
+            return False
+        db.session.delete(quiz)
+        db.session.commit()
+        return True

@@ -90,7 +90,7 @@ export class QuizzesEffects {
                 .pipe(
                     switchMap(result => {
                         this.events.push(() => {
-                            this.eventsService.raiseQuizSaved(result);
+                            this.eventsService.quizSaved$.raise(result);
                         });
                         return from([
                             QuizzesActions.finishDetailsSaving({ result }),
@@ -106,6 +106,33 @@ export class QuizzesEffects {
                         }),
                         QuizzesActions.setError({
                             message: 'Во время сохранения теста произошла ошибка'
+                        })
+                    ]))
+                )
+        ))
+    ));
+
+    deleteQuiz$ = createEffect(() => this.actions$.pipe(
+        ofType(QuizzesActions.deleteQuiz),
+        switchMap(({ id }) => concat(
+            of(QuizzesActions.startQuizDeletion({ id })),
+            watchHttpErrors(this.quizService.quizDelete(id, 'events'))
+                .pipe(
+                    switchMap(() => {
+                        this.events.push(() => {
+                            this.eventsService.quizDeleted$.raise({ id });
+                        });
+                        return from([
+                            QuizzesActions.finishQuizDeletion({ result: { id } }),
+                            QuizzesActions.flushEvents()
+                        ]);
+                    }),
+                    catchError(() => from([
+                        QuizzesActions.finishQuizDeletion({
+                            result: { id, error: true }
+                        }),
+                        QuizzesActions.setError({
+                            message: 'Во время удаления теста произошла ошибка'
                         })
                     ]))
                 )

@@ -15,7 +15,8 @@ from blueprints import \
     quiz_save, \
     quiz_question_save, \
     quiz_question_delete, \
-    quiz_reorder_questions
+    quiz_reorder_questions, \
+    quiz_delete
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
@@ -80,6 +81,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_details)
         spec.path(view=account_login)
         spec.path(view=quiz_save)
+        spec.path(view=quiz_delete)
         spec.path(view=quiz_question_save)
         spec.path(view=quiz_question_delete)
         spec.path(view=quiz_reorder_questions)

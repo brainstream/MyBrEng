@@ -66,6 +66,20 @@ export const quizzesReducer = createReducer(
             }
         };
     }),
+    on(QuizzesActions.finishQuizDeletion, (state, { result }) => {
+        if (!state.details || 'error' in result) {
+            return {
+                ...state,
+                loadingCounter: decrementLoading(state.loadingCounter)
+            };
+        }
+        return {
+            ...state,
+            loadingCounter: decrementLoading(state.loadingCounter),
+            details: state.details?.id == result.id ? null : state.details,
+            list: state.list?.filter(q => q.id !== result.id) ?? null
+        };
+    }),
     on(QuizzesActions.startQuestionDeletion, (state, _) => ({
         ...state,
         loadingCounter: incrementLoading(state.loadingCounter)
