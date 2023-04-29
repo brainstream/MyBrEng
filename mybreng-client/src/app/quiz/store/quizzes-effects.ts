@@ -145,7 +145,15 @@ export class QuizzesEffects {
             of(QuizzesActions.startQuestionSaving({ id: question.id })),
             watchHttpErrors(this.quizService.quizQuestionSave(question, 'events'))
                 .pipe(
-                    map(result => QuizzesActions.finishQuestionSaving({ result })),
+                    switchMap(result => {
+                        this.events.push(() => {
+                            this.eventsService.questionSaved$.raise({ question: result });
+                        });
+                        return from([
+                            QuizzesActions.finishQuestionSaving({ result }),
+                            QuizzesActions.flushEvents()
+                        ])
+                    }),
                     catchError(() => from([
                         QuizzesActions.finishQuestionSaving({
                             result: {

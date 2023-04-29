@@ -55,6 +55,10 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
       this.router.navigate(['/quiz']);
     }));
+    this.subscriptions.push(this.events.questionSaved$.subscribe(({ question }) => {
+      // TODO: close the edit form here
+      this.scrollTo(`question-${question.id}`);
+    }));
   }
 
   ngOnDestroy(): void {
@@ -114,12 +118,12 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
       text: '',
       answers: []
     };
-    this.scrollToBottom();
+    this.scrollTo('bottom');
   }
 
-  scrollToBottom() {
+  scrollTo(id: string) {
     setTimeout(() => {
-      document.querySelector('#bottom')?.scrollIntoView();
+      document.getElementById(id)?.scrollIntoView(); // FIXME: use router
     }, 0);
   }
 
