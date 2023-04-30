@@ -7,6 +7,7 @@ import { QuizEditFormComponent } from '../quiz-edit-form';
 import { QuizzesActions, QuizzesSelectors } from '../store';
 import { QuizzesEventsService } from '../quizzes-events.service';
 import { Router } from '@angular/router';
+import { TitleService } from '@app/common';
 
 @Component({
   selector: 'app-quiz-list',
@@ -23,10 +24,12 @@ export class QuizListComponent implements OnInit, OnDestroy {
     private readonly store$: Store,
     private readonly bottomSheet: MatBottomSheet,
     private readonly events: QuizzesEventsService,
-    private readonly router: Router
+    private readonly router: Router,
+    titleService: TitleService
   ) {
     this.quizzes$ = store$.select(QuizzesSelectors.list);
     this.loading$ = store$.select(QuizzesSelectors.loading);
+    titleService.setTitle('Тесты');
     store$.dispatch(QuizzesActions.loadList());
   }
   

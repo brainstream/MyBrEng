@@ -11,6 +11,7 @@ import { collapseOnLeaveAnimation } from 'angular-animations';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizQuestionSortComponent } from '../quiz-question-sort';
 import { QuizzesEventsService } from '../quizzes-events.service';
+import { TitleService } from '@app/common';
 
 @Component({
   selector: 'app-quiz-details',
@@ -35,7 +36,8 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     private readonly bottomSheet: MatBottomSheet,
     private readonly confirmDialog: ConfirmDialogService,
     private readonly dialog: MatDialog,
-    private readonly events: QuizzesEventsService
+    private readonly events: QuizzesEventsService,
+    private readonly titleService: TitleService
   ) {
     this.loading$ = store$.select(QuizzesSelectors.loading);
   }
@@ -50,7 +52,10 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.push(this.store$
       .select(QuizzesSelectors.details)
-      .subscribe(quiz => this.quiz = quiz)
+      .subscribe(quiz => {
+        this.quiz = quiz;
+        this.titleService.setTitle(quiz?.title);
+      })
     );
     this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
       this.router.navigate(['/quiz']);
