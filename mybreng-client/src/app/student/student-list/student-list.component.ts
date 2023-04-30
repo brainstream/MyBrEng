@@ -12,10 +12,12 @@ import { Observable } from 'rxjs';
 })
 export class StudentListComponent {
     readonly students$: Observable<StudentDto[]>;
+    readonly loading$: Observable<boolean>;
 
     constructor(titleService: TitleService, store$: Store) {
         titleService.setTitle('Ученики');
         store$.dispatch(studentsActions.loadList());
         this.students$ = store$.select(StudentsSelectors.list);
+        this.loading$ = store$.select(StudentsSelectors.loading);
     }
 }

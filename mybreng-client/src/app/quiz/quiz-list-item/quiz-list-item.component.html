@@ -1,6 +1,6 @@
 <mat-card>
     <a [routerLink]="quiz.id" mat-list-item class="card-link">
         <span matListItemTitle>{{quiz.title}}</span>
-        <span matListItemLine>{{quiz.description}}</span>
+        <span *ngIf="quiz.description" matListItemLine>{{quiz.description}}</span>
     </a>
 </mat-card>

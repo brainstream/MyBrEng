@@ -23,7 +23,7 @@ function createDefaultState(): IStudentsState {
     return {
         loadingCounter: 0,
         list: null
-    }
+    };
 }
 
 function prepareStudentList(students: StudentDto[]): StudentDto[] {
