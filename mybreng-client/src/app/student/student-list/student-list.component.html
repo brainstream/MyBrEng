@@ -6,5 +6,7 @@
         </button>
     </ng-container>
 
-    Student list
+    <div *ngFor="let student of students$ | async">
+        {{student.firstName}} {{student.lastName}}
+    </div>
 </app-layout-full>

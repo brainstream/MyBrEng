@@ -50,3 +50,16 @@ class QuizAnswerVariantTable(db.Model):
 
     def __repr__(self):
         return f'<Quiz Answer Variant: {self.text[:20]}>'
+
+
+class StudentTable(db.Model):
+    __tablename__ = 'Student'
+    id = db.Column('Id', db.String(38), primary_key=True)
+    first_name = db.Column('FirstName', db.String(100))
+    last_name = db.Column('LastName', db.String(100))
+    note = db.Column('note', db.String)
+    owner_id = db.Column('Owner', db.ForeignKey('User.Id'))
+    owner = db.relationship('UserTable')
+
+    def __repr__(self):
+        return f'<Student: {self.first_name} {self.last_name}>'

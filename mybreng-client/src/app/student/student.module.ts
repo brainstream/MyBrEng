@@ -6,6 +6,9 @@ import { StudentListComponent } from './student-list';
 import { StudentDetailsComponent } from './student-details';
 import { StudentRoutingModule } from './student-routing.module';
 import { LayoutModule } from '@app/layout';
+import { StoreModule } from '@ngrx/store';
+import { StudentsEffects, studentsReducer } from './store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -14,6 +17,10 @@ import { LayoutModule } from '@app/layout';
   ],
   imports: [
     CommonModule,
+    StoreModule.forFeature('students', studentsReducer),
+    EffectsModule.forFeature([
+      StudentsEffects
+    ]),
     MatButtonModule,
     MatIconModule,
     StudentRoutingModule,

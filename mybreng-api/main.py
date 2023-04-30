@@ -8,15 +8,17 @@ from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
 from blueprints import \
     account_blueprint, \
-    account_login, \
     quiz_blueprint, \
+    student_blueprint, \
+    account_login, \
     quiz_list, \
     quiz_details, \
     quiz_save, \
     quiz_question_save, \
     quiz_question_delete, \
     quiz_reorder_questions, \
-    quiz_delete
+    quiz_delete, \
+    student_list
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
@@ -24,7 +26,8 @@ from dtos import QuizDtoSchema, \
     LogInDtoSchema, \
     QuizEditDtoSchema, \
     QuizQuestionEditDtoSchema, \
-    QuizQuestionPositionDtoSchema
+    QuizQuestionPositionDtoSchema, \
+    StudentDtoSchema
 from di import DI
 from database import db
 
@@ -35,14 +38,9 @@ def create_app() -> Flask:
         version="2.0.0",
         openapi_version="3.0.2",
         tags=[
-            dict(
-                name="Account",
-                description="Endpoints related to authentication"
-            ),
-            dict(
-                name="Quiz",
-                description="Endpoints related to quizzes"
-            )
+            dict(name="Account"),
+            dict(name="Quiz"),
+            dict(name="Student")
         ],
         servers=[
             dict(
@@ -64,13 +62,15 @@ def create_app() -> Flask:
         .schema('LogInDto', schema=LogInDtoSchema) \
         .schema('QuizEditDto', schema=QuizEditDtoSchema) \
         .schema('QuizQuestionEditDto', schema=QuizQuestionEditDtoSchema) \
-        .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema)
+        .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema) \
+        .schema('StudentDto', schema=StudentDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
     flask.config.from_file('configuration.json', load=json.load)
-    flask.register_blueprint(quiz_blueprint, url_prefix='/api/v1/quiz')
-    flask.register_blueprint(account_blueprint, url_prefix='/api/v1/account')
+    flask.register_blueprint(account_blueprint, url_prefix='/api/account')
+    flask.register_blueprint(quiz_blueprint, url_prefix='/api/quiz')
+    flask.register_blueprint(student_blueprint, url_prefix='/api/student')
     di.init_resources()
     db.init_app(flask)
     login_manager = LoginManager()
@@ -85,6 +85,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_question_save)
         spec.path(view=quiz_question_delete)
         spec.path(view=quiz_reorder_questions)
+        spec.path(view=student_list)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 
