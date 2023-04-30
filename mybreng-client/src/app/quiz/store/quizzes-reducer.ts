@@ -13,14 +13,14 @@ export const quizzesReducer = createReducer(
             : (state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1)
     })),
 
-    on(QuizzesActions.listLoaded, (state, { result }) => ({
+    on(QuizzesActions.listLoaded, (state, { quizzes }) => ({
         ...state,
-        list: result === 'error' ? [] : result
+        list: prepareQuizList(quizzes)
     })),
 
-    on(QuizzesActions.detailsLoaded, (state, { result }) => ({
+    on(QuizzesActions.detailsLoaded, (state, { quiz }) => ({
         ...state,
-        details: result === 'error' ? null : result
+        details: quiz
     })),
 
     on(QuizzesActions.detailsSaved, (state, { quiz }) => ({
@@ -74,6 +74,14 @@ function createDefaultState(): IQuizzesState {
     };
 }
 
+function prepareQuizList(list: QuizDto[]): QuizDto[] {
+    return sortQuizListInPlace([...list]);
+}
+
+function sortQuizListInPlace(list: QuizDto[]): QuizDto[] {
+    return list.sort((left, right) => left.title < right.title ? -1 : 1);
+}
+
 function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[] | null {
     if (list == null) {
         return null;
@@ -84,7 +92,7 @@ function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[] | nul
     }
     const result = [...list];
     result.splice(idx, 1, quiz);
-    return result;
+    return sortQuizListInPlace(result);
 }
 
 function addOrChangeQuestion(list: QuizQuestionDto[] | undefined, question: QuizQuestionDto): QuizQuestionDto[] {

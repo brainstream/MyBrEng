@@ -45,7 +45,7 @@ export class QuizzesEffects {
                     of(QuizzesActions.setLoading({ loading: true })),
                     watchHttpErrors(this.quizService.quizList('events'))
                         .pipe(
-                            map(result => QuizzesActions.listLoaded({ result })),
+                            map(quizzes => QuizzesActions.listLoaded({ quizzes })),
                             catchError(() => of(QuizzesActions.setError({
                                 message: 'Во время загрузки списка тестов произошла ошибка'
                             })))
@@ -62,7 +62,7 @@ export class QuizzesEffects {
             of(QuizzesActions.setLoading({ loading: true })),
             watchHttpErrors(this.quizService.quizDetails(id, 'events'))
                 .pipe(
-                    map(result => QuizzesActions.detailsLoaded({ result })),
+                    map(quiz => QuizzesActions.detailsLoaded({ quiz })),
                     catchError(() => of(QuizzesActions.setError({
                         message: 'Во время загрузки теста произошла ошибка'
                     })))
@@ -93,7 +93,7 @@ export class QuizzesEffects {
                         message: 'Во время сохранения теста произошла ошибка'
                     })))
                 ),
-            of(QuizzesActions.setLoading({ loading: true }))
+            of(QuizzesActions.setLoading({ loading: false }))
         ))
     ));
 
