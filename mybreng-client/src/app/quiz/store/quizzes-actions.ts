@@ -9,39 +9,26 @@ import {
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
-export type QuizSaveResult = QuizDto | { id?: string, error: true };
-export type QuizQuestionSaveResult = QuizQuestionDto | { id?: string, error: true };
-export type QuizQuestionDeletionResult = { id: string, error?: true };
-export type QuizQuestionsReorderingResult = 
-    { quizId: string, questions: QuizQuestionDto[] } |
-    { quizId: string, error: true };
-export type QuizDeletionResult = { id: string, error?: true };
 
 export const QuizzesActions = createActionGroup({
     source: 'Quizzes',
     events: {
         'Set Error': props<{ message: string }>(),
+        'Set Loading': props<{ loading: boolean }>(),
         'Flush Events': props<{ events: IPostponedEvent[] }>(),
         'Load List': emptyProps(),
-        'Start List Loading': emptyProps(),
-        'Finish List Loading': props<{ result: QuizDto[] | 'error' }>(),
+        'List Loaded': props<{ result: QuizDto[] | 'error' }>(),
         'Load Details': props<{ id: string }>(),
-        'Start Details Loading': emptyProps(),
-        'Finish Details Loading': props<{ result: QuizDetailedDto | 'error' }>(),
+        'Details Loaded': props<{ result: QuizDetailedDto | 'error' }>(),
         'Save Details': props<{ quiz: QuizEditDto }>(),
-        'Start Details Saving': props<{ id?: string }>(),
-        'Finish Details Saving': props<{ result: QuizSaveResult }>(),
+        'Details Saved': props<{ quiz: QuizDto }>(),
         'Save Question': props<{ question: QuizQuestionEditDto }>(),
-        'Start Question Saving': props<{ id?: string }>(),
-        'Finish Question Saving': props<{ result: QuizQuestionSaveResult }>(),
+        'Question Saved': props<{ question: QuizQuestionDto }>(),
         'Delete Question': props<{ id: string }>(),
-        'Start Question Deletion': props<{ id: string }>(),
-        'Finish Question Deletion': props<{ result: QuizQuestionDeletionResult }>(),
+        'Question Deleted': props<{ id: string }>(),
         'Reorder Questions': props<{ quizId: string, questions: QuizQuestionPositionDto[] }>(),
-        'Start Questions Reordering': props<{ quizId: string }>(),
-        'Finish Questions Reordering': props<{ result: QuizQuestionsReorderingResult }>(),
+        'Questions Reordered': props<{ quizId: string, questions: QuizQuestionDto[] }>(),
         'Delete Quiz': props<{ id: string }>(),
-        'Start Quiz Deletion': props<{ id: string }>(),
-        'Finish Quiz Deletion': props<{ result: QuizDeletionResult }>()
+        'Quiz Deleted': props<{ id: string }>()
     }
 });

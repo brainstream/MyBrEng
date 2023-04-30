@@ -5,125 +5,65 @@ import { IQuizzesState } from "./quizzes-state";
 
 export const quizzesReducer = createReducer(
     createDefaultState(),
-    on(QuizzesActions.startListLoading, (state) => ({
+
+    on(QuizzesActions.setLoading, (state, { loading }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
+        loadingCounter: loading
+            ? state.loadingCounter + 1
+            : (state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1)
     })),
-    on(QuizzesActions.finishListLoading, (state, { result }) => ({
+
+    on(QuizzesActions.listLoaded, (state, { result }) => ({
         ...state,
-        loadingCounter: decrementLoading(state.loadingCounter),
         list: result === 'error' ? [] : result
     })),
-    on(QuizzesActions.startDetailsLoading, (state) => ({
+
+    on(QuizzesActions.detailsLoaded, (state, { result }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
-    })),
-    on(QuizzesActions.finishDetailsLoading, (state, { result }) => ({
-        ...state,
-        loadingCounter: decrementLoading(state.loadingCounter),
         details: result === 'error' ? null : result
     })),
-    on(QuizzesActions.startDetailsSaving, (state, { id }) => ({
+
+    on(QuizzesActions.detailsSaved, (state, { quiz }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
+        list: addOrChangeQuiz(state.list, quiz),
+        details: state.details?.id === quiz.id ? {
+            ...state.details,
+            id: quiz.id,
+            title: quiz.title,
+            description: quiz.description
+        } : state.details
     })),
-    on(QuizzesActions.finishDetailsSaving, (state, { result }) => {
-        if (result.id === undefined || 'error' in result) {
-            return {
-                ...state,
-                loadingCounter: decrementLoading(state.loadingCounter)
-            };
-        }
-        return {
-            ...state,
-            loadingCounter: decrementLoading(state.loadingCounter),
-            list: addOrChangeQuiz(state.list, result),
-            details: state.details?.id === result.id ? {
-                ...state.details,
-                id: result.id,
-                title: result.title,
-                description: result.description
-            } : state.details 
-        };
-    }),
-    on(QuizzesActions.startQuestionSaving, (state, _) => ({
+
+    on(QuizzesActions.questionSaved, (state, { question }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
+        details: state.details ? {
+            ...state.details,
+            questions: addOrChangeQuestion(state.details?.questions, question)
+        } : null
     })),
-    on(QuizzesActions.finishQuestionSaving, (state, { result }) => {
-        if (!state.details || 'error' in result) {
-            return {
-                ...state,
-                loadingCounter: decrementLoading(state.loadingCounter)
-            };
-        }
-        return {
-            ...state,
-            loadingCounter: decrementLoading(state.loadingCounter),
-            details: {
-                ...state.details,
-                questions: addOrChangeQuestion(state.details?.questions, result)
-            }
-        };
-    }),
-    on(QuizzesActions.finishQuizDeletion, (state, { result }) => {
-        if (!state.details || 'error' in result) {
-            return {
-                ...state,
-                loadingCounter: decrementLoading(state.loadingCounter)
-            };
-        }
-        return {
-            ...state,
-            loadingCounter: decrementLoading(state.loadingCounter),
-            details: state.details?.id == result.id ? null : state.details,
-            list: state.list?.filter(q => q.id !== result.id) ?? null
-        };
-    }),
-    on(QuizzesActions.startQuestionDeletion, (state, _) => ({
+
+    on(QuizzesActions.quizDeleted, (state, { id }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
+        details: state.details?.id == id ? null : state.details,
+        list: state.list?.filter(q => q.id !== id) ?? null
     })),
-    on(QuizzesActions.finishQuestionDeletion, (state, { result }) => {
-        if (!state.details || 'error' in result) {
-            return {
-                ...state,
-                loadingCounter: decrementLoading(state.loadingCounter)
-            };
-        }
-        return {
-            ...state,
-            loadingCounter: decrementLoading(state.loadingCounter),
-            details: {
-                ...state.details,
-                questions: excludeQuestion(state.details.questions, result.id)
-            }
-        };
-    }),
-    on(QuizzesActions.startQuestionsReordering, (state, _) => ({
+
+    on(QuizzesActions.questionDeleted, (state, { id }) => ({
         ...state,
-        loadingCounter: incrementLoading(state.loadingCounter)
+        details:  state.details ? {
+            ...state.details,
+            questions: excludeQuestion(state.details.questions, id)
+        } : null
     })),
-    on(QuizzesActions.finishQuestionsReordering, (state, { result }) => {
-        if (
-            !state.details ||
-            state.details?.id !== result.quizId ||
-            'error' in result
-        ) {
-            return {
-                ...state,
-                loadingCounter: decrementLoading(state.loadingCounter)
-            };
-        }
-        return {
-            ...state,
-            loadingCounter: decrementLoading(state.loadingCounter),
-            details: {
-                ...state.details,
-                questions: result.questions
-            }
-        };
-    })
+
+    on(QuizzesActions.questionsReordered, (state, { quizId, questions }) => ({
+        ...state,
+        details: state.details?.id == quizId ? {
+            ...state.details,
+            questions: questions
+        } : state.details
+    }))
+    
 );
 
 function createDefaultState(): IQuizzesState {
@@ -132,14 +72,6 @@ function createDefaultState(): IQuizzesState {
         list: null,
         details: null
     };
-}
-
-function incrementLoading(currentValue: number): number {
-    return currentValue + 1;
-}
-
-function decrementLoading(currentValue: number): number {
-    return currentValue <= 0 ? 0 : currentValue - 1;
 }
 
 function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[] | null {

@@ -1,10 +1,10 @@
 import { HttpErrorResponse, HttpEvent, HttpEventType } from "@angular/common/http";
-import { NEVER, Observable, map, mergeMap, of, throwError } from "rxjs";
+import { NEVER, Observable, map, of, switchMap, throwError } from "rxjs";
 
 export function watchHttpErrors<T>(call: Observable<HttpEvent<T>>): Observable<T> {
     return call
         .pipe(
-            mergeMap(response => {
+            switchMap(response => {
                 if (isHttpErrorResponse(response)) {
                     return throwError(() => 'HTTP Error');
                 } else if(response.type == HttpEventType.Response) {
