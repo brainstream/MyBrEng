@@ -18,7 +18,8 @@ from blueprints import \
     quiz_question_delete, \
     quiz_reorder_questions, \
     quiz_delete, \
-    student_list
+    student_list, \
+    student_details
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
@@ -27,7 +28,9 @@ from dtos import QuizDtoSchema, \
     QuizEditDtoSchema, \
     QuizQuestionEditDtoSchema, \
     QuizQuestionPositionDtoSchema, \
-    StudentDtoSchema
+    StudentDtoSchema, \
+    StudentDetailedDtoSchema, \
+    RunSummaryDtoSchema
 from di import DI
 from database import db
 
@@ -63,7 +66,9 @@ def create_app() -> Flask:
         .schema('QuizEditDto', schema=QuizEditDtoSchema) \
         .schema('QuizQuestionEditDto', schema=QuizQuestionEditDtoSchema) \
         .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema) \
-        .schema('StudentDto', schema=StudentDtoSchema)
+        .schema('RunSummaryDto', schema=RunSummaryDtoSchema) \
+        .schema('StudentDto', schema=StudentDtoSchema) \
+        .schema('StudentDetailedDto', schema=StudentDetailedDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -86,6 +91,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_question_delete)
         spec.path(view=quiz_reorder_questions)
         spec.path(view=student_list)
+        spec.path(view=student_details)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

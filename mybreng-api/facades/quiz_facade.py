@@ -10,7 +10,7 @@ class QuizFacade:
     def get_quizzes(self, user_id: str):
         return [map_quiz_to_dto(quiz) for quiz in QuizTable.query.filter_by(owner_id=user_id).all()]
 
-    def get_quiz(self, quiz_id: str, owner_id: str):
+    def get_quiz(self, owner_id: str, quiz_id: str):
         quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
         if quiz is None:
             return None

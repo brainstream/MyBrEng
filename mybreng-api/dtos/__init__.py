@@ -9,3 +9,5 @@ from .quiz_quiestion_type import *
 from .quiz_question_edit_dto import *
 from .quiz_question_position_dto import *
 from .student_dto import *
+from .run_summary_dto import *
+from .student_detailed_dto import *

@@ -17,12 +17,18 @@ export const studentsReducer = createReducer(
         ...state,
         list: prepareStudentList(students)
     })),
+
+    on(studentsActions.detailsLoaded, (state, { student }) => ({
+        ...state,
+        details: student
+    }))
 );
 
 function createDefaultState(): IStudentsState {
     return {
         loadingCounter: 0,
-        list: null
+        list: null,
+        details: null
     };
 }
 

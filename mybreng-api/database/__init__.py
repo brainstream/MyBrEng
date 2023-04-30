@@ -60,6 +60,22 @@ class StudentTable(db.Model):
     note = db.Column('note', db.String)
     owner_id = db.Column('Owner', db.ForeignKey('User.Id'))
     owner = db.relationship('UserTable')
+    runs = db.relationship('RunTable', back_populates='student', order_by="RunTable.creation_date")
 
     def __repr__(self):
         return f'<Student: {self.first_name} {self.last_name}>'
+
+
+class RunTable(db.Model):
+    __tablename__ = 'Run'
+    id = db.Column('Id', db.String(38), primary_key=True)
+    creation_date = db.Column('CreationDate', db.Date())
+    start_date = db.Column('StartDate', db.Date())
+    finish_date = db.Column('FinishDate', db.Date())
+    quiz_id = db.Column('Quiz', db.ForeignKey('Quiz.Id'))
+    quiz = db.relationship('QuizTable')
+    student_id = db.Column('Student', db.ForeignKey('Student.Id'))
+    student = db.relationship('StudentTable')
+
+    def __repr__(self):
+        return f'<Run: {self.id}>'

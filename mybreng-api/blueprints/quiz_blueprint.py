@@ -57,7 +57,7 @@ def quiz_details(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]
         404:
           description: Quiz with specified ID not found
     """
-    quiz = quiz_facade.get_quiz(quiz_id, current_user.id)
+    quiz = quiz_facade.get_quiz(current_user.id, quiz_id)
     if quiz:
         return jsonify(quiz)
     else:

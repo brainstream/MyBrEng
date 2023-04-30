@@ -1,5 +1,5 @@
 import { IPostponedEvent } from "@app/shared";
-import { StudentDto } from "@app/web-api";
+import { StudentDetailedDto, StudentDto } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
 export const studentsActions = createActionGroup({
@@ -9,6 +9,8 @@ export const studentsActions = createActionGroup({
         'Set Loading': props<{ loading: boolean }>(),
         'Flush Events': props<{ events: IPostponedEvent[] }>(),
         'Load List': emptyProps(),
-        'List Loaded': props<{ students: StudentDto[] }>()
+        'List Loaded': props<{ students: StudentDto[] }>(),
+        'Load Details': props<{ id: string }>(),
+        'Details Loaded': props<{ student: StudentDetailedDto }>(),
     }
 });

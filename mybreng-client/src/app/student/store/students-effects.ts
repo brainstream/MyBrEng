@@ -53,4 +53,19 @@ export class StudentsEffects {
             }
         })
     ));
+
+    loadDetails$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.loadDetails),
+        switchMap(({ id }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.studentService.studentDetails(id, 'events'))
+                .pipe(
+                    map(student => studentsActions.detailsLoaded({ student })),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время загрузки данных ученика произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
 }
