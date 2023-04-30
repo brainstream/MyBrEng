@@ -1,8 +1,8 @@
 <mat-card>
-    <mat-card-content>
+    <mat-card-content [formGroup]="form">
         <mat-form-field class="full-width">
             <mat-label>Тип</mat-label>
-            <mat-select matInput autocomplete="off" required="" [(ngModel)]="questionType">
+            <mat-select matInput autocomplete="off" required="" formControlName="type">
                 <mat-option *ngFor="let type of questionTypes" [value]="type">
                     {{type | questionTypeName}}
                 </mat-option>
@@ -10,24 +10,24 @@
         </mat-form-field>
         <mat-form-field class="full-width">
             <mat-label>Текст</mat-label>
-            <textarea matInput rows="5" [(ngModel)]="questionText" required=""></textarea>
+            <textarea matInput rows="5" formControlName="text" required=""></textarea>
         </mat-form-field>
 
-        <div *ngFor="let answer of answers">
-            <mat-form-field class="full-width">
-                <mat-checkbox matPrefix *ngIf="canAnswersBeMarkedAsCorrect" [(ngModel)]="answer.isCorrect"
-                    [matTooltip]="answer.isCorrect ? 'Правильный ответ' : 'Неправильный ответ'"
+        <div *ngFor="let answer of answers.controls; let idx=index" formArrayName="answers">
+            <mat-form-field class="full-width" [formGroupName]="idx">
+                <mat-checkbox matPrefix *ngIf="canAnswersBeMarkedAsCorrect" formControlName="isCorrect"
+                    [matTooltip]="isCorrect(answer) ? 'Правильный ответ' : 'Неправильный ответ'"
                     class="correct-answer-mark">
                 </mat-checkbox>
-                <input matInput type="text" autocomplete="off" required="" [(ngModel)]="answer.text" />
+                <input matInput type="text" autocomplete="off" required="" formControlName="text" />
                 <button matSuffix
                     mat-icon-button 
                     matTooltip="Удалить ответ"
-                    (click)="deleteAnswer(answer)"
+                    (click)="deleteAnswer(idx)"
                     class="delete-answer-btn"
                 >
                     <mat-icon>delete</mat-icon>
-                </button>
+                </button> 
             </mat-form-field>
         </div>
 
@@ -45,11 +45,19 @@
                     <mat-icon>cancel</mat-icon>
                     Отменить
                 </button>
-                <button mat-raised-button color="accent" (click)="save()">
+                <button mat-raised-button color="accent" (click)="save()" [disabled]="!form.valid">
                     <mat-icon>save</mat-icon>
                     Сохранить
                 </button>
             </div>
         </div>
+
+
+        <div class="form-validation-error">
+            <div *ngIf="form.hasError('form')" class="text-error">
+                {{ form.getError('form') }}
+            </div>
+        </div>
+
     </mat-card-content>
 </mat-card>

@@ -26,7 +26,7 @@
                 </app-quiz-question-edit-form>
                 <ng-template #questionView>
                     <app-quiz-question
-                        [id]="'question-' + question.id"
+                        id="question-{{ question.id }}"
                         class="question"
                         [question]="question"
                         [position]="idx + 1"

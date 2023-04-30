@@ -130,6 +130,10 @@ $app-dark-theme: mat.define-dark-theme(
         color: mat.get-color-from-palette($foreground-palette, disabled-text);
     }
 
+    .text-error {
+        color: mat.get-color-from-palette($warn-palette, text);
+    }
+
     .mdc-snackbar {
         &.info {
             .mdc-snackbar__surface {
