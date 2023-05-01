@@ -60,7 +60,7 @@ class StudentTable(db.Model):
     note = db.Column('note', db.String)
     owner_id = db.Column('Owner', db.ForeignKey('User.Id'))
     owner = db.relationship('UserTable')
-    runs = db.relationship('RunTable', back_populates='student', order_by="RunTable.creation_date")
+    runs = db.relationship('RunTable', back_populates='student', order_by="desc(RunTable.creation_date)")
 
     def __repr__(self):
         return f'<Student: {self.first_name} {self.last_name}>'

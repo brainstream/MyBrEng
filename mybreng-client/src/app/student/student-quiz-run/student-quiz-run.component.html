@@ -1,0 +1,41 @@
+<mat-card *ngIf="run">
+    <mat-card-header>
+        <mat-card-title>
+        <a [routerLink]="['/quiz', run.quizId]">{{run.quizTitle}}</a></mat-card-title>
+    </mat-card-header>
+
+
+    <mat-card-content>
+        <div class="run-dates">
+            <div>Создан</div>
+            <div>{{run.creationDate | date:'medium'}}</div>
+            <div>Начат</div>
+            <div>
+                <ng-container *ngIf="run.startDate; else nodate">
+                    {{run.startDate | date:'medium'}}
+                </ng-container>
+            </div>
+            <div>Закончен</div>
+            <div>
+                <ng-container *ngIf="run.finishDate; else nodate">
+                    {{run.finishDate | date:'medium'}}
+                </ng-container>
+            </div>
+            <ng-template #nodate>&mdash;</ng-template>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+
+
+    <mat-card-footer>
+        <mat-card-actions class="run-links">
+
+            <button mat-button [cdkCopyToClipboard]="url">
+                <mat-icon>content_copy</mat-icon>
+                Копировать ссылку на тестирование
+            </button>
+            <div class="run-link text-muted">{{url}}</div>
+
+        </mat-card-actions>
+    </mat-card-footer>
+</mat-card>

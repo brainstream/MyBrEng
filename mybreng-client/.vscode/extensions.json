@@ -1,9 +1,10 @@
 {
 	"recommendations": [
-    "angular.ng-template"
-    "sibiraj-s.vscode-scss-formatter",
-    "dbaeumer.vscode-eslint"
-	],
+        "angular.ng-template",
+        "sibiraj-s.vscode-scss-formatter",
+        "dbaeumer.vscode-eslint",
+        "editorconfig.editorconfig"
+    ],
 	"unwantedRecommendations": [
 
 	]

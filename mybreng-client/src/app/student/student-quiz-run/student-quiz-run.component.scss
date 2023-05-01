@@ -1,0 +1,18 @@
+.run-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.run-link {
+    padding-right: 8px;
+}
+
+.run-dates {
+    display: grid;
+    grid-template-columns: min-content auto;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    margin: 1rem 0 !important;
+}

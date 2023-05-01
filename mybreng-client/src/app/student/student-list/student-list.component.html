@@ -1,5 +1,5 @@
 <app-layout-full [loading]="loading$ | async">
-  
+
     <ng-container navbar>
         <button mat-flat-button>
             <mat-icon>add</mat-icon>
@@ -8,7 +8,11 @@
     </ng-container>
 
     <mat-nav-list>
-        <app-student-list-item [student]="student" class="item" *ngFor="let student of students$ | async">
+        <app-student-list-item
+            class="item"
+            [student]="student"
+            *ngFor="let student of students$ | async"
+        >
         </app-student-list-item>
     </mat-nav-list>
 

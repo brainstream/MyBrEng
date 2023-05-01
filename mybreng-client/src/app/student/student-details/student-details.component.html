@@ -2,21 +2,10 @@
     <div class="details" *ngIf="student">
         <h1 class="title">{{student.firstName}} {{student.lastName}}</h1>
 
-        <!-- TODO: component -->
-        <mat-card>
-            <mat-card-content>
-                <div class="note">
-                    {{student.note}}
-                </div>
-            </mat-card-content>
-        </mat-card>
+        <app-student-note class="note" [student]="student"></app-student-note>
 
-        <!-- TODO: component -->
-        <mat-card *ngFor="let run of student.runs">
-            <mat-card-content>
-                Start: {{run.startDate}}
-            </mat-card-content>
-        </mat-card>
+        <app-student-quiz-run class="run" [run]="run" *ngFor="let run of student.runs">
+        </app-student-quiz-run>
 
     </div>
 </app-layout-full>
