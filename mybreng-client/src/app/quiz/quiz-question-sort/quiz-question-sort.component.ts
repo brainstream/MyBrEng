@@ -7,44 +7,44 @@ import { Store } from '@ngrx/store';
 import { QuizzesActions } from '../store';
 
 interface IQuestionData {
-  id: string;
-  text: string;
+    id: string;
+    text: string;
 }
 
 @Component({
-  selector: 'app-quiz-question-sort',
-  templateUrl: './quiz-question-sort.component.html',
-  styleUrls: ['./quiz-question-sort.component.scss']
+    selector: 'app-quiz-question-sort',
+    templateUrl: './quiz-question-sort.component.html',
+    styleUrls: ['./quiz-question-sort.component.scss']
 })
 export class QuizQuestionSortComponent {
-  private readonly quizId: string;
-  readonly questions: IQuestionData[];
+    private readonly quizId: string;
+    readonly questions: IQuestionData[];
 
-  constructor(
-    @Inject(MAT_DIALOG_DATA) data: IQuizQuestionSortData,
-    private readonly dialog: MatDialogRef<QuizQuestionPositionDto[]>,
-    private readonly store$: Store
-  ) {
-    this.quizId = data.quizId;
-    this.questions = data.questions.map(q => ({
-      id: q.id,
-      text: q.text
-    }));
-  }
+    constructor(
+        @Inject(MAT_DIALOG_DATA) data: IQuizQuestionSortData,
+        private readonly dialog: MatDialogRef<QuizQuestionPositionDto[]>,
+        private readonly store$: Store
+    ) {
+        this.quizId = data.quizId;
+        this.questions = data.questions.map(q => ({
+            id: q.id,
+            text: q.text
+        }));
+    }
 
-  drop(event: CdkDragDrop<IQuestionData[]>) {
-    moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
-  }
+    drop(event: CdkDragDrop<IQuestionData[]>) {
+        moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
+    }
 
-  save() {
-    const result: QuizQuestionPositionDto[] = this.questions.map((q, idx) => ({
-      id: q.id,
-      index: idx
-    }));
-    this.store$.dispatch(QuizzesActions.reorderQuestions({
-      quizId: this.quizId,
-      questions: result
-    }));
-    this.dialog.close();
-  }
+    save() {
+        const result: QuizQuestionPositionDto[] = this.questions.map((q, idx) => ({
+            id: q.id,
+            index: idx
+        }));
+        this.store$.dispatch(QuizzesActions.reorderQuestions({
+            quizId: this.quizId,
+            questions: result
+        }));
+        this.dialog.close();
+    }
 }

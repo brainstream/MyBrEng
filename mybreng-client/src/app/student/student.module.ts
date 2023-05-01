@@ -14,23 +14,23 @@ import { StudentListItemComponent } from './student-list-item';
 import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [
-    StudentListComponent,
-    StudentListItemComponent,
-    StudentDetailsComponent
-  ],
-  imports: [
-    CommonModule,
-    StoreModule.forFeature('students', studentsReducer),
-    EffectsModule.forFeature([
-      StudentsEffects
-    ]),
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatCardModule,
-    StudentRoutingModule,
-    LayoutModule
-  ]
+    declarations: [
+        StudentListComponent,
+        StudentListItemComponent,
+        StudentDetailsComponent
+    ],
+    imports: [
+        CommonModule,
+        StoreModule.forFeature('students', studentsReducer),
+        EffectsModule.forFeature([
+            StudentsEffects
+        ]),
+        MatButtonModule,
+        MatIconModule,
+        MatListModule,
+        MatCardModule,
+        StudentRoutingModule,
+        LayoutModule
+    ]
 })
 export class StudentModule { }

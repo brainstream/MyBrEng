@@ -14,7 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
-import { DragDropModule } from '@angular/cdk/drag-drop'; 
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { QuizListComponent } from './quiz-list';
 import { QuizDetailsComponent } from './quiz-details/';
 import { QuizRoutingModule } from './quiz-routing.module';
@@ -33,42 +33,42 @@ import { CommonModule as AppCommonModule } from '@app/common';
 import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-sort.component';
 
 @NgModule({
-  declarations: [
-    QuizListComponent,
-    QuizDetailsComponent,
-    QuizEditFormComponent,
-    QuizListItemComponent,
-    QuizQuestionComponent,
-    QuestionTypeNamePipe,
-    QuizQuestionEditFormComponent,
-    QuizQuestionSortComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    StoreModule.forFeature('quizzes', quizzesReducer),
-    EffectsModule.forFeature([
-      QuizzesEffects
-    ]),
-    MatButtonModule,
-    MatIconModule,
-    MatBottomSheetModule,
-    MatFormFieldModule,
-    MatListModule,
-    MatInputModule,
-    MatCardModule,
-    MatChipsModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatTooltipModule,
-    MatDialogModule,
-    DragDropModule,
-    QuizRoutingModule,
-    MarkdownModule,
-    LayoutModule,
-    AppCommonModule
-  ]
+    declarations: [
+        QuizListComponent,
+        QuizDetailsComponent,
+        QuizEditFormComponent,
+        QuizListItemComponent,
+        QuizQuestionComponent,
+        QuestionTypeNamePipe,
+        QuizQuestionEditFormComponent,
+        QuizQuestionSortComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        StoreModule.forFeature('quizzes', quizzesReducer),
+        EffectsModule.forFeature([
+            QuizzesEffects
+        ]),
+        MatButtonModule,
+        MatIconModule,
+        MatBottomSheetModule,
+        MatFormFieldModule,
+        MatListModule,
+        MatInputModule,
+        MatCardModule,
+        MatChipsModule,
+        MatMenuModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatTooltipModule,
+        MatDialogModule,
+        DragDropModule,
+        QuizRoutingModule,
+        MarkdownModule,
+        LayoutModule,
+        AppCommonModule
+    ]
 })
 export class QuizModule { }

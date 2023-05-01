@@ -62,7 +62,7 @@ export class QuizQuestionEditFormComponent {
         this.form.controls['type'].setValue(q.question_type);
         if (q.answers) {
             this.answers.clear();
-            q.answers.forEach(a => 
+            q.answers.forEach(a =>
                 this.answers.push(this.createAnswerFormGroup(a.id, a.text, a.is_correct))
             );
         }

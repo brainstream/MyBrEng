@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Converter } from 'showdown';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class MarkdownService {
-  readonly converter = new Converter();
+    readonly converter = new Converter();
 
-  convertToHtml(text: string): string {
-    return this.converter.makeHtml(text);
-  }
+    convertToHtml(text: string): string {
+        return this.converter.makeHtml(text);
+    }
 }

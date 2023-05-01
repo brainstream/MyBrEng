@@ -30,19 +30,19 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.route.paramMap.subscribe(params => {
             const id = params.get('id');
             if (id) {
-              this.store$.dispatch(studentsActions.loadDetails({ id }))
+                this.store$.dispatch(studentsActions.loadDetails({ id }))
             }
-          })
+        })
         );
         this.subscriptions.push(this.store$
-          .select(StudentsSelectors.details)
-          .subscribe(student => {
-            this.student = student;
-            if (student) {
-                const latName = student.lastName ? ` ${student.lastName}` : '';
-                this.titleService.setTitle(`${student.firstName}${latName}`);
-            }
-          })
+            .select(StudentsSelectors.details)
+            .subscribe(student => {
+                this.student = student;
+                if (student) {
+                    const latName = student.lastName ? ` ${student.lastName}` : '';
+                    this.titleService.setTitle(`${student.firstName}${latName}`);
+                }
+            })
         );
     }
 

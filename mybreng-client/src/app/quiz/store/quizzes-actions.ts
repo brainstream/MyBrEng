@@ -1,10 +1,10 @@
 import { IPostponedEvent } from "@app/shared";
-import { 
+import {
     QuizDetailedDto,
-    QuizDto, 
-    QuizEditDto, 
-    QuizQuestionDto, 
-    QuizQuestionEditDto, 
+    QuizDto,
+    QuizEditDto,
+    QuizQuestionDto,
+    QuizQuestionEditDto,
     QuizQuestionPositionDto
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";

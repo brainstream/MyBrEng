@@ -1,16 +1,16 @@
 <mat-toolbar class="layout-full-toolbar" color="primary">
     <span class="layout-full-toolbar-title" routerLink="">QuizTime</span>
-    <button 
-        mat-flat-button 
+    <button
+        mat-flat-button
         color="primary"
-        routerLink="/quiz" 
-        class="layout-full-toolbar-nav-link" 
+        routerLink="/quiz"
+        class="layout-full-toolbar-nav-link"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true  }"
     >
         Тесты
     </button>
-    <button 
+    <button
         mat-flat-button
         color="primary"
         routerLink="/student"
@@ -20,7 +20,7 @@
     >
         Ученики
     </button>
-    
+
     <div class="layout-full-toolbar-spacer"></div>
 
     <ng-content select="[navbar]"></ng-content>

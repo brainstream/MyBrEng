@@ -7,7 +7,7 @@ export function watchHttpErrors<T>(call: Observable<HttpEvent<T>>): Observable<T
             switchMap(response => {
                 if (isHttpErrorResponse(response)) {
                     return throwError(() => 'HTTP Error');
-                } else if(response.type == HttpEventType.Response) {
+                } else if (response.type == HttpEventType.Response) {
                     return of(response.body);
                 }
                 return NEVER;

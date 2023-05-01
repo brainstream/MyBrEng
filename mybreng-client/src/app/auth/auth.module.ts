@@ -13,23 +13,23 @@ import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [
-    LoginComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatProgressSpinnerModule
-  ],
-  providers: [{
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-      deps: [AuthService, MatDialog]
+    declarations: [
+        LoginComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatDialogModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatProgressSpinnerModule
+    ],
+    providers: [{
+        provide: HTTP_INTERCEPTORS,
+        useClass: AuthInterceptor,
+        multi: true,
+        deps: [AuthService, MatDialog]
     }]
 })
 export class AuthModule { }

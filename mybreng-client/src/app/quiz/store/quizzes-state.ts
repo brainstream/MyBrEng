@@ -9,7 +9,7 @@ export const enum LoadingStatus {
 
 export class RemoteData<T> {
     constructor(
-        public readonly data: T, 
+        public readonly data: T,
         public readonly loading: LoadingStatus
     ) {
     }

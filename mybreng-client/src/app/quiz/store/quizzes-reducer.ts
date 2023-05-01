@@ -50,7 +50,7 @@ export const quizzesReducer = createReducer(
 
     on(QuizzesActions.questionDeleted, (state, { id }) => ({
         ...state,
-        details:  state.details ? {
+        details: state.details ? {
             ...state.details,
             questions: excludeQuestion(state.details.questions, id)
         } : null
@@ -63,7 +63,7 @@ export const quizzesReducer = createReducer(
             questions: questions
         } : state.details
     }))
-    
+
 );
 
 function createDefaultState(): IQuizzesState {

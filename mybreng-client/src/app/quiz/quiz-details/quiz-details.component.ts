@@ -14,168 +14,168 @@ import { QuizzesEventsService } from '../quizzes-events.service';
 import { TitleService } from '@app/common';
 
 @Component({
-  selector: 'app-quiz-details',
-  templateUrl: './quiz-details.component.html',
-  styleUrls: ['./quiz-details.component.scss'],
-  animations: [
-    collapseOnLeaveAnimation()
-  ]
+    selector: 'app-quiz-details',
+    templateUrl: './quiz-details.component.html',
+    styleUrls: ['./quiz-details.component.scss'],
+    animations: [
+        collapseOnLeaveAnimation()
+    ]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
-  private readonly subscriptions: Subscription[] = [];
+    private readonly subscriptions: Subscription[] = [];
 
-  readonly loading$: Observable<boolean>;
-  quiz: QuizDetailedDto | null;
-  editQuestionId: string | null = null;
-  newQuestion: QuizQuestionDto | null = null;
+    readonly loading$: Observable<boolean>;
+    quiz: QuizDetailedDto | null;
+    editQuestionId: string | null = null;
+    newQuestion: QuizQuestionDto | null = null;
 
-  constructor(
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly store$: Store,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly confirmDialog: ConfirmDialogService,
-    private readonly dialog: MatDialog,
-    private readonly events: QuizzesEventsService,
-    private readonly titleService: TitleService
-  ) {
-    this.loading$ = store$.select(QuizzesSelectors.loading);
-  }
-
-  ngOnInit(): void {
-    this.subscriptions.push(this.route.paramMap.subscribe(params => {
-        const id = params.get('id');
-        if (id) {
-          this.store$.dispatch(QuizzesActions.loadDetails({ id }))
-        }
-      })
-    );
-    this.subscriptions.push(this.store$
-      .select(QuizzesSelectors.details)
-      .subscribe(quiz => {
-        this.quiz = quiz;
-        this.titleService.setTitle(quiz?.title);
-      })
-    );
-    this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
-      this.router.navigate(['/quiz']);
-    }));
-    this.subscriptions.push(this.events.questionSaved$.subscribe(({ question }) => {
-      // TODO: close the edit form here
-      this.scrollTo(`question-${question.id}`);
-    }));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(s => s.unsubscribe());
-    this.subscriptions.splice(0, this.subscriptions.length);
-  }
-
-  editQuiz() {
-    const quiz = this.quiz;
-    if (!quiz) {
-      return;
+    constructor(
+        private readonly route: ActivatedRoute,
+        private readonly router: Router,
+        private readonly store$: Store,
+        private readonly bottomSheet: MatBottomSheet,
+        private readonly confirmDialog: ConfirmDialogService,
+        private readonly dialog: MatDialog,
+        private readonly events: QuizzesEventsService,
+        private readonly titleService: TitleService
+    ) {
+        this.loading$ = store$.select(QuizzesSelectors.loading);
     }
-    const bs = this.bottomSheet
-      .open(QuizEditFormComponent, {
-        data: quiz,
-      });
-    const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
-      if (result) {
-        this.store$.dispatch(QuizzesActions.saveDetails({
-          quiz: {
-            ...result,
-            id: quiz.id
-          }
+
+    ngOnInit(): void {
+        this.subscriptions.push(this.route.paramMap.subscribe(params => {
+            const id = params.get('id');
+            if (id) {
+                this.store$.dispatch(QuizzesActions.loadDetails({ id }))
+            }
+        })
+        );
+        this.subscriptions.push(this.store$
+            .select(QuizzesSelectors.details)
+            .subscribe(quiz => {
+                this.quiz = quiz;
+                this.titleService.setTitle(quiz?.title);
+            })
+        );
+        this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
+            this.router.navigate(['/quiz']);
         }));
-      }
-      subscription.unsubscribe();
-    });
-  }
-
-  async deleteQuiz() {
-    if (!this.quiz) {
-      return;
+        this.subscriptions.push(this.events.questionSaved$.subscribe(({ question }) => {
+            // TODO: close the edit form here
+            this.scrollTo(`question-${question.id}`);
+        }));
     }
-    const result = await this.confirmDialog.show({
-      text: 'Вы действительно хотите удалить этот тест?',
-      buttons: {
-        yes: {
-          text: 'Удалить',
-          icon: 'delete',
-          color: 'warn'
-        },
-        no: {
-          text: 'Отменить',
-          color: 'default'
+
+    ngOnDestroy(): void {
+        this.subscriptions.forEach(s => s.unsubscribe());
+        this.subscriptions.splice(0, this.subscriptions.length);
+    }
+
+    editQuiz() {
+        const quiz = this.quiz;
+        if (!quiz) {
+            return;
         }
-      }
-    });
-    if (result.button === ConfirmDialogButton.Yes) {
-      this.store$.dispatch(QuizzesActions.deleteQuiz({ id: this.quiz.id }));
+        const bs = this.bottomSheet
+            .open(QuizEditFormComponent, {
+                data: quiz,
+            });
+        const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
+            if (result) {
+                this.store$.dispatch(QuizzesActions.saveDetails({
+                    quiz: {
+                        ...result,
+                        id: quiz.id
+                    }
+                }));
+            }
+            subscription.unsubscribe();
+        });
     }
-  }
 
-  addQuestion() {
-    this.newQuestion = {
-      id: '',
-      question_type: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
-      text: '',
-      answers: []
-    };
-    this.scrollTo('bottom');
-  }
-
-  scrollTo(id: string) {
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView(); // FIXME: use router
-    }, 0);
-  }
-
-  cancellAddQuestion() {
-    this.newQuestion = null;
-  }
-
-  saveNewQuestion(question: QuizQuestionEditDto) {
-    this.newQuestion = null;
-    this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
-  }
-
-  reorderQuestion() {
-    this.dialog.open(QuizQuestionSortComponent, {
-      data: {
-        quizId: this.quiz?.id,
-        questions: this.quiz?.questions
-      }
-    });
-  }
-
-  editQuestion(question: QuizQuestionDto | null) {
-    this.editQuestionId = question?.id ?? null;
-  }
-
-  saveQuestion(question: QuizQuestionEditDto) {
-    this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
-    this.editQuestionId = null;
-  }
-
-  async deleteQuestion(question: QuizQuestionDto) {
-    const result = await this.confirmDialog.show({
-      text: 'Вы действительно хотите удалить вопрос?',
-      buttons: {
-        yes: {
-          text: 'Удалить',
-          icon: 'delete',
-          color: 'warn'
-        },
-        no: {
-          text: 'Отменить',
-          color: 'default'
+    async deleteQuiz() {
+        if (!this.quiz) {
+            return;
         }
-      }
-    });
-    if (result.button === ConfirmDialogButton.Yes) {
-      this.store$.dispatch(QuizzesActions.deleteQuestion({ id: question.id }));
+        const result = await this.confirmDialog.show({
+            text: 'Вы действительно хотите удалить этот тест?',
+            buttons: {
+                yes: {
+                    text: 'Удалить',
+                    icon: 'delete',
+                    color: 'warn'
+                },
+                no: {
+                    text: 'Отменить',
+                    color: 'default'
+                }
+            }
+        });
+        if (result.button === ConfirmDialogButton.Yes) {
+            this.store$.dispatch(QuizzesActions.deleteQuiz({ id: this.quiz.id }));
+        }
     }
-  }
+
+    addQuestion() {
+        this.newQuestion = {
+            id: '',
+            question_type: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
+            text: '',
+            answers: []
+        };
+        this.scrollTo('bottom');
+    }
+
+    scrollTo(id: string) {
+        setTimeout(() => {
+            document.getElementById(id)?.scrollIntoView(); // FIXME: use router
+        }, 0);
+    }
+
+    cancellAddQuestion() {
+        this.newQuestion = null;
+    }
+
+    saveNewQuestion(question: QuizQuestionEditDto) {
+        this.newQuestion = null;
+        this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
+    }
+
+    reorderQuestion() {
+        this.dialog.open(QuizQuestionSortComponent, {
+            data: {
+                quizId: this.quiz?.id,
+                questions: this.quiz?.questions
+            }
+        });
+    }
+
+    editQuestion(question: QuizQuestionDto | null) {
+        this.editQuestionId = question?.id ?? null;
+    }
+
+    saveQuestion(question: QuizQuestionEditDto) {
+        this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
+        this.editQuestionId = null;
+    }
+
+    async deleteQuestion(question: QuizQuestionDto) {
+        const result = await this.confirmDialog.show({
+            text: 'Вы действительно хотите удалить вопрос?',
+            buttons: {
+                yes: {
+                    text: 'Удалить',
+                    icon: 'delete',
+                    color: 'warn'
+                },
+                no: {
+                    text: 'Отменить',
+                    color: 'default'
+                }
+            }
+        });
+        if (result.button === ConfirmDialogButton.Yes) {
+            this.store$.dispatch(QuizzesActions.deleteQuestion({ id: question.id }));
+        }
+    }
 }

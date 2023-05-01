@@ -8,17 +8,17 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
-  declarations: [
-    ConfirmDialogComponent
-  ],
-  imports: [
-    NgCommonModule,
-    MatBottomSheetModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDividerModule,
-    MatSnackBarModule
-  ]
+    declarations: [
+        ConfirmDialogComponent
+    ],
+    imports: [
+        NgCommonModule,
+        MatBottomSheetModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        MatSnackBarModule
+    ]
 })
 export class CommonModule {
 

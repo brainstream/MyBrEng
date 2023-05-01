@@ -3,40 +3,40 @@ import { ThemeService } from '@app/common';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-layout-full',
-  templateUrl: './layout-full.component.html',
-  styleUrls: ['./layout-full.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-layout-full',
+    templateUrl: './layout-full.component.html',
+    styleUrls: ['./layout-full.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 export class LayoutFullComponent {
-  @ViewChild('loading', {static: true}) loadingTemplate: TemplateRef<any>;
+    @ViewChild('loading', { static: true }) loadingTemplate: TemplateRef<any>;
 
-  constructor(
-    private readonly theme: ThemeService,
-    private readonly dialog: MatDialog
-  ) {
-  }
-
-  @Input() set loading(value: boolean | null) {
-    if (value) {
-      this.dialog.open(this.loadingTemplate, {
-        disableClose: true,
-        panelClass: 'layout-full-loading'
-      });
-    } else {
-      this.dialog.closeAll();
+    constructor(
+        private readonly theme: ThemeService,
+        private readonly dialog: MatDialog
+    ) {
     }
-  }
 
-  setSystemTheme() {
-    this.theme.setSystem();
-  }
+    @Input() set loading(value: boolean | null) {
+        if (value) {
+            this.dialog.open(this.loadingTemplate, {
+                disableClose: true,
+                panelClass: 'layout-full-loading'
+            });
+        } else {
+            this.dialog.closeAll();
+        }
+    }
 
-  setDarkTheme() {
-    this.theme.setDark();
-  }
+    setSystemTheme() {
+        this.theme.setSystem();
+    }
 
-  setLightTheme() {
-    this.theme.setLight();
-  }
+    setDarkTheme() {
+        this.theme.setDark();
+    }
+
+    setLightTheme() {
+        this.theme.setLight();
+    }
 }

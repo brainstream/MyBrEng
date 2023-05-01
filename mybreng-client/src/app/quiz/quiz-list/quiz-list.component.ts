@@ -10,46 +10,46 @@ import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
 
 @Component({
-  selector: 'app-quiz-list',
-  templateUrl: './quiz-list.component.html',
-  styleUrls: ['./quiz-list.component.scss']
+    selector: 'app-quiz-list',
+    templateUrl: './quiz-list.component.html',
+    styleUrls: ['./quiz-list.component.scss']
 })
 export class QuizListComponent implements OnInit, OnDestroy {
-  private quizCreatedSubscription: Subscription | undefined;
-  
-  readonly quizzes$: Observable<QuizDto[]>;
-  readonly loading$: Observable<boolean>;
+    private quizCreatedSubscription: Subscription | undefined;
 
-  constructor(
-    private readonly store$: Store,
-    private readonly bottomSheet: MatBottomSheet,
-    private readonly events: QuizzesEventsService,
-    private readonly router: Router,
-    titleService: TitleService
-  ) {
-    this.quizzes$ = store$.select(QuizzesSelectors.list);
-    this.loading$ = store$.select(QuizzesSelectors.loading);
-    titleService.setTitle('Тесты');
-    store$.dispatch(QuizzesActions.loadList());
-  }
-  
-  ngOnInit(): void {
-    this.quizCreatedSubscription = this.events.quizSaved$.subscribe(quiz => {
-      this.router.navigate(['/quiz', quiz.id]);
-    });
-  }
+    readonly quizzes$: Observable<QuizDto[]>;
+    readonly loading$: Observable<boolean>;
 
-  ngOnDestroy(): void {
-    this.quizCreatedSubscription?.unsubscribe();
-  }
+    constructor(
+        private readonly store$: Store,
+        private readonly bottomSheet: MatBottomSheet,
+        private readonly events: QuizzesEventsService,
+        private readonly router: Router,
+        titleService: TitleService
+    ) {
+        this.quizzes$ = store$.select(QuizzesSelectors.list);
+        this.loading$ = store$.select(QuizzesSelectors.loading);
+        titleService.setTitle('Тесты');
+        store$.dispatch(QuizzesActions.loadList());
+    }
 
-  showCreateQuizForm() {
-    const bs = this.bottomSheet.open(QuizEditFormComponent);
-    const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
-      subscription.unsubscribe();
-      if (result) {
-        this.store$.dispatch(QuizzesActions.saveDetails({ quiz: result }));
-      }
-    });
-  }
+    ngOnInit(): void {
+        this.quizCreatedSubscription = this.events.quizSaved$.subscribe(quiz => {
+            this.router.navigate(['/quiz', quiz.id]);
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.quizCreatedSubscription?.unsubscribe();
+    }
+
+    showCreateQuizForm() {
+        const bs = this.bottomSheet.open(QuizEditFormComponent);
+        const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
+            subscription.unsubscribe();
+            if (result) {
+                this.store$.dispatch(QuizzesActions.saveDetails({ quiz: result }));
+            }
+        });
+    }
 }

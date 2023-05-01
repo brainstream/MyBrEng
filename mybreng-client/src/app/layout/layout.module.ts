@@ -12,24 +12,24 @@ import { CommonModule as AppCommonModule } from '@app/common';
 import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [
-    LayoutSimpleComponent,
-    LayoutFullComponent
-  ],
-  exports: [
-    LayoutFullComponent,
-    LayoutSimpleComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatDialogModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatProgressSpinnerModule,
-    AppCommonModule
-  ]
+    declarations: [
+        LayoutSimpleComponent,
+        LayoutFullComponent
+    ],
+    exports: [
+        LayoutFullComponent,
+        LayoutSimpleComponent
+    ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatDialogModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        AppCommonModule
+    ]
 })
 export class LayoutModule { }

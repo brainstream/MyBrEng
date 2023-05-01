@@ -14,29 +14,29 @@ import { AuthModule } from './auth';
 import { CommonModule as AppCommonModule } from '@app/common';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    HttpClientModule,
-    AuthModule,
-    ApiModule,
-    AppCommonModule
-  ],
-  providers: [{
-    provide: APP_INITIALIZER,
-    useFactory: appInitializerFactory,
-    deps: [
-      ThemeService
+    declarations: [
+        AppComponent
     ],
-    multi: true
-  }],
-  bootstrap: [AppComponent]
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot({}, {}),
+        EffectsModule.forRoot([]),
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+        HttpClientModule,
+        AuthModule,
+        ApiModule,
+        AppCommonModule
+    ],
+    providers: [{
+        provide: APP_INITIALIZER,
+        useFactory: appInitializerFactory,
+        deps: [
+            ThemeService
+        ],
+        multi: true
+    }],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

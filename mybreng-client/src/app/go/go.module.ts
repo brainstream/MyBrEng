@@ -6,14 +6,14 @@ import { GoRoutingModule } from './go-routing.module';
 import { LayoutModule } from '@app/layout';
 
 @NgModule({
-  declarations: [
-    RunComponent,
-    NotFoundComponent
-  ],
-  imports: [
-    CommonModule,
-    GoRoutingModule,
-    LayoutModule
-  ]
+    declarations: [
+        RunComponent,
+        NotFoundComponent
+    ],
+    imports: [
+        CommonModule,
+        GoRoutingModule,
+        LayoutModule
+    ]
 })
 export class GoModule { }
