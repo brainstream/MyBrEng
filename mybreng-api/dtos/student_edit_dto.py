@@ -16,10 +16,10 @@ class StudentEditDtoSchema(Schema):
     last_name = fields.String(data_key='lastName', required=False)
 
     @post_load
-    def make_dto(self, data):
+    def make_dto(self, data, **kwargs):
         args = data
-        student_id = ''
-        if data['id']:
+        student_id = None
+        if 'id' in data:
             student_id = str(args['id'])
             args = {**args}
             del args['id']

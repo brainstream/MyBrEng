@@ -22,6 +22,7 @@ class StudentFacade:
         student.last_name = dto.last_name
         student.owner_id = owner_id
         db.session.add(student)
+        db.session.commit()
         return map_student_to_dto(student)
 
     def edit_student(self, owner_id: str, dto: StudentEditDto) -> StudentDto | None:
