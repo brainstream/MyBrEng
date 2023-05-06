@@ -7,6 +7,7 @@ import { watchHttpErrors } from "@app/shared";
 import { MessageService } from "@app/common";
 import { studentsActions } from "./students-actions";
 import { StudentsSelectors } from "./students-selectors";
+import { StudentEventsService } from "../student-events.service";
 
 @Injectable()
 export class StudentsEffects {
@@ -14,7 +15,8 @@ export class StudentsEffects {
         private readonly actions$: Actions,
         private store$: Store,
         private readonly studentService: StudentService,
-        private readonly messageService: MessageService
+        private readonly messageService: MessageService,
+        private readonly eventsService: StudentEventsService
     ) {
     }
 
@@ -63,6 +65,28 @@ export class StudentsEffects {
                     map(student => studentsActions.detailsLoaded({ student })),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время загрузки данных ученика произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
+
+    saveDetails$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.saveDetails),
+        switchMap(({ student }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.studentService.studentSave(student, 'events'))
+                .pipe(
+                    switchMap(student => from([
+                        studentsActions.detailsSaved({ student }),
+                        studentsActions.flushEvents({
+                            events: [
+                                this.eventsService.studentSaved$.postpone(student)
+                            ]
+                        })
+                    ])),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время сохранения теста произошла ошибка'
                     })))
                 ),
             of(studentsActions.setLoading({ loading: false }))

@@ -21,6 +21,17 @@ export const studentsReducer = createReducer(
     on(studentsActions.detailsLoaded, (state, { student }) => ({
         ...state,
         details: student
+    })),
+
+    on(studentsActions.detailsSaved, (state, { student }) => ({
+        ...state,
+        list: addOrChangeStudent(state.list, student),
+        details: state.details?.id === student.id ? {
+            ...state.details,
+            id: student.id,
+            firstName: student.firstName,
+            lastName: student.lastName
+        } : state.details
     }))
 );
 
@@ -38,4 +49,17 @@ function prepareStudentList(students: StudentDto[]): StudentDto[] {
 
 function sortStudentListInPlace(list: StudentDto[]): StudentDto[] {
     return list.sort((left, right) => left.firstName < right.firstName ? -1 : 1);
+}
+
+function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): StudentDto[] | null {
+    if (list == null) {
+        return null;
+    }
+    const idx = list.findIndex(s => s.id === student.id);
+    if (idx < 0) {
+        return [...list, student];
+    }
+    const result = [...list];
+    result.splice(idx, 1, student);
+    return sortStudentListInPlace(result);
 }

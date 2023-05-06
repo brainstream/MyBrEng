@@ -1,4 +1,11 @@
 <app-layout-full [loading]="loading$ | async">
+    <ng-container navbar>
+        <button mat-flat-button [matMenuTriggerFor]="editMenu">
+            <mat-icon>edit</mat-icon>
+            Правка
+        </button>
+    </ng-container>
+
     <div class="details" *ngIf="student">
         <h1 class="title">{{student.firstName}} {{student.lastName}}</h1>
 
@@ -9,3 +16,16 @@
 
     </div>
 </app-layout-full>
+
+
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="editStudent()">
+        <mat-icon>edit</mat-icon>
+        Редактировать
+    </button>
+    <button mat-menu-item (click)="deleteStudent()">
+        <mat-icon>delete</mat-icon>
+        Удалить
+    </button>
+</mat-menu>

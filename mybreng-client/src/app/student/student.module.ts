@@ -15,6 +15,12 @@ import { StudentListItemComponent } from './student-list-item';
 import { MatCardModule } from '@angular/material/card';
 import { StudentQuizRunComponent } from './student-quiz-run';
 import { StudentNoteComponent } from './student-note';
+import { StudentEditFormComponent } from './student-edit-form';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
     declarations: [
@@ -22,10 +28,13 @@ import { StudentNoteComponent } from './student-note';
         StudentListItemComponent,
         StudentDetailsComponent,
         StudentQuizRunComponent,
-        StudentNoteComponent
+        StudentNoteComponent,
+        StudentEditFormComponent
     ],
     imports: [
         CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
         StoreModule.forFeature('students', studentsReducer),
         EffectsModule.forFeature([
             StudentsEffects
@@ -35,6 +44,10 @@ import { StudentNoteComponent } from './student-note';
         MatIconModule,
         MatListModule,
         MatCardModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatMenuModule,
+        MatBottomSheetModule,
         StudentRoutingModule,
         LayoutModule
     ]
