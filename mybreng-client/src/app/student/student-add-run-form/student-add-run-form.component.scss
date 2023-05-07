@@ -1,0 +1,12 @@
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+
+    > button {
+        margin-left: 1rem;
+    }
+}

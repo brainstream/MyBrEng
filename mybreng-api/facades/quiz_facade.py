@@ -8,7 +8,8 @@ from mappers import map_quiz_to_detailed_dto, map_quiz_to_dto
 # noinspection PyMethodMayBeStatic
 class QuizFacade:
     def get_quizzes(self, user_id: str):
-        return [map_quiz_to_dto(quiz) for quiz in QuizTable.query.filter_by(owner_id=user_id).all()]
+        return [map_quiz_to_dto(quiz) for quiz in
+                QuizTable.query.filter_by(owner_id=user_id).order_by(QuizTable.title).all()]
 
     def get_quiz(self, owner_id: str, quiz_id: str):
         quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()

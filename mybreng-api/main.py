@@ -11,6 +11,7 @@ from blueprints import \
     quiz_blueprint, \
     student_blueprint, \
     account_login, \
+    run_blueprint, \
     quiz_list, \
     quiz_details, \
     quiz_save, \
@@ -20,7 +21,8 @@ from blueprints import \
     quiz_delete, \
     student_list, \
     student_details, \
-    student_save
+    student_save, \
+    run_create
 from dtos import QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
@@ -32,7 +34,8 @@ from dtos import QuizDtoSchema, \
     StudentDtoSchema, \
     StudentDetailedDtoSchema, \
     StudentEditDtoSchema, \
-    RunSummaryDtoSchema
+    RunSummaryDtoSchema, \
+    RunCreateDtoSchema
 from di import DI
 from database import db
 
@@ -45,7 +48,8 @@ def create_app() -> Flask:
         tags=[
             dict(name="Account"),
             dict(name="Quiz"),
-            dict(name="Student")
+            dict(name="Student"),
+            dict(name="Run")
         ],
         servers=[
             dict(
@@ -71,7 +75,8 @@ def create_app() -> Flask:
         .schema('RunSummaryDto', schema=RunSummaryDtoSchema) \
         .schema('StudentDto', schema=StudentDtoSchema) \
         .schema('StudentDetailedDto', schema=StudentDetailedDtoSchema) \
-        .schema('StudentEditDto', schema=StudentEditDtoSchema)
+        .schema('StudentEditDto', schema=StudentEditDtoSchema) \
+        .schema('RunCreateDto', schema=RunCreateDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -79,6 +84,7 @@ def create_app() -> Flask:
     flask.register_blueprint(account_blueprint, url_prefix='/api/account')
     flask.register_blueprint(quiz_blueprint, url_prefix='/api/quiz')
     flask.register_blueprint(student_blueprint, url_prefix='/api/student')
+    flask.register_blueprint(run_blueprint, url_prefix='/api/run')
     di.init_resources()
     db.init_app(flask)
     login_manager = LoginManager()
@@ -96,6 +102,7 @@ def create_app() -> Flask:
         spec.path(view=student_list)
         spec.path(view=student_details)
         spec.path(view=student_save)
+        spec.path(view=run_create)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { StudentService } from "@app/web-api";
+import { QuizService, RunService, StudentService } from "@app/web-api";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { concat, EMPTY, map, switchMap, of, catchError, tap, from } from "rxjs";
@@ -15,6 +15,8 @@ export class StudentsEffects {
         private readonly actions$: Actions,
         private store$: Store,
         private readonly studentService: StudentService,
+        private readonly quizService: QuizService,
+        private readonly runService: RunService,
         private readonly messageService: MessageService,
         private readonly eventsService: StudentEventsService
     ) {
@@ -87,6 +89,50 @@ export class StudentsEffects {
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время сохранения теста произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
+
+    loadAvailableQuizzes$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.loadAvailableQuizzes),
+        concatLatestFrom(() => this.store$.select(StudentsSelectors.isAvailableQuizzesLoaded)),
+        switchMap(([_, isAvailableQuizzesLoaded]) => {
+            if (isAvailableQuizzesLoaded) {
+                return EMPTY;
+            } else {
+                return concat(
+                    of(studentsActions.setLoading({ loading: true })),
+                    watchHttpErrors(this.quizService.quizList('events'))
+                        .pipe(
+                            map(quizzes => studentsActions.availableQuizzesLoaded({ quizzes })),
+                            catchError(() => of(studentsActions.setError({
+                                message: 'Во время загрузки списка доступных тестов произошла ошибка'
+                            })))
+                        ),
+                    of(studentsActions.setLoading({ loading: false }))
+                );
+            }
+        })
+    ));
+
+    addQuiz$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.addRun),
+        switchMap(({ run }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.runService.runCreate(run, 'events'))
+                .pipe(
+                    switchMap(run => from([
+                        studentsActions.runAdded({ run }),
+                        studentsActions.flushEvents({
+                            events: [
+                                this.eventsService.runCreated$.postpone(run)
+                            ]
+                        })
+                    ])),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время добавления теста произошла ошибка'
                     })))
                 ),
             of(studentsActions.setLoading({ loading: false }))

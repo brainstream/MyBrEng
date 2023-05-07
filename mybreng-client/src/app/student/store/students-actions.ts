@@ -1,5 +1,5 @@
 import { IPostponedEvent } from "@app/shared";
-import { StudentDetailedDto, StudentDto, StudentEditDto } from "@app/web-api";
+import { QuizDto, RunCreateDto, RunSummaryDto, StudentDetailedDto, StudentDto, StudentEditDto } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
 export const studentsActions = createActionGroup({
@@ -13,6 +13,10 @@ export const studentsActions = createActionGroup({
         'Load Details': props<{ id: string }>(),
         'Details Loaded': props<{ student: StudentDetailedDto }>(),
         'Save Details': props<{ student: StudentEditDto }>(),
-        'Details Saved': props<{ student: StudentDto }>()
+        'Details Saved': props<{ student: StudentDto }>(),
+        'Load Available Quizzes': emptyProps(),
+        'Available Quizzes Loaded': props<{ quizzes: QuizDto[] }>(),
+        'Add Run': props<{ run: RunCreateDto }>(),
+        'Run Added': props<{ run: RunSummaryDto }>()
     }
 });

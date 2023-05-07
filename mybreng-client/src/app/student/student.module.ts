@@ -21,6 +21,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { StudentAddRunFormComponent } from './student-add-run-form';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
     declarations: [
@@ -29,7 +31,8 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
         StudentDetailsComponent,
         StudentQuizRunComponent,
         StudentNoteComponent,
-        StudentEditFormComponent
+        StudentEditFormComponent,
+        StudentAddRunFormComponent
     ],
     imports: [
         CommonModule,
@@ -48,6 +51,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
         MatFormFieldModule,
         MatMenuModule,
         MatBottomSheetModule,
+        MatAutocompleteModule,
         StudentRoutingModule,
         LayoutModule
     ]

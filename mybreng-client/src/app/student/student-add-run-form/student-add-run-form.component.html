@@ -1,0 +1,25 @@
+<form>
+    <mat-form-field appearance="fill">
+        <mat-label>Тест</mat-label>
+        <input type="text"
+                matInput
+                [(ngModel)]="selectedQuiz"
+                [ngModelOptions]="{ standalone: true }"
+                [matAutocomplete]="auto">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getQuizTitle">
+            <mat-option *ngFor="let quiz of availableQuizzes$ | async" [value]="quiz">
+                {{quiz.title}}
+            </mat-option>
+        </mat-autocomplete>
+        </mat-form-field>
+    <div class="buttons">
+        <button type="submit" mat-raised-button color="accent" [disabled]="!valid" (click)="add()">
+            <mat-icon>add</mat-icon>
+            Добавить
+        </button>
+        <button mat-raised-button (click)="cancel()">
+            <mat-icon>close</mat-icon>
+            Отменить
+        </button>
+    </div>
+</form>

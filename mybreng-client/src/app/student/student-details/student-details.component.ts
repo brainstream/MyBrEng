@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TitleService } from '@app/common';
-import { StudentDetailedDto, StudentEditDto } from '@app/web-api';
+import { QuizDto, StudentDetailedDto, StudentEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { StudentsSelectors, studentsActions } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
+import { StudentAddRunFormComponent } from '../student-add-run-form';
 
 
 @Component({
@@ -78,5 +79,24 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
 
     deleteStudent(): void {
 
+    }
+
+    addRun(): void {
+        const studentId = this.student?.id;
+        if(studentId === undefined) {
+            return;
+        }
+        const bs = this.bottomSheet.open(StudentAddRunFormComponent);
+        const subscription = bs.afterDismissed().subscribe((quiz?: QuizDto ) => {
+            subscription.unsubscribe();
+            if (quiz) {
+                this.store$.dispatch(studentsActions.addRun({
+                    run: {
+                        quizId: quiz.id,
+                        studentId
+                    }
+                }));
+            }
+        });
     }
 }

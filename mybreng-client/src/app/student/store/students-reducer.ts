@@ -1,7 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { IStudentsState } from "./students-state";
 import { studentsActions } from "./students-actions";
-import { StudentDto } from "@app/web-api";
+import { RunSummaryDto, StudentDetailedDto, StudentDto } from "@app/web-api";
 
 export const studentsReducer = createReducer(
     createDefaultState(),
@@ -32,6 +32,16 @@ export const studentsReducer = createReducer(
             firstName: student.firstName,
             lastName: student.lastName
         } : state.details
+    })),
+
+    on(studentsActions.availableQuizzesLoaded, (state, { quizzes }) => ({
+        ...state,
+        availableQuizzes: quizzes
+    })),
+
+    on(studentsActions.runAdded, (state, { run }) => ({
+        ...state,
+        details: addRun(state.details, run)
     }))
 );
 
@@ -39,7 +49,8 @@ function createDefaultState(): IStudentsState {
     return {
         loadingCounter: 0,
         list: null,
-        details: null
+        details: null,
+        availableQuizzes: null
     };
 }
 
@@ -62,4 +73,17 @@ function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): Stu
     const result = [...list];
     result.splice(idx, 1, student);
     return sortStudentListInPlace(result);
+}
+
+function addRun(student: StudentDetailedDto | null, run: RunSummaryDto): StudentDetailedDto | null {
+    if (student == null) {
+        return null;
+    }
+    if (student.runs === undefined) {
+        return student;
+    }
+    return {
+        ...student,
+        runs: [run, ...student.runs]
+    };
 }
