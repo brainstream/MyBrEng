@@ -17,6 +17,8 @@ export const studentsActions = createActionGroup({
         'Load Available Quizzes': emptyProps(),
         'Available Quizzes Loaded': props<{ quizzes: QuizDto[] }>(),
         'Add Run': props<{ run: RunCreateDto }>(),
-        'Run Added': props<{ run: RunSummaryDto }>()
+        'Run Added': props<{ run: RunSummaryDto }>(),
+        'Delete Run': props<{ id: string }>(),
+        'Run Deleted': props<{ id: string }>()
     }
 });

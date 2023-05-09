@@ -42,6 +42,11 @@ export const studentsReducer = createReducer(
     on(studentsActions.runAdded, (state, { run }) => ({
         ...state,
         details: addRun(state.details, run)
+    })),
+
+    on(studentsActions.runDeleted, (state, { id }) => ({
+        ...state,
+        details: deleteRun(state.details, id)
     }))
 );
 
@@ -76,14 +81,30 @@ function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): Stu
 }
 
 function addRun(student: StudentDetailedDto | null, run: RunSummaryDto): StudentDetailedDto | null {
-    if (student == null) {
-        return null;
-    }
-    if (student.runs === undefined) {
+    if (student == null || student.runs === undefined) {
         return student;
     }
     return {
         ...student,
         runs: [run, ...student.runs]
+    };
+}
+
+function deleteRun(student: StudentDetailedDto | null, id: string): StudentDetailedDto | null {
+    if (student == null || student.runs === undefined) {
+        return student;
+    }
+
+    const idx = student.runs.findIndex(r => r.id === id);
+    let runs: RunSummaryDto[];
+    if (idx >= 0) {
+        runs = [...student.runs];
+        runs.splice(idx, 1);
+    } else {
+        runs = student.runs;
+    }
+    return {
+        ...student,
+        runs
     };
 }

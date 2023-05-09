@@ -117,7 +117,7 @@ export class StudentsEffects {
         })
     ));
 
-    addQuiz$ = createEffect(() => this.actions$.pipe(
+    addRun$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.addRun),
         switchMap(({ run }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -133,6 +133,21 @@ export class StudentsEffects {
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время добавления теста произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
+
+    deleteRun$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.deleteRun),
+        switchMap(({ id }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.runService.runDelete(id, 'events'))
+                .pipe(
+                    map(_ => studentsActions.runDeleted({ id })),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время удаления теста произошла ошибка'
                     })))
                 ),
             of(studentsActions.setLoading({ loading: false }))

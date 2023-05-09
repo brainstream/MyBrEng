@@ -11,7 +11,11 @@
 
         <app-student-note class="note" [student]="student"></app-student-note>
 
-        <app-student-quiz-run class="run" [run]="run" *ngFor="let run of student.runs">
+        <app-student-quiz-run
+            *ngFor="let run of student.runs"
+            [run]="run"
+            (deleteRequested)="deleteRun($event)"
+            class="run" >
         </app-student-quiz-run>
 
     </div>

@@ -21,3 +21,16 @@ class RunFacade:
         db.session.add(run)
         db.session.commit()
         return map_run_to_summary_dto(run)
+
+    def delete_run(self, owner_id: str, run_id: str) -> bool:
+        query = RunTable.query \
+            .filter_by(id=run_id) \
+            .join(StudentTable, StudentTable.id == RunTable.student_id) \
+            .filter(StudentTable.owner_id == owner_id) \
+            .exists()
+        if db.session.query(query).scalar():
+            RunTable.query.filter_by(id=run_id).delete()
+            db.session.commit()
+            return True
+        return False
+

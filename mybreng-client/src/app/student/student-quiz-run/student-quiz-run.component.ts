@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { RunSummaryDto } from '@app/web-api';
 
@@ -10,6 +10,8 @@ import { RunSummaryDto } from '@app/web-api';
 export class StudentQuizRunComponent {
     private _run: RunSummaryDto | null = null;
     url: string = '';
+
+    @Output() deleteRequested = new EventEmitter<RunSummaryDto>();
 
     constructor(private readonly router: Router) {
     }
@@ -30,5 +32,11 @@ export class StudentQuizRunComponent {
 
     get run(): RunSummaryDto | null {
         return this._run;
+    }
+
+    delete(): void {
+        if(this._run) {
+            this.deleteRequested.emit(this._run);
+        }
     }
 }

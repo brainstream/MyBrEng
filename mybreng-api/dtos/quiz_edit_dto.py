@@ -1,17 +1,17 @@
 from marshmallow import Schema, fields, post_load
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from .id import ID
 
 
 @dataclass
 class QuizEditDto:
-    id: str | None
     title: str
     description: str | None
+    id: str | None = field(default=None)
 
 
 class QuizEditDtoSchema(Schema):
-    id = ID(required=False, load_default=None)
+    id = ID(required=False)
     title = fields.String(required=True)
     description = fields.String(required=False)
 

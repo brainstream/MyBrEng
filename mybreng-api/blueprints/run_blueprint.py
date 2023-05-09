@@ -41,3 +41,30 @@ def run_create(run_facade: RunFacade = Provide[DI.run_facade]):
         return make_response('', 404)
     response_schema = RunSummaryDtoSchema()
     return jsonify(response_schema.dump(run))
+
+
+@run_blueprint.route('/<run_id>', methods=['DELETE'])
+@login_required
+@inject
+def run_delete(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
+    """
+    ---
+    delete:
+      operationId: run_delete
+      tags: [Run]
+      description: Deletes a run
+      parameters:
+      - in: path
+        name: run_id
+        schema:
+          type: string
+          format: uuid
+          description: The Run ID to delete
+      responses:
+        200:
+          description: The Run deleted successfully
+        404:
+          description: A Run with specified ID not found
+    """
+    result = run_facade.delete_run(current_user.id, run_id)
+    return make_response('', 200 if result else 404)

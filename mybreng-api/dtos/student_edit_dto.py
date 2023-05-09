@@ -1,17 +1,17 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from marshmallow import Schema, fields, post_load
 from .id import ID
 
 
 @dataclass
 class StudentEditDto:
-    id: str | None
     first_name: str
     last_name: str | None
+    id: str | None = field(default=None)
 
 
 class StudentEditDtoSchema(Schema):
-    id = ID(required=False, load_default=None)
+    id = ID(required=False)
     first_name = fields.String(data_key='firstName', required=True)
     last_name = fields.String(data_key='lastName', required=False)
 
