@@ -11,7 +11,7 @@ class QuizEditDto:
 
 
 class QuizEditDtoSchema(Schema):
-    id = ID(required=False)
+    id = ID(required=False, load_default=None)
     title = fields.String(required=True)
     description = fields.String(required=False)
 
