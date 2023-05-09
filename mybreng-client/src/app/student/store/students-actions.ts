@@ -19,6 +19,8 @@ export const studentsActions = createActionGroup({
         'Add Run': props<{ run: RunCreateDto }>(),
         'Run Added': props<{ run: RunSummaryDto }>(),
         'Delete Run': props<{ id: string }>(),
-        'Run Deleted': props<{ id: string }>()
+        'Run Deleted': props<{ id: string }>(),
+        'Delete Student': props<{ id: string }>(),
+        'Student Deleted': props<{ id: string }>()
     }
 });

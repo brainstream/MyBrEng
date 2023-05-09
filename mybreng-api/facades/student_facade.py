@@ -33,3 +33,11 @@ class StudentFacade:
         student.last_name = dto.last_name
         db.session.commit()
         return map_student_to_dto(student)
+
+    def delete_student(self, owner_id: str, student_id: str) -> bool:
+        student = StudentTable.query.filter_by(id=student_id, owner_id=owner_id).first()
+        if student is None:
+            return False
+        db.session.delete(student)
+        db.session.commit()
+        return True

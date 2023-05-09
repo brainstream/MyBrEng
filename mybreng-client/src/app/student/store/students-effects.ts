@@ -153,4 +153,26 @@ export class StudentsEffects {
             of(studentsActions.setLoading({ loading: false }))
         ))
     ));
+
+    deleteStudent$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.deleteStudent),
+        switchMap(({ id }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.studentService.studentDelete(id, 'events'))
+                .pipe(
+                    switchMap(_ => from([
+                        studentsActions.studentDeleted({ id }),
+                        studentsActions.flushEvents({
+                            events: [
+                                this.eventsService.studentDeleted$.postpone({ id })
+                            ]
+                        })
+                    ])),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время удаления ученика произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
 }

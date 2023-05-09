@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogButton, ConfirmDialogService, TitleService } from '@app/common';
 import { QuizDto, RunSummaryDto, StudentDetailedDto, StudentEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,7 @@ import { StudentsSelectors, studentsActions } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { StudentAddRunFormComponent } from '../student-add-run-form';
+import { StudentEventsService } from '../student-events.service';
 
 
 @Component({
@@ -23,9 +24,11 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly titleService: TitleService,
         private readonly bottomSheet: MatBottomSheet,
         private readonly confirmDialog: ConfirmDialogService,
+        private readonly events: StudentEventsService,
         private readonly store$: Store
     ) {
         this.loading$ = store$.select(StudentsSelectors.loading);
@@ -37,8 +40,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
             if (id) {
                 this.store$.dispatch(studentsActions.loadDetails({ id }))
             }
-        })
-        );
+        }));
         this.subscriptions.push(this.store$
             .select(StudentsSelectors.details)
             .subscribe(student => {
@@ -49,6 +51,9 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
                 }
             })
         );
+        this.subscriptions.push(this.events.studentDeleted$.subscribe(() => {
+            this.router.navigate(['/student']);
+        }));
     }
 
     ngOnDestroy(): void {
@@ -78,17 +83,37 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    deleteStudent(): void {
-
+    async deleteStudent() {
+        const studentId = this.student?.id;
+        if (!studentId) {
+            return;
+        }
+        const result = await this.confirmDialog.show({
+            text: 'Вы действительно хотите удалить этого ученика?',
+            buttons: {
+                yes: {
+                    text: 'Удалить',
+                    icon: 'delete',
+                    color: 'warn'
+                },
+                no: {
+                    text: 'Отменить',
+                    color: 'default'
+                }
+            }
+        });
+        if (result.button === ConfirmDialogButton.Yes) {
+            this.store$.dispatch(studentsActions.deleteStudent({ id: studentId }));
+        }
     }
 
     addRun(): void {
         const studentId = this.student?.id;
-        if(studentId === undefined) {
+        if (studentId === undefined) {
             return;
         }
         const bs = this.bottomSheet.open(StudentAddRunFormComponent);
-        const subscription = bs.afterDismissed().subscribe((quiz?: QuizDto ) => {
+        const subscription = bs.afterDismissed().subscribe((quiz?: QuizDto) => {
             subscription.unsubscribe();
             if (quiz) {
                 this.store$.dispatch(studentsActions.addRun({

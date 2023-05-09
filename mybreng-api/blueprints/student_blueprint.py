@@ -97,3 +97,29 @@ def student_save(student_facade: StudentFacade = Provide[DI.student_facade]):
         return make_response('', 404)
     response_schema = StudentDtoSchema()
     return jsonify(response_schema.dump(student))
+
+
+@student_blueprint.route('/<student_id>', methods=['DELETE'])
+@login_required
+@inject
+def student_delete(student_id: str, student_facade: StudentFacade = Provide[DI.student_facade]):
+    """
+    ---
+    delete:
+      operationId: student_delete
+      tags: [Student]
+      description: Deletes a student
+      parameters:
+      - in: path
+        name: student_id
+        schema:
+          type: string
+          format: uuid
+          description: Student ID to delete
+      responses:
+        200:
+          description: Student deleted successful
+        404:
+          description: Student with specified ID not found
+    """
+    return make_response('', 200 if student_facade.delete_student(current_user.id, student_id) else 404)

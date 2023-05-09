@@ -47,6 +47,12 @@ export const studentsReducer = createReducer(
     on(studentsActions.runDeleted, (state, { id }) => ({
         ...state,
         details: deleteRun(state.details, id)
+    })),
+
+    on(studentsActions.studentDeleted, (state, { id }) => ({
+        ...state,
+        details: state.details?.id == id ? null : state.details,
+        list: state.list?.filter(q => q.id !== id) ?? null
     }))
 );
 
