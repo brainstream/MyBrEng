@@ -27,7 +27,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     readonly loading$: Observable<boolean>;
     quiz: QuizDetailedDto | null;
     editQuestionId: string | null = null;
-    newQuestion: QuizQuestionDto | null = null;
+    newQuestion: Partial<QuizQuestionDto> | null = null;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -118,8 +118,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     addQuestion() {
         this.newQuestion = {
-            id: '',
-            question_type: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
+            questionType: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
             text: '',
             answers: []
         };
@@ -132,7 +131,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         }, 0);
     }
 
-    cancellAddQuestion() {
+    cancelAddQuestion() {
         this.newQuestion = null;
     }
 

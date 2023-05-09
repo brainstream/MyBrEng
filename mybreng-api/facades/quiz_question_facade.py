@@ -61,7 +61,7 @@ class QuizQuestionFacade:
             else:
                 q_answer.text = an.text
                 q_answer.is_correct = an.is_correct
-        for an in filter(lambda a: a.id == '', dto.answers):
+        for an in filter(lambda a: a.id is None, dto.answers):
             an_tbl = QuizAnswerVariantTable()
             an_tbl.id = uuid.uuid4()
             an_tbl.text = an.text

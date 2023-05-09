@@ -17,7 +17,7 @@ export class QuizQuestionEditFormComponent {
 
     @Input() quizId: string;
 
-    @Output() cancelRequested = new EventEmitter<QuizQuestionDto>();
+    @Output() cancelRequested = new EventEmitter<Partial<QuizQuestionDto>>();
 
     @Output() saveRequested = new EventEmitter<QuizQuestionEditDto>();
 
@@ -56,14 +56,14 @@ export class QuizQuestionEditFormComponent {
         return null;
     }
 
-    @Input() set question(q: QuizQuestionDto) {
+    @Input() set question(q: Partial<QuizQuestionDto>) {
         this.questionId = q.id;
         this.form.controls['text'].setValue(q.text);
-        this.form.controls['type'].setValue(q.question_type);
+        this.form.controls['type'].setValue(q.questionType);
         if (q.answers) {
             this.answers.clear();
             q.answers.forEach(a =>
-                this.answers.push(this.createAnswerFormGroup(a.id, a.text, a.is_correct))
+                this.answers.push(this.createAnswerFormGroup(a.id, a.text, a.isCorrect))
             );
         }
     }
@@ -90,13 +90,13 @@ export class QuizQuestionEditFormComponent {
             id: this.questionId,
             quiz_id: this.quizId,
             text: this.form.controls['text'].value,
-            question_type: questionType,
+            questionType: questionType,
             answers: this.answers.controls.map(a => {
-                const fotmGroup = a as FormGroup;
+                const formGroup = a as FormGroup;
                 return {
-                    id: fotmGroup.controls['id'].value ?? undefined,
-                    is_correct: fotmGroup.controls['isCorrect'].value as boolean,
-                    text: fotmGroup.controls['text'].value as string
+                    id: formGroup.controls['id'].value ?? undefined,
+                    isCorrect: formGroup.controls['isCorrect'].value as boolean,
+                    text: formGroup.controls['text'].value as string
                 };
             })
         });

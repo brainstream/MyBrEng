@@ -3,6 +3,7 @@ from flask import make_response, request
 from flask.blueprints import Blueprint
 from di import DI
 from flask_login import login_user
+from dtos import LogInDtoSchema
 from facades import UserFacade
 
 account_blueprint = Blueprint('account', __name__)
@@ -28,12 +29,10 @@ def account_login(user_facade: UserFacade = Provide[DI.user_facade]):
         401:
           description: Failed to log in
     """
-    request_data = request.get_json()
-    email = request_data['email']
-    password = request_data['password']
-    user = user_facade.get_user_by_email_and_password(email, password)
+    schema = LogInDtoSchema()
+    dto = schema.loads(request.get_data(as_text=True))
+    user = user_facade.get_user_by_email_and_password(dto.email, dto.password)
     if user is None:
         return make_response('', 401)
-    else:
-        login_user(user, remember=True)
-        return make_response('', 200)
+    login_user(user, remember=True)
+    return make_response('', 200)

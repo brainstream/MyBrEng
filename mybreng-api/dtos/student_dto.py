@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+from marshmallow import Schema, fields, post_load
+from .id import ID
 
-from marshmallow import Schema, fields
 
-
-@dataclass()
+@dataclass
 class StudentDto:
     id: str
     first_name: str
@@ -11,6 +11,11 @@ class StudentDto:
 
 
 class StudentDtoSchema(Schema):
-    id = fields.UUID(required=True)
+    id = ID(required=True)
     first_name = fields.String(data_key='firstName', required=True)
     last_name = fields.String(data_key='lastName', allow_none=True)
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> StudentDto:
+        return StudentDto(**data)
+

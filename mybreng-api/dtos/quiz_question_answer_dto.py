@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
+from .id import ID
 
 
-@dataclass()
+@dataclass
 class QuizQuestionAnswerDto:
     id: str
     text: str
@@ -10,6 +11,10 @@ class QuizQuestionAnswerDto:
 
 
 class QuizQuestionAnswerDtoSchema(Schema):
-    id = fields.UUID(required=True)
+    id = ID(required=True)
     text = fields.String(required=True)
-    is_correct = fields.Boolean(required=True)
+    is_correct = fields.Boolean(data_key='isCorrect', required=True)
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> QuizQuestionAnswerDto:
+        return QuizQuestionAnswerDto(**data)

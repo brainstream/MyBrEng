@@ -23,7 +23,8 @@ from blueprints import \
     student_details, \
     student_save, \
     run_create
-from dtos import QuizDtoSchema, \
+from dtos import \
+    QuizDtoSchema, \
     QuizQuestionDtoSchema, \
     QuizDetailedDtoSchema, \
     UserDtoSchema, \
@@ -43,13 +44,13 @@ from database import db
 def create_app() -> Flask:
     spec = APISpec(
         title="MyBrEng API",
-        version="2.0.0",
+        version="1.0.0",
         openapi_version="3.0.2",
         tags=[
-            dict(name="Account"),
-            dict(name="Quiz"),
-            dict(name="Student"),
-            dict(name="Run")
+            "Account",
+            "Quiz",
+            "Student",
+            "Run"
         ],
         servers=[
             dict(

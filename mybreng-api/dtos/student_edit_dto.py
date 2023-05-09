@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-
 from marshmallow import Schema, fields, post_load
+from .id import ID
 
 
-@dataclass()
+@dataclass
 class StudentEditDto:
     id: str | None
     first_name: str
@@ -11,16 +11,10 @@ class StudentEditDto:
 
 
 class StudentEditDtoSchema(Schema):
-    id = fields.UUID(required=False)
+    id = ID(required=False, load_default=None)
     first_name = fields.String(data_key='firstName', required=True)
     last_name = fields.String(data_key='lastName', required=False)
 
     @post_load
-    def make_dto(self, data, **kwargs):
-        args = data
-        student_id = None
-        if 'id' in data:
-            student_id = str(args['id'])
-            args = {**args}
-            del args['id']
-        return StudentEditDto(student_id, **args)
+    def make_dto(self, data, **kwargs) -> StudentEditDto:
+        return StudentEditDto(**data)

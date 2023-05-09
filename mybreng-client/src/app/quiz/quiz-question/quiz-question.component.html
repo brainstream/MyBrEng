@@ -4,7 +4,7 @@
             <mat-chip class="ordianal">
                 {{position}}
             </mat-chip>
-            <mat-card-subtitle class="question-title">{{question.question_type | questionTypeName}}</mat-card-subtitle>
+            <mat-card-subtitle class="question-title">{{question.questionType | questionTypeName}}</mat-card-subtitle>
             <button mat-icon-button [matMenuTriggerFor]="editMenu">
                 <mat-icon>more_vert</mat-icon>
             </button>
@@ -15,7 +15,7 @@
         <div class="answers">
             <div class="answer-row" *ngFor="let answer of question.answers">
                 <span class="answer-mark">
-                    <mat-icon *ngIf="answer.is_correct; else notCorrect">check</mat-icon>
+                    <mat-icon *ngIf="answer.isCorrect; else notCorrect">check</mat-icon>
                     <ng-template #notCorrect>
                         <mat-icon>clear</mat-icon>
                     </ng-template>

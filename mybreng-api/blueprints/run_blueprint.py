@@ -34,8 +34,10 @@ def run_create(run_facade: RunFacade = Provide[DI.run_facade]):
         404:
           description: A student or a quiz with specified ID not found
     """
-    run_create_schema = RunCreateDtoSchema()
-    run_summary_schema = RunSummaryDtoSchema()
-    dto = run_create_schema.load(request.get_json())
-    result = run_facade.create_run(current_user.id, dto)
-    return make_response('', 404) if result is None else jsonify(run_summary_schema.dump(result))
+    request_schema = RunCreateDtoSchema()
+    dto = request_schema.loads(request.get_data(as_text=True))
+    run = run_facade.create_run(current_user.id, dto)
+    if run is None:
+        return make_response('', 404)
+    response_schema = RunSummaryDtoSchema()
+    return jsonify(response_schema.dump(run))

@@ -1,8 +1,9 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 from dataclasses import dataclass
+from .id import ID
 
 
-@dataclass()
+@dataclass
 class QuizEditDto:
     id: str | None
     title: str
@@ -10,6 +11,10 @@ class QuizEditDto:
 
 
 class QuizEditDtoSchema(Schema):
-    id = fields.UUID(required=False)
+    id = ID(required=False)
     title = fields.String(required=True)
     description = fields.String(required=False)
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> QuizEditDto:
+        return QuizEditDto(**data)

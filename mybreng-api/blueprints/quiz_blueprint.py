@@ -3,7 +3,13 @@ from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 from di import DI
-from dtos import QuizEditDto, QuizQuestionEditDtoSchema, QuizQuestionPositionDtoSchema, QuizDto
+from dtos import \
+    QuizQuestionEditDtoSchema, \
+    QuizQuestionPositionDtoSchema, \
+    QuizDtoSchema, \
+    QuizDetailedDtoSchema, \
+    QuizEditDtoSchema, \
+    QuizQuestionDtoSchema
 from facades import QuizFacade, QuizQuestionFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)
@@ -28,7 +34,9 @@ def quiz_list(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
                 type: array
                 items: QuizDto
     """
-    return jsonify(quiz_facade.get_quizzes(current_user.id))
+    schema = QuizDtoSchema()
+    quizzes = quiz_facade.get_quizzes(current_user.id)
+    return jsonify(schema.dump(quizzes, many=True))
 
 
 @quiz_blueprint.route('/details/<quiz_id>', methods=['GET'])
@@ -58,10 +66,10 @@ def quiz_details(quiz_id: str, quiz_facade: QuizFacade = Provide[DI.quiz_facade]
           description: Quiz with specified ID not found
     """
     quiz = quiz_facade.get_quiz(current_user.id, quiz_id)
-    if quiz:
-        return jsonify(quiz)
-    else:
+    if quiz is None:
         return make_response('', 404)
+    schema = QuizDetailedDtoSchema()
+    return jsonify(schema.dump(quiz))
 
 
 @quiz_blueprint.route('/details', methods=['POST'])
@@ -87,15 +95,14 @@ def quiz_save(quiz_facade: QuizFacade = Provide[DI.quiz_facade]):
         404:
           description: Quiz with specified ID not found
     """
-    request_data = request.get_json()
-    dto = QuizEditDto(
-        request_data['id'] if 'id' in request_data else None,
-        request_data['title'],
-        request_data['description']
-    )
-    result = quiz_facade.create_quiz(current_user.id, dto) if dto.id is None else \
+    request_schema = QuizEditDtoSchema()
+    dto = request_schema.loads(request.get_data(as_text=True))
+    quiz = quiz_facade.create_quiz(current_user.id, dto) if dto.id is None else \
         quiz_facade.edit_quiz(current_user.id, dto)
-    return make_response('', 404) if result is None else jsonify(result)
+    if quiz is None:
+        return make_response('', 404)
+    response_schema = QuizDtoSchema()
+    return jsonify(response_schema.dump(quiz))
 
 
 @quiz_blueprint.route('/<quiz_id>', methods=['DELETE'])
@@ -147,14 +154,14 @@ def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.qui
         404:
           description: Quiz with specified ID not found
     """
-    schema = QuizQuestionEditDtoSchema()
-    dto = schema.load(request.get_json())
-    result = quiz_question_facade.create_question(current_user.id, dto) if dto.id is None \
-        else quiz_question_facade.edit_question(current_user.id, dto)
-    if result is None:
+    request_schema = QuizQuestionEditDtoSchema()
+    edit_dto = request_schema.loads(request.get_data(as_text=True))
+    quiz = quiz_question_facade.create_question(current_user.id, edit_dto) if edit_dto.id is None \
+        else quiz_question_facade.edit_question(current_user.id, edit_dto)
+    if quiz is None:
         return make_response('', 404)
-    else:
-        return jsonify(result)
+    response_schema = QuizQuestionDtoSchema()
+    return jsonify(response_schema.dump(quiz))
 
 
 @quiz_blueprint.route('/question/<question_id>', methods=['DELETE'])
@@ -218,10 +225,10 @@ def quiz_reorder_questions(quiz_id: str, quiz_question_facade: QuizQuestionFacad
         404:
           description: Quiz or question with specified ID not found
     """
-    schema = QuizQuestionPositionDtoSchema()
-    questions = schema.load(request.get_json(), many=True)
+    request_schema = QuizQuestionPositionDtoSchema()
+    questions = request_schema.loads(request.get_data(as_text=True), many=True)
     result = quiz_question_facade.reorder_questions(current_user.id, quiz_id, questions)
     if result is None:
         return make_response('', 404)
-    else:
-        return jsonify(result)
+    response_schema = QuizQuestionDtoSchema()
+    return jsonify(response_schema.dump(result, many=True))

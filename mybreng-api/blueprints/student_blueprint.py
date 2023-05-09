@@ -28,9 +28,9 @@ def student_list(student_facade: StudentFacade = Provide[DI.student_facade]):
                 type: array
                 items: StudentDto
     """
+    students = student_facade.get_students(current_user.id)
     schema = StudentDtoSchema()
-    response = schema.dump(student_facade.get_students(current_user.id), many=True)
-    return jsonify(response)
+    return jsonify(schema.dump(students, many=True))
 
 
 @student_blueprint.route('/details/<student_id>', methods=['GET'])
@@ -60,11 +60,10 @@ def student_details(student_id: str, student_facade: StudentFacade = Provide[DI.
           description: Student with specified ID not found
     """
     student = student_facade.get_student(current_user.id, student_id)
-    if student:
-        schema = StudentDetailedDtoSchema()
-        return jsonify(schema.dump(student))
-    else:
+    if student is None:
         return make_response('', 404)
+    schema = StudentDetailedDtoSchema()
+    return jsonify(schema.dump(student))
 
 
 @student_blueprint.route('/details', methods=['POST'])
@@ -90,9 +89,11 @@ def student_save(student_facade: StudentFacade = Provide[DI.student_facade]):
         404:
           description: Student with specified ID not found
     """
-    edit_dto_schema = StudentEditDtoSchema()
-    dto_schema = StudentDtoSchema()
-    edit_dto = edit_dto_schema.load(request.get_json())
-    result_dto = student_facade.create_student(current_user.id, edit_dto) if edit_dto.id is None else \
+    request_schema = StudentEditDtoSchema()
+    edit_dto = request_schema.loads(request.get_data(as_text=True))
+    student = student_facade.create_student(current_user.id, edit_dto) if edit_dto.id is None else \
         student_facade.edit_student(current_user.id, edit_dto)
-    return make_response('', 404) if result_dto is None else jsonify(dto_schema.dump(result_dto))
+    if student is None:
+        return make_response('', 404)
+    response_schema = StudentDtoSchema()
+    return jsonify(response_schema.dump(student))

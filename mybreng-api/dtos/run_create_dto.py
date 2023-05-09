@@ -1,11 +1,9 @@
 from dataclasses import dataclass
-
 from marshmallow import Schema, post_load
-
 from dtos import ID
 
 
-@dataclass()
+@dataclass
 class RunCreateDto:
     student_id: str
     quiz_id: str

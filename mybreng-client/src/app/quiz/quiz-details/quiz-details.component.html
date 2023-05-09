@@ -12,7 +12,7 @@
         <div class="description">{{ quiz.description }}</div>
 
         <div class="question-list" *ngIf="quiz.questions">
-            <div 
+            <div
                 *ngFor="let question of quiz.questions; index as idx"
                 [@collapseOnLeave]
             >
@@ -42,7 +42,7 @@
                     [@collapseOnLeave]
                     [question]="newQuestion"
                     [quizId]="quiz.id"
-                    (cancelRequested)="cancellAddQuestion()"
+                    (cancelRequested)="cancelAddQuestion()"
                     (saveRequested)="saveNewQuestion($event)"
                     class="question">
                 </app-quiz-question-edit-form>

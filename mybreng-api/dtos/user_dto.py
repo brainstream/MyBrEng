@@ -1,6 +1,7 @@
 from dataclasses import dataclass
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, post_load
 from flask_login import UserMixin
+from .id import ID
 
 
 @dataclass
@@ -10,5 +11,10 @@ class UserDto(UserMixin):
 
 
 class UserDtoSchema(Schema):
-    id = fields.UUID(required=True)
-    email = fields.String(required=True)
+    id = ID(required=True)
+    email = fields.Email(required=True)
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> UserDto:
+        return UserDto(**data)
+
