@@ -1,7 +1,6 @@
 import uuid
-
 from database import StudentTable, db
-from dtos import StudentDto, StudentDetailedDto, StudentEditDto
+from dtos import StudentDto, StudentDetailedDto, StudentEditDto, StudentNoteEditDto
 from mappers import map_student_to_dto, map_student_to_detailed_dto
 
 
@@ -39,5 +38,13 @@ class StudentFacade:
         if student is None:
             return False
         db.session.delete(student)
+        db.session.commit()
+        return True
+
+    def set_student_note(self, owner_id: str, dto: StudentNoteEditDto) -> bool:
+        student = StudentTable.query.filter_by(id=dto.student_id, owner_id=owner_id).first()
+        if student is None:
+            return False
+        student.note = dto.note
         db.session.commit()
         return True

@@ -7,8 +7,8 @@ export interface IPostponedEvent {
 export class Event<T> {
     private subject$ = new Subject<T>();
 
-    subscribe(onext: (value: T) => void): Subscription {
-        return this.subject$.subscribe(onext);
+    subscribe(next: (value: T) => void): Subscription {
+        return this.subject$.subscribe(next);
     }
 
     raise(args: T): void {

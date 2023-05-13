@@ -21,17 +21,15 @@
                 </mat-checkbox>
                 <input matInput type="text" autocomplete="off" required="" formControlName="text" />
                 <button matSuffix
-                    mat-icon-button 
+                    mat-icon-button
                     matTooltip="Удалить ответ"
                     (click)="deleteAnswer(idx)"
                     class="delete-answer-btn"
                 >
                     <mat-icon>delete</mat-icon>
-                </button> 
+                </button>
             </mat-form-field>
         </div>
-
-        <mat-divider></mat-divider>
 
         <div class="actions">
             <div class="group-left">
@@ -51,7 +49,6 @@
                 </button>
             </div>
         </div>
-
 
         <div class="form-validation-error">
             <div *ngIf="form.hasError('form')" class="text-error">

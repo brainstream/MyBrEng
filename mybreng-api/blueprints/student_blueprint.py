@@ -3,7 +3,7 @@ from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import login_required, current_user
 from di import DI
-from dtos import StudentDtoSchema, StudentDetailedDtoSchema, StudentEditDtoSchema
+from dtos import StudentDtoSchema, StudentDetailedDtoSchema, StudentEditDtoSchema, StudentNoteEditDtoSchema
 from facades import StudentFacade
 
 student_blueprint = Blueprint('student', __name__)
@@ -123,3 +123,29 @@ def student_delete(student_id: str, student_facade: StudentFacade = Provide[DI.s
           description: Student with specified ID not found
     """
     return make_response('', 200 if student_facade.delete_student(current_user.id, student_id) else 404)
+
+
+@student_blueprint.route('/note', methods=['PUT'])
+@login_required
+@inject
+def student_set_note(student_facade: StudentFacade = Provide[DI.student_facade]):
+    """
+    ---
+    put:
+      operationId: student_set_note
+      tags: [Student]
+      description: Sets a note to the student
+      requestBody:
+        content:
+          application/json:
+            schema: StudentNoteEditDto
+      responses:
+        200:
+          description: Note set successfully
+        404:
+          description: Student with specified ID not found
+    """
+    request_schema = StudentNoteEditDtoSchema()
+    edit_dto = request_schema.loads(request.get_data(as_text=True))
+    status = 200 if student_facade.set_student_note(current_user.id, edit_dto) else 404
+    return make_response('', status)

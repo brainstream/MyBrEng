@@ -1,3 +1,18 @@
-.note-content {
-    white-space: pre-wrap;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mat-mdc-form-field {
+    width: 100%;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+
+    > button {
+        margin-left: 0.5rem;
+    }
 }

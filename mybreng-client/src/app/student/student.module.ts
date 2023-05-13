@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { StudentAddRunFormComponent } from './student-add-run-form';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MarkdownModule } from '@app/markdown';
 
 @NgModule({
     declarations: [
@@ -53,7 +54,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
         MatBottomSheetModule,
         MatAutocompleteModule,
         StudentRoutingModule,
-        LayoutModule
+        LayoutModule,
+        MarkdownModule
     ]
 })
 export class StudentModule { }

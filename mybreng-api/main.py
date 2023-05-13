@@ -8,23 +8,24 @@ from apispec_webframeworks.flask import FlaskPlugin
 from apispec.ext.marshmallow import MarshmallowPlugin
 from blueprints import \
     account_blueprint, \
-    quiz_blueprint, \
-    student_blueprint, \
     account_login, \
-    run_blueprint, \
+    quiz_blueprint, \
     quiz_list, \
     quiz_details, \
     quiz_save, \
+    quiz_delete, \
     quiz_question_save, \
     quiz_question_delete, \
     quiz_reorder_questions, \
-    quiz_delete, \
+    student_blueprint, \
     student_list, \
     student_details, \
     student_save, \
+    student_delete, \
+    student_set_note, \
+    run_blueprint, \
     run_create, \
-    run_delete, \
-    student_delete
+    run_delete
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -37,6 +38,7 @@ from dtos import \
     StudentDtoSchema, \
     StudentDetailedDtoSchema, \
     StudentEditDtoSchema, \
+    StudentNoteEditDtoSchema, \
     RunSummaryDtoSchema, \
     RunCreateDtoSchema
 from di import DI
@@ -67,19 +69,20 @@ def create_app() -> Flask:
     )
 
     spec.components \
+        .schema('UserDto', schema=UserDtoSchema) \
+        .schema('LogInDto', schema=LogInDtoSchema) \
         .schema('QuizDto', schema=QuizDtoSchema) \
         .schema('QuizQuestionDto', schema=QuizQuestionDtoSchema) \
         .schema('QuizDetailedDto', schema=QuizDetailedDtoSchema) \
-        .schema('UserDto', schema=UserDtoSchema) \
-        .schema('LogInDto', schema=LogInDtoSchema) \
         .schema('QuizEditDto', schema=QuizEditDtoSchema) \
         .schema('QuizQuestionEditDto', schema=QuizQuestionEditDtoSchema) \
         .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema) \
         .schema('RunSummaryDto', schema=RunSummaryDtoSchema) \
+        .schema('RunCreateDto', schema=RunCreateDtoSchema)  \
         .schema('StudentDto', schema=StudentDtoSchema) \
         .schema('StudentDetailedDto', schema=StudentDetailedDtoSchema) \
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
-        .schema('RunCreateDto', schema=RunCreateDtoSchema)
+        .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -94,9 +97,9 @@ def create_app() -> Flask:
     login_manager.init_app(flask)
 
     with flask.test_request_context():
+        spec.path(view=account_login)
         spec.path(view=quiz_list)
         spec.path(view=quiz_details)
-        spec.path(view=account_login)
         spec.path(view=quiz_save)
         spec.path(view=quiz_delete)
         spec.path(view=quiz_question_save)
@@ -105,6 +108,7 @@ def create_app() -> Flask:
         spec.path(view=student_list)
         spec.path(view=student_details)
         spec.path(view=student_save)
+        spec.path(view=student_set_note)
         spec.path(view=run_create)
         spec.path(view=run_delete)
         spec.path(view=student_delete)

@@ -1,7 +1,38 @@
 <mat-card>
-    <mat-card-content>
-        <div class="note-content">
-            {{student.note}}
-        </div>
+
+    <mat-card-content *ngIf="editMode else viewMode">
+        <mat-form-field>
+            <mat-label>Заметки</mat-label>
+            <textarea rows="5" matInput [(ngModel)]="note"></textarea>
+        </mat-form-field>
+        <mat-card-footer class="actions">
+            <button mat-raised-button (click)="cancelEdit()">
+                <mat-icon>cancel</mat-icon> Отменить
+            </button>
+            <button mat-raised-button color="accent" (click)="save()">
+                <mat-icon>save</mat-icon> Сохранить
+            </button>
+        </mat-card-footer>
     </mat-card-content>
+
+    <ng-template #viewMode>
+        <mat-card-header class="header">
+            <mat-card-title>
+                Заметки
+            </mat-card-title>
+            <button mat-icon-button [matMenuTriggerFor]="editMenu">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="note-content" [innerHTML]="note | markdown">
+            </div>
+        </mat-card-content>
+    </ng-template>
 </mat-card>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="edit()"><mat-icon>edit</mat-icon>
+        Редактировать
+    </button>
+</mat-menu>

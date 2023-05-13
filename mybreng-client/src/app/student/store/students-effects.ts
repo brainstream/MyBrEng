@@ -175,4 +175,26 @@ export class StudentsEffects {
             of(studentsActions.setLoading({ loading: false }))
         ))
     ));
+
+    setNote$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.setNote),
+        switchMap(({ dto }) => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.studentService.studentSetNote(dto, 'events'))
+                .pipe(
+                    switchMap(_ => from([
+                        studentsActions.noteSaved({ dto }),
+                        studentsActions.flushEvents({
+                            events: [
+                                this.eventsService.noteSaved$.postpone({ ...dto })
+                            ]
+                        })
+                    ])),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время сохранения заметки произошла ошибка'
+                    })))
+                ),
+            of(studentsActions.setLoading({ loading: false }))
+        ))
+    ));
 }

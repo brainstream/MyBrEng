@@ -2,6 +2,7 @@ import { createReducer, on } from "@ngrx/store";
 import { IStudentsState } from "./students-state";
 import { studentsActions } from "./students-actions";
 import { RunSummaryDto, StudentDetailedDto, StudentDto } from "@app/web-api";
+import { state } from "@angular/animations";
 
 export const studentsReducer = createReducer(
     createDefaultState(),
@@ -53,6 +54,14 @@ export const studentsReducer = createReducer(
         ...state,
         details: state.details?.id == id ? null : state.details,
         list: state.list?.filter(q => q.id !== id) ?? null
+    })),
+
+    on(studentsActions.noteSaved, (state, { dto: { studentId, note } }) => ({
+        ...state,
+        details: state.details?.id === studentId ? {
+            ...state.details,
+            note
+        } : state.details
     }))
 );
 
@@ -100,7 +109,6 @@ function deleteRun(student: StudentDetailedDto | null, id: string): StudentDetai
     if (student == null || student.runs === undefined) {
         return student;
     }
-
     const idx = student.runs.findIndex(r => r.id === id);
     let runs: RunSummaryDto[];
     if (idx >= 0) {
