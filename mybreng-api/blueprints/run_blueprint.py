@@ -4,10 +4,40 @@ from flask.blueprints import Blueprint
 from flask_login import current_user, login_required
 
 from di import DI
-from dtos import RunCreateDtoSchema, RunSummaryDtoSchema
+from dtos import RunCreateDtoSchema, RunSummaryDtoSchema, RunDtoSchema
 from facades import RunFacade
 
 run_blueprint = Blueprint('run', __name__)
+
+
+@run_blueprint.route('/<run_id>', methods=['GET'])
+@inject
+def run_get(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
+    """
+    ---
+    get:
+      operationId: run_get
+      tags: [Run]
+      description: Returns a run
+      parameters:
+      - in: path
+        name: run_id
+        schema:
+          type: string
+          format: uuid
+          description: The Run ID
+      responses:
+        200:
+          description: The Run
+        404:
+          description: A Run with specified ID not found
+    """
+    run = run_facade.get_run(run_id)
+    if run is None:
+        return make_response(404, '')
+    else:
+        response_schema = RunDtoSchema()
+        return jsonify(response_schema.dump(run))
 
 
 @run_blueprint.route('/', methods=['POST'])

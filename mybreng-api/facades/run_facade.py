@@ -1,13 +1,19 @@
 import uuid
-
 from datetime import datetime
-from database import db, RunTable, StudentTable, QuizTable
-from dtos import RunSummaryDto, RunCreateDto
-from mappers import map_run_to_summary_dto
+from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable
+from dtos import RunSummaryDto, RunCreateDto, RunDto
+from mappers import map_run_to_summary_dto, map_question_to_question_run_dto
 
 
 # noinspection PyMethodMayBeStatic
 class RunFacade:
+    def get_run(self, run_id) -> RunDto | None:
+        run = RunTable.query.filter_by(id=run_id).first()
+        if run is None:
+            return None
+        questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
+        return RunDto(run_id, [map_question_to_question_run_dto(q) for q in questions])
+
     def create_run(self, owner_id: str, dto: RunCreateDto) -> RunSummaryDto | None:
         student = StudentTable.query.filter_by(id=dto.student_id, owner_id=owner_id).first()
         quiz = QuizTable.query.filter_by(id=dto.quiz_id, owner_id=owner_id).first()

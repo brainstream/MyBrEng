@@ -23,6 +23,7 @@ from blueprints import \
     student_save, \
     student_delete, \
     student_set_note, \
+    run_get, \
     run_blueprint, \
     run_create, \
     run_delete
@@ -40,7 +41,11 @@ from dtos import \
     StudentEditDtoSchema, \
     StudentNoteEditDtoSchema, \
     RunSummaryDtoSchema, \
-    RunCreateDtoSchema
+    RunCreateDtoSchema, \
+    RunQuestionDtoSchema, \
+    RunDtoSchema, \
+    RunAnswerDtoSchema, \
+    RunAnswerVariantDtoSchema
 from di import DI
 from database import db
 
@@ -79,6 +84,10 @@ def create_app() -> Flask:
         .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema) \
         .schema('RunSummaryDto', schema=RunSummaryDtoSchema) \
         .schema('RunCreateDto', schema=RunCreateDtoSchema)  \
+        .schema('RunAnswerVariantDto', schema=RunAnswerVariantDtoSchema) \
+        .schema('RunAnswerDto', schema=RunAnswerDtoSchema) \
+        .schema('RunQuestionDto', schema=RunQuestionDtoSchema) \
+        .schema('RunDto', schema=RunDtoSchema) \
         .schema('StudentDto', schema=StudentDtoSchema) \
         .schema('StudentDetailedDto', schema=StudentDetailedDtoSchema) \
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
@@ -109,6 +118,7 @@ def create_app() -> Flask:
         spec.path(view=student_details)
         spec.path(view=student_save)
         spec.path(view=student_set_note)
+        spec.path(view=run_get)
         spec.path(view=run_create)
         spec.path(view=run_delete)
         spec.path(view=student_delete)

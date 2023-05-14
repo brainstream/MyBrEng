@@ -15,3 +15,7 @@ from .student_note_edit_dto import *
 from .student_edit_dto import *
 from .run_summary_dto import *
 from .run_create_dto import *
+from .run_dto import *
+from .run_question_dto import *
+from .run_answer_variant_dto import *
+from .run_answer_dto import *

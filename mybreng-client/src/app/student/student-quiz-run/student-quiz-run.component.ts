@@ -22,7 +22,7 @@ export class StudentQuizRunComponent {
     }
 
     private makeAbsoluteRunPath(id: string) {
-        const relativeUrl = this.router.createUrlTree(['/run', id]).toString();
+        const relativeUrl = this.router.createUrlTree(['/go', id]).toString();
         const link = document.createElement("a");
         link.href = relativeUrl;
         const url = link.href;
