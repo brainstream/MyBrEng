@@ -4,7 +4,7 @@ import { IQuizQuestionSortData } from './quiz-question-sort-data';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { QuizQuestionPositionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { QuizzesActions } from '../store';
+import { quizzesActions } from '../store';
 
 interface IQuestionData {
     id: string;
@@ -41,7 +41,7 @@ export class QuizQuestionSortComponent {
             id: q.id,
             index: idx
         }));
-        this.store$.dispatch(QuizzesActions.reorderQuestions({
+        this.store$.dispatch(quizzesActions.reorderQuestions({
             quizId: this.quizId,
             questions: result
         }));

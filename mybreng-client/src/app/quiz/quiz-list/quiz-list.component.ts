@@ -4,7 +4,7 @@ import { QuizDto, QuizEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { QuizzesActions, QuizzesSelectors } from '../store';
+import { quizzesActions, QuizzesSelectors } from '../store';
 import { QuizzesEventsService } from '../quizzes-events.service';
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
@@ -30,7 +30,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
         this.quizzes$ = store$.select(QuizzesSelectors.list);
         this.loading$ = store$.select(QuizzesSelectors.loading);
         titleService.setTitle('Тесты');
-        store$.dispatch(QuizzesActions.loadList());
+        store$.dispatch(quizzesActions.loadList());
     }
 
     ngOnInit(): void {
@@ -48,7 +48,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
         const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
             subscription.unsubscribe();
             if (result) {
-                this.store$.dispatch(QuizzesActions.saveDetails({ quiz: result }));
+                this.store$.dispatch(quizzesActions.saveDetails({ quiz: result }));
             }
         });
     }

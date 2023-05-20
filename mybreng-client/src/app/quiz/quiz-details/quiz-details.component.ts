@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuizDetailedDto, QuizEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { QuizzesActions, QuizzesSelectors } from '../store';
+import { quizzesActions, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
@@ -46,7 +46,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.route.paramMap.subscribe(params => {
             const id = params.get('id');
             if (id) {
-                this.store$.dispatch(QuizzesActions.loadDetails({ id }))
+                this.store$.dispatch(quizzesActions.loadDetails({ id }))
             }
         })
         );
@@ -82,7 +82,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
             });
         const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
             if (result) {
-                this.store$.dispatch(QuizzesActions.saveDetails({
+                this.store$.dispatch(quizzesActions.saveDetails({
                     quiz: {
                         ...result,
                         id: quiz.id
@@ -112,7 +112,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
             }
         });
         if (result.button === ConfirmDialogButton.Yes) {
-            this.store$.dispatch(QuizzesActions.deleteQuiz({ id: this.quiz.id }));
+            this.store$.dispatch(quizzesActions.deleteQuiz({ id: this.quiz.id }));
         }
     }
 
@@ -137,7 +137,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     saveNewQuestion(question: QuizQuestionEditDto) {
         this.newQuestion = null;
-        this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
+        this.store$.dispatch(quizzesActions.saveQuestion({ question }));
     }
 
     reorderQuestion() {
@@ -154,7 +154,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     }
 
     saveQuestion(question: QuizQuestionEditDto) {
-        this.store$.dispatch(QuizzesActions.saveQuestion({ question }));
+        this.store$.dispatch(quizzesActions.saveQuestion({ question }));
         this.editQuestionId = null;
     }
 
@@ -174,7 +174,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
             }
         });
         if (result.button === ConfirmDialogButton.Yes) {
-            this.store$.dispatch(QuizzesActions.deleteQuestion({ id: question.id }));
+            this.store$.dispatch(quizzesActions.deleteQuestion({ id: question.id }));
         }
     }
 }

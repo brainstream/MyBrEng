@@ -10,7 +10,7 @@ import {
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
 
-export const QuizzesActions = createActionGroup({
+export const quizzesActions = createActionGroup({
     source: 'Quizzes',
     events: {
         'Set Error': props<{ message: string }>(),

@@ -1,29 +1,29 @@
 import { QuizDto, QuizQuestionDto } from "@app/web-api";
 import { createReducer, on } from "@ngrx/store";
-import { QuizzesActions } from "./quizzes-actions";
+import { quizzesActions } from "./quizzes-actions";
 import { IQuizzesState } from "./quizzes-state";
 
 export const quizzesReducer = createReducer(
     createDefaultState(),
 
-    on(QuizzesActions.setLoading, (state, { loading }) => ({
+    on(quizzesActions.setLoading, (state, { loading }) => ({
         ...state,
         loadingCounter: loading
             ? state.loadingCounter + 1
             : (state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1)
     })),
 
-    on(QuizzesActions.listLoaded, (state, { quizzes }) => ({
+    on(quizzesActions.listLoaded, (state, { quizzes }) => ({
         ...state,
         list: prepareQuizList(quizzes)
     })),
 
-    on(QuizzesActions.detailsLoaded, (state, { quiz }) => ({
+    on(quizzesActions.detailsLoaded, (state, { quiz }) => ({
         ...state,
         details: quiz
     })),
 
-    on(QuizzesActions.detailsSaved, (state, { quiz }) => ({
+    on(quizzesActions.detailsSaved, (state, { quiz }) => ({
         ...state,
         list: addOrChangeQuiz(state.list, quiz),
         details: state.details?.id === quiz.id ? {
@@ -34,7 +34,7 @@ export const quizzesReducer = createReducer(
         } : state.details
     })),
 
-    on(QuizzesActions.questionSaved, (state, { question }) => ({
+    on(quizzesActions.questionSaved, (state, { question }) => ({
         ...state,
         details: state.details ? {
             ...state.details,
@@ -42,13 +42,13 @@ export const quizzesReducer = createReducer(
         } : null
     })),
 
-    on(QuizzesActions.quizDeleted, (state, { id }) => ({
+    on(quizzesActions.quizDeleted, (state, { id }) => ({
         ...state,
         details: state.details?.id == id ? null : state.details,
         list: state.list?.filter(q => q.id !== id) ?? null
     })),
 
-    on(QuizzesActions.questionDeleted, (state, { id }) => ({
+    on(quizzesActions.questionDeleted, (state, { id }) => ({
         ...state,
         details: state.details ? {
             ...state.details,
@@ -56,7 +56,7 @@ export const quizzesReducer = createReducer(
         } : null
     })),
 
-    on(QuizzesActions.questionsReordered, (state, { quizId, questions }) => ({
+    on(quizzesActions.questionsReordered, (state, { quizId, questions }) => ({
         ...state,
         details: state.details?.id == quizId ? {
             ...state.details,
