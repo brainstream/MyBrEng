@@ -4,6 +4,9 @@ import { RunComponent } from './run';
 import { NotFoundComponent } from './not-found';
 import { GoRoutingModule } from './go-routing.module';
 import { LayoutModule } from '@app/layout';
+import { GoEffects, GoEventsService, goReducer } from './store';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
     declarations: [
@@ -12,8 +15,15 @@ import { LayoutModule } from '@app/layout';
     ],
     imports: [
         CommonModule,
+        StoreModule.forFeature('go', goReducer),
+        EffectsModule.forFeature([
+            GoEffects
+        ]),
         GoRoutingModule,
         LayoutModule
+    ],
+    providers: [
+        GoEventsService
     ]
 })
 export class GoModule { }
