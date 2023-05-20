@@ -1,1 +1,24 @@
 <div [innerHTML]="question.text | markdown"></div>
+
+<ng-container [ngSwitch]="type">
+    <ng-container *ngSwitchCase="'text'">
+        <mat-form-field>
+            <mat-label>Ответ</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+    </ng-container>
+    <ng-container *ngSwitchCase="'multi'">
+        <div *ngFor="let answer of question.answerVariants">
+            <mat-radio-button>
+                {{answer.text}}
+            </mat-radio-button>
+        </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="'single'">
+        <div *ngFor="let answer of question.answerVariants">
+            <mat-checkbox>
+                {{answer.text}}
+            </mat-checkbox>
+        </div>
+    </ng-container>
+</ng-container>

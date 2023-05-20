@@ -12,6 +12,14 @@ import { RunNotFoundMessageComponent } from './run-not-found-message';
 import { RunGoComponent } from './run-go';
 import { RunResultsComponent } from './run-results';
 import { MarkdownModule } from '@app/markdown';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -24,10 +32,18 @@ import { MarkdownModule } from '@app/markdown';
     ],
     imports: [
         CommonModule,
+        FormsModule,
         StoreModule.forFeature('go', goReducer),
         EffectsModule.forFeature([
             GoEffects
         ]),
+        MatButtonModule,
+        MatIconModule,
+        MatCardModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatFormFieldModule,
+        MatInputModule,
         GoRoutingModule,
         LayoutModule,
         MarkdownModule

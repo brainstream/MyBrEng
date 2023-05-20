@@ -10,9 +10,11 @@ export class RunGoComponent {
     private _run: RunDto;
 
     currentQuestionIndex: number = 0;
+    totalQuestionCount: number = 0;
 
     @Input() set run(dto: RunDto) {
         this._run = dto;
+        this.totalQuestionCount = this._run.questions?.length ?? 0;
         this.currentQuestionIndex = 0;
     }
 
@@ -21,8 +23,7 @@ export class RunGoComponent {
     }
 
     get isCurrentQuestionLast() {
-        const totalQuestions = this._run.questions?.length ?? 0;
-        return totalQuestions - this.currentQuestionIndex  <= 1;
+        return this.totalQuestionCount - this.currentQuestionIndex  <= 1;
     }
 
     get currentQuestion(): RunQuestionDto | null {

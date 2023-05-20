@@ -8,4 +8,15 @@ import { RunQuestionDto } from '@app/web-api';
 })
 export class RunQuestionComponent {
     @Input() question: RunQuestionDto;
+
+    get type(): 'text' | 'multi' | 'single' {
+        switch (this.question.questionType) {
+            case RunQuestionDto.QuestionTypeEnum.FreeText:
+                return 'text';
+            case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
+                return 'multi';
+            default:
+                return 'single';
+        }
+    }
 }

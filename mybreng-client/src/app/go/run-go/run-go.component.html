@@ -1,6 +1,32 @@
 <h1>TODO: Title (Go)</h1>
 
-<app-run-question *ngIf="currentQuestion" [question]="currentQuestion"></app-run-question>
+<mat-card *ngIf="currentQuestion">
+    <mat-card-header>
+        <h2 mat-card-subtitle>Вопрос {{currentQuestionIndex + 1}} из {{totalQuestionCount}}</h2>
+    </mat-card-header>
+    <mat-card-content>
+        <app-run-question [question]="currentQuestion"></app-run-question>
+    </mat-card-content>
+</mat-card>
 
-<button *ngIf="!isCurrentQuestionFirst" (click)="goBack()">Назад</button>
-<button *ngIf="!isCurrentQuestionLast" (click)="goForward()">Дальше</button>
+<div class="nav-panel">
+    <div>
+        <button mat-raised-button [disabled]="isCurrentQuestionFirst" (click)="goBack()">
+            <mat-icon>arrow_back</mat-icon>
+            Предыдущий вопрос
+        </button>
+    </div>
+    <div>
+        <button mat-raised-button color="accent" *ngIf="isCurrentQuestionLast; else nextQuestionButton">
+            <mat-icon>send</mat-icon>
+            Отправить
+        </button>
+        <ng-template #nextQuestionButton>
+            <button mat-raised-button color="accent" (click)="goForward()">
+                <mat-icon>arrow_forward</mat-icon>
+                Следующий вопрос
+            </button>
+        </ng-template>
+    </div>
+
+</div>
