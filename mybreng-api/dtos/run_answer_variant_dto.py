@@ -5,12 +5,12 @@ from dtos import ID
 
 @dataclass
 class RunAnswerVariantDto:
-    question_answer_id: str
+    answer_id: str
     text: str
 
 
 class RunAnswerVariantDtoSchema(Schema):
-    question_answer_id = ID(required=True, data_key='questionAnswerId')
+    answer_id = ID(required=True, data_key='answerId')
     text = fields.String(required=True)
 
     @post_load

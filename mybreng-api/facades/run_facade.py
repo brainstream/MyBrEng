@@ -12,7 +12,11 @@ class RunFacade:
         if run is None:
             return None
         questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
-        return RunDto(run_id, [map_question_to_question_run_dto(q) for q in questions])
+        return RunDto(
+            run_id,
+            run.finish_date is not None,
+            [map_question_to_question_run_dto(q) for q in questions]
+        )
 
     def create_run(self, owner_id: str, dto: RunCreateDto) -> RunSummaryDto | None:
         student = StudentTable.query.filter_by(id=dto.student_id, owner_id=owner_id).first()

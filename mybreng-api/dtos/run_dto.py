@@ -7,12 +7,14 @@ from .run_question_dto import RunQuestionDto, RunQuestionDtoSchema
 @dataclass
 class RunDto:
     id: str
+    is_finished: bool
     questions: list[RunQuestionDto]
 
 
 # noinspection PyTypeChecker
 class RunDtoSchema(Schema):
     id = ID()
+    is_finished = fields.Boolean(required=True, data_key='isFinished')
     questions = fields.Nested(RunQuestionDtoSchema, many=True)
 
     @post_load
