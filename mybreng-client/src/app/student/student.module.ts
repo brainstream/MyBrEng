@@ -8,7 +8,7 @@ import { StudentDetailsComponent } from './student-details';
 import { StudentRoutingModule } from './student-routing.module';
 import { LayoutModule } from '@app/layout';
 import { StoreModule } from '@ngrx/store';
-import { StudentsEffects, studentsReducer } from './store';
+import { StudentEventsService, StudentsEffects, studentsReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { MatListModule } from '@angular/material/list';
 import { StudentListItemComponent } from './student-list-item';
@@ -56,6 +56,9 @@ import { MarkdownModule } from '@app/markdown';
         StudentRoutingModule,
         LayoutModule,
         MarkdownModule
+    ],
+    providers: [
+        StudentEventsService
     ]
 })
 export class StudentModule { }

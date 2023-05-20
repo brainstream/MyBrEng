@@ -4,8 +4,7 @@ import { QuizDto, QuizEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { quizzesActions, QuizzesSelectors } from '../store';
-import { QuizzesEventsService } from '../quizzes-events.service';
+import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
 

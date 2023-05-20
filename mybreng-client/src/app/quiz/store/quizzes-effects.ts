@@ -7,7 +7,8 @@ import { quizzesActions } from "./quizzes-actions";
 import { QuizzesSelectors } from "./quizzes-selectors";
 import { watchHttpErrors } from "@app/shared";
 import { MessageService } from "@app/common";
-import { QuizzesEventsService } from "../quizzes-events.service";
+import { QuizzesEventsService } from "./quizzes-events.service";
+
 
 @Injectable()
 export class QuizzesEffects {

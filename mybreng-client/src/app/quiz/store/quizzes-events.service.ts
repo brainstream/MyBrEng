@@ -2,9 +2,7 @@ import { Injectable } from "@angular/core";
 import { QuizDto, QuizQuestionDto } from "@app/web-api";
 import { Event } from '@app/shared';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class QuizzesEventsService {
     readonly quizSaved$ = new Event<QuizDto>();
     readonly quizDeleted$ = new Event<{ id: string }>();

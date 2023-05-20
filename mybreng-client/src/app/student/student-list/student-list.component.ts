@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@app/common';
-import { StudentDto, StudentEditDto, StudentService } from '@app/web-api';
+import { StudentDto, StudentEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { StudentsSelectors, studentsActions } from '../store';
+import { StudentsSelectors, studentsActions, StudentEventsService } from '../store';
 import { Observable, Subscription } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
-import { StudentEventsService } from '../student-events.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -23,7 +23,7 @@ import { QuizEditFormComponent } from './quiz-edit-form';
 import { QuizListItemComponent } from './quiz-list-item';
 import { QuizQuestionComponent } from './quiz-question';
 import { StoreModule } from '@ngrx/store';
-import { quizzesReducer } from './store';
+import { QuizzesEventsService, quizzesReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { QuizzesEffects } from './store/quizzes-effects';
 import { QuestionTypeNamePipe } from './question-type-name.pipe';
@@ -69,6 +69,9 @@ import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-so
         MarkdownModule,
         LayoutModule,
         AppCommonModule
+    ],
+    providers: [
+        QuizzesEventsService
     ]
 })
 export class QuizModule { }

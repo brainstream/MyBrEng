@@ -3,14 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuizDetailedDto, QuizEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { quizzesActions, QuizzesSelectors } from '../store';
+import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
 import { collapseOnLeaveAnimation } from 'angular-animations';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizQuestionSortComponent } from '../quiz-question-sort';
-import { QuizzesEventsService } from '../quizzes-events.service';
 import { TitleService } from '@app/common';
 
 @Component({

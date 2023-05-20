@@ -1,8 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { StudentDetailedDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { studentsActions } from '../store';
-import { StudentEventsService } from '../student-events.service';
+import { studentsActions, StudentEventsService } from '../store';
 import { Subscription } from 'rxjs';
 
 @Component({

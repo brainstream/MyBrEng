@@ -7,7 +7,7 @@ import { watchHttpErrors } from "@app/shared";
 import { MessageService } from "@app/common";
 import { studentsActions } from "./students-actions";
 import { StudentsSelectors } from "./students-selectors";
-import { StudentEventsService } from "../student-events.service";
+import { StudentEventsService } from "./student-events.service";
 
 @Injectable()
 export class StudentsEffects {
