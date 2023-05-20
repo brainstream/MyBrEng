@@ -7,7 +7,7 @@ import { watchHttpErrors } from "@app/shared";
 import { MessageService } from "@app/common";
 import { studentsActions } from "./students-actions";
 import { StudentsSelectors } from "./students-selectors";
-import { StudentEventsService } from "./student-events.service";
+import { StudentsEventsService } from "./students-events.service";
 
 @Injectable()
 export class StudentsEffects {
@@ -18,7 +18,7 @@ export class StudentsEffects {
         private readonly quizService: QuizService,
         private readonly runService: RunService,
         private readonly messageService: MessageService,
-        private readonly eventsService: StudentEventsService
+        private readonly eventsService: StudentsEventsService
     ) {
     }
 

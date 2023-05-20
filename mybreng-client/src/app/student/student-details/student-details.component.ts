@@ -4,7 +4,7 @@ import { ConfirmDialogButton, ConfirmDialogService, TitleService } from '@app/co
 import { QuizDto, RunSummaryDto, StudentDetailedDto, StudentEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { StudentsSelectors, studentsActions, StudentEventsService } from '../store';
+import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { StudentAddRunFormComponent } from '../student-add-run-form';
@@ -27,7 +27,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         private readonly titleService: TitleService,
         private readonly bottomSheet: MatBottomSheet,
         private readonly confirmDialog: ConfirmDialogService,
-        private readonly events: StudentEventsService,
+        private readonly events: StudentsEventsService,
         private readonly store$: Store
     ) {
         this.loading$ = store$.select(StudentsSelectors.loading);

@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { StudentDetailedDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { studentsActions, StudentEventsService } from '../store';
+import { studentsActions, StudentsEventsService } from '../store';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,7 +19,7 @@ export class StudentNoteComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly store$: Store,
-        private readonly events: StudentEventsService
+        private readonly events: StudentsEventsService
     ) {
     }
 

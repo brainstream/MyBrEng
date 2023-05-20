@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@app/common';
 import { StudentDto, StudentEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { StudentsSelectors, studentsActions, StudentEventsService } from '../store';
+import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
 import { Observable, Subscription } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
@@ -22,7 +22,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
         private readonly bottomSheet: MatBottomSheet,
         private readonly store$: Store,
         private readonly router: Router,
-        private readonly events: StudentEventsService,
+        private readonly events: StudentsEventsService,
         titleService: TitleService,
     ) {
         titleService.setTitle('Ученики');
