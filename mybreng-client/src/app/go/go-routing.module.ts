@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { NotFoundComponent } from "./not-found";
 import { RunComponent } from "./run";
+import { RunNotFoundComponent } from "./run-not-found";
 
 const routes: Routes = [
     {
@@ -9,7 +9,7 @@ const routes: Routes = [
         component: RunComponent
     }, {
         path: '**',
-        component: NotFoundComponent
+        component: RunNotFoundComponent
     }
 ];
 

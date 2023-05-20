@@ -3,3 +3,4 @@ export * from './go-actions';
 export * from './go-reducer';
 export * from './go-effects';
 export * from './go-events.service';
+export * from './go-selectors';

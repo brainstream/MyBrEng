@@ -20,5 +20,6 @@ def map_question_to_question_run_dto(question: QuizQuestionTable) -> RunQuestion
         question.id,
         question.text,
         map_db_question_type_to_question_type(question.type),
-        answer_variants
+        answer_variants,
+        None
     )

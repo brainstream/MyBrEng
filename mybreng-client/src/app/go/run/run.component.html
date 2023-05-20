@@ -1,3 +1,17 @@
 <app-layout-simple>
-    Go Run
+    <ng-container *ngIf="run$ | async as run">
+        <ng-container *ngIf="run.isFinished; then showResults else showRun"></ng-container>
+
+        <ng-template #showRun>
+            <app-run-go [run]="run"></app-run-go>
+        </ng-template>
+
+        <ng-template #showResults>
+            <app-run-results [run]="run"></app-run-results>
+        </ng-template>
+    </ng-container>
+
+    <ng-template #notFound>
+        <app-run-not-found-message></app-run-not-found-message>
+    </ng-template>
 </app-layout-simple>

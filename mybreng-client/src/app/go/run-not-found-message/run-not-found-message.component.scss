@@ -1,0 +1,12 @@
+:host {
+    display: block;
+    width: 100%;
+
+    .message {
+        display: block;
+        padding-top: 8rem;
+        text-align: center;
+        font-size: 4rem;
+        font-weight: bold;
+    }
+}

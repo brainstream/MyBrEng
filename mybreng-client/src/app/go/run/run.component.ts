@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { goActions } from '../store';
+import { Observable, Subscription } from 'rxjs';
+import { GoSelectors, goActions } from '../store';
+import { RunDto } from '@app/web-api';
 
 @Component({
     selector: 'app-run',
@@ -12,10 +13,13 @@ import { goActions } from '../store';
 export class RunComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];
 
+    run$: Observable<RunDto | null>;
+
     constructor(
         private readonly route: ActivatedRoute,
         private readonly store$: Store
     ) {
+        this.run$ = store$.select(GoSelectors.run);
     }
 
     ngOnInit(): void {

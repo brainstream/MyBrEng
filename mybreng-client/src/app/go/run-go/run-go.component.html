@@ -1,0 +1,6 @@
+<h1>TODO: Title (Go)</h1>
+
+<app-run-question *ngIf="currentQuestion" [question]="currentQuestion"></app-run-question>
+
+<button *ngIf="!isCurrentQuestionFirst" (click)="goBack()">Назад</button>
+<button *ngIf="!isCurrentQuestionLast" (click)="goForward()">Дальше</button>
