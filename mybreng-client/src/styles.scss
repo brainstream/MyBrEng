@@ -4,10 +4,6 @@
 
 mat.$theme-ignore-duplication-warnings: true;
 
-html,
-body {
-    height: 100%;
-}
 
 body {
     margin: 0;
@@ -139,7 +135,7 @@ $app-dark-theme: mat.define-dark-theme(
             .mdc-snackbar__surface {
                 background-color: mat.get-color-from-palette($accent-palette, default);
             }
-            
+
             .mat-mdc-snack-bar-label {
                 color: mat.get-color-from-palette($accent-palette, default-contrast);
             }
@@ -153,7 +149,7 @@ $app-dark-theme: mat.define-dark-theme(
             .mdc-snackbar__surface {
                 background-color: mat.get-color-from-palette($warn-palette, default);
             }
-            
+
             .mat-mdc-snack-bar-label {
                 color: mat.get-color-from-palette($warn-palette, default-contrast);
             }
