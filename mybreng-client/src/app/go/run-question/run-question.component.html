@@ -2,12 +2,20 @@
 
 <ng-container [ngSwitch]="type">
     <ng-container *ngSwitchCase="'text'">
-        <app-run-free-text-answer [(answer)]="singleAnswer"></app-run-free-text-answer>
+        <app-run-free-text-answer
+            [(answer)]="singleAnswer">
+        </app-run-free-text-answer>
     </ng-container>
     <ng-container *ngSwitchCase="'multi'">
-        <app-run-multiple-choices-answers [variants]="answerVariants" [(answers)]="allAnswers"></app-run-multiple-choices-answers>
+        <app-run-multiple-choices-answers
+            [variants]="answerVariants"
+            [(answers)]="allAnswers">
+        </app-run-multiple-choices-answers>
     </ng-container>
     <ng-container *ngSwitchCase="'single'">
-        <app-run-single-choice-answers [variants]="answerVariants" [(answer)]="singleAnswer"></app-run-single-choice-answers>
+        <app-run-single-choice-answers
+            [variants]="answerVariants"
+            [(answer)]="singleAnswer">
+        </app-run-single-choice-answers>
     </ng-container>
 </ng-container>

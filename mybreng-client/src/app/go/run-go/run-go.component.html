@@ -5,7 +5,7 @@
         <h2 mat-card-subtitle>Вопрос {{currentQuestionIndex + 1}} из {{totalQuestionCount}}</h2>
     </mat-card-header>
     <mat-card-content>
-        <app-run-question [question]="currentQuestion"></app-run-question>
+        <app-run-question [question]="currentQuestion" [(answers)]="answers[currentQuestionIndex]"></app-run-question>
     </mat-card-content>
 </mat-card>
 
@@ -17,12 +17,22 @@
         </button>
     </div>
     <div>
-        <button mat-raised-button color="accent" *ngIf="isCurrentQuestionLast; else nextQuestionButton">
+        <button
+            mat-raised-button
+            color="accent"
+            [disabled]="!isCurrentQuestionAnswered"
+            *ngIf="isCurrentQuestionLast; else nextQuestionButton"
+        >
             <mat-icon>send</mat-icon>
             Отправить
         </button>
         <ng-template #nextQuestionButton>
-            <button mat-raised-button color="accent" (click)="goForward()">
+            <button
+                mat-raised-button
+                color="accent"
+                (click)="goForward()"
+                [disabled]="!isCurrentQuestionAnswered"
+            >
                 <mat-icon>arrow_forward</mat-icon>
                 Следующий вопрос
             </button>

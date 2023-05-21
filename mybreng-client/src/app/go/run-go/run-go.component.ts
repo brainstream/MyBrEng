@@ -11,11 +11,13 @@ export class RunGoComponent {
 
     currentQuestionIndex: number = 0;
     totalQuestionCount: number = 0;
+    answers: string[][];
 
     @Input() set run(dto: RunDto) {
         this._run = dto;
         this.totalQuestionCount = this._run.questions?.length ?? 0;
         this.currentQuestionIndex = 0;
+        this.answers = this._run.questions?.map(_ => []) ?? [];
     }
 
     get isCurrentQuestionFirst() {
@@ -33,6 +35,10 @@ export class RunGoComponent {
         return null;
     }
 
+    get isCurrentQuestionAnswered(): boolean {
+        return this.answers[this.currentQuestionIndex].length > 0;
+    }
+
     goForward(): void {
         if (!this.isCurrentQuestionLast) {
             ++this.currentQuestionIndex;
@@ -40,7 +46,6 @@ export class RunGoComponent {
     }
 
     goBack(): void {
-        // TODO: if question is answered
         if (!this.isCurrentQuestionFirst) {
             --this.currentQuestionIndex;
         }
