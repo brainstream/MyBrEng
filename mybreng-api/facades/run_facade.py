@@ -68,7 +68,7 @@ class RunFacade:
                     answer.text = a
                 else:
                     answer.answer_variant_id = a
-                db.session.add(a)
+                db.session.add(answer)
 
         db.session.commit()
         return self.get_run(run.id)

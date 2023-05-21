@@ -47,4 +47,19 @@ export class GoEffects {
             of(goActions.setLoading({ loading: false }))
         ))
     ));
+
+    finish$ = createEffect(() => this.actions$.pipe(
+        ofType(goActions.finish),
+        switchMap(({ result }) => concat(
+            of(goActions.setLoading({ loading: true })),
+            watchHttpErrors(this.runService.runFinish(result, 'events'))
+                .pipe(
+                    map(run => goActions.loaded({ run })),
+                    catchError(() => of(goActions.setError({
+                        message: 'Во время сохранения результатов тестирования произошла ошибка'
+                    })))
+                ),
+            of(goActions.setLoading({ loading: false }))
+        ))
+    ));
 }
