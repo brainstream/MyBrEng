@@ -79,3 +79,15 @@ class RunTable(db.Model):
 
     def __repr__(self):
         return f'<Run: {self.id}>'
+
+
+class RunAnswerTable(db.Model):
+    __tablename__ = 'RunAnswer'
+    id = db.Column('Id', db.String(38), primary_key=True)
+    run_id = db.Column('Run', db.ForeignKey('Run.Id'))
+    question_id = db.Column('Question', db.ForeignKey('QuizQuestion.Id'))
+    answer_variant_id = db.Column('Variant', db.ForeignKey('QuizAnswerVariant.Id'))
+    text = db.Column('Text', db.String(150))
+
+    def __repr__(self):
+        return f'<RunAnswer: {self.id}>'

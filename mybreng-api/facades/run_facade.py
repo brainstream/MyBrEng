@@ -1,8 +1,8 @@
 import uuid
 from datetime import datetime
-from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable
-from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto
-from mappers import map_run_to_summary_dto, map_question_to_question_run_dto
+from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable, RunAnswerTable
+from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto, QuizQuestionType
+from mappers import map_run_to_summary_dto, map_question_to_question_run_dto, map_db_question_type_to_question_type
 
 
 # noinspection PyMethodMayBeStatic
@@ -45,5 +45,30 @@ class RunFacade:
         return False
 
     def finish_run(self, dto: RunFinishDto) -> RunDto | None:
-        ...
+        run = RunTable.query.filter_by(id=dto.id).first()
+        if run is None:
+            return None
+        run.finish_date = datetime.utcnow()
+        questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
 
+        def is_free_text_question(qid):
+            question = next(filter(lambda qn: qn.id == qid, questions), None)
+            if question is None:
+                return False
+            return map_db_question_type_to_question_type(question.type) == QuizQuestionType.FREE_TEXT
+
+        for q in dto.questions:
+            is_free_text = is_free_text_question(q.id)
+            for a in q.answers:
+                answer = RunAnswerTable()
+                answer.id = uuid.uuid4()
+                answer.run_id = run.id
+                answer.question_id = q.id
+                if is_free_text:
+                    answer.text = a
+                else:
+                    answer.answer_variant_id = a
+                db.session.add(a)
+
+        db.session.commit()
+        return self.get_run(run.id)
