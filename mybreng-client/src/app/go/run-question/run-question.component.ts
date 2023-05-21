@@ -31,7 +31,7 @@ export class RunQuestionComponent {
     }
 
     set singleAnswer(value: string) {
-        this.answersChange.emit([value]);
+        this.answersChange.emit(value ? [value] : []);
     }
 
     get allAnswers(): string[] {
