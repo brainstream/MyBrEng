@@ -1,0 +1,5 @@
+<div *ngFor="let variant of variants; index as i">
+    <mat-checkbox [checked]="isChecked(variant.answerId)" (change)="itemChanged(i, $event.checked)">
+        {{variant.text}}
+    </mat-checkbox>
+</div>

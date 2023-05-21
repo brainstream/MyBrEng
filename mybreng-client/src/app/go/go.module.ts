@@ -19,7 +19,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RunSingleChoiceAnswersComponent } from './run-single-choice-answers';
+import { RunMultipleChoicesAnswersComponent } from './run-multiple-choices-answers';
+import { RunFreeTextAnswerComponent } from './run-free-text-answer';
 
 @NgModule({
     declarations: [
@@ -28,11 +31,15 @@ import { FormsModule } from '@angular/forms';
         RunNotFoundComponent,
         RunNotFoundMessageComponent,
         RunGoComponent,
-        RunResultsComponent
+        RunResultsComponent,
+        RunSingleChoiceAnswersComponent,
+        RunMultipleChoicesAnswersComponent,
+        RunFreeTextAnswerComponent
     ],
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         StoreModule.forFeature('go', goReducer),
         EffectsModule.forFeature([
             GoEffects
