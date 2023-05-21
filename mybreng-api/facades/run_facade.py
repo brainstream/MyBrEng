@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable
-from dtos import RunSummaryDto, RunCreateDto, RunDto
+from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto
 from mappers import map_run_to_summary_dto, map_question_to_question_run_dto
 
 
@@ -43,4 +43,7 @@ class RunFacade:
             db.session.commit()
             return True
         return False
+
+    def finish_run(self, dto: RunFinishDto) -> RunDto | None:
+        ...
 

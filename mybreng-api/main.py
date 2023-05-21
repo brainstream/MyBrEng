@@ -26,7 +26,8 @@ from blueprints import \
     run_get, \
     run_blueprint, \
     run_create, \
-    run_delete
+    run_delete, \
+    run_finish
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -45,7 +46,9 @@ from dtos import \
     RunQuestionDtoSchema, \
     RunDtoSchema, \
     RunAnswerDtoSchema, \
-    RunAnswerVariantDtoSchema
+    RunAnswerVariantDtoSchema, \
+    RunFinishDtoSchema, \
+    RunFinishQuestionDtoSchema
 from di import DI
 from database import db
 
@@ -91,7 +94,9 @@ def create_app() -> Flask:
         .schema('StudentDto', schema=StudentDtoSchema) \
         .schema('StudentDetailedDto', schema=StudentDetailedDtoSchema) \
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
-        .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema)
+        .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema) \
+        .schema('RunFinishQuestionDto', schema=RunFinishQuestionDtoSchema) \
+        .schema('RunFinishDto', schema=RunFinishDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -118,10 +123,11 @@ def create_app() -> Flask:
         spec.path(view=student_details)
         spec.path(view=student_save)
         spec.path(view=student_set_note)
+        spec.path(view=student_delete)
         spec.path(view=run_get)
         spec.path(view=run_create)
         spec.path(view=run_delete)
-        spec.path(view=student_delete)
+        spec.path(view=run_finish)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

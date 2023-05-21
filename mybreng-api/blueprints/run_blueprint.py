@@ -4,7 +4,7 @@ from flask.blueprints import Blueprint
 from flask_login import current_user, login_required
 
 from di import DI
-from dtos import RunCreateDtoSchema, RunSummaryDtoSchema, RunDtoSchema
+from dtos import RunCreateDtoSchema, RunSummaryDtoSchema, RunDtoSchema, RunFinishDtoSchema
 from facades import RunFacade
 
 run_blueprint = Blueprint('run', __name__)
@@ -29,6 +29,9 @@ def run_get(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
       responses:
         200:
           description: The Run
+          content:
+            application/json:
+              schema: RunDto
         404:
           description: A Run with specified ID not found
     """
@@ -98,3 +101,35 @@ def run_delete(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
     """
     result = run_facade.delete_run(current_user.id, run_id)
     return make_response('', 200 if result else 404)
+
+
+@run_blueprint.route('/finish', methods=['POST'])
+@login_required
+@inject
+def run_finish(run_facade: RunFacade = Provide[DI.run_facade]):
+    """
+    ---
+    post:
+      operationId: run_finish
+      tags: [Run]
+      description: Finishes a run
+      requestBody:
+        content:
+          application/json:
+            schema: RunFinishDto
+      responses:
+        200:
+          description: The Run
+          content:
+            application/json:
+              schema: RunDto
+        404:
+          description: A Run with specified ID not found
+    """
+    request_schema = RunFinishDtoSchema()
+    dto = request_schema.loads(request.get_data(as_text=True))
+    run = run_facade.finish_run(dto)
+    if run is None:
+        return make_response('', 404)
+    response_schema = RunDtoSchema()
+    return jsonify(response_schema.dump(run))

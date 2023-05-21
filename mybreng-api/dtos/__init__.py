@@ -19,3 +19,5 @@ from .run_dto import *
 from .run_question_dto import *
 from .run_answer_variant_dto import *
 from .run_answer_dto import *
+from .run_finish_dto import *
+from .run_finish_question_dto import *
