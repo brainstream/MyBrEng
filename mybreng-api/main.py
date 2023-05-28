@@ -48,7 +48,8 @@ from dtos import \
     RunAnswerDtoSchema, \
     RunAnswerVariantDtoSchema, \
     RunFinishDtoSchema, \
-    RunFinishQuestionDtoSchema
+    RunFinishQuestionDtoSchema, \
+    RunReportAnswerDtoSchema
 from di import DI
 from database import db
 
@@ -86,7 +87,8 @@ def create_app() -> Flask:
         .schema('QuizQuestionEditDto', schema=QuizQuestionEditDtoSchema) \
         .schema('QuizQuestionPositionDto', schema=QuizQuestionPositionDtoSchema) \
         .schema('RunSummaryDto', schema=RunSummaryDtoSchema) \
-        .schema('RunCreateDto', schema=RunCreateDtoSchema)  \
+        .schema('RunCreateDto', schema=RunCreateDtoSchema) \
+        .schema('RunReportAnswerDto', schema=RunReportAnswerDtoSchema) \
         .schema('RunAnswerVariantDto', schema=RunAnswerVariantDtoSchema) \
         .schema('RunAnswerDto', schema=RunAnswerDtoSchema) \
         .schema('RunQuestionDto', schema=RunQuestionDtoSchema) \

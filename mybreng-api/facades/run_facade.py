@@ -1,8 +1,11 @@
 import uuid
 from datetime import datetime
 from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable, RunAnswerTable
-from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto, QuizQuestionType
-from mappers import map_run_to_summary_dto, map_question_to_question_run_dto, map_db_question_type_to_question_type
+from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto, QuizQuestionType, RunReportAnswerDto
+from mappers import \
+    map_run_to_summary_dto, \
+    map_question_to_question_run_dto, \
+    map_db_question_type_to_question_type
 
 
 # noinspection PyMethodMayBeStatic
@@ -12,10 +15,12 @@ class RunFacade:
         if run is None:
             return None
         questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
+        is_finished = run.finish_date is not None
         return RunDto(
             run_id,
-            run.finish_date is not None,
-            [map_question_to_question_run_dto(q) for q in questions]
+            is_finished,
+            [map_question_to_question_run_dto(q, is_finished) for q in questions],
+            [RunReportAnswerDto(a.question_id, a.answer_variant_id, a.text) for a in run.answers]
         )
 
     def create_run(self, owner_id: str, dto: RunCreateDto) -> RunSummaryDto | None:

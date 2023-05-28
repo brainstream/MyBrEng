@@ -76,6 +76,7 @@ class RunTable(db.Model):
     quiz = db.relationship('QuizTable')
     student_id = db.Column('Student', db.ForeignKey('Student.Id'))
     student = db.relationship('StudentTable')
+    answers = db.relationship('RunAnswerTable', backref=db.backref('RunAnswer', uselist=True))
 
     def __repr__(self):
         return f'<Run: {self.id}>'

@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from marshmallow import Schema, fields, post_load
 from .id import ID
 from .run_answer_variant_dto import RunAnswerVariantDto, RunAnswerVariantDtoSchema
-from .run_answer_dto import RunAnswerDto, RunAnswerDtoSchema
 from .quiz_quiestion_type import QuizQuestionType
 
 

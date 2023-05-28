@@ -10,7 +10,6 @@ import { RunQuestionComponent } from './run-question';
 import { RunNotFoundComponent } from './run-not-found';
 import { RunNotFoundMessageComponent } from './run-not-found-message';
 import { RunGoComponent } from './run-go';
-import { RunResultsComponent } from './run-results';
 import { MarkdownModule } from '@app/markdown';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RunSingleChoiceAnswersComponent } from './run-single-choice-answers';
 import { RunMultipleChoicesAnswersComponent } from './run-multiple-choices-answers';
 import { RunFreeTextAnswerComponent } from './run-free-text-answer';
+import { QuizReportModule } from '@app/quiz-report';
 
 @NgModule({
     declarations: [
@@ -31,7 +31,6 @@ import { RunFreeTextAnswerComponent } from './run-free-text-answer';
         RunNotFoundComponent,
         RunNotFoundMessageComponent,
         RunGoComponent,
-        RunResultsComponent,
         RunSingleChoiceAnswersComponent,
         RunMultipleChoicesAnswersComponent,
         RunFreeTextAnswerComponent
@@ -53,7 +52,8 @@ import { RunFreeTextAnswerComponent } from './run-free-text-answer';
         MatInputModule,
         GoRoutingModule,
         LayoutModule,
-        MarkdownModule
+        MarkdownModule,
+        QuizReportModule
     ],
     providers: [
         GoEventsService
