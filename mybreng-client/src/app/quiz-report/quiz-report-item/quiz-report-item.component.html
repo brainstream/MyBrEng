@@ -1,4 +1,22 @@
 <mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <div class="status" [class.passed]="data.isPassed">
+                <ng-container *ngIf="data.isPassed; else notPassed">
+                    <mat-icon>task_alt</mat-icon> Верно
+                </ng-container>
+                <ng-template #notPassed>
+                    <mat-icon>block</mat-icon> Неверно
+                </ng-template>
+            </div>
+        </mat-card-title>
+        <mat-card-subtitle>
+            {{questionDescription}}
+        </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
     <mat-card-content>
         <app-markdown [source]="data.question"></app-markdown>
         <table class="answers">
@@ -21,5 +39,7 @@
                 </td>
             </tr>
         </table>
+
+
     </mat-card-content>
 </mat-card>

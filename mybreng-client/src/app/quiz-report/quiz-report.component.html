@@ -1,3 +1,10 @@
+<mat-card class="item">
+    <mat-card-content>
+        Правильных ответов {{report.summary.passedQuestionCount}} из {{report.summary.totalQuestionCount}}
+    </mat-card-content>
+</mat-card>
+
 <div *ngFor="let item of report.items" class="item">
     <app-quiz-report-item [data]="item"></app-quiz-report-item>
 </div>
+

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IQuizReportItem } from '../quiz-repot';
+import { RunQuestionDto } from '@app/web-api';
 
 @Component({
   selector: 'app-quiz-report-item',
@@ -8,4 +9,17 @@ import { IQuizReportItem } from '../quiz-repot';
 })
 export class QuizReportItemComponent {
     @Input() data: IQuizReportItem;
+
+    get questionDescription(): string {
+        switch(this.data.questionType) {
+            case RunQuestionDto.QuestionTypeEnum.FreeText:
+                return 'Вписать ответ';
+            case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
+                return 'Выбрать все верные ответы';
+            case RunQuestionDto.QuestionTypeEnum.SingleChoice:
+                return 'Выбрать один верный ответ';
+            default:
+                return '';
+        }
+    }
 }

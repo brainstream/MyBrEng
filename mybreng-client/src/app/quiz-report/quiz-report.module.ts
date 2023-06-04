@@ -5,6 +5,7 @@ import { QuizReportComponent } from './quiz-report.component';
 import { QuizReportItemComponent } from './quiz-report-item';
 import { MatCardModule } from '@angular/material/card';
 import { MarkdownModule } from '@app/markdown';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import { MarkdownModule } from '@app/markdown';
         CommonModule,
         MatIconModule,
         MatCardModule,
+        MatDividerModule,
         MarkdownModule
     ]
 })

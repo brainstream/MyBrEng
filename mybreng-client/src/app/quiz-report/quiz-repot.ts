@@ -2,12 +2,19 @@ import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from "@app/
 
 export interface IQuizRepor {
     readonly items: IQuizReportItem[];
+    readonly summary: IQuizReporSummary;
+}
+
+export interface IQuizReporSummary {
+    totalQuestionCount: number;
+    passedQuestionCount: number;
 }
 
 export interface IQuizReportItem {
     readonly question: string;
     readonly questionType: RunQuestionDto.QuestionTypeEnum;
     readonly answers: IQuizReporAnswer[];
+    readonly isPassed: boolean;
 }
 
 export interface IQuizReporAnswer {
@@ -17,21 +24,37 @@ export interface IQuizReporAnswer {
 }
 
 export function mapRunToReport(run: RunDto): IQuizRepor {
+    const items = mapRunQuestionsToReportItems(run);
+    const summary = items.reduce((sum, item) => {
+        ++sum.totalQuestionCount;
+        if (item.isPassed) {
+            ++sum.passedQuestionCount;
+        }
+        return sum;
+    }, {
+        totalQuestionCount: 0,
+        passedQuestionCount: 0
+    });
     return {
-        items: mapRunQuestionsToReportItems(run)
+        items,
+        summary
     };
 }
 
 function mapRunQuestionsToReportItems(run: RunDto): IQuizReportItem[] {
-    return run.questions?.map(q => ({
-        question: q.text,
-        questionType: q.questionType,
-        answers: mergeAnswers(
+    return run.questions?.map(q => {
+        const answers = mergeAnswers(
             q.questionType,
             q.answerVariants ?? [],
             getRunAnswersForQuestion(run, q.questionId)
-        )
-    })) ?? [];
+        );
+        return {
+            question: q.text,
+            questionType: q.questionType,
+            answers,
+            isPassed: isQuestionPassed(q.questionType, answers)
+        }
+    }) ?? [];
 }
 
 function getRunAnswersForQuestion(run: RunDto, questionId: string): RunAnswerDto[] {
@@ -75,5 +98,22 @@ function isAnswerMatched(
         return answers.some(a => variant.text.trim().toLowerCase() === a.text?.trim().toLowerCase())
     } else {
         return answers.some(a => variant.answerId === a.variantId);
+    }
+}
+
+function isQuestionPassed(
+    questionType: RunQuestionDto.QuestionTypeEnum,
+    answers: IQuizReporAnswer[]
+): boolean {
+    switch(questionType) {
+        case RunQuestionDto.QuestionTypeEnum.SingleChoice:
+        case RunQuestionDto.QuestionTypeEnum.FreeText:
+            return answers.some(a => a.isCorrect && a.isAnswerMatched);
+        case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
+            return answers.every(a =>
+                (a.isCorrect && a.isAnswerMatched) || (!a.isCorrect && !a.isAnswerMatched)
+            );
+        default:
+            return false;
     }
 }
