@@ -1,12 +1,4 @@
 .answers {
-    //     display: grid;
-    //     grid-template-columns: max-content max-content max-content;
-
-    //     div {
-    //         padding-right: 1rem;
-    //         align-self: center;
-    //         line-height: 2.5rem;
-
     border-collapse: collapse;
 
     td, th, td > *, th > * {
@@ -25,10 +17,8 @@
     .header, .header th, .odd, .odd td {
         background-color: rgb(86, 86, 86); // TODO: Theme
     }
-    //     }
 
-    //     .title {
-    //         margin-bottom: 0.5rem;
-    //         font-weight: 500;
-    //     }
+    .center {
+        text-align: center;
+    }
 }

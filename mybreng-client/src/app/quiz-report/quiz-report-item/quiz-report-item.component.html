@@ -1,19 +1,19 @@
 <mat-card>
     <mat-card-content>
-        <app-markdown [source]="question"></app-markdown>
+        <app-markdown [source]="data.question"></app-markdown>
         <table class="answers">
             <tr class="header">
-                <th class="title">Ответ</th>
+                <th class="title center">Ответ</th>
                 <th class="title">Вариант</th>
-                <th class="title">Правильный ответ</th>
+                <th class="title center">Правильный ответ</th>
             </tr>
 
-            <tr *ngFor="let answer of answers; odd as isOdd" [class.odd]="isOdd">
-                <td>
+            <tr *ngFor="let answer of data.answers; odd as isOdd" [class.odd]="isOdd">
+                <td class="center">
                     <mat-icon *ngIf="answer.isAnswerMatched">forward</mat-icon>
                 </td>
                 <td>{{answer.text}}</td>
-                <td>
+                <td class="center">
                     <mat-icon *ngIf="answer.isCorrect; else incorrectIcon">check</mat-icon>
                     <ng-template #incorrectIcon>
                         <mat-icon>clear</mat-icon>
