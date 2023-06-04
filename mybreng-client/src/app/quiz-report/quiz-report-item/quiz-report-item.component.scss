@@ -1,8 +1,34 @@
-.answer-variant {
-    display: flex;
-    align-items: center;
+.answers {
+    //     display: grid;
+    //     grid-template-columns: max-content max-content max-content;
 
-    .text {
-        margin-left: 0.3rem;
+    //     div {
+    //         padding-right: 1rem;
+    //         align-self: center;
+    //         line-height: 2.5rem;
+
+    border-collapse: collapse;
+
+    td, th, td > *, th > * {
+        vertical-align: middle;
+        text-align: left;
     }
+
+    th {
+        padding: 0.5rem 1rem;
+    }
+
+    td {
+        padding: 0.3rem 1rem;
+    }
+
+    .header, .header th, .odd, .odd td {
+        background-color: rgb(86, 86, 86); // TODO: Theme
+    }
+    //     }
+
+    //     .title {
+    //         margin-bottom: 0.5rem;
+    //         font-weight: 500;
+    //     }
 }

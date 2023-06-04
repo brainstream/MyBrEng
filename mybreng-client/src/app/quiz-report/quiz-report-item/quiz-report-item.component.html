@@ -1,14 +1,25 @@
 <mat-card>
     <mat-card-content>
-        <app-markdown [source]="question.text"></app-markdown>
+        <app-markdown [source]="question"></app-markdown>
+        <table class="answers">
+            <tr class="header">
+                <th class="title">Ответ</th>
+                <th class="title">Вариант</th>
+                <th class="title">Правильный ответ</th>
+            </tr>
 
-        <div *ngFor="let variant of question.answerVariants" class="answer-variant">
-            <mat-icon *ngIf="variant.isCorrect; else incorrectIcon">check_box</mat-icon>
-            <ng-template #incorrectIcon>
-                <mat-icon>check_box_outline_blank</mat-icon>
-            </ng-template>
-            <span class="text">{{variant.text}}</span>
-            <div *ngIf="answer && answer.text">Ваш ответ: {{answer.text}}</div>
-        </div>
+            <tr *ngFor="let answer of answers; odd as isOdd" [class.odd]="isOdd">
+                <td>
+                    <mat-icon *ngIf="answer.isAnswerMatched">forward</mat-icon>
+                </td>
+                <td>{{answer.text}}</td>
+                <td>
+                    <mat-icon *ngIf="answer.isCorrect; else incorrectIcon">check</mat-icon>
+                    <ng-template #incorrectIcon>
+                        <mat-icon>clear</mat-icon>
+                    </ng-template>
+                </td>
+            </tr>
+        </table>
     </mat-card-content>
 </mat-card>
