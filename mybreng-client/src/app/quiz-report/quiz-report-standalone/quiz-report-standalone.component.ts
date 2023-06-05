@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { watchHttpErrors } from '@app/shared';
 import { ApiModule, RunDto, RunService } from '@app/web-api';
-import { Observable, Subscription, catchError, map, of, switchMap, tap } from 'rxjs';
-import { IQuizRepor, mapRunToReport } from '../quiz-report/quiz-report';
+import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 import { MessageService } from '@app/common';
 
 @Component({
@@ -14,20 +13,17 @@ import { MessageService } from '@app/common';
         ApiModule
     ]
 })
-export class QuizReportStandaloneComponent implements OnInit, OnDestroy {
-    private loadingSubscription: Subscription;
+export class QuizReportStandaloneComponent {
+    readonly run$: Observable<RunDto | null>;
+
     loading: boolean = false;
-    run$: Observable<RunDto | null>;
 
     constructor(
-        private readonly activatedRoute: ActivatedRoute,
+        activatedRoute: ActivatedRoute,
         private readonly runService: RunService,
         private readonly messageService: MessageService
     ) {
-    }
-
-    ngOnInit(): void {
-        this.run$ = this.activatedRoute.paramMap
+        this.run$ = activatedRoute.paramMap
             .pipe(
                 switchMap(params => {
                     const id = params.get('id');
@@ -37,11 +33,6 @@ export class QuizReportStandaloneComponent implements OnInit, OnDestroy {
                     return of(null);
                 }
                 ));
-        this.loadingSubscription = this.run$.subscribe();
-    }
-
-    ngOnDestroy(): void {
-        this.loadingSubscription.unsubscribe();
     }
 
     private load(id: string): Observable<RunDto | null> {
