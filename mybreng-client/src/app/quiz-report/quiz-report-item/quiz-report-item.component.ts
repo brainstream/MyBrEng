@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IQuizReportItem } from '../quiz-repot';
+import { IQuizReportItem } from '../quiz-report';
 import { RunQuestionDto } from '@app/web-api';
 
 @Component({

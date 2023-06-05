@@ -23,6 +23,7 @@
             <div>
                 <ng-container *ngIf="run.finishDate; else noDate">
                     {{run.finishDate | date:'medium'}}
+                    <a class="report-link" [routerLink]="['/report', run.id]">Посмотреть результаты</a>
                 </ng-container>
             </div>
             <ng-template #noDate>&mdash;</ng-template>

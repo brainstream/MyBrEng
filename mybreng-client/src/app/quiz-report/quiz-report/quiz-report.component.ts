@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RunAnswerDto, RunDto } from '@app/web-api';
-import { IQuizRepor, mapRunToReport } from './quiz-repot';
+import { IQuizRepor, mapRunToReport } from './quiz-report';
 
 @Component({
     selector: 'app-quiz-report',

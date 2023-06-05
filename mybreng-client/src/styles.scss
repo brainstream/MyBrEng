@@ -109,6 +109,7 @@ $app-dark-theme: mat.define-dark-theme(
 
 @mixin global-theme($theme) {
     $color-config: mat.get-color-config($theme);
+    $is-dark-theme:   map.get($color-config, 'is-dark');
     $accent-palette: map.get($color-config, 'accent');
     $warn-palette: map.get($color-config, 'warn');
     $background-palette: map.get($color-config, 'background');
@@ -120,7 +121,11 @@ $app-dark-theme: mat.define-dark-theme(
     }
 
     a {
-        color: mat.get-color-from-palette($accent-palette, A200);
+        @if $is-dark-theme {
+            color: mat.get-color-from-palette($accent-palette, A200);
+        } @else {
+            color: mat.get-color-from-palette($accent-palette);
+        }
     }
 
     .text-muted {

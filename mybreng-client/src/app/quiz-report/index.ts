@@ -1,4 +1,4 @@
-export * from './quiz-repot';
+export * from './quiz-report';
 export * from './quiz-report.module';
-export * from './quiz-report.component';
+export * from './quiz-report-standalone';
 export * from './quiz-report-item';
