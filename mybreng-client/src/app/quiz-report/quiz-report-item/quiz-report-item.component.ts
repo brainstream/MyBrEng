@@ -18,9 +18,9 @@ export class QuizReportItemComponent {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'Вписать ответ';
             case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
-                return 'Выбрать все верные ответы';
+                return 'Выбрать все правильные ответы';
             case RunQuestionDto.QuestionTypeEnum.SingleChoice:
-                return 'Выбрать один верный ответ';
+                return 'Выбрать любой правильный ответ';
             default:
                 return '';
         }
