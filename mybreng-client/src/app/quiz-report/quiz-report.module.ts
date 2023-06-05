@@ -8,6 +8,7 @@ import { MarkdownModule } from '@app/markdown';
 import { MatDividerModule } from '@angular/material/divider';
 import { QuizReportStandaloneComponent } from './quiz-report-standalone';
 import { QuizReportRoutingModule } from './quiz-report-routing.module';
+import { LayoutModule } from '@app/layout';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { QuizReportRoutingModule } from './quiz-report-routing.module';
         MatIconModule,
         MatCardModule,
         MatDividerModule,
-        MarkdownModule
+        MarkdownModule,
+        LayoutModule
     ]
 })
 export class QuizReportModule { }

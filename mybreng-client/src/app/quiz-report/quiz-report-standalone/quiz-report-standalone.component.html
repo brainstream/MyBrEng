@@ -1,1 +1,5 @@
-<p>quiz-report-standalone works!</p>
+<app-layout-full [loading]="loading">
+    <div class="report" *ngIf="run$ | async as run">
+        <app-quiz-report [run]="run"></app-quiz-report>
+    </div>
+</app-layout-full>
