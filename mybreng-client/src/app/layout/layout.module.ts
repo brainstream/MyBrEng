@@ -10,6 +10,7 @@ import { LayoutFullComponent } from './layout-full';
 import { RouterModule } from '@angular/router';
 import { CommonModule as AppCommonModule } from '@app/common';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatButtonModule,
         MatMenuModule,
         MatProgressSpinnerModule,
+        MatBottomSheetModule,
         AppCommonModule
     ]
 })

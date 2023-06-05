@@ -16,14 +16,39 @@ $toolbar-height: 54px;
         font-size: 1.3rem;
     }
 
-    .layout-full-toolbar-nav-link {
-        &.active {
-            background: rgba(0, 0, 0, 0.2);
+    .layout-full-toolbar-spacer {
+        flex-grow: 1;
+    }
+
+    .layout-full-toolbar-nav {
+        @media (min-width: 600px) {
+            display: flex;
+
+            .layout-full-toolbar-nav-link {
+                &.active {
+                    background: rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        @media (max-width: 599px) {
+            display: none;
         }
     }
 
-    .layout-full-toolbar-spacer {
-        flex-grow: 1;
+    .layout-full-toolbar-nav-menu {
+        @media (min-width: 600px) {
+            display: none;
+        }
+    }
+}
+
+.layout-full-nav-bottom-panel .mat-bottom-sheet-container {
+    display: flex !important;
+    flex-direction: column !important;
+
+    > *:not(:last-child) {
+        margin-bottom: 0.7rem;
     }
 }
 
@@ -34,9 +59,10 @@ $toolbar-height: 54px;
     bottom: 0;
     top: $toolbar-height;
     overflow: auto;
+    padding: 0 0.5rem;
 
     .layout-full-content {
-        padding: 0 1rem;
+        box-sizing: border-box;
     }
 }
 

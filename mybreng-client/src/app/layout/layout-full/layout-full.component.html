@@ -1,39 +1,71 @@
 <mat-toolbar class="layout-full-toolbar" color="primary">
     <span class="layout-full-toolbar-title" routerLink="">QuizTime</span>
-    <button
-        mat-flat-button
-        color="primary"
-        routerLink="/quiz"
-        class="layout-full-toolbar-nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true  }"
-    >
-        Тесты
-    </button>
-    <button
-        mat-flat-button
-        color="primary"
-        routerLink="/student"
-        class="layout-full-toolbar-nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true  }"
-    >
-        Ученики
-    </button>
+    <div class="layout-full-toolbar-nav">
+        <button
+            mat-flat-button
+            color="primary"
+            routerLink="/quiz"
+            class="layout-full-toolbar-nav-link"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true  }"
+        >
+            Тесты
+        </button>
+        <button
+            mat-flat-button
+            color="primary"
+            routerLink="/student"
+            class="layout-full-toolbar-nav-link"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true  }"
+        >
+            Ученики
+        </button>
+    </div>
 
     <div class="layout-full-toolbar-spacer"></div>
 
-    <ng-content select="[navbar]"></ng-content>
+
+    <div class="layout-full-toolbar-nav">
+        <ng-container [ngTemplateOutlet]="navbar"></ng-container>
+    </div>
+
+    <button class="layout-full-toolbar-nav-menu" mat-icon-button (click)="showNav()">
+        <mat-icon>more_vert</mat-icon>
+    </button>
 
     <button mat-icon-button [matMenuTriggerFor]="optionsMenu">
         <mat-icon>menu</mat-icon>
     </button>
 </mat-toolbar>
 
+<ng-template #navbar>
+    <ng-content select="[navbar]"></ng-content>
+</ng-template>
+
 <mat-menu #optionsMenu="matMenu">
+    <button
+        mat-menu-item
+        routerLink="/quiz"
+        class="layout-full-toolbar-nav-link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true  }"
+    >
+        <mat-icon>quiz</mat-icon> Тесты
+    </button>
+    <button
+        mat-menu-item
+        routerLink="/student"
+        class="layout-full-toolbar-nav-link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true  }"
+    >
+        <mat-icon>people</mat-icon> Ученики
+    </button>
+
+
     <button mat-menu-item [matMenuTriggerFor]="themeMenu">
-        <mat-icon>palette</mat-icon>
-        Цветовая схема
+        <mat-icon>palette</mat-icon> Цветовая схема
     </button>
 </mat-menu>
 

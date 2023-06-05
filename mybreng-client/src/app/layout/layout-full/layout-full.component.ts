@@ -1,6 +1,7 @@
 import { Component, Input, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ThemeService } from '@app/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @Component({
     selector: 'app-layout-full',
@@ -10,10 +11,12 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class LayoutFullComponent {
     @ViewChild('loading', { static: true }) loadingTemplate: TemplateRef<any>;
+    @ViewChild('navbar', { static: true }) navTemplate: TemplateRef<any>;
 
     constructor(
         private readonly theme: ThemeService,
-        private readonly dialog: MatDialog
+        private readonly dialog: MatDialog,
+        private readonly bottomSheet: MatBottomSheet
     ) {
     }
 
@@ -38,5 +41,11 @@ export class LayoutFullComponent {
 
     setLightTheme() {
         this.theme.setLight();
+    }
+
+    showNav() {
+        this.bottomSheet.open(this.navTemplate, {
+            panelClass: 'layout-full-nav-bottom-panel'
+        });
     }
 }

@@ -31,8 +31,8 @@ export class QuizReportStandaloneComponent {
                         return this.load(id);
                     }
                     return of(null);
-                }
-                ));
+                })
+            );
     }
 
     private load(id: string): Observable<RunDto | null> {
