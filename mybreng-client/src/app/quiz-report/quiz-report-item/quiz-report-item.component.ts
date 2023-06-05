@@ -3,15 +3,18 @@ import { IQuizReportItem } from '../quiz-repot';
 import { RunQuestionDto } from '@app/web-api';
 
 @Component({
-  selector: 'app-quiz-report-item',
-  templateUrl: './quiz-report-item.component.html',
-  styleUrls: ['./quiz-report-item.component.scss']
+    selector: 'app-quiz-report-item',
+    templateUrl: './quiz-report-item.component.html',
+    styleUrls: ['./quiz-report-item.component.scss'],
+    host: {
+        'class': 'quiz-report-item'
+    }
 })
 export class QuizReportItemComponent {
     @Input() data: IQuizReportItem;
 
     get questionDescription(): string {
-        switch(this.data.questionType) {
+        switch (this.data.questionType) {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'Вписать ответ';
             case RunQuestionDto.QuestionTypeEnum.MultipleChoice:

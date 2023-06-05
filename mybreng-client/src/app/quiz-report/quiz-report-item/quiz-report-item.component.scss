@@ -1,14 +1,9 @@
 .status {
     display: flex;
     align-items: center;
-    color: #ff7272; // TODO: Theme
 
     .mat-icon {
         margin-right: 0.3rem;
-    }
-
-    &.passed {
-        color: #2bcb2b; // TODO: Theme
     }
 }
 
@@ -26,10 +21,6 @@
 
     td {
         padding: 0.3rem 1rem;
-    }
-
-    .header, .header th, .odd, .odd td {
-        background-color: rgb(86, 86, 86); // TODO: Theme
     }
 
     .center {
