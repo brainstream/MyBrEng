@@ -1,6 +1,6 @@
 import uuid
 
-from database import db, QuizTable
+from database import db, QuizTable, RunTable
 from dtos import QuizDto, QuizEditDto, QuizDetailedDto
 from mappers import map_quiz_to_detailed_dto, map_quiz_to_dto
 
@@ -38,6 +38,7 @@ class QuizFacade:
         quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
         if quiz is None:
             return False
+        RunTable.query.filter_by(quiz_id=quiz.id).delete()
         db.session.delete(quiz)
         db.session.commit()
         return True

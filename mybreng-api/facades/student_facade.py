@@ -1,5 +1,5 @@
 import uuid
-from database import StudentTable, db
+from database import StudentTable, db, RunTable
 from dtos import StudentDto, StudentDetailedDto, StudentEditDto, StudentNoteEditDto
 from mappers import map_student_to_dto, map_student_to_detailed_dto
 
@@ -37,6 +37,7 @@ class StudentFacade:
         student = StudentTable.query.filter_by(id=student_id, owner_id=owner_id).first()
         if student is None:
             return False
+        RunTable.query.filter_by(student_id=student.id).delete()
         db.session.delete(student)
         db.session.commit()
         return True
