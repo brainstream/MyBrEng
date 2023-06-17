@@ -72,3 +72,29 @@ $toolbar-height: 54px;
         box-shadow: none !important;
     }
 }
+
+.layout-full-btn-up {
+    @media (max-width: 1229px) {
+        display: none;
+    }
+
+    @media (min-width: 1230px) {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 500;
+
+        .mat-icon {
+            font-size: 2rem;
+            height: 2rem;
+            width: 2rem;
+            font-weight: bold;
+        }
+    }
+}

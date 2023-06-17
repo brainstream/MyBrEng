@@ -1,0 +1,34 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+@mixin color($theme) {
+    $color-config: mat.get-color-config($theme);
+    $background-palette: map.get($color-config, "background");
+    $is-dark-theme: map.get($color-config, 'is-dark');
+
+    .layout-full-btn-up {
+        @if ($is-dark-theme) {
+            background-color: #3f3f3f;
+            color: #949494;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #494949;
+            }
+        } @else {
+            background-color: #dbdbdb;
+            color: #828282;
+
+            &:hover {
+                background-color: #d0d0d0;
+            }
+        }
+    }
+}
+
+@mixin theme($theme) {
+    $color-config: mat.get-color-config($theme);
+    @if $color-config != null {
+        @include color($theme);
+    }
+}

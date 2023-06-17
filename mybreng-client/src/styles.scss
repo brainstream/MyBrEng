@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "@angular/material" as mat;
+@use "app/layout/layout-full/layout-full.component-theme" as layout-full;
 @use "app/quiz/quiz-question-sort/quiz-question-sort.component-theme" as quiz-question-sort;
 @use "app/quiz-report/quiz-report-item/quiz-report-item.component-theme" as quiz-report-item;
 
@@ -175,12 +176,14 @@ $app-dark-theme: mat.define-dark-theme(
 
 @mixin dark-colors {
     @include global-theme($app-dark-theme);
+    @include layout-full.theme($app-dark-theme);
     @include quiz-question-sort.theme($app-dark-theme);
     @include quiz-report-item.theme($app-dark-theme);
 }
 
 @mixin light-colors {
     @include global-theme($app-light-theme);
+    @include layout-full.theme($app-light-theme);
     @include quiz-question-sort.theme($app-light-theme);
     @include quiz-report-item.theme($app-light-theme);
 }

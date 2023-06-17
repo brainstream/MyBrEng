@@ -126,7 +126,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     scrollTo(id: string) {
         setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView(); // FIXME: use router
+            document.getElementById(id)?.scrollIntoView();
         }, 0);
     }
 

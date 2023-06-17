@@ -84,9 +84,14 @@
     </button>
 </mat-menu>
 
-<main class="layout-full-container">
+<main class="layout-full-container" #scrollContainer>
+    <div id="layout-full-container-top"></div>
     <div class="app-container layout-full-content" [class.invisible]="loading">
         <ng-content></ng-content>
+    </div>
+
+    <div *ngIf="scrollTopButtonVisible" class="layout-full-btn-up" title="Наверх" (click)="scrollTop()">
+        <mat-icon>arrow_upward</mat-icon>
     </div>
 </main>
 
