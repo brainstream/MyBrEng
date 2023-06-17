@@ -14,7 +14,10 @@ class RunFacade:
         run = RunTable.query.filter_by(id=run_id).first()
         if run is None:
             return None
-        questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
+        questions = QuizQuestionTable.query \
+            .filter_by(quiz_id=run.quiz_id) \
+            .order_by(QuizQuestionTable.ordinal_number) \
+            .all()
         is_finished = run.finish_date is not None
         title, description = QuizTable.query \
             .filter_by(id=run.quiz_id) \
