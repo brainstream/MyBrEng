@@ -10,14 +10,23 @@ from mappers import \
 
 # noinspection PyMethodMayBeStatic
 class RunFacade:
-    def get_run(self, run_id) -> RunDto | None:
+    def get_run(self, run_id, mark_as_started: bool) -> RunDto | None:
         run = RunTable.query.filter_by(id=run_id).first()
         if run is None:
             return None
         questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
         is_finished = run.finish_date is not None
+        title, description = QuizTable.query \
+            .filter_by(id=run.quiz_id) \
+            .with_entities(QuizTable.title, QuizTable.description) \
+            .first()
+        if mark_as_started and run.start_date is None:
+            run.start_date = datetime.utcnow()
+            db.session.commit()
         return RunDto(
             run_id,
+            title,
+            '' if description is None else description,
             is_finished,
             [map_question_to_question_run_dto(q, is_finished) for q in questions],
             [RunReportAnswerDto(a.question_id, a.answer_variant_id, a.text) for a in run.answers]

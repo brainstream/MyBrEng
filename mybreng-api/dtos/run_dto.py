@@ -8,6 +8,8 @@ from .run_report_answer_dto import RunReportAnswerDto, RunReportAnswerDtoSchema
 @dataclass
 class RunDto:
     id: str
+    title: str
+    description: str
     is_finished: bool
     questions: list[RunQuestionDto]
     report: list[RunReportAnswerDto] = field(default_factory=lambda: [])
@@ -16,6 +18,8 @@ class RunDto:
 # noinspection PyTypeChecker
 class RunDtoSchema(Schema):
     id = ID()
+    title = fields.String(required=True)
+    description = fields.String(required=True)
     is_finished = fields.Boolean(required=True, data_key='isFinished')
     questions = fields.Nested(RunQuestionDtoSchema, many=True)
     report = fields.Nested(RunReportAnswerDtoSchema, many=True, required=False)

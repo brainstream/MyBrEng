@@ -35,7 +35,8 @@ def run_get(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
         404:
           description: A Run with specified ID not found
     """
-    run = run_facade.get_run(run_id)
+    need_to_mark_as_started = current_user.is_anonymous
+    run = run_facade.get_run(run_id, need_to_mark_as_started)
     if run is None:
         return make_response(404, '')
     else:

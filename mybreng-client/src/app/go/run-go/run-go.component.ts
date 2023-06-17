@@ -11,6 +11,8 @@ import { goActions } from '../store';
 export class RunGoComponent {
     private _run: RunDto;
 
+    title: string;
+    description: string;
     currentQuestionIndex: number = 0;
     totalQuestionCount: number = 0;
     answers: string[][];
@@ -20,6 +22,8 @@ export class RunGoComponent {
 
     @Input() set run(dto: RunDto) {
         this._run = dto;
+        this.title = dto.title;
+        this.description = dto.description;
         this.totalQuestionCount = this._run.questions?.length ?? 0;
         this.currentQuestionIndex = 0;
         this.answers = this._run.questions?.map(_ => []) ?? [];
