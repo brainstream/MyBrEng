@@ -1,6 +1,8 @@
 import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from "@app/web-api";
 
 export interface IQuizRepor {
+    readonly title: string;
+    readonly description: string;
     readonly items: IQuizReportItem[];
     readonly summary: IQuizReporSummary;
 }
@@ -36,6 +38,8 @@ export function mapRunToReport(run: RunDto): IQuizRepor {
         passedQuestionCount: 0
     });
     return {
+        title: run.title,
+        description: run.description,
         items,
         summary
     };
