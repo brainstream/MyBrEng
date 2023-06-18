@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { QuizService } from "@app/web-api";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { concat, EMPTY, map, switchMap, of, catchError, tap, from } from "rxjs";
+import { concat, EMPTY, switchMap, of, catchError, tap, from } from "rxjs";
 import { quizzesActions } from "./quizzes-actions";
 import { QuizzesSelectors } from "./quizzes-selectors";
 import { watchHttpErrors } from "@app/shared";
@@ -46,12 +46,14 @@ export class QuizzesEffects {
                     of(quizzesActions.setLoading({ loading: true })),
                     watchHttpErrors(this.quizService.quizList('events'))
                         .pipe(
-                            map(quizzes => quizzesActions.listLoaded({ quizzes })),
+                            switchMap(quizzes => from([
+                                quizzesActions.listLoaded({ quizzes }),
+                                quizzesActions.setLoading({ loading: false })
+                            ])),
                             catchError(() => of(quizzesActions.setError({
                                 message: 'Во время загрузки списка тестов произошла ошибка'
                             })))
-                        ),
-                    of(quizzesActions.setLoading({ loading: false }))
+                        )
                 );
             }
         })
@@ -63,12 +65,14 @@ export class QuizzesEffects {
             of(quizzesActions.setLoading({ loading: true })),
             watchHttpErrors(this.quizService.quizDetails(id, 'events'))
                 .pipe(
-                    map(quiz => quizzesActions.detailsLoaded({ quiz })),
+                    switchMap(quiz => from([
+                        quizzesActions.detailsLoaded({ quiz }),
+                        quizzesActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время загрузки теста произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -88,13 +92,13 @@ export class QuizzesEffects {
                             events: [
                                 this.eventsService.quizSaved$.postpone(quiz)
                             ]
-                        })
+                        }),
+                        quizzesActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время сохранения теста произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -110,13 +114,13 @@ export class QuizzesEffects {
                             events: [
                                 this.eventsService.quizDeleted$.postpone({ id })
                             ]
-                        })
+                        }),
+                        quizzesActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время удаления теста произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -132,13 +136,13 @@ export class QuizzesEffects {
                             events: [
                                 this.eventsService.questionSaved$.postpone({ question })
                             ]
-                        })
+                        }),
+                        quizzesActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время сохранения вопроса произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -148,12 +152,14 @@ export class QuizzesEffects {
             of(quizzesActions.setLoading({ loading: true })),
             watchHttpErrors(this.quizService.quizQuestionDelete(id, 'events'))
                 .pipe(
-                    map(_ => quizzesActions.questionDeleted({ id })),
+                    switchMap(_ => from([
+                        quizzesActions.questionDeleted({ id }),
+                        quizzesActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время удаления вопроса произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -163,12 +169,14 @@ export class QuizzesEffects {
             of(quizzesActions.setLoading({ loading: true })),
             watchHttpErrors(this.quizService.quizReorderQuestions(quizId, questions, 'events'))
                 .pipe(
-                    map(questions => quizzesActions.questionsReordered({ quizId, questions })),
+                    switchMap(questions => from([
+                        quizzesActions.questionsReordered({ quizId, questions }),
+                        quizzesActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(quizzesActions.setError({
                         message: 'Во время сохранения порядка вопросов произошла ошибка'
                     })))
-                ),
-            of(quizzesActions.setLoading({ loading: false }))
+                )
         ))
     ));
 }

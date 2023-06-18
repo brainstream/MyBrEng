@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { QuizService, RunService, StudentService } from "@app/web-api";
 import { Actions, concatLatestFrom, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { concat, EMPTY, map, switchMap, of, catchError, tap, from } from "rxjs";
+import { concat, EMPTY, switchMap, of, catchError, tap, from } from "rxjs";
 import { watchHttpErrors } from "@app/shared";
 import { MessageService } from "@app/common";
 import { studentsActions } from "./students-actions";
@@ -47,12 +47,14 @@ export class StudentsEffects {
                     of(studentsActions.setLoading({ loading: true })),
                     watchHttpErrors(this.studentService.studentList('events'))
                         .pipe(
-                            map(students => studentsActions.listLoaded({ students })),
+                            switchMap(students => from([
+                                studentsActions.listLoaded({ students }),
+                                studentsActions.setLoading({ loading: false })
+                            ])),
                             catchError(() => of(studentsActions.setError({
                                 message: 'Во время загрузки списка учеников произошла ошибка'
                             })))
-                        ),
-                    of(studentsActions.setLoading({ loading: false }))
+                        )
                 );
             }
         })
@@ -64,12 +66,14 @@ export class StudentsEffects {
             of(studentsActions.setLoading({ loading: true })),
             watchHttpErrors(this.studentService.studentDetails(id, 'events'))
                 .pipe(
-                    map(student => studentsActions.detailsLoaded({ student })),
+                    switchMap(student => from([
+                        studentsActions.detailsLoaded({ student }),
+                        studentsActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время загрузки данных ученика произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -85,13 +89,13 @@ export class StudentsEffects {
                             events: [
                                 this.eventsService.studentSaved$.postpone(student)
                             ]
-                        })
+                        }),
+                        studentsActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время сохранения теста произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -106,12 +110,14 @@ export class StudentsEffects {
                     of(studentsActions.setLoading({ loading: true })),
                     watchHttpErrors(this.quizService.quizList('events'))
                         .pipe(
-                            map(quizzes => studentsActions.availableQuizzesLoaded({ quizzes })),
+                            switchMap(quizzes => from([
+                                studentsActions.availableQuizzesLoaded({ quizzes }),
+                                studentsActions.setLoading({ loading: false })
+                            ])),
                             catchError(() => of(studentsActions.setError({
                                 message: 'Во время загрузки списка доступных тестов произошла ошибка'
                             })))
-                        ),
-                    of(studentsActions.setLoading({ loading: false }))
+                        )
                 );
             }
         })
@@ -129,13 +135,13 @@ export class StudentsEffects {
                             events: [
                                 this.eventsService.runCreated$.postpone(run)
                             ]
-                        })
+                        }),
+                        studentsActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время добавления теста произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -145,12 +151,14 @@ export class StudentsEffects {
             of(studentsActions.setLoading({ loading: true })),
             watchHttpErrors(this.runService.runDelete(id, 'events'))
                 .pipe(
-                    map(_ => studentsActions.runDeleted({ id })),
+                    switchMap(_ => from([
+                        studentsActions.runDeleted({ id }),
+                        studentsActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время удаления теста произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -166,13 +174,13 @@ export class StudentsEffects {
                             events: [
                                 this.eventsService.studentDeleted$.postpone({ id })
                             ]
-                        })
+                        }),
+                        studentsActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время удаления ученика произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -188,13 +196,13 @@ export class StudentsEffects {
                             events: [
                                 this.eventsService.noteSaved$.postpone({ ...dto })
                             ]
-                        })
+                        }),
+                        studentsActions.setLoading({ loading: false })
                     ])),
                     catchError(() => of(studentsActions.setError({
                         message: 'Во время сохранения заметки произошла ошибка'
                     })))
-                ),
-            of(studentsActions.setLoading({ loading: false }))
+                )
         ))
     ));
 }

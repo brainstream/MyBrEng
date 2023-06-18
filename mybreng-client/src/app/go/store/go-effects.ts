@@ -4,7 +4,7 @@ import { RunService } from "@app/web-api";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { GoEventsService } from "./go-events.service";
-import { catchError, concat, map, of, switchMap, tap } from "rxjs";
+import { catchError, concat, from, map, of, switchMap, tap } from "rxjs";
 import { watchHttpErrors } from "@app/shared";
 import { goActions } from "./go-actions";
 
@@ -39,12 +39,14 @@ export class GoEffects {
             of(goActions.setLoading({ loading: true })),
             watchHttpErrors(this.runService.runGet(id, 'events'))
                 .pipe(
-                    map(run => goActions.loaded({ run })),
+                    switchMap(run => from([
+                        goActions.loaded({ run }),
+                        goActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(goActions.setError({
                         message: 'Во время загрузки данных произошла ошибка'
                     })))
-                ),
-            of(goActions.setLoading({ loading: false }))
+                )
         ))
     ));
 
@@ -54,12 +56,14 @@ export class GoEffects {
             of(goActions.setLoading({ loading: true })),
             watchHttpErrors(this.runService.runFinish(result, 'events'))
                 .pipe(
-                    map(run => goActions.loaded({ run })),
+                    switchMap(run => from([
+                        goActions.loaded({ run }),
+                        goActions.setLoading({ loading: false })
+                    ])),
                     catchError(() => of(goActions.setError({
                         message: 'Во время сохранения результатов тестирования произошла ошибка'
                     })))
-                ),
-            of(goActions.setLoading({ loading: false }))
+                )
         ))
     ));
 }
