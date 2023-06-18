@@ -15,6 +15,10 @@
 
 .question-text {
     margin-bottom: 1rem;
+
+    ::ng-deep img {
+        max-width: 100%;
+    }
 }
 
 .answers {
