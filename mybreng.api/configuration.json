@@ -1,5 +1,9 @@
 {
   "SQLALCHEMY_DATABASE_URI": "mysql://mybreng:Ui23N(ZzH}Ej(U@localhost/mybreng",
   "SECRET_KEY": "secret-key-goes-here",
-  "REMEMBER_COOKIE_NAME": ".auth-mybreng"
+  "REMEMBER_COOKIE_NAME": ".auth-mybreng",
+  "CORS":[
+    "http://localhost:4200",
+    "http://10.0.2.2:4200"
+  ]
 }

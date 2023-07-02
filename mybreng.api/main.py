@@ -151,10 +151,7 @@ def create_app() -> Flask:
         return jsonify(error='401 Unauthorized'), 401
 
     CORS(flask, resources={r'/api/*': {
-        'origins': [
-            'http://localhost:4200',
-            'http://10.0.2.2:4200'
-        ],
+        'origins': flask.config['CORS'],
         'supports_credentials': True
     }})
 
