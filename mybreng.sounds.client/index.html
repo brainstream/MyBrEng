@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+  <title>Транскрипция</title>
+  <meta charset="utf-8" />
+  <link rel="apple-touch-icon" href="favicon-256.png?v=1" sizes="256x256">
+  <link rel="icon" href="favicon-256.png?v=1" sizes="256x256" type="image/png">
+  <link rel="icon" href="favicon-128.png?v=1" sizes="128x128" type="image/png">
+  <link rel="icon" href="favicon-64.png?v=1" sizes="64x64" type="image/png">
+  <link rel="icon" href="favicon.ico?v=1">
+</head>
+
+<body>
+
+  <style>
+    html {
+      font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+    }
+
+    #display {
+      display: flex;
+      justify-content: center;
+    }
+
+    #output {
+      width: 100%;
+      height: 150px;
+      font-size: 30px;
+    }
+
+    #keyboard {
+      margin-top: 30px;
+    }
+
+    .key {
+      font-size: 30px;
+      font-weight: bold;
+      display: inline-block;
+      border: 1px solid gray;
+      padding: 10px;
+      width: 45px;
+      height: 45px;
+      line-height: 45px;
+      margin-right: 20px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .key:hover {
+      -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+      -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+      box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+    }
+
+    .keyboard-row {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+
+  <div id="display">
+    <textarea id="output" autocomplete="off" spellcheck="false"></textarea>
+  </div>
+  <div id="keyboard">
+    <div class="keyboard-row">
+      <span class="key">i:</span>
+      <span class="key">ı</span>
+      <span class="key">e</span>
+      <span class="key">æ</span>
+      <span class="key">a:</span>
+      <span class="key">ɔ</span>
+      <span class="key">ɔ:</span>
+      <span class="key">u</span>
+      <span class="key">u:</span>
+      <span class="key">ʌ</span>
+      <span class="key">ə:</span>
+      <span class="key">ə</span>
+      <span class="key">eı</span>
+      <span class="key">aı</span>
+      <span class="key">ɔı</span>
+    </div>
+    <div class="keyboard-row">
+      <span class="key">ıə</span>
+      <span class="key">ou</span>
+      <span class="key">au</span>
+      <span class="key">uə</span>
+      <span class="key">ɛə</span>
+      <span class="key">p</span>
+      <span class="key">b</span>
+      <span class="key">m</span>
+      <span class="key">w</span>
+      <span class="key">f</span>
+      <span class="key">v</span>
+      <span class="key">ɵ</span>
+      <span class="key">ð</span>
+      <span class="key">s</span>
+      <span class="key">z</span>
+    </div>
+    <div class="keyboard-row">
+      <span class="key">t</span>
+      <span class="key">d</span>
+      <span class="key">n</span>
+      <span class="key">l</span>
+      <span class="key">r</span>
+      <span class="key">ʒ</span>
+      <span class="key">ʃ</span>
+      <span class="key">ʤ</span>
+      <span class="key">ʧ</span>
+      <span class="key">k</span>
+      <span class="key">g</span>
+      <span class="key">ŋ</span>
+      <span class="key">h</span>
+      <span class="key">j</span>
+    </div>
+    <div class="keyboard-row">
+      <span class="key">[</span>
+      <span class="key">’</span>
+      <span class="key">]</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function insertAtCaret(areaId, text) {
+        var txtarea = document.getElementById(areaId);
+        var scrollPos = txtarea.scrollTop;
+        var strPos = 0;
+        var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+          "ff" : (document.selection ? "ie" : false));
+        if (br == "ie") {
+          txtarea.focus();
+          var range = document.selection.createRange();
+          range.moveStart('character', -txtarea.value.length);
+          strPos = range.text.length;
+        }
+        else if (br == "ff") strPos = txtarea.selectionStart;
+
+        var front = (txtarea.value).substring(0, strPos);
+        var back = (txtarea.value).substring(strPos, txtarea.value.length);
+        txtarea.value = front + text + back;
+        strPos = strPos + text.length;
+        if (br == "ie") {
+          txtarea.focus();
+          var range = document.selection.createRange();
+          range.moveStart('character', -txtarea.value.length);
+          range.moveStart('character', strPos);
+          range.moveEnd('character', 0);
+          range.select();
+        }
+        else if (br == "ff") {
+          txtarea.selectionStart = strPos;
+          txtarea.selectionEnd = strPos;
+          txtarea.focus();
+        }
+        txtarea.scrollTop = scrollPos;
+      }
+
+      var elements = document.getElementsByClassName('key');
+      var output = document.getElementById('output');
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].addEventListener('click', function () {
+          insertAtCaret('output', this.innerText);
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

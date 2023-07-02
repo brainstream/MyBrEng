@@ -1,2 +1,2 @@
-./generate-web-api.sh -u https://api.brainstream.site
+./generate-web-api.sh -u https://api.mybreng.ru
 npm run build
