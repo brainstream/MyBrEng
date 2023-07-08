@@ -3,29 +3,33 @@
 
 @mixin color($theme) {
     $color-config: mat.get-color-config($theme);
-    $is-dark-theme:   map.get($color-config, 'is-dark');
+    $is-dark-theme: map.get($color-config, 'is-dark');
     $background-palette: map.get($color-config, "background");
+
+    $color-correct: #00a020;
+    $color-incorrect: #e13838;
+
+    @if $is-dark-theme {
+        $color-correct: #2bcb2b;
+        $color-incorrect: #ff7272;
+    }
 
     .quiz-report-item {
         .status {
-            @if $is-dark-theme {
-                color: #ff7272;
-            } @else {
-                color: #e13838;
-            }
+            color: $color-incorrect;
 
             &.passed {
-                @if $is-dark-theme {
-                    color: #2bcb2b;
-                } @else {
-                    color: #00a020;
-                }
+                color: $color-correct;
             }
         }
 
-        .answers {
-            .header, .header th, .odd, .odd td {
-                background-color: mat.get-color-from-palette($background-palette, "background");
+        .answer.matched {
+            &.correct {
+                color: $color-correct;
+            }
+
+            &:not(.correct) {
+                color: $color-incorrect;
             }
         }
     }

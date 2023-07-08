@@ -13,23 +13,21 @@
     }
 }
 
-.answers {
-    border-collapse: collapse;
+.answer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
 
-    td, th, td > *, th > * {
-        vertical-align: middle;
-        text-align: left;
+    .icon {
+        display: inline-block;
+        margin-right: 0.5rem;
     }
 
-    th {
-        padding: 0.5rem 1rem;
-    }
+    &.matched {
+        font-weight: bold;
 
-    td {
-        padding: 0.3rem 1rem;
-    }
-
-    .center {
-        text-align: center;
+        &:not(.correct) .text {
+            text-decoration: line-through;
+        }
     }
 }

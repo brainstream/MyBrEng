@@ -19,27 +19,12 @@
 
     <mat-card-content>
         <app-markdown class="question" [source]="data.question"></app-markdown>
-        <table class="answers">
-            <tr class="header">
-                <th class="title center">Ответ</th>
-                <th class="title">Вариант</th>
-                <th class="title center">Правильный ответ</th>
-            </tr>
-
-            <tr *ngFor="let answer of data.answers; odd as isOdd" [class.odd]="isOdd">
-                <td class="center">
-                    <mat-icon *ngIf="answer.isAnswerMatched">forward</mat-icon>
-                </td>
-                <td>{{answer.text}}</td>
-                <td class="center">
-                    <mat-icon *ngIf="answer.isCorrect; else incorrectIcon">check</mat-icon>
-                    <ng-template #incorrectIcon>
-                        <mat-icon>clear</mat-icon>
-                    </ng-template>
-                </td>
-            </tr>
-        </table>
-
-
+        <div *ngFor="let answer of data.answers"
+            class="answer"
+            [class.matched]="answer.isAnswerMatched"
+            [class.correct]="answer.isCorrect">
+                <mat-icon class="icon">{{answer.isCorrect ? 'check' : 'clear'}}</mat-icon>
+                <span class="text">{{answer.text}}</span>
+        </div>
     </mat-card-content>
 </mat-card>
