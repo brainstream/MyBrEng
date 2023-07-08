@@ -12,13 +12,13 @@
 </mat-card>
 
 <div class="nav-panel">
-    <div>
+    <div class="back">
         <button mat-raised-button [disabled]="isCurrentQuestionFirst" (click)="goBack()">
             <mat-icon>arrow_back</mat-icon>
-            Предыдущий вопрос
+            Назад
         </button>
     </div>
-    <div>
+    <div class="forward">
         <button
             mat-raised-button
             color="accent"
@@ -37,7 +37,7 @@
                 [disabled]="!isCurrentQuestionAnswered"
             >
                 <mat-icon>arrow_forward</mat-icon>
-                Следующий вопрос
+                Далее
             </button>
         </ng-template>
     </div>
