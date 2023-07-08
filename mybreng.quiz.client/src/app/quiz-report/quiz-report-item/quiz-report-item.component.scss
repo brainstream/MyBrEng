@@ -7,6 +7,12 @@
     }
 }
 
+.question {
+    ::ng-deep img {
+        max-width: 100%;
+    }
+}
+
 .answers {
     border-collapse: collapse;
 
