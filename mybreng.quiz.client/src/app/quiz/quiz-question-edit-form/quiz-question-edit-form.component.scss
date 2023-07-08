@@ -18,6 +18,30 @@
     .group-right > button {
         margin-left: 0.5rem;
     }
+
+    @media(max-width: 530px) {
+        display: block;
+
+        .group-left > button {
+            margin-right: 0;
+            margin-bottom: 1.3rem;
+            width: 100%;
+        }
+
+        .group-right {
+            display: flex;
+            justify-content: space-between;
+
+            > button {
+                margin-left: 0;
+                width: 50%;
+
+                &:not(:last-child) {
+                    margin-right: 1.3rem;
+                }
+            }
+        }
+    }
 }
 
 .correct-answer-mark,
