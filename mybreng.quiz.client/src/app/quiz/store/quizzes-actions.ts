@@ -19,6 +19,7 @@ export const quizzesActions = createActionGroup({
         'Load List': emptyProps(),
         'List Loaded': props<{ quizzes: QuizDto[] }>(),
         'Load Details': props<{ id: string }>(),
+        'Clean Details': emptyProps(),
         'Details Loaded': props<{ quiz: QuizDetailedDto }>(),
         'Save Details': props<{ quiz: QuizEditDto }>(),
         'Details Saved': props<{ quiz: QuizDto }>(),

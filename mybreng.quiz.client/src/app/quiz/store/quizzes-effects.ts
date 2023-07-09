@@ -62,6 +62,7 @@ export class QuizzesEffects {
     loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.loadDetails),
         switchMap(({ id }) => concat(
+            of(quizzesActions.cleanDetails()),
             of(quizzesActions.setLoading({ loading: true })),
             watchHttpErrors(this.quizService.quizDetails(id, 'events'))
                 .pipe(

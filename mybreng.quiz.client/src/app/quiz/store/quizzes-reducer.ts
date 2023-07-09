@@ -18,6 +18,11 @@ export const quizzesReducer = createReducer(
         list: prepareQuizList(quizzes)
     })),
 
+    on(quizzesActions.cleanDetails, (state) => ({
+        ...state,
+        details: null
+    })),
+
     on(quizzesActions.detailsLoaded, (state, { quiz }) => ({
         ...state,
         details: quiz
