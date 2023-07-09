@@ -63,6 +63,7 @@ export class StudentsEffects {
     loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadDetails),
         switchMap(({ id }) => concat(
+            of(studentsActions.cleanDetails()),
             of(studentsActions.setLoading({ loading: true })),
             watchHttpErrors(this.studentService.studentDetails(id, 'events'))
                 .pipe(

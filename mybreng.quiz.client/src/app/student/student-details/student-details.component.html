@@ -14,6 +14,7 @@
         <app-student-quiz-run
             *ngFor="let run of student.runs"
             [run]="run"
+            [@collapseOnLeave]
             (deleteRequested)="deleteRun($event)"
             class="run" >
         </app-student-quiz-run>

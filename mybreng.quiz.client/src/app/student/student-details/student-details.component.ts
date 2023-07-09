@@ -8,12 +8,16 @@ import { StudentsSelectors, studentsActions, StudentsEventsService } from '../st
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { StudentAddRunFormComponent } from '../student-add-run-form';
+import { collapseOnLeaveAnimation } from 'angular-animations';
 
 
 @Component({
     selector: 'app-student-details',
     templateUrl: './student-details.component.html',
-    styleUrls: ['./student-details.component.scss']
+    styleUrls: ['./student-details.component.scss'],
+    animations: [
+        collapseOnLeaveAnimation()
+    ]
 })
 export class StudentDetailsComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

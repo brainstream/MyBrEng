@@ -19,6 +19,7 @@ export const studentsActions = createActionGroup({
         'Load List': emptyProps(),
         'List Loaded': props<{ students: StudentDto[] }>(),
         'Load Details': props<{ id: string }>(),
+        'Clean Details': emptyProps(),
         'Details Loaded': props<{ student: StudentDetailedDto }>(),
         'Save Details': props<{ student: StudentEditDto }>(),
         'Details Saved': props<{ student: StudentDto }>(),

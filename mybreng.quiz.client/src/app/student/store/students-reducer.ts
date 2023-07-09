@@ -19,6 +19,11 @@ export const studentsReducer = createReducer(
         list: prepareStudentList(students)
     })),
 
+    on(studentsActions.cleanDetails, (state) => ({
+        ...state,
+        details: null
+    })),
+
     on(studentsActions.detailsLoaded, (state, { student }) => ({
         ...state,
         details: student
