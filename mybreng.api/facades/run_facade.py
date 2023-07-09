@@ -56,6 +56,7 @@ class RunFacade:
             .filter(StudentTable.owner_id == owner_id) \
             .exists()
         if db.session.query(query).scalar():
+            RunAnswerTable.query.filter_by(run_id=run_id).delete()
             RunTable.query.filter_by(id=run_id).delete()
             db.session.commit()
             return True
