@@ -19,6 +19,22 @@ $toolbar-height: 54px;
     .layout-full-toolbar-spacer {
         flex-grow: 1;
     }
+
+    .layout-full-toolbar-nav {
+        @media (min-width: 600px) {
+            display: flex;
+
+            .layout-full-toolbar-nav-link {
+                &.active {
+                    background: rgba(0, 0, 0, 0.2);
+                }
+            }
+        }
+
+        @media (max-width: 599px) {
+            display: none;
+        }
+    }
 }
 
 .layout-full-nav-bottom-panel .mat-bottom-sheet-container {
@@ -31,16 +47,33 @@ $toolbar-height: 54px;
 }
 
 .layout-full-container {
-    position: fixed;
+    position: fixed !important;
     left: 0;
     right: 0;
     bottom: 0;
     top: $toolbar-height;
     overflow: auto;
-    padding: 0 0.5rem;
 
     .layout-full-content {
         box-sizing: border-box;
+        padding: 0 0.5rem;
+    }
+
+    .layout-full-sidebar {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100% - 2rem);
+        padding: 1rem;
+
+        .layout-full-sidebar-items {
+            display: flex;
+            flex-direction: column;
+
+            > *:not(:last-child) {
+                margin-bottom: 0.8rem;
+            }
+        }
     }
 }
 

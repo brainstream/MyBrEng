@@ -1,24 +1,15 @@
 <mat-toolbar class="layout-full-toolbar" color="primary">
+    <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
     <span class="layout-full-toolbar-title" routerLink="">QuizTime</span>
     <div class="layout-full-toolbar-nav">
-        <button
-            mat-flat-button
-            color="primary"
-            routerLink="/quiz"
-            class="layout-full-toolbar-nav-link"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true  }"
-        >
+        <button mat-flat-button color="primary" routerLink="/quiz" class="layout-full-toolbar-nav-link"
+            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
             Тесты
         </button>
-        <button
-            mat-flat-button
-            color="primary"
-            routerLink="/student"
-            class="layout-full-toolbar-nav-link"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true  }"
-        >
+        <button mat-flat-button color="primary" routerLink="/student" class="layout-full-toolbar-nav-link"
+            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
             Ученики
         </button>
     </div>
@@ -28,37 +19,7 @@
     <button *ngIf="menu" class="layout-full-toolbar-nav-menu" mat-icon-button [mat-menu-trigger-for]="menu">
         <mat-icon>more_vert</mat-icon>
     </button>
-
-    <button mat-icon-button [matMenuTriggerFor]="optionsMenu">
-        <mat-icon>menu</mat-icon>
-    </button>
 </mat-toolbar>
-
-<mat-menu #optionsMenu="matMenu">
-    <button
-        mat-menu-item
-        routerLink="/quiz"
-        class="layout-full-toolbar-nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true  }"
-    >
-        <mat-icon>quiz</mat-icon> Тесты
-    </button>
-    <button
-        mat-menu-item
-        routerLink="/student"
-        class="layout-full-toolbar-nav-link"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true  }"
-    >
-        <mat-icon>people</mat-icon> Ученики
-    </button>
-
-
-    <button mat-menu-item [matMenuTriggerFor]="themeMenu">
-        <mat-icon>palette</mat-icon> Цветовая схема
-    </button>
-</mat-menu>
 
 <mat-menu #themeMenu="matMenu">
     <button mat-menu-item (click)="setSystemTheme()">
@@ -75,16 +36,37 @@
     </button>
 </mat-menu>
 
-<main class="layout-full-container" #scrollContainer>
-    <div id="layout-full-container-top"></div>
-    <div class="app-container layout-full-content" [class.invisible]="loading">
-        <ng-content></ng-content>
-    </div>
+<mat-drawer-container autosize class="layout-full-container">
+    <mat-drawer #drawer mode="over" [autoFocus]="false">
+        <div class="layout-full-sidebar">
+            <div class="layout-full-sidebar-items">
+                <button mat-stroked-button routerLink="/quiz" class="layout-full-toolbar-nav-link">
+                    <mat-icon>quiz</mat-icon> Тесты
+                </button>
+                <button mat-stroked-button routerLink="/student" class="layout-full-toolbar-nav-link">
+                    <mat-icon>people</mat-icon> Ученики
+                </button>
+            </div>
+            <div class="layout-full-sidebar-items">
+                <button mat-stroked-button [matMenuTriggerFor]="themeMenu">
+                    <mat-icon>palette</mat-icon> Цветовая схема
+                </button>
+            </div>
+        </div>
+    </mat-drawer>
 
-    <div *ngIf="scrollTopButtonVisible" class="layout-full-btn-up" title="Наверх" (click)="scrollTop()">
-        <mat-icon>arrow_upward</mat-icon>
-    </div>
-</main>
+    <main #scrollContainer>
+        <div id="layout-full-container-top"></div>
+        <div class="app-container layout-full-content" [class.invisible]="loading">
+            <ng-content></ng-content>
+        </div>
+
+        <div *ngIf="scrollTopButtonVisible" class="layout-full-btn-up" title="Наверх" (click)="scrollTop()">
+            <mat-icon>arrow_upward</mat-icon>
+        </div>
+    </main>
+
+</mat-drawer-container>
 
 <ng-template #loading>
     <mat-spinner color="primary"></mat-spinner>
