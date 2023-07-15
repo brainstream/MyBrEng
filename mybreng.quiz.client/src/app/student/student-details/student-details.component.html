@@ -1,10 +1,4 @@
-<app-layout-full [loading]="loading$ | async">
-    <ng-container navbar>
-        <button mat-flat-button [matMenuTriggerFor]="editMenu">
-            <mat-icon>edit</mat-icon>
-            Правка
-        </button>
-    </ng-container>
+<app-layout-full [loading]="loading$ | async" [menu]="editMenu">
 
     <div class="details" *ngIf="student">
         <h1 class="title">{{student.firstName}} {{student.lastName}}</h1>

@@ -19,28 +19,6 @@ $toolbar-height: 54px;
     .layout-full-toolbar-spacer {
         flex-grow: 1;
     }
-
-    .layout-full-toolbar-nav {
-        @media (min-width: 600px) {
-            display: flex;
-
-            .layout-full-toolbar-nav-link {
-                &.active {
-                    background: rgba(0, 0, 0, 0.2);
-                }
-            }
-        }
-
-        @media (max-width: 599px) {
-            display: none;
-        }
-    }
-
-    .layout-full-toolbar-nav-menu {
-        @media (min-width: 600px) {
-            display: none;
-        }
-    }
 }
 
 .layout-full-nav-bottom-panel .mat-bottom-sheet-container {

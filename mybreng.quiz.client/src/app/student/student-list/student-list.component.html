@@ -1,12 +1,4 @@
-<app-layout-full [loading]="loading$ | async">
-
-    <ng-container navbar>
-        <button mat-flat-button (click)="showCreateStudentForm()">
-            <mat-icon>add</mat-icon>
-            Добавить ученика
-        </button>
-    </ng-container>
-
+<app-layout-full [loading]="loading$ | async" [menu]="editMenu">
     <mat-nav-list>
         <app-student-list-item
             class="item"
@@ -15,5 +7,11 @@
         >
         </app-student-list-item>
     </mat-nav-list>
-
 </app-layout-full>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="showCreateStudentForm()">
+        <mat-icon>add</mat-icon>
+        Добавить ученика
+    </button>
+</mat-menu>

@@ -25,12 +25,7 @@
 
     <div class="layout-full-toolbar-spacer"></div>
 
-
-    <div class="layout-full-toolbar-nav">
-        <ng-container [ngTemplateOutlet]="navbar"></ng-container>
-    </div>
-
-    <button class="layout-full-toolbar-nav-menu" mat-icon-button (click)="showNav()">
+    <button *ngIf="menu" class="layout-full-toolbar-nav-menu" mat-icon-button [mat-menu-trigger-for]="menu">
         <mat-icon>more_vert</mat-icon>
     </button>
 
@@ -38,10 +33,6 @@
         <mat-icon>menu</mat-icon>
     </button>
 </mat-toolbar>
-
-<ng-template #navbar>
-    <ng-content select="[navbar]"></ng-content>
-</ng-template>
 
 <mat-menu #optionsMenu="matMenu">
     <button

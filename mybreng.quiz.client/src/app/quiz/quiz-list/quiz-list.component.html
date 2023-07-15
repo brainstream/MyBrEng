@@ -1,11 +1,4 @@
-<app-layout-full [loading]="loading$ | async">
-    <ng-container navbar>
-        <button mat-flat-button (click)="showCreateQuizForm()">
-            <mat-icon>add</mat-icon>
-            Добавить тест
-        </button>
-    </ng-container>
-
+<app-layout-full [loading]="loading$ | async" [menu]="editMenu">
     <mat-nav-list>
         <app-quiz-list-item
             class="item"
@@ -14,3 +7,10 @@
         ></app-quiz-list-item>
     </mat-nav-list>
 </app-layout-full>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="showCreateQuizForm()">
+        <mat-icon>add</mat-icon>
+        Добавить тест
+    </button>
+</mat-menu>

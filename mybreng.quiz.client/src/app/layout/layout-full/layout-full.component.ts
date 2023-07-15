@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ThemeService } from '@app/common';
 import { MatDialog } from '@angular/material/dialog';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatMenu } from '@angular/material/menu';
 
 @Component({
     selector: 'app-layout-full',
@@ -18,6 +18,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
     encapsulation: ViewEncapsulation.None
 })
 export class LayoutFullComponent implements AfterViewInit {
+    @Input() menu: MatMenu | null = null;
+
     @ViewChild('loading', { static: true }) loadingTemplate: TemplateRef<any>;
     @ViewChild('navbar', { static: true }) navTemplate: TemplateRef<any>;
     @ViewChild('scrollContainer') scrollContainer: ElementRef<HTMLDivElement>;
@@ -26,8 +28,7 @@ export class LayoutFullComponent implements AfterViewInit {
 
     constructor(
         private readonly theme: ThemeService,
-        private readonly dialog: MatDialog,
-        private readonly bottomSheet: MatBottomSheet
+        private readonly dialog: MatDialog
     ) {
     }
 
@@ -58,12 +59,6 @@ export class LayoutFullComponent implements AfterViewInit {
 
     setLightTheme() {
         this.theme.setLight();
-    }
-
-    showNav() {
-        this.bottomSheet.open(this.navTemplate, {
-            panelClass: 'layout-full-nav-bottom-panel'
-        });
     }
 
     scrollTop() {
