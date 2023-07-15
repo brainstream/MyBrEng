@@ -105,7 +105,6 @@ def run_delete(run_id: str, run_facade: RunFacade = Provide[DI.run_facade]):
 
 
 @run_blueprint.route('/finish', methods=['POST'])
-@login_required
 @inject
 def run_finish(run_facade: RunFacade = Provide[DI.run_facade]):
     """
