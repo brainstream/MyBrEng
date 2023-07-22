@@ -6,7 +6,10 @@
     "mybreng.quiz.client": {
       "projectType": "application",
       "i18n": {
-        "sourceLocale": "ru"
+        "sourceLocale": {
+          "code": "ru",
+          "baseHref": ""
+        }
       },
       "schematics": {
         "@schematics/angular:component": {
@@ -42,6 +45,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "localize": [
+              "ru"
+            ],
             "outputPath": "dist/my-br-eng.quiz.client",
             "index": "src/index.html",
             "main": "src/main.ts",
