@@ -102,26 +102,19 @@ export class StudentsEffects {
 
     loadAvailableQuizzes$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadAvailableQuizzes),
-        concatLatestFrom(() => this.store$.select(StudentsSelectors.isAvailableQuizzesLoaded)),
-        switchMap(([_, isAvailableQuizzesLoaded]) => {
-            if (isAvailableQuizzesLoaded) {
-                return EMPTY;
-            } else {
-                return concat(
-                    of(studentsActions.setLoading({ loading: true })),
-                    watchHttpErrors(this.quizService.quizList('events'))
-                        .pipe(
-                            switchMap(quizzes => from([
-                                studentsActions.availableQuizzesLoaded({ quizzes }),
-                                studentsActions.setLoading({ loading: false })
-                            ])),
-                            catchError(() => of(studentsActions.setError({
-                                message: 'Во время загрузки списка доступных тестов произошла ошибка'
-                            })))
-                        )
-                );
-            }
-        })
+        switchMap(() => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.quizService.quizList('events'))
+                .pipe(
+                    switchMap(quizzes => from([
+                        studentsActions.availableQuizzesLoaded({ quizzes }),
+                        studentsActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => of(studentsActions.setError({
+                        message: 'Во время загрузки списка доступных тестов произошла ошибка'
+                    })))
+                )
+        ))
     ));
 
     addRun$ = createEffect(() => this.actions$.pipe(
