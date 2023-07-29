@@ -51,9 +51,12 @@ export class StudentsEffects {
                                 studentsActions.listLoaded({ students }),
                                 studentsActions.setLoading({ loading: false })
                             ])),
-                            catchError(() => of(studentsActions.setError({
-                                message: 'Во время загрузки списка учеников произошла ошибка'
-                            })))
+                            catchError(() => from([
+                                studentsActions.setLoading({ loading: false }),
+                                studentsActions.setError({
+                                    message: 'Во время загрузки списка учеников произошла ошибка'
+                                })
+                            ]))
                         )
                 );
             }
@@ -71,9 +74,12 @@ export class StudentsEffects {
                         studentsActions.detailsLoaded({ student }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время загрузки данных ученика произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время загрузки данных ученика произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -93,9 +99,12 @@ export class StudentsEffects {
                         }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время сохранения теста произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время сохранения данных ученика произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -110,9 +119,12 @@ export class StudentsEffects {
                         studentsActions.availableQuizzesLoaded({ quizzes }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время загрузки списка доступных тестов произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время загрузки списка доступных тестов произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -132,9 +144,12 @@ export class StudentsEffects {
                         }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время добавления теста произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время добавления теста произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -149,9 +164,12 @@ export class StudentsEffects {
                         studentsActions.runDeleted({ id }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время удаления теста произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время удаления теста произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -171,9 +189,12 @@ export class StudentsEffects {
                         }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время удаления ученика произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время удаления ученика произошла ошибка'
+                        })]
+                    ))
                 )
         ))
     ));
@@ -193,9 +214,12 @@ export class StudentsEffects {
                         }),
                         studentsActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(studentsActions.setError({
-                        message: 'Во время сохранения заметки произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время сохранения заметки произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));

@@ -3,14 +3,14 @@
 <mat-divider></mat-divider>
 
 <div mat-dialog-content>
-    <div 
-        class="quiz-question-sort__question-list" 
-        cdkDropList 
+    <div
+        class="quiz-question-sort__question-list"
+        cdkDropList
         (cdkDropListDropped)="drop($event)"
     >
-        <div 
-            class="quiz-question-sort__question" 
-            *ngFor="let question of questions" 
+        <div
+            class="quiz-question-sort__question"
+            *ngFor="let question of questions"
             cdkDrag
             cdkDragPreviewClass="quiz-question-sort__drag-preview"
         >
@@ -18,7 +18,7 @@
             <div class="quiz-question-sort__question-text">{{question.text}}</div>
         </div>
     </div>
-    
+
 </div>
 
 <mat-divider></mat-divider>

@@ -43,9 +43,12 @@ export class GoEffects {
                         goActions.loaded({ run }),
                         goActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(goActions.setError({
-                        message: 'Во время загрузки данных произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        goActions.setLoading({ loading: false }),
+                        goActions.setError({
+                            message: 'Во время загрузки данных произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));
@@ -60,9 +63,12 @@ export class GoEffects {
                         goActions.loaded({ run }),
                         goActions.setLoading({ loading: false })
                     ])),
-                    catchError(() => of(goActions.setError({
-                        message: 'Во время сохранения результатов тестирования произошла ошибка'
-                    })))
+                    catchError(() => from([
+                        goActions.setLoading({ loading: false }),
+                        goActions.setError({
+                            message: 'Во время сохранения результатов тестирования произошла ошибка'
+                        })
+                    ]))
                 )
         ))
     ));

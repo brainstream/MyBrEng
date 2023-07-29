@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmDialogButton, ConfirmDialogService, TitleService } from '@app/common';
-import { QuizDto, RunSummaryDto, StudentDetailedDto, StudentEditDto } from '@app/web-api';
+import { RunSummaryDto, StudentDetailedDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
@@ -69,21 +69,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         if (!student) {
             return;
         }
-        const bs = this.bottomSheet
-            .open(StudentEditFormComponent, {
-                data: student,
-            });
-        const subscription = bs.afterDismissed().subscribe((result: StudentEditDto | undefined) => {
-            if (result) {
-                this.store$.dispatch(studentsActions.saveDetails({
-                    student: {
-                        ...result,
-                        id: student.id
-                    }
-                }));
-            }
-            subscription.unsubscribe();
-        });
+        this.bottomSheet.open(StudentEditFormComponent, { data: student });
     }
 
     async deleteStudent() {
@@ -115,17 +101,8 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         if (studentId === undefined) {
             return;
         }
-        const bs = this.bottomSheet.open(StudentAddRunFormComponent);
-        const subscription = bs.afterDismissed().subscribe((quiz?: QuizDto) => {
-            subscription.unsubscribe();
-            if (quiz) {
-                this.store$.dispatch(studentsActions.addRun({
-                    run: {
-                        quizId: quiz.id,
-                        studentId
-                    }
-                }));
-            }
+        this.bottomSheet.open(StudentAddRunFormComponent, {
+            data: { studentId }
         });
     }
 

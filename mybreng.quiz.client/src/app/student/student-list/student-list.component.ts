@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@app/common';
-import { StudentDto, StudentEditDto } from '@app/web-api';
+import { StudentDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
 import { Observable, Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly bottomSheet: MatBottomSheet,
-        private readonly store$: Store,
+        store$: Store,
         private readonly router: Router,
         private readonly events: StudentsEventsService,
         titleService: TitleService,
@@ -42,24 +42,6 @@ export class StudentListComponent implements OnInit, OnDestroy {
     }
 
     showCreateStudentForm() {
-        const bs = this.bottomSheet
-            .open(StudentEditFormComponent, {
-                data: {
-                    id: '',
-                    firstName: '',
-                    lastName: ''
-                } as StudentDto
-            });
-        const subscription = bs.afterDismissed().subscribe((result: StudentEditDto | undefined) => {
-            if (result) {
-                this.store$.dispatch(studentsActions.saveDetails({
-                    student: {
-                        firstName: result.firstName,
-                        lastName: result.lastName
-                    }
-                }));
-            }
-            subscription.unsubscribe();
-        });
+        this.bottomSheet.open(StudentEditFormComponent);
     }
 }

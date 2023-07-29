@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuizDetailedDto, QuizEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
+import { QuizDetailedDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
@@ -60,7 +60,8 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
             this.router.navigate(['/quiz']);
         }));
         this.subscriptions.push(this.events.questionSaved$.subscribe(({ question }) => {
-            // TODO: close the edit form here
+            this.newQuestion = null;
+            this.editQuestionId = null;
             this.scrollTo(`question-${question.id}`);
         }));
     }
@@ -72,24 +73,9 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     editQuiz() {
         const quiz = this.quiz;
-        if (!quiz) {
-            return;
+        if (quiz) {
+            this.bottomSheet.open(QuizEditFormComponent, { data: quiz });
         }
-        const bs = this.bottomSheet
-            .open(QuizEditFormComponent, {
-                data: quiz,
-            });
-        const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
-            if (result) {
-                this.store$.dispatch(quizzesActions.saveDetails({
-                    quiz: {
-                        ...result,
-                        id: quiz.id
-                    }
-                }));
-            }
-            subscription.unsubscribe();
-        });
     }
 
     async deleteQuiz() {
@@ -135,7 +121,6 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     }
 
     saveNewQuestion(question: QuizQuestionEditDto) {
-        this.newQuestion = null;
         this.store$.dispatch(quizzesActions.saveQuestion({ question }));
     }
 
@@ -154,7 +139,6 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     saveQuestion(question: QuizQuestionEditDto) {
         this.store$.dispatch(quizzesActions.saveQuestion({ question }));
-        this.editQuestionId = null;
     }
 
     async deleteQuestion(question: QuizQuestionDto) {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { QuizDto, QuizEditDto } from '@app/web-api';
+import { QuizDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
@@ -20,7 +20,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
     readonly loading$: Observable<boolean>;
 
     constructor(
-        private readonly store$: Store,
+        store$: Store,
         private readonly bottomSheet: MatBottomSheet,
         private readonly events: QuizzesEventsService,
         private readonly router: Router,
@@ -43,12 +43,6 @@ export class QuizListComponent implements OnInit, OnDestroy {
     }
 
     showCreateQuizForm() {
-        const bs = this.bottomSheet.open(QuizEditFormComponent);
-        const subscription = bs.afterDismissed().subscribe((result: QuizEditDto | undefined) => {
-            subscription.unsubscribe();
-            if (result) {
-                this.store$.dispatch(quizzesActions.saveDetails({ quiz: result }));
-            }
-        });
+        this.bottomSheet.open(QuizEditFormComponent);
     }
 }
