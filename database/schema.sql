@@ -1,111 +1,87 @@
 -- CREATE DATABASE `mybreng`
 -- USE `mybreng`
 
-CREATE TABLE `User` (
-  `Id` char(38) NOT NULL,
-  `Email` varchar(250) DEFAULT NULL,
-  `PasswordHash` varchar(128) DEFAULT NULL,
-  `PasswordSalt` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+CREATE TABLE `user` (
+  `id` char(38) NOT NULL,
+  `email` varchar(250) DEFAULT NULL,
+  `password_hash` varchar(128) DEFAULT NULL,
+  `password_salt` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `Student` (
-  `Id` char(38) NOT NULL,
-  `FirstName` varchar(100) DEFAULT NULL,
-  `LastName` varchar(100) DEFAULT NULL,
-  `Owner` char(38) DEFAULT NULL,
-  `Note` longtext DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iOwner_Student` (`Owner`),
-  CONSTRAINT `FK_Student_Owner` FOREIGN KEY (`Owner`) REFERENCES `User` (`Id`)
+CREATE TABLE `student` (
+  `id` char(38) NOT NULL,
+  `first_name` varchar(100) DEFAULT NULL,
+  `last_name` varchar(100) DEFAULT NULL,
+  `owner` char(38) DEFAULT NULL,
+  `note` longtext DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_student_owner` (`owner`),
+  CONSTRAINT `fk_student_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `Quiz` (
-  `Id` char(38) NOT NULL,
-  `Title` varchar(250) DEFAULT NULL,
-  `Description` longtext DEFAULT NULL,
-  `Owner` char(38) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iOwner_Quiz` (`Owner`),
-  CONSTRAINT `FK_Quiz_Owner` FOREIGN KEY (`Owner`) REFERENCES `User` (`Id`)
+CREATE TABLE `quiz` (
+  `id` char(38) NOT NULL,
+  `title` varchar(250) DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `owner` char(38) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_quiz_owner` (`owner`),
+  CONSTRAINT `fk_quiz_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `QuizTag` (
-  `Id` char(38) NOT NULL,
-  `Title` varchar(100) DEFAULT NULL,
-  `Owner` char(38) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iOwner_QuizTag` (`Owner`),
-  CONSTRAINT `FK_QuizTag_Owner` FOREIGN KEY (`Owner`) REFERENCES `User` (`Id`)
+CREATE TABLE `quiz_question` (
+  `id` char(38) NOT NULL,
+  `text` longtext DEFAULT NULL,
+  `quiz` char(38) DEFAULT NULL,
+  `type` int(11) DEFAULT NULL,
+  `ordinal_number` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_quiz_question_quiz` (`quiz`),
+  CONSTRAINT `fk_quiz_question_quiz` FOREIGN KEY (`quiz`) REFERENCES `quiz` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `QuizzesTags` (
-  `Quizzes` char(38) DEFAULT NULL,
-  `Tags` char(38) DEFAULT NULL,
-  `OID` char(38) NOT NULL,
-  `OptimisticLockField` int(11) DEFAULT NULL,
-  PRIMARY KEY (`OID`),
-  UNIQUE KEY `iQuizzesTags_QuizzesTags` (`Quizzes`,`Tags`),
-  KEY `iQuizzes_QuizzesTags` (`Quizzes`),
-  KEY `iTags_QuizzesTags` (`Tags`),
-  CONSTRAINT `FK_QuizzesTags_Quizzes` FOREIGN KEY (`Quizzes`) REFERENCES `Quiz` (`Id`),
-  CONSTRAINT `FK_QuizzesTags_Tags` FOREIGN KEY (`Tags`) REFERENCES `QuizTag` (`Id`)
+CREATE TABLE `quiz_answer_variant` (
+  `id` char(38) NOT NULL,
+  `question` char(38) DEFAULT NULL,
+  `text` varchar(150) DEFAULT NULL,
+  `is_correct` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`id`),
+  KEY `idx_quiz_question_variant_question` (`question`),
+  CONSTRAINT `fk_quiz_question_variant_quiz` FOREIGN KEY (`question`) REFERENCES `quiz_question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `QuizQuestion` (
-  `Id` char(38) NOT NULL,
-  `Text` longtext DEFAULT NULL,
-  `Quiz` char(38) DEFAULT NULL,
-  `Type` int(11) DEFAULT NULL,
-  `OrdinalNumber` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iQuiz_QuizQuestion` (`Quiz`),
-  CONSTRAINT `FK_QuizQuestion_Quiz` FOREIGN KEY (`Quiz`) REFERENCES `Quiz` (`Id`)
+CREATE TABLE `run` (
+  `id` char(38) NOT NULL,
+  `student` char(38) DEFAULT NULL,
+  `quiz` char(38) DEFAULT NULL,
+  `creation_date` datetime DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `finish_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_run_student` (`student`),
+  KEY `idx-run_quiz` (`quiz`),
+  CONSTRAINT `fk_run_quiz` FOREIGN KEY (`quiz`) REFERENCES `quiz` (`id`),
+  CONSTRAINT `fk_run_student` FOREIGN KEY (`student`) REFERENCES `student` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `QuizAnswerVariant` (
-  `Id` char(38) NOT NULL,
-  `Question` char(38) DEFAULT NULL,
-  `Text` varchar(150) DEFAULT NULL,
-  `IsRight` bit(1) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iQuestion_QuizAnswerVariant` (`Question`),
-  CONSTRAINT `FK_QuizAnswerVariant_Question` FOREIGN KEY (`Question`) REFERENCES `QuizQuestion` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-CREATE TABLE `Run` (
-  `Id` char(38) NOT NULL,
-  `Student` char(38) DEFAULT NULL,
-  `Quiz` char(38) DEFAULT NULL,
-  `CreationDate` datetime DEFAULT NULL,
-  `StartDate` datetime DEFAULT NULL,
-  `FinishDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iStudent_Run` (`Student`),
-  KEY `iQuiz_Run` (`Quiz`),
-  CONSTRAINT `FK_Run_Quiz` FOREIGN KEY (`Quiz`) REFERENCES `Quiz` (`Id`),
-  CONSTRAINT `FK_Run_Student` FOREIGN KEY (`Student`) REFERENCES `Student` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-CREATE TABLE `RunAnswer` (
-  `Id` char(38) NOT NULL,
-  `Run` char(38) DEFAULT NULL,
-  `Question` char(38) DEFAULT NULL,
-  `Variant` char(38) DEFAULT NULL,
-  `Text` varchar(150) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `iRun_RunAnswer` (`Run`),
-  KEY `iQuestion_RunAnswer` (`Question`),
-  KEY `iVariant_RunAnswer` (`Variant`),
-  CONSTRAINT `FK_RunAnswer_Question` FOREIGN KEY (`Question`) REFERENCES `QuizQuestion` (`Id`),
-  CONSTRAINT `FK_RunAnswer_Run` FOREIGN KEY (`Run`) REFERENCES `Run` (`Id`),
-  CONSTRAINT `FK_RunAnswer_Variant` FOREIGN KEY (`Variant`) REFERENCES `QuizAnswerVariant` (`Id`)
+CREATE TABLE `run_answer` (
+  `id` char(38) NOT NULL,
+  `run` char(38) DEFAULT NULL,
+  `question` char(38) DEFAULT NULL,
+  `variant` char(38) DEFAULT NULL,
+  `text` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_run_answer_run` (`run`),
+  KEY `idx_run_answer_question` (`question`),
+  KEY `idx_run_answer_variant` (`variant`),
+  CONSTRAINT `fk_run_answer_question` FOREIGN KEY (`question`) REFERENCES `quiz_question` (`id`),
+  CONSTRAINT `fk_run_answer_run` FOREIGN KEY (`run`) REFERENCES `run` (`id`),
+  CONSTRAINT `fk_run_answer_variant` FOREIGN KEY (`variant`) REFERENCES `quiz_answer_variant` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
