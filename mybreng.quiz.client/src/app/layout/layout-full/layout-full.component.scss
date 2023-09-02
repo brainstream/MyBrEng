@@ -11,9 +11,31 @@ $toolbar-height: 54px;
         margin-right: 0.5rem;
     }
 
-    .layout-full-toolbar-title {
+    .layout-full-toolbar-menu {
+        margin-right: 0.1rem;
+    }
+
+    .layout-full-toolbar-app-name {
         cursor: pointer;
-        font-size: 1.3rem;
+        display: flex;
+        height: 100%;
+        align-items: center;
+
+        .layout-full-toolbar-title {
+            font-weight: bold;
+            font-size: 1.6rem;
+            display: none;
+
+            @media (min-width: 510px) {
+                display: inline-block;
+            }
+        }
+
+        .layout-full-toolbar-logo {
+            display: inline-block;
+            height: 1.8rem;
+            margin-right: 0;
+        }
     }
 
     .layout-full-toolbar-spacer {
@@ -21,17 +43,19 @@ $toolbar-height: 54px;
     }
 
     .layout-full-toolbar-nav {
-        @media (min-width: 600px) {
+        @media (min-width: 700px) {
             display: flex;
 
             .layout-full-toolbar-nav-link {
+                margin-left: .3rem;
+
                 &.active {
                     background: rgba(0, 0, 0, 0.2);
                 }
             }
         }
 
-        @media (max-width: 599px) {
+        @media (max-width: 699px) {
             display: none;
         }
     }

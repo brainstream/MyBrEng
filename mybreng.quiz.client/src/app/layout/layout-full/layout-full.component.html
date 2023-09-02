@@ -1,8 +1,11 @@
 <mat-toolbar class="layout-full-toolbar" color="primary">
-    <button mat-icon-button (click)="drawer.toggle()">
+    <button mat-icon-button (click)="drawer.toggle()" class="layout-full-toolbar-menu">
         <mat-icon>menu</mat-icon>
     </button>
-    <span class="layout-full-toolbar-title" routerLink="">QuizTime</span>
+    <span class="layout-full-toolbar-app-name" routerLink="">
+        <img alt="QuizTime logo" src="/assets/img/quiz-time-logo.png" class="layout-full-toolbar-logo" />
+        <span class="layout-full-toolbar-title cursive">uizTime</span>
+    </span>
     <div class="layout-full-toolbar-nav">
         <button mat-flat-button color="primary" routerLink="/quiz" class="layout-full-toolbar-nav-link"
             routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
@@ -16,7 +19,9 @@
 
     <div class="layout-full-toolbar-spacer"></div>
 
-    <button *ngIf="menu" class="layout-full-toolbar-nav-menu" mat-icon-button [mat-menu-trigger-for]="menu">
+    <ng-content select="[toolbar]"></ng-content>
+
+    <button *ngIf="menu" class="layout-full-toolbar-nav-menu" mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
     </button>
 </mat-toolbar>

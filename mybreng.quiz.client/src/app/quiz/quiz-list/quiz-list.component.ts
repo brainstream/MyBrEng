@@ -4,7 +4,7 @@ import { QuizDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
+import { quizzesActions, QuizzesSelectors, QuizzesEventsService, IQuizListFilter } from '../store';
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
 
@@ -18,9 +18,10 @@ export class QuizListComponent implements OnInit, OnDestroy {
 
     readonly quizzes$: Observable<QuizDto[]>;
     readonly loading$: Observable<boolean>;
+    readonly filter$: Observable<IQuizListFilter>;
 
     constructor(
-        store$: Store,
+        private readonly store$: Store,
         private readonly bottomSheet: MatBottomSheet,
         private readonly events: QuizzesEventsService,
         private readonly router: Router,
@@ -28,6 +29,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
     ) {
         this.quizzes$ = store$.select(QuizzesSelectors.list);
         this.loading$ = store$.select(QuizzesSelectors.loading);
+        this.filter$ = store$.select(QuizzesSelectors.listFilter);
         titleService.setTitle('Тесты');
         store$.dispatch(quizzesActions.loadList());
     }
@@ -44,5 +46,13 @@ export class QuizListComponent implements OnInit, OnDestroy {
 
     showCreateQuizForm() {
         this.bottomSheet.open(QuizEditFormComponent);
+    }
+
+    applySearchString(searchString: string) {
+        this.store$.dispatch(quizzesActions.applyListFilter({
+            filter: {
+                searchString
+            }
+        }))
     }
 }

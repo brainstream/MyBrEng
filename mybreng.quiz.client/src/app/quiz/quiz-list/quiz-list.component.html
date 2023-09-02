@@ -6,6 +6,15 @@
             [quiz]="quiz"
         ></app-quiz-list-item>
     </mat-nav-list>
+
+    <ng-container toolbar>
+        <app-search 
+            placeholder="Поиск"
+            [searchString]="(filter$ | async)?.searchString ?? ''"
+            (searchStringChange)="applySearchString($event)"
+        >
+        </app-search>
+    </ng-container>
 </app-layout-full>
 
 <mat-menu #editMenu="matMenu">

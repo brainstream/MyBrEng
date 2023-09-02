@@ -8,6 +8,7 @@ import {
     QuizQuestionPositionDto
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
+import { IQuizListFilter } from "./quizzes-state";
 
 
 export const quizzesActions = createActionGroup({
@@ -18,6 +19,7 @@ export const quizzesActions = createActionGroup({
         'Flush Events': props<{ events: IPostponedEvent[] }>(),
         'Load List': emptyProps(),
         'List Loaded': props<{ quizzes: QuizDto[] }>(),
+        'Apply List Filter': props<{ filter: IQuizListFilter }>(),
         'Load Details': props<{ id: string }>(),
         'Clean Details': emptyProps(),
         'Details Loaded': props<{ quiz: QuizDetailedDto }>(),

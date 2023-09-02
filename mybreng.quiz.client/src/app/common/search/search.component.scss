@@ -1,0 +1,45 @@
+$background-color: #fff;
+$clear-btn-size: 1.6rem;
+$text-color: #2c2c2c;
+$button-color: lighten($text-color, 40);
+
+:host {
+    display: flex;
+    align-items: center;
+    background-color: $background-color;
+    padding: .2rem .5rem;
+    border-radius: 2rem;
+}
+
+.search {
+    background-color: $background-color;
+    border: none;
+    color: $text-color;
+    caret-color: lighten($text-color, 25);
+    
+    &:focus {
+        outline: none;
+    }
+}
+
+.prefix {
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    color: $button-color;
+}
+
+.suffix {
+    width: $clear-btn-size;
+    height: $clear-btn-size;
+    cursor: text;
+
+    .clear-btn {
+        cursor: pointer;
+        color: $button-color;
+        display: flex;
+        align-items: center;
+        width: $clear-btn-size;
+        height: $clear-btn-size;
+    }
+}
