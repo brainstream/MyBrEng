@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { watchHttpErrors } from '@app/shared';
 import { AccountService } from '@app/web-api';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -30,6 +31,20 @@ export class AuthService {
                         resolve(false);
                     }
                 });
+        });
+    }
+
+    public logout(): Promise<boolean> {
+        return new Promise((resolve) => {
+            watchHttpErrors(this.account.accountLogout('events'))
+                .subscribe({
+                    next: () => {
+                        resolve(true);
+                    },
+                    error: () => {
+                        resolve(false);
+                    }
+                })
         });
     }
 }

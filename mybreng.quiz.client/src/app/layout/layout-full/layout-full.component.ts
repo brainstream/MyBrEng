@@ -10,6 +10,7 @@ import {
 import { ThemeService } from '@app/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatMenu } from '@angular/material/menu';
+import { AuthService } from '@app/auth/auth.service';
 
 @Component({
     selector: 'app-layout-full',
@@ -27,6 +28,7 @@ export class LayoutFullComponent implements AfterViewInit {
     scrollTopButtonVisible: boolean = false;
 
     constructor(
+        private readonly auth: AuthService,
         private readonly theme: ThemeService,
         private readonly dialog: MatDialog
     ) {
@@ -63,5 +65,9 @@ export class LayoutFullComponent implements AfterViewInit {
 
     scrollTop() {
         this.scrollContainer.nativeElement.scrollTo(0, 0);
+    }
+    
+    logOut() {
+        this.auth.logout().then(() => document.location.reload());
     }
 }

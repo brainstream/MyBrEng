@@ -2,7 +2,7 @@ from dependency_injector.wiring import Provide, inject
 from flask import make_response, request
 from flask.blueprints import Blueprint
 from di import DI
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from dtos import LogInDtoSchema
 from facades import UserFacade
 
@@ -36,3 +36,21 @@ def account_login(user_facade: UserFacade = Provide[DI.user_facade]):
         return make_response('', 401)
     login_user(user, remember=True)
     return make_response('', 200)
+
+
+@account_blueprint.route('/logout', methods=['POST'])
+def account_logout():
+    """
+    ---
+    post:
+      operationId: account_logout
+      tags: [Account]
+
+      description: Log out user
+      responses:
+        200:
+          description: Logged out successfully
+        400:
+          description: Failed to log out
+    """
+    return make_response('', 200 if logout_user() else 400)

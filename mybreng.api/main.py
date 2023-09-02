@@ -9,6 +9,7 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from blueprints import \
     account_blueprint, \
     account_login, \
+    account_logout, \
     quiz_blueprint, \
     quiz_list, \
     quiz_details, \
@@ -114,6 +115,7 @@ def create_app() -> Flask:
 
     with flask.test_request_context():
         spec.path(view=account_login)
+        spec.path(view=account_logout)
         spec.path(view=quiz_list)
         spec.path(view=quiz_details)
         spec.path(view=quiz_save)
