@@ -59,6 +59,13 @@ $toolbar-height: 54px;
             display: none;
         }
     }
+
+    @media (max-width: 600px) {   
+        &.mat-toolbar {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
 }
 
 .layout-full-nav-bottom-panel .mat-bottom-sheet-container {

@@ -16,6 +16,8 @@ $button-color: lighten($text-color, 40);
     border: none;
     color: $text-color;
     caret-color: lighten($text-color, 25);
+    flex-grow: 1;
+    width: 100%;
     
     &:focus {
         outline: none;

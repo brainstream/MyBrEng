@@ -9,6 +9,7 @@
 
     <ng-container toolbar>
         <app-search 
+            class="quiz-list-search"
             placeholder="Поиск"
             [searchString]="(filter$ | async)?.searchString ?? ''"
             (searchStringChange)="applySearchString($event)"

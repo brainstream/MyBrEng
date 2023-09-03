@@ -2,3 +2,9 @@
     margin-bottom: 0.5rem;
     display: block;
 }
+
+@media (max-width: 590px) {
+    .quiz-list-search {
+        margin-right: 0 !important;
+    }    
+}
