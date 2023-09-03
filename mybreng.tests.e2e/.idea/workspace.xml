@@ -5,35 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8aa368fb-2ec1-4e52-a211-01fffa488dd9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/drivers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/drivers/firefox.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pyclean.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/quiz_list_tests.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/test_base.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/page/login.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/page/quiz_list.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/page/teacher_layout_page.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/page/web_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../database/test-data/test-data.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../database/test-data/test-data.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/quiz_tests.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/page/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/page/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/page/layout.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/page/quiz_details.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/page/quiz_details.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/page/quiz_editor.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/page/quiz_editor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/quiz_tests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/page/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/page/layout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/page/quiz_details.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/page/quiz_editor.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
@@ -50,84 +41,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/brainstream/projects/mybreng2/mybreng.tests.e2e"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
-  </component>
-  <component name="RunManager" selected="Python tests.Python tests for quiz_list_tests.QuizListTests">
-    <configuration name="Python tests for quiz_list_tests.QuizListTests" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="mybreng.tests.e2e" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;quiz_list_tests.QuizListTests&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for quiz_list_tests.QuizListTests.test_add_quiz" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="mybreng.tests.e2e" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;quiz_list_tests.QuizListTests.test_add_quiz&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for quiz_list_tests.QuizListTests.test_search" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="mybreng.tests.e2e" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;quiz_list_tests.QuizListTests.test_search&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Python tests for quiz_list_tests.TestBase" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
-      <module name="mybreng.tests.e2e" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;quiz_list_tests.TestBase&quot;" />
-      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python tests.Python tests for quiz_list_tests.QuizListTests" />
-        <item itemvalue="Python tests.Python tests for quiz_list_tests.QuizListTests.test_search" />
-        <item itemvalue="Python tests.Python tests for quiz_list_tests.TestBase" />
-        <item itemvalue="Python tests.Python tests for quiz_list_tests.QuizListTests.test_add_quiz" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
