@@ -2,11 +2,12 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from website.page.web_control import WebControl
 
 
-class QuizEditor:
+class QuizEditor(WebControl):
     def __init__(self, driver: WebDriver):
-        self.__driver = driver
+        super().__init__(driver)
 
     def type_title(self, title: str):
         editor = self.__form.find_element(By.CSS_SELECTOR, 'input[formcontrolname="title"]')
@@ -24,4 +25,4 @@ class QuizEditor:
 
     @property
     def __form(self) -> WebElement:
-        return self.__driver.find_element(By.TAG_NAME, 'app-quiz-edit-form')
+        return self.driver.find_element(By.TAG_NAME, 'app-quiz-edit-form')

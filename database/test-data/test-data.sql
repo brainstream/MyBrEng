@@ -6,7 +6,7 @@ VALUES (
     'user@test.test',
     'w+V8Qlj2Cqoi6+UHC46wXU2CsQKBUjBJatOQWQhOrQtQniapzHp2gCI/LKTD677v2anUfTDgPelQlb8Oc5zdEA==',
     'theiZ9eo4goraaqu7ahw7aiFoh0Eefop'
-)
+);
 
 INSERT INTO `quiz` (`id`, `title`, `description`, `owner`)
 VALUES (
@@ -24,5 +24,5 @@ VALUES (
 	'Synonyms Quiz',
 	'Choose words from the list and match them with words that have similar meanings (synonyms).',
 	'5b96d797-3ed1-11ee-8891-c5d1c875f25d'
-)
+);
 

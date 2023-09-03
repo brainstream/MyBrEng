@@ -1,11 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
+from website.page.teacher_layout_page import TeacherLayoutPage
 
 
-class QuizDetails:
+class QuizDetails(TeacherLayoutPage):
     def __init__(self, driver: WebDriver):
-        self.__driver = driver
+        super().__init__(driver)
 
     @property
     def title(self) -> WebElement:
@@ -17,4 +18,4 @@ class QuizDetails:
 
     @property
     def __details(self) -> WebElement:
-        return self.__driver.find_element(By.CSS_SELECTOR, '.details')
+        return self.driver.find_element(By.CSS_SELECTOR, '.details')

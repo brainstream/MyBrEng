@@ -1,1 +1,1 @@
-from .quiz_tests import *
+from .quiz_list_tests import *
