@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    HttpRequest,
-    HttpHandler,
-    HttpEvent,
-    HttpInterceptor,
-    HttpEventType,
-    HttpUserEvent,
-    HttpErrorResponse
-} from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpEventType, HttpUserEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable, Subject, catchError, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from './login';

@@ -9,34 +9,27 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ThemeService } from './common';
 import { appInitializerFactory } from './app-initializer-factory';
 import { ApiModule } from './web-api';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthModule } from './auth';
 import { CommonModule as AppCommonModule } from '@app/common';
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         StoreModule.forRoot({}, {}),
         EffectsModule.forRoot([]),
-        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-        HttpClientModule,
+        StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true }),
         AuthModule,
         ApiModule,
-        AppCommonModule
-    ],
-    providers: [{
-        provide: APP_INITIALIZER,
-        useFactory: appInitializerFactory,
-        deps: [
-            ThemeService
-        ],
-        multi: true
-    }],
-    bootstrap: [AppComponent]
-})
+        AppCommonModule], providers: [{
+            provide: APP_INITIALIZER,
+            useFactory: appInitializerFactory,
+            deps: [
+                ThemeService
+            ],
+            multi: true
+        }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

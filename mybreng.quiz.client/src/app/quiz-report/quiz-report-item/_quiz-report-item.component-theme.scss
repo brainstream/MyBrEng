@@ -2,7 +2,7 @@
 @use "@angular/material" as mat;
 
 @mixin color($theme) {
-    $color-config: mat.get-color-config($theme);
+    $color-config: mat.m2-get-color-config($theme);
     $is-dark-theme: map.get($color-config, 'is-dark');
     $background-palette: map.get($color-config, "background");
 
@@ -36,7 +36,7 @@
 }
 
 @mixin theme($theme) {
-    $color-config: mat.get-color-config($theme);
+    $color-config: mat.m2-get-color-config($theme);
     @if $color-config != null {
         @include color($theme);
     }

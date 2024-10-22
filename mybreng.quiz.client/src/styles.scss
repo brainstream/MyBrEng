@@ -81,36 +81,36 @@ $app-orange-palette: (
     )
 );
 
-$app-primary: mat.define-palette($app-orange-palette);
-$app-accent: mat.define-palette($app-blue-palette);
-$app-warn: mat.define-palette(mat.$red-palette);
+$app-primary: mat.m2-define-palette($app-orange-palette);
+$app-accent: mat.m2-define-palette($app-blue-palette);
+$app-warn: mat.m2-define-palette(mat.$m2-red-palette);
 
-$app-light-theme: mat.define-light-theme(
+$app-light-theme: mat.m2-define-light-theme(
     (
         color: (
             primary: $app-primary,
             accent: $app-accent,
             warn: $app-warn,
         ),
-        typography: mat.define-typography-config(),
+        typography: mat.m2-define-typography-config(),
         density: 0,
     )
 );
 
-$app-dark-theme: mat.define-dark-theme(
+$app-dark-theme: mat.m2-define-dark-theme(
     (
         color: (
             primary: $app-primary,
             accent: $app-accent,
             warn: $app-warn,
         ),
-        typography: mat.define-typography-config(),
+        typography: mat.m2-define-typography-config(),
         density: 0,
     )
 );
 
 @mixin global-theme($theme) {
-    $color-config: mat.get-color-config($theme);
+    $color-config: mat.m2-get-color-config($theme);
     $is-dark-theme:   map.get($color-config, 'is-dark');
     $accent-palette: map.get($color-config, 'accent');
     $warn-palette: map.get($color-config, 'warn');
@@ -118,58 +118,58 @@ $app-dark-theme: mat.define-dark-theme(
     $foreground-palette: map.get($color-config, 'foreground');
 
     body {
-        background-color: mat.get-color-from-palette($background-palette, background);
-        color: mat.get-color-from-palette($foreground-palette, text);
+        background-color: mat.m2-get-color-from-palette($background-palette, background);
+        color: mat.m2-get-color-from-palette($foreground-palette, text);
     }
 
     a {
         @if $is-dark-theme {
-            color: mat.get-color-from-palette($accent-palette, A200);
+            color: mat.m2-get-color-from-palette($accent-palette, A200);
         } @else {
-            color: mat.get-color-from-palette($accent-palette);
+            color: mat.m2-get-color-from-palette($accent-palette);
         }
     }
 
     .text-muted {
-        color: mat.get-color-from-palette($foreground-palette, disabled-text);
+        color: mat.m2-get-color-from-palette($foreground-palette, disabled-text);
     }
 
     .text-error {
-        color: mat.get-color-from-palette($warn-palette, text);
+        color: mat.m2-get-color-from-palette($warn-palette, text);
     }
 
     .mdc-snackbar {
         &.info {
             .mdc-snackbar__surface {
-                background-color: mat.get-color-from-palette($accent-palette, default);
+                background-color: mat.m2-get-color-from-palette($accent-palette, default);
             }
 
             .mat-mdc-snack-bar-label {
-                color: mat.get-color-from-palette($accent-palette, default-contrast);
+                color: mat.m2-get-color-from-palette($accent-palette, default-contrast);
             }
 
             .mat-simple-snackbar-action {
-                color: mat.get-color-from-palette($accent-palette, default-contrast);
+                color: mat.m2-get-color-from-palette($accent-palette, default-contrast);
             }
         }
 
         &.error {
             .mdc-snackbar__surface {
-                background-color: mat.get-color-from-palette($warn-palette, default);
+                background-color: mat.m2-get-color-from-palette($warn-palette, default);
             }
 
             .mat-mdc-snack-bar-label {
-                color: mat.get-color-from-palette($warn-palette, default-contrast);
+                color: mat.m2-get-color-from-palette($warn-palette, default-contrast);
             }
 
             .mat-simple-snackbar-action {
-                color: mat.get-color-from-palette($warn-palette, default-contrast);
+                color: mat.m2-get-color-from-palette($warn-palette, default-contrast);
             }
         }
     }
 
     .cdk-overlay-backdrop.solid {
-        background-color: mat.get-color-from-palette($background-palette, background);
+        background-color: mat.m2-get-color-from-palette($background-palette, background);
     }
 }
 
@@ -236,21 +236,21 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
     &__error {
         .mdc-snackbar__surface {
-            background-color: mat.get-color-from-palette($app-warn, default) !important;
+            background-color: mat.m2-get-color-from-palette($app-warn, default) !important;
         }
 
         .mat-mdc-snack-bar-label, .mat-mdc-snack-bar-action {
-            color: mat.get-color-from-palette($app-warn, default-contrast) !important;
+            color: mat.m2-get-color-from-palette($app-warn, default-contrast) !important;
         }
     }
 
     &__info {
         .mdc-snackbar__surface {
-            background-color: mat.get-color-from-palette($app-accent, default) !important;
+            background-color: mat.m2-get-color-from-palette($app-accent, default) !important;
         }
 
         .mat-mdc-snack-bar-label, .mat-mdc-snack-bar-action {
-            color: mat.get-color-from-palette($app-accent, default-contrast) !important;
+            color: mat.m2-get-color-from-palette($app-accent, default-contrast) !important;
         }
     }
 }
