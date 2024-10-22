@@ -23,16 +23,36 @@ class QuizQuestionFacade:
         db.session.commit()
         return map_quiz_question_to_dto(question)
 
+    def clone_question(self, owner_id: str, question_id: str) -> QuizQuestionDto | None:
+        existent_question = QuizQuestionTable.query \
+            .filter_by(id=question_id) \
+            .join(QuizQuestionTable.quiz) \
+            .filter(QuizTable.owner_id == owner_id) \
+            .first()
+        if existent_question is None:
+            return None
+        new_question = QuizQuestionTable()
+        new_question.id = str(uuid.uuid4())
+        new_question.quiz_id = existent_question.quiz_id
+        new_question.text = existent_question.text
+        new_question.type = existent_question.type
+        new_question.ordinal_number = self._get_next_question_ordinal_number(existent_question.quiz.id)
+        new_question.answers = [self._create_answer_variant(existent_question.type, a) for a in existent_question.answers]
+        db.session.add(new_question)
+        db.session.commit()
+        return map_quiz_question_to_dto(new_question)
+
     def _get_next_question_ordinal_number(self, quiz_id: str | None) -> int:
         if quiz_id is None:
             return 0
         max_ord = db.session.query(func.max(QuizQuestionTable.ordinal_number)).filter_by(quiz_id=quiz_id).scalar()
         return 0 if max_ord is None else max_ord + 1
 
-    def _create_answer_variant(self,
-                               question_type: QuizQuestionType,
-                               answer_dto: QuizQuestionAnswerEditDto
-                               ) -> QuizAnswerVariantTable:
+    def _create_answer_variant(
+            self,
+            question_type: QuizQuestionType,
+            answer_dto: QuizQuestionAnswerEditDto | QuizAnswerVariantTable
+    ) -> QuizAnswerVariantTable:
         answer = QuizAnswerVariantTable()
         answer.id = str(uuid.uuid4())
         answer.text = answer_dto.text
@@ -80,11 +100,12 @@ class QuizQuestionFacade:
         db.session.commit()
         return True
 
-    def reorder_questions(self,
-                          owner_id: str,
-                          quiz_id: str,
-                          questions_positions: list[QuizQuestionPositionDto]
-                          ) -> list[QuizQuestionDto] | None:
+    def reorder_questions(
+            self,
+            owner_id: str,
+            quiz_id: str,
+            questions_positions: list[QuizQuestionPositionDto]
+    ) -> list[QuizQuestionDto] | None:
         questions = QuizQuestionTable.query \
             .join(QuizQuestionTable.quiz) \
             .filter(QuizTable.owner_id == owner_id, QuizTable.id == quiz_id) \

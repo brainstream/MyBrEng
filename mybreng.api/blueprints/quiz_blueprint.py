@@ -163,6 +163,34 @@ def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.qui
     response_schema = QuizQuestionDtoSchema()
     return jsonify(response_schema.dump(quiz))
 
+@quiz_blueprint.route('/clone-question/<question_id>', methods=['POST'])
+@login_required
+@inject
+def quiz_question_clone(question_id: str, quiz_question_facade: QuizQuestionFacade = Provide[DI.quiz_question_facade]):
+    """
+    ---
+    post:
+      operationId: quiz_question_clone
+      tags: [Quiz]
+      description: Clones a quiz question
+      parameters:
+      - in: path
+        name: question_id
+        schema:
+          type: string
+          format: uuid
+          description: Question ID to clone
+      responses:
+        200:
+          description: Question cloned successfully
+          content:
+            application/json:
+              schema: QuizQuestionDto
+        404:
+          description: Question with specified ID not found
+    """
+    result = quiz_question_facade.clone_question(current_user.id, question_id)
+    return make_response('', 200 if result else 404)
 
 @quiz_blueprint.route('/question/<question_id>', methods=['DELETE'])
 @login_required

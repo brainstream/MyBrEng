@@ -16,6 +16,7 @@ from blueprints import \
     quiz_save, \
     quiz_delete, \
     quiz_question_save, \
+    quiz_question_clone, \
     quiz_question_delete, \
     quiz_reorder_questions, \
     student_blueprint, \
@@ -121,6 +122,7 @@ def create_app() -> Flask:
         spec.path(view=quiz_save)
         spec.path(view=quiz_delete)
         spec.path(view=quiz_question_save)
+        spec.path(view=quiz_question_clone)
         spec.path(view=quiz_question_delete)
         spec.path(view=quiz_reorder_questions)
         spec.path(view=student_list)
