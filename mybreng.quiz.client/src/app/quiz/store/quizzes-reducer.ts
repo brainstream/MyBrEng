@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { quizzesActions } from "./quizzes-actions";
-import { 
+import {
     addOrChangeQuestion,
     addOrChangeQuiz,
     createDefaultState,
@@ -50,6 +50,14 @@ export const quizzesReducer = createReducer(
     })),
 
     on(quizzesActions.questionSaved, (state, { question }) => ({
+        ...state,
+        details: state.details ? {
+            ...state.details,
+            questions: addOrChangeQuestion(state.details?.questions, question)
+        } : null
+    })),
+
+    on(quizzesActions.questionCloned, (state, { question }) => ({
         ...state,
         details: state.details ? {
             ...state.details,

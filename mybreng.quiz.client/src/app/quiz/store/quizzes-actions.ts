@@ -26,6 +26,8 @@ export const quizzesActions = createActionGroup({
         'Save Details': props<{ quiz: QuizEditDto }>(),
         'Details Saved': props<{ quiz: QuizDto }>(),
         'Save Question': props<{ question: QuizQuestionEditDto }>(),
+        'Clone Question': props<{ questionId: string }>(),
+        'Question Cloned': props<{ question: QuizQuestionDto }>(),
         'Question Saved': props<{ question: QuizQuestionDto }>(),
         'Delete Question': props<{ id: string }>(),
         'Question Deleted': props<{ id: string }>(),

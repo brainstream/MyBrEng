@@ -24,7 +24,8 @@
                         [question]="question"
                         [position]="idx + 1"
                         (editRequested)="editQuestion($event)"
-                        (deleteRequested)="deleteQuestion($event)">
+                        (deleteRequested)="deleteQuestion($event)"
+                        (cloneRequested)="cloneQuestion($event)">
                     </app-quiz-question>
                 </ng-template>
             </div>

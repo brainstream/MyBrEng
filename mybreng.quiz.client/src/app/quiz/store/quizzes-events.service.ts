@@ -7,5 +7,6 @@ export class QuizzesEventsService {
     readonly quizSaved$ = new Event<QuizDto>();
     readonly quizDeleted$ = new Event<{ id: string }>();
     readonly questionSaved$ = new Event<{ question: QuizQuestionDto }>();
+    readonly questionCloned$ = new Event<{ question: QuizQuestionDto }>();
     readonly questionsReordered$ = new Event<{ questions: QuizQuestionDto[] }>();
 }

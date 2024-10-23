@@ -156,12 +156,12 @@ def quiz_question_save(quiz_question_facade: QuizQuestionFacade = Provide[DI.qui
     """
     request_schema = QuizQuestionEditDtoSchema()
     edit_dto = request_schema.loads(request.get_data(as_text=True))
-    quiz = quiz_question_facade.create_question(current_user.id, edit_dto) if edit_dto.id is None \
+    question = quiz_question_facade.create_question(current_user.id, edit_dto) if edit_dto.id is None \
         else quiz_question_facade.edit_question(current_user.id, edit_dto)
-    if quiz is None:
+    if question is None:
         return make_response('', 404)
     response_schema = QuizQuestionDtoSchema()
-    return jsonify(response_schema.dump(quiz))
+    return jsonify(response_schema.dump(question))
 
 @quiz_blueprint.route('/clone-question/<question_id>', methods=['POST'])
 @login_required
@@ -189,8 +189,11 @@ def quiz_question_clone(question_id: str, quiz_question_facade: QuizQuestionFaca
         404:
           description: Question with specified ID not found
     """
-    result = quiz_question_facade.clone_question(current_user.id, question_id)
-    return make_response('', 200 if result else 404)
+    question = quiz_question_facade.clone_question(current_user.id, question_id)
+    if question is None:
+        return make_response('', 404)
+    response_schema = QuizQuestionDtoSchema()
+    return jsonify(response_schema.dump(question))
 
 @quiz_blueprint.route('/question/<question_id>', methods=['DELETE'])
 @login_required

@@ -11,6 +11,7 @@ export class QuizQuestionComponent {
     @Input() position: number;
     @Output() editRequested = new EventEmitter<QuizQuestionDto>();
     @Output() deleteRequested = new EventEmitter<QuizQuestionDto>();
+    @Output() cloneRequested = new EventEmitter<QuizQuestionDto>();
 
     edit() {
         this.editRequested.emit(this.question);
@@ -18,5 +19,9 @@ export class QuizQuestionComponent {
 
     delete() {
         this.deleteRequested.emit(this.question);
+    }
+
+    clone() {
+        this.cloneRequested.emit(this.question);
     }
 }

@@ -110,6 +110,13 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         this.scrollTo('bottom');
     }
 
+    cloneQuestion(question: QuizQuestionDto | null) {
+        if (question) {
+            this.store$.dispatch(quizzesActions.cloneQuestion({ questionId: question.id }))
+            this.scrollTo('bottom');
+        }
+    }
+
     scrollTo(id: string) {
         setTimeout(() => {
             document.getElementById(id)?.scrollIntoView();

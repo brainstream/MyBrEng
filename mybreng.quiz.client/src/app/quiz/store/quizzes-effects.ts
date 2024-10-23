@@ -163,6 +163,31 @@ export class QuizzesEffects {
         ))
     ));
 
+    cloneQuestion$ = createEffect(() => this.actions$.pipe(
+        ofType(quizzesActions.cloneQuestion),
+        switchMap(({ questionId }) => concat(
+            of(quizzesActions.setLoading({ loading: true })),
+            watchHttpErrors(this.quizService.quizQuestionClone(questionId, 'events'))
+                .pipe(
+                    switchMap(question => from([
+                        quizzesActions.questionCloned({ question }),
+                        quizzesActions.flushEvents({
+                            events: [
+                                this.eventsService.questionCloned$.postpone({ question })
+                            ]
+                        }),
+                        quizzesActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => from([
+                        quizzesActions.setLoading({ loading: false }),
+                        quizzesActions.setError({
+                            message: 'Во время клонирования вопроса произошла ошибка'
+                        })
+                    ]))
+                )
+        ))
+    ));
+
     deleteQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.deleteQuestion),
         switchMap(({ id }) => concat(
