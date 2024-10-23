@@ -64,6 +64,9 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
             this.editQuestionId = null;
             this.scrollTo(`question-${question.id}`);
         }));
+        this.subscriptions.push(this.events.questionSaved$.subscribe(({ question }) => {
+            this.scrollTo(`question-${question.id}`);
+        }));
     }
 
     ngOnDestroy(): void {
@@ -119,8 +122,12 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
 
     scrollTo(id: string) {
         setTimeout(() => {
-            document.getElementById(id)?.scrollIntoView();
-        }, 0);
+            document.getElementById(id)?.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'nearest'
+            });
+        }, 100);
     }
 
     cancelAddQuestion() {
