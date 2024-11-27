@@ -8,6 +8,6 @@
     </mat-card-content>
 </mat-card>
 
-<div *ngFor="let item of report.items" class="item">
-    <app-quiz-report-item [data]="item"></app-quiz-report-item>
+<div *ngFor="let item of report.items; index as i" class="item">
+    <app-quiz-report-item [data]="item" [index]="i"></app-quiz-report-item>
 </div>

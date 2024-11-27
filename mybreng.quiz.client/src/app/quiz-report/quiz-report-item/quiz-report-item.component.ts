@@ -13,6 +13,7 @@ import { RunQuestionDto } from '@app/web-api';
 })
 export class QuizReportItemComponent {
     @Input() data: IQuizReportItem;
+    @Input() index: number;
 
     get questionDescription(): string {
         switch (this.data.questionType) {
