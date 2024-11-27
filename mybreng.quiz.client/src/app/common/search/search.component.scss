@@ -1,7 +1,9 @@
+@use 'sass:color';
+
 $background-color: #fff;
 $clear-btn-size: 1.6rem;
 $text-color: #2c2c2c;
-$button-color: lighten($text-color, 40);
+$button-color: color.scale($text-color, $lightness: +50%);
 
 :host {
     display: flex;
@@ -15,10 +17,10 @@ $button-color: lighten($text-color, 40);
     background-color: $background-color;
     border: none;
     color: $text-color;
-    caret-color: lighten($text-color, 25);
+    caret-color: color.scale($text-color, $lightness: +30%);
     flex-grow: 1;
     width: 100%;
-    
+
     &:focus {
         outline: none;
     }
