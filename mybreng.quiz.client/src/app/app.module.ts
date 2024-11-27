@@ -1,4 +1,4 @@
-import { NgModule, isDevMode, APP_INITIALIZER } from '@angular/core';
+import { NgModule, isDevMode, inject, provideAppInitializer } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,12 +24,8 @@ import { CommonModule as AppCommonModule } from '@app/common';
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true }),
         AuthModule,
         ApiModule,
-        AppCommonModule], providers: [{
-            provide: APP_INITIALIZER,
-            useFactory: appInitializerFactory,
-            deps: [
-                ThemeService
-            ],
-            multi: true
-        }, provideHttpClient(withInterceptorsFromDi())] })
+        AppCommonModule], providers: [provideAppInitializer(() => {
+        const initializerFn = (appInitializerFactory)(inject(ThemeService));
+        return initializerFn();
+      }), provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

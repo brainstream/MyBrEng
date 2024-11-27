@@ -8,7 +8,8 @@ import { RunDto } from '@app/web-api';
 @Component({
     selector: 'app-run',
     templateUrl: './run.component.html',
-    styleUrls: ['./run.component.scss']
+    styleUrls: ['./run.component.scss'],
+    standalone: false
 })
 export class RunComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

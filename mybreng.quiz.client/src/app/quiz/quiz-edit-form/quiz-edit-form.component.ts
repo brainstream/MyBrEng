@@ -10,7 +10,8 @@ import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-quiz-edit-form',
     templateUrl: './quiz-edit-form.component.html',
-    styleUrls: ['./quiz-edit-form.component.scss']
+    styleUrls: ['./quiz-edit-form.component.scss'],
+    standalone: false
 })
 export class QuizEditFormComponent implements OnInit, OnDestroy {
     private savedSubscripion: Subscription | null = null;

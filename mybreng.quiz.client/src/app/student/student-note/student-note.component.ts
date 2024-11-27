@@ -7,7 +7,8 @@ import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-student-note',
     templateUrl: './student-note.component.html',
-    styleUrls: ['./student-note.component.scss']
+    styleUrls: ['./student-note.component.scss'],
+    standalone: false
 })
 export class StudentNoteComponent implements OnInit, OnDestroy {
     private _studentId: string;

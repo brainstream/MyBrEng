@@ -11,7 +11,8 @@ import { MessageService } from '@app/common';
     styleUrls: ['./quiz-report-standalone.component.scss'],
     providers: [
         ApiModule
-    ]
+    ],
+    standalone: false
 })
 export class QuizReportStandaloneComponent {
     readonly run$: Observable<RunDto | null>;

@@ -17,7 +17,8 @@ import { collapseOnLeaveAnimation } from 'angular-animations';
     styleUrls: ['./student-details.component.scss'],
     animations: [
         collapseOnLeaveAnimation()
-    ]
+    ],
+    standalone: false
 })
 export class StudentDetailsComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

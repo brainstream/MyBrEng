@@ -9,7 +9,8 @@ import { QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 @Component({
     selector: 'app-quiz-question-edit-form',
     templateUrl: './quiz-question-edit-form.component.html',
-    styleUrls: ['./quiz-question-edit-form.component.scss']
+    styleUrls: ['./quiz-question-edit-form.component.scss'],
+    standalone: false
 })
 export class QuizQuestionEditFormComponent {
     private questionId?: string;

@@ -5,7 +5,8 @@ import { RunSummaryDto } from '@app/web-api';
 @Component({
     selector: 'app-student-quiz-run',
     templateUrl: './student-quiz-run.component.html',
-    styleUrls: ['./student-quiz-run.component.scss']
+    styleUrls: ['./student-quiz-run.component.scss'],
+    standalone: false
 })
 export class StudentQuizRunComponent {
     private _run: RunSummaryDto | null = null;

@@ -11,7 +11,8 @@ import { TitleService } from '@app/common';
 @Component({
     selector: 'app-quiz-list',
     templateUrl: './quiz-list.component.html',
-    styleUrls: ['./quiz-list.component.scss']
+    styleUrls: ['./quiz-list.component.scss'],
+    standalone: false
 })
 export class QuizListComponent implements OnInit, OnDestroy {
     private quizCreatedSubscription: Subscription | undefined;

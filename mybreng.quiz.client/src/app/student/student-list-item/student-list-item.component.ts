@@ -4,7 +4,8 @@ import { StudentDto } from '@app/web-api';
 @Component({
     selector: 'app-student-list-item',
     templateUrl: './student-list-item.component.html',
-    styleUrls: ['./student-list-item.component.scss']
+    styleUrls: ['./student-list-item.component.scss'],
+    standalone: false
 })
 export class StudentListItemComponent {
     @Input() student: StudentDto;

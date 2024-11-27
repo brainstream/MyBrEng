@@ -4,9 +4,10 @@ import { Store } from '@ngrx/store';
 import { goActions } from '../store';
 
 @Component({
-  selector: 'app-run-go',
-  templateUrl: './run-go.component.html',
-  styleUrls: ['./run-go.component.scss']
+    selector: 'app-run-go',
+    templateUrl: './run-go.component.html',
+    styleUrls: ['./run-go.component.scss'],
+    standalone: false
 })
 export class RunGoComponent {
     private _run: RunDto;

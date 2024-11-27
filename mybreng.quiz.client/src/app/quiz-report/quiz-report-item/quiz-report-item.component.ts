@@ -8,7 +8,8 @@ import { RunQuestionDto } from '@app/web-api';
     styleUrls: ['./quiz-report-item.component.scss'],
     host: {
         'class': 'quiz-report-item'
-    }
+    },
+    standalone: false
 })
 export class QuizReportItemComponent {
     @Input() data: IQuizReportItem;

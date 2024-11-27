@@ -7,9 +7,10 @@ import { StudentsEventsService, studentsActions } from '../store';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-student-edit-form',
-  templateUrl: './student-edit-form.component.html',
-  styleUrls: ['./student-edit-form.component.scss']
+    selector: 'app-student-edit-form',
+    templateUrl: './student-edit-form.component.html',
+    styleUrls: ['./student-edit-form.component.scss'],
+    standalone: false
 })
 export class StudentEditFormComponent implements OnInit, OnDestroy {
     private readonly studentId?: string;

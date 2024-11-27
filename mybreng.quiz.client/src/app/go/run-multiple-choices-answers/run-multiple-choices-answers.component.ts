@@ -4,7 +4,8 @@ import { RunAnswerVariantDto } from '@app/web-api';
 @Component({
     selector: 'app-run-multiple-choices-answers',
     templateUrl: './run-multiple-choices-answers.component.html',
-    styleUrls: ['./run-multiple-choices-answers.component.scss']
+    styleUrls: ['./run-multiple-choices-answers.component.scss'],
+    standalone: false
 })
 export class RunMultipleChoicesAnswersComponent  {
     private _checkedAnswers: string[] = [];

@@ -18,7 +18,8 @@ import { TitleService } from '@app/common';
     styleUrls: ['./quiz-details.component.scss'],
     animations: [
         collapseOnLeaveAnimation()
-    ]
+    ],
+    standalone: false
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

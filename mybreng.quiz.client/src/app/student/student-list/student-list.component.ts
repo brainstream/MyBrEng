@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-student-list',
     templateUrl: './student-list.component.html',
-    styleUrls: ['./student-list.component.scss']
+    styleUrls: ['./student-list.component.scss'],
+    standalone: false
 })
 export class StudentListComponent implements OnInit, OnDestroy {
     readonly students$: Observable<StudentDto[]>;

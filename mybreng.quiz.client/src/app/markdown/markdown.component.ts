@@ -4,7 +4,8 @@ import { MarkdownService } from './markdown.service';
 @Component({
     selector: 'app-markdown',
     templateUrl: './markdown.component.html',
-    styleUrls: ['./markdown.component.scss']
+    styleUrls: ['./markdown.component.scss'],
+    standalone: false
 })
 export class MarkdownComponent {
     constructor(private readonly markdown: MarkdownService) {

@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { QuizQuestionDto } from '@app/web-api';
 
 @Pipe({
-    name: 'questionTypeName'
+    name: 'questionTypeName',
+    standalone: false
 })
 export class QuestionTypeNamePipe implements PipeTransform {
     transform(value: QuizQuestionDto.QuestionTypeEnum): string {

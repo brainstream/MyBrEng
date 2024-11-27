@@ -5,7 +5,8 @@ import { IQuizRepor, mapRunToReport } from './quiz-report';
 @Component({
     selector: 'app-quiz-report',
     templateUrl: './quiz-report.component.html',
-    styleUrls: ['./quiz-report.component.scss']
+    styleUrls: ['./quiz-report.component.scss'],
+    standalone: false
 })
 export class QuizReportComponent {
     report: IQuizRepor;

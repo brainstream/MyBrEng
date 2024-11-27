@@ -8,7 +8,8 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bott
 @Component({
     selector: 'app-student-add-run-form',
     templateUrl: './student-add-run-form.component.html',
-    styleUrls: ['./student-add-run-form.component.scss']
+    styleUrls: ['./student-add-run-form.component.scss'],
+    standalone: false
 })
 export class StudentAddRunFormComponent implements OnInit, OnDestroy {
     private createdSubscription: Subscription | null = null;

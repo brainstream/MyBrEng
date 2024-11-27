@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto, RunQuestionDto } from '@app/web-api';
 
 @Component({
-  selector: 'app-run-question',
-  templateUrl: './run-question.component.html',
-  styleUrls: ['./run-question.component.scss']
+    selector: 'app-run-question',
+    templateUrl: './run-question.component.html',
+    styleUrls: ['./run-question.component.scss'],
+    standalone: false
 })
 export class RunQuestionComponent {
     @Input() question: RunQuestionDto;

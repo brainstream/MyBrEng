@@ -15,7 +15,8 @@ interface IQuestionData {
 @Component({
     selector: 'app-quiz-question-sort',
     templateUrl: './quiz-question-sort.component.html',
-    styleUrls: ['./quiz-question-sort.component.scss']
+    styleUrls: ['./quiz-question-sort.component.scss'],
+    standalone: false
 })
 export class QuizQuestionSortComponent implements OnInit, OnDestroy {
     private readonly quizId: string;

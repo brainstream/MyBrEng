@@ -4,7 +4,8 @@ import { QuizQuestionDto } from '@app/web-api';
 @Component({
     selector: 'app-quiz-question',
     templateUrl: './quiz-question.component.html',
-    styleUrls: ['./quiz-question.component.scss']
+    styleUrls: ['./quiz-question.component.scss'],
+    standalone: false
 })
 export class QuizQuestionComponent {
     @Input() question: QuizQuestionDto;

@@ -16,7 +16,8 @@ import { AuthService } from '@app/auth/auth.service';
     selector: 'app-layout-full',
     templateUrl: './layout-full.component.html',
     styleUrls: ['./layout-full.component.scss'],
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class LayoutFullComponent implements AfterViewInit {
     @Input() menu: MatMenu | null = null;
