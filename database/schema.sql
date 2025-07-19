@@ -9,6 +9,14 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `tag` (
+  `id` char(38) NOT NULL,
+  `name` char(150) NOT NULL,
+  `owner` char(38) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_tag_owner` (`owner`),
+  CONSTRAINT `fk_tag_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `student` (
   `id` char(38) NOT NULL,
@@ -21,6 +29,15 @@ CREATE TABLE `student` (
   CONSTRAINT `fk_student_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `student_tag` (
+  `student` char(38) NOT NULL,
+  `tag` char(38) NOT NULL,
+  PRIMARY KEY (`student`, `tag`),
+  KEY `idx_student_tag_student` (`student`),
+  KEY `idx_student_tag_tag` (`tag`),
+  CONSTRAINT `fk_student_tag_student` FOREIGN KEY (`student`) REFERENCES `student` (`id`),
+  CONSTRAINT `fk_student_tag_tag` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `quiz` (
   `id` char(38) NOT NULL,
@@ -32,6 +49,15 @@ CREATE TABLE `quiz` (
   CONSTRAINT `fk_quiz_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `quiz_tag` (
+  `quiz` char(38) NOT NULL,
+  `tag` char(38) NOT NULL,
+  PRIMARY KEY (`quiz`, `tag`),
+  KEY `idx_quiz_tag_quiz` (`quiz`),
+  KEY `idx_quiz_tag_tag` (`tag`),
+  CONSTRAINT `fk_quiz_tag_quiz` FOREIGN KEY (`quiz`) REFERENCES `quiz` (`id`),
+  CONSTRAINT `fk_quiz_tag_tag` FOREIGN KEY (`tag`) REFERENCES `tag` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `quiz_question` (
   `id` char(38) NOT NULL,

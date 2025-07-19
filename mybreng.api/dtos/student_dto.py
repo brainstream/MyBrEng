@@ -18,4 +18,3 @@ class StudentDtoSchema(Schema):
     @post_load
     def make_dto(self, data, **kwargs) -> StudentDto:
         return StudentDto(**data)
-

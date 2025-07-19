@@ -11,6 +11,7 @@ from blueprints import \
     account_login, \
     account_logout, \
     quiz_blueprint, \
+    tag_blueprint, \
     quiz_list, \
     quiz_details, \
     quiz_save, \
@@ -29,7 +30,10 @@ from blueprints import \
     run_blueprint, \
     run_create, \
     run_delete, \
-    run_finish
+    run_finish, \
+    tag_list, \
+    tag_save, \
+    tag_delete
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -51,7 +55,9 @@ from dtos import \
     RunAnswerVariantDtoSchema, \
     RunFinishDtoSchema, \
     RunFinishQuestionDtoSchema, \
-    RunReportAnswerDtoSchema
+    RunReportAnswerDtoSchema, \
+    TagDtoSchema, \
+    TagEditDtoSchema
 from di import DI
 from database import db
 
@@ -100,7 +106,9 @@ def create_app() -> Flask:
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
         .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema) \
         .schema('RunFinishQuestionDto', schema=RunFinishQuestionDtoSchema) \
-        .schema('RunFinishDto', schema=RunFinishDtoSchema)
+        .schema('RunFinishDto', schema=RunFinishDtoSchema) \
+        .schema('TagDto', schema=TagDtoSchema) \
+        .schema('TagEditDto', schema=TagEditDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -109,6 +117,7 @@ def create_app() -> Flask:
     flask.register_blueprint(quiz_blueprint, url_prefix='/api/quiz')
     flask.register_blueprint(student_blueprint, url_prefix='/api/student')
     flask.register_blueprint(run_blueprint, url_prefix='/api/run')
+    flask.register_blueprint(tag_blueprint, url_prefix='/api/tag')
     di.init_resources()
     db.init_app(flask)
     login_manager = LoginManager()
@@ -134,6 +143,9 @@ def create_app() -> Flask:
         spec.path(view=run_create)
         spec.path(view=run_delete)
         spec.path(view=run_finish)
+        spec.path(view=tag_list)
+        spec.path(view=tag_save)
+        spec.path(view=tag_delete)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

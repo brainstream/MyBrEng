@@ -22,3 +22,5 @@ from .run_answer_dto import *
 from .run_finish_dto import *
 from .run_finish_question_dto import *
 from .run_report_answer_dto import *
+from .tag_dto import *
+from .tag_edit_dto import *

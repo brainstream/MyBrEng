@@ -13,6 +13,15 @@ class UserTable(db.Model):
     def __repr__(self):
         return f'<User: {self.email}>'
 
+class TagTable(db.Model):
+    __tablename__ = 'tag'
+    id = db.Column('id', db.String(38), primary_key=True)
+    name = db.Column('name', db.String(150))
+    owner_id = db.Column('owner', db.ForeignKey('user.id'))
+    owner = db.relationship('UserTable')
+
+    def __repr__(self):
+        return f'<Tag: {self.name}>'
 
 class QuizTable(db.Model):
     __tablename__ = 'quiz'
@@ -26,6 +35,15 @@ class QuizTable(db.Model):
     def __repr__(self):
         return f'<Quiz: {self.title}>'
 
+class QuizTagTable(db.Model):
+    __tablename__ = 'quiz_tag'
+    quiz_id = db.Column('quiz', db.String(38), db.ForeignKey('quiz.id'), primary_key=True)
+    quiz = db.relationship('QuizTable')
+    tag_id = db.Column('tag', db.String(38), db.ForeignKey('tag.id'), primary_key=True)
+    tag = db.relationship('TagTable')
+
+    def __repr__(self):
+        return f'<QuizTag: {self.student_id}_{self.tag_id}>'
 
 class QuizQuestionTable(db.Model):
     __tablename__ = 'quiz_question'
@@ -40,7 +58,6 @@ class QuizQuestionTable(db.Model):
     def __repr__(self):
         return f'<Quiz Question: {self.text[:20]}>'
 
-
 class QuizAnswerVariantTable(db.Model):
     __tablename__ = 'quiz_answer_variant'
     id = db.Column('id', db.String(38), primary_key=True)
@@ -50,7 +67,6 @@ class QuizAnswerVariantTable(db.Model):
 
     def __repr__(self):
         return f'<Quiz Answer Variant: {self.text[:20]}>'
-
 
 class StudentTable(db.Model):
     __tablename__ = 'student'
@@ -65,6 +81,15 @@ class StudentTable(db.Model):
     def __repr__(self):
         return f'<Student: {self.first_name} {self.last_name}>'
 
+class StudentTagTable(db.Model):
+    __tablename__ = 'student_tag'
+    student_id = db.Column('student', db.String(38), db.ForeignKey('student.id'), primary_key=True)
+    student = db.relationship('StudentTable')
+    tag_id = db.Column('tag', db.String(38), db.ForeignKey('tag.id'), primary_key=True)
+    tag = db.relationship('TagTable')
+
+    def __repr__(self):
+        return f'<StudentTag: {self.student_id}_{self.tag_id}>'
 
 class RunTable(db.Model):
     __tablename__ = 'run'
