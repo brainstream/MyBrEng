@@ -12,7 +12,7 @@ class RunFinishQuestionDto:
 # noinspection PyTypeChecker
 class RunFinishQuestionDtoSchema(Schema):
     id = ID(required=True)
-    answers = fields.List(fields.String, many=True, required=True)
+    answers = fields.List(fields.String, required=True)
 
     @post_load
     def make_dto(self, data, **kwargs) -> RunFinishQuestionDto:
