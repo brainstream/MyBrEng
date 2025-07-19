@@ -80,7 +80,7 @@ class QuizQuestionFacade:
                 db.session.delete(q_answer)
             else:
                 q_answer.text = an.text
-                q_answer.is_correct = an.is_correct
+                q_answer.is_correct = dto.question_type == QuizQuestionType.FREE_TEXT or an.is_correct
         for an in filter(lambda a: a.id is None, dto.answers):
             an_tbl = QuizAnswerVariantTable()
             an_tbl.id = uuid.uuid4()
