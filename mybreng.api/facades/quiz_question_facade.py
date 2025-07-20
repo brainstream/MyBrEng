@@ -1,5 +1,5 @@
 import uuid
-from database import db, QuizTable, QuizQuestionTable, QuizAnswerVariantTable
+from database import db, QuizTable, QuizQuestionTable, QuizAnswerVariantTable, RunAnswerTable
 from dtos import QuizQuestionEditDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionPositionDto, \
     QuizQuestionType
 from mappers import map_quiz_question_to_dto, map_question_type_to_db_question_type
@@ -96,6 +96,7 @@ class QuizQuestionFacade:
             .first()
         if question is None:
             return False
+        RunAnswerTable.query.filter_by(question_id=question_id).delete()
         db.session.delete(question)
         db.session.commit()
         return True
