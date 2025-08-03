@@ -7,12 +7,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchComponent } from './search';
+import { TagComponent } from './tag';
+import { TagPaneComponent } from './tag-pane';
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
         ConfirmDialogComponent,
-        SearchComponent
+        SearchComponent,
+        TagComponent,
+        TagPaneComponent
     ],
     imports: [
         NgCommonModule,
@@ -24,7 +28,9 @@ import { FormsModule } from '@angular/forms';
         MatSnackBarModule
     ],
     exports: [
-        SearchComponent
+        SearchComponent,
+        TagComponent,
+        TagPaneComponent
     ]
 })
 export class CommonModule {

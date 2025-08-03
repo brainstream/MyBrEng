@@ -1,5 +1,6 @@
 from database import StudentTable
 from dtos import StudentDto, StudentDetailedDto
+from mappers.tag_mappers import map_tag_to_dto
 from .run_mappers import map_run_to_summary_dto
 
 
@@ -17,5 +18,6 @@ def map_student_to_detailed_dto(student: StudentTable) -> StudentDetailedDto:
         student.first_name,
         student.last_name,
         student.note,
-        [map_run_to_summary_dto(run) for run in student.runs]
+        [map_run_to_summary_dto(run) for run in student.runs],
+        [map_tag_to_dto(tag.tag) for tag in student.tags]
     )

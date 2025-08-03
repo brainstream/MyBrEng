@@ -1,5 +1,5 @@
 import uuid
-from database import StudentTable, db, RunTable
+from database import StudentTable, db, RunTable, TagTable
 from dtos import StudentDto, StudentDetailedDto, StudentEditDto, StudentNoteEditDto
 from mappers import map_student_to_dto, map_student_to_detailed_dto
 
@@ -20,6 +20,8 @@ class StudentFacade:
         student.first_name = dto.first_name
         student.last_name = dto.last_name
         student.owner_id = owner_id
+        if dto.tags is not None:
+            TagTable.query.filter_by(owner_id=owner_id, )
         db.session.add(student)
         db.session.commit()
         return map_student_to_dto(student)

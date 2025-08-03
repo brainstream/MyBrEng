@@ -13,6 +13,7 @@ CREATE TABLE `tag` (
   `id` char(38) NOT NULL,
   `name` char(150) NOT NULL,
   `owner` char(38) DEFAULT NULL,
+  `color` INTEGER DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_tag_owner` (`owner`),
   CONSTRAINT `fk_tag_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)

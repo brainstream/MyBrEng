@@ -19,6 +19,7 @@ class TagTable(db.Model):
     name = db.Column('name', db.String(150))
     owner_id = db.Column('owner', db.ForeignKey('user.id'))
     owner = db.relationship('UserTable')
+    color = db.Column('color', db.Integer)
 
     def __repr__(self):
         return f'<Tag: {self.name}>'
@@ -43,7 +44,7 @@ class QuizTagTable(db.Model):
     tag = db.relationship('TagTable')
 
     def __repr__(self):
-        return f'<QuizTag: {self.student_id}_{self.tag_id}>'
+        return f'<QuizTag: {self.quiz_id}_{self.tag_id}>'
 
 class QuizQuestionTable(db.Model):
     __tablename__ = 'quiz_question'
@@ -77,6 +78,7 @@ class StudentTable(db.Model):
     owner_id = db.Column('owner', db.ForeignKey('user.id'))
     owner = db.relationship('UserTable')
     runs = db.relationship('RunTable', back_populates='student', order_by="desc(RunTable.creation_date)")
+    tags = db.relationship('StudentTagTable', back_populates='student')
 
     def __repr__(self):
         return f'<Student: {self.first_name} {self.last_name}>'

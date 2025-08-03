@@ -24,6 +24,7 @@ import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { StudentAddRunFormComponent } from './student-add-run-form';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MarkdownModule } from '@app/markdown';
+import { CommonModule as AppCommonModule } from '@app/common';
 
 @NgModule({
     declarations: [
@@ -55,7 +56,8 @@ import { MarkdownModule } from '@app/markdown';
         MatAutocompleteModule,
         StudentRoutingModule,
         LayoutModule,
-        MarkdownModule
+        MarkdownModule,
+        AppCommonModule
     ],
     providers: [
         StudentsEventsService

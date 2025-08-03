@@ -1,5 +1,4 @@
 import uuid
-
 from database import db, QuizTable, RunTable
 from dtos import QuizDto, QuizEditDto, QuizDetailedDto
 from mappers import map_quiz_to_detailed_dto, map_quiz_to_dto

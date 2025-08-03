@@ -88,6 +88,8 @@ def create_app() -> Flask:
     spec.components \
         .schema('UserDto', schema=UserDtoSchema) \
         .schema('LogInDto', schema=LogInDtoSchema) \
+        .schema('TagDto', schema=TagDtoSchema) \
+        .schema('TagEditDto', schema=TagEditDtoSchema) \
         .schema('QuizDto', schema=QuizDtoSchema) \
         .schema('QuizQuestionDto', schema=QuizQuestionDtoSchema) \
         .schema('QuizDetailedDto', schema=QuizDetailedDtoSchema) \
@@ -106,9 +108,7 @@ def create_app() -> Flask:
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
         .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema) \
         .schema('RunFinishQuestionDto', schema=RunFinishQuestionDtoSchema) \
-        .schema('RunFinishDto', schema=RunFinishDtoSchema) \
-        .schema('TagDto', schema=TagDtoSchema) \
-        .schema('TagEditDto', schema=TagEditDtoSchema)
+        .schema('RunFinishDto', schema=RunFinishDtoSchema)
 
     di = DI()
     flask = Flask(__name__)

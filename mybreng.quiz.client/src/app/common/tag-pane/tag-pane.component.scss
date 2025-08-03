@@ -1,0 +1,7 @@
+:host {
+    .tag:not(:last-child) {
+        margin-right: 0.3rem;
+    }
+
+    display: block;
+}
