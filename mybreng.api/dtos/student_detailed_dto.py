@@ -9,7 +9,6 @@ from .tag_dto import TagDto, TagDtoSchema
 class StudentDetailedDto(StudentDto):
     note: str
     runs: list[RunSummaryDto]
-    tags: list[TagDto]
 
 
 # noinspection PyTypeChecker

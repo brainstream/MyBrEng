@@ -4,6 +4,7 @@ from dtos import TagDto, TagEditDto
 from mappers import map_tag_to_dto
 
 
+# noinspection PyMethodMayBeStatic
 class TagFacade:
     def get_tags(self, owner_id: str) -> list[TagDto]:
         tags = db.session \

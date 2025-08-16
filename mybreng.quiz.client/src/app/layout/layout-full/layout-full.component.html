@@ -3,8 +3,7 @@
         <mat-icon>menu</mat-icon>
     </button>
     <span class="layout-full-toolbar-app-name" routerLink="">
-        <img alt="QuizTime logo" src="/assets/img/quiz-time-logo.png" class="layout-full-toolbar-logo" />
-        <span class="layout-full-toolbar-title cursive">uizTime</span>
+        <span class="layout-full-toolbar-title cursive">QuizTime</span>
     </span>
     <div class="layout-full-toolbar-nav">
         <button mat-flat-button color="primary" routerLink="/quiz" class="layout-full-toolbar-nav-link"
@@ -14,6 +13,10 @@
         <button mat-flat-button color="primary" routerLink="/student" class="layout-full-toolbar-nav-link"
             routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
             Ученики
+        </button>
+        <button mat-flat-button color="primary" routerLink="/tag" class="layout-full-toolbar-nav-link"
+            routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
+            Теги
         </button>
     </div>
 
@@ -50,6 +53,9 @@
                 </button>
                 <button mat-stroked-button routerLink="/student" class="layout-full-toolbar-nav-link">
                     <mat-icon>people</mat-icon> Ученики
+                </button>
+                <button mat-stroked-button routerLink="/tag" class="layout-full-toolbar-nav-link">
+                    <mat-icon>tag</mat-icon> Теги
                 </button>
             </div>
             <div class="layout-full-sidebar-items">

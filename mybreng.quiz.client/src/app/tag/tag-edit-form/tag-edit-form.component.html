@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="form">
+    <mat-form-field appearance="fill">
+        <mat-label>Имя</mat-label>
+        <input matInput type="text" autocomplete="off" required formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Цвет</mat-label>
+        <input matInput readonly formControlName="color" />
+        <ngx-colors
+            class="suffix"
+            matSuffix
+            ngx-colors-trigger
+            formControlName="colorPicker"
+            format="rgba">
+        </ngx-colors>
+    </mat-form-field>
+
+    <mat-checkbox matInput formControlName="isApplicableForQuizzes">Использовать для тестов</mat-checkbox>
+
+    <mat-checkbox matInput formControlName="isApplicableForStudents">Использовать для учеников</mat-checkbox>
+
+    <div class="buttons">
+        <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
+            <mat-icon>save</mat-icon>
+            Сохранить
+        </button>
+        <button mat-raised-button (click)="cancel()">
+            <mat-icon>close</mat-icon>
+            Отменить
+        </button>
+    </div>
+</form>

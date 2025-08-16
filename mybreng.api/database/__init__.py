@@ -20,6 +20,8 @@ class TagTable(db.Model):
     owner_id = db.Column('owner', db.ForeignKey('user.id'))
     owner = db.relationship('UserTable')
     color = db.Column('color', db.Integer)
+    is_applicable_for_students = db.Column('is_applicable_for_students', db.Boolean)
+    is_applicable_for_quizzes = db.Column('is_applicable_for_quizzes', db.Boolean)
 
     def __repr__(self):
         return f'<Tag: {self.name}>'

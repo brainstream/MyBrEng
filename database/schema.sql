@@ -14,6 +14,8 @@ CREATE TABLE `tag` (
   `name` char(150) NOT NULL,
   `owner` char(38) DEFAULT NULL,
   `color` INTEGER DEFAULT NULL,
+  `is_applicable_for_students` tinyint(1) DEFAULT 1,
+  `is_applicable_for_quizzes` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`id`),
   KEY `idx_tag_owner` (`owner`),
   CONSTRAINT `fk_tag_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)

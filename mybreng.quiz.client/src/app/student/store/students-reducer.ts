@@ -2,7 +2,6 @@ import { createReducer, on } from "@ngrx/store";
 import { IStudentsState } from "./students-state";
 import { studentsActions } from "./students-actions";
 import { RunSummaryDto, StudentDetailedDto, StudentDto } from "@app/web-api";
-import { state } from "@angular/animations";
 
 export const studentsReducer = createReducer(
     createDefaultState(),
@@ -84,7 +83,7 @@ function prepareStudentList(students: StudentDto[]): StudentDto[] {
 }
 
 function sortStudentListInPlace(list: StudentDto[]): StudentDto[] {
-    return list.sort((left, right) => left.firstName < right.firstName ? -1 : 1);
+    return list.sort((left, right) => left.firstName.toLowerCase() < right.firstName.toLowerCase() ? -1 : 1);
 }
 
 function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): StudentDto[] | null {

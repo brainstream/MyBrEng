@@ -2,7 +2,7 @@
 
     <div class="details" *ngIf="student">
         <h1 class="title">{{student.firstName}} {{student.lastName}}</h1>
-        @if (student.tags) {
+        @if (student.tags && student.tags.length) {
             <app-tag-pane class="tags" [tags]="student.tags"></app-tag-pane>
         }
         <app-student-note class="note" [student]="student"></app-student-note>

@@ -21,16 +21,17 @@
     "@angular/platform-browser-dynamic": "^19.2.14",
     "@angular/router": "^19.2.14",
     "@ngrx/effects": "^19.2.1",
+    "@ngrx/operators": "^18.0.0",
     "@ngrx/store": "^19.2.1",
     "@ngrx/store-devtools": "^19.2.1",
     "@types/showdown": "^2.0.6",
     "angular-animations": "^0.11.0",
+    "ngx-colors": "^3.6.0",
     "package": "^1.0.1",
     "rxjs": "~7.8.2",
     "showdown": "^2.1.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.15.1",
-    "@ngrx/operators": "^18.0.0"
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.0.2",

@@ -9,6 +9,9 @@ const routes: Routes = [
         path: 'student',
         loadChildren: () => import('@app/student').then(m => m.StudentModule)
     }, {
+        path: 'tag',
+        loadChildren: () => import('@app/tag').then(m => m.TagModule)
+    },{
         path: 'go',
         loadChildren: () => import('@app/go').then(m => m.GoModule)
     }, {

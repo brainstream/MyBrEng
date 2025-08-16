@@ -1,0 +1,14 @@
+<app-layout-full [loading]="loading$ | async" [menu]="editMenu">
+    <mat-nav-list>
+        @for (tag of tags$ | async; track tag.id) {
+            <app-tag-list-item class="item" [tag]="tag" (click)="showEditTagForm(tag)"></app-tag-list-item>
+        }
+    </mat-nav-list>
+</app-layout-full>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="showCreateTagForm()">
+        <mat-icon>add</mat-icon>
+        Добавить тег
+    </button>
+</mat-menu>

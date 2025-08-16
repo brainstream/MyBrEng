@@ -30,12 +30,6 @@ $toolbar-height: 54px;
                 display: inline-block;
             }
         }
-
-        .layout-full-toolbar-logo {
-            display: inline-block;
-            height: 1.8rem;
-            margin-right: 0;
-        }
     }
 
     .layout-full-toolbar-spacer {
@@ -60,7 +54,7 @@ $toolbar-height: 54px;
         }
     }
 
-    @media (max-width: 600px) {   
+    @media (max-width: 600px) {
         &.mat-toolbar {
             padding-left: 0;
             padding-right: 0;

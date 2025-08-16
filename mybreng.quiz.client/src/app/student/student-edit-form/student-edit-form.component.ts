@@ -24,7 +24,6 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
         private readonly store$: Store,
         private readonly events: StudentsEventsService,
         @Inject(MAT_BOTTOM_SHEET_DATA) student?: StudentDto
-
     ) {
         this.studentId = student?.id;
         this.form = formBuilder.group({
