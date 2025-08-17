@@ -1,7 +1,7 @@
 <app-layout-full [loading]="loading$ | async" [menu]="editMenu">
     <mat-nav-list>
         @for (tag of tags$ | async; track tag.id) {
-            <app-tag-list-item class="item" [tag]="tag" (click)="showEditTagForm(tag)"></app-tag-list-item>
+            <app-tag-list-item class="item" [tag]="tag" [@collapseOnLeave]></app-tag-list-item>
         }
     </mat-nav-list>
 </app-layout-full>

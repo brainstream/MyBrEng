@@ -11,6 +11,8 @@ export const tagsActions = createActionGroup({
         'Load List': emptyProps(),
         'List Loaded': props<{ tags: TagDto[] }>(),
         'Save Tag': props<{ tag: TagEditDto }>(),
-        'Tag Saved': props<{ tag: TagDto }>()
+        'Tag Saved': props<{ tag: TagDto }>(),
+        'Delete Tag': props<{ id: string }>(),
+        'Tag Deleted': props<{ id: string }>()
     }
 });

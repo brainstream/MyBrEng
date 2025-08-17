@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgxColorsModule } from 'ngx-colors';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -48,6 +49,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatInputModule,
         MatButtonModule,
         MatCheckboxModule,
+        MatTooltipModule,
         NgxColorsModule
     ],
     exports: [

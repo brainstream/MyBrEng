@@ -21,6 +21,11 @@ export const tagsReducer = createReducer(
     on(tagsActions.tagSaved, (state, { tag }) => ({
         ...state,
         list: addOrChangeTag(state.list, tag)
+    })),
+
+    on(tagsActions.tagDeleted, (state, { id }) => ({
+        ...state,
+        list: state.list?.filter(q => q.id !== id) ?? null
     }))
 );
 

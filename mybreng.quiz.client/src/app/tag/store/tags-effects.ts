@@ -86,4 +86,29 @@ constructor(
                 )
         ))
     ));
+
+    delete$ = createEffect(() => this.actions$.pipe(
+        ofType(tagsActions.deleteTag),
+        switchMap(({ id }) => concat(
+            of(tagsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.tagService.tagDelete(id, 'events'))
+                .pipe(
+                    switchMap(_ => from([
+                        tagsActions.tagDeleted({ id }),
+                        tagsActions.flushEvents({
+                            events: [
+                                this.eventsService.tagDeleted$.postpone({ id })
+                            ]
+                        }),
+                        tagsActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => from([
+                        tagsActions.setLoading({ loading: false }),
+                        tagsActions.setError({
+                            message: 'Во время удаления тега произошла ошибка'
+                        })]
+                    ))
+                )
+        ))
+    ));
 }

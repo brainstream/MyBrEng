@@ -1,3 +1,24 @@
 .tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.5rem 1rem;
+    border-radius: var(--mdc-elevated-card-container-shape, var(--mat-sys-corner-medium));
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .icons {
+            margin-top: 0.5rem;
+            line-height: 0;
+
+            .icon {
+                font-size: 1.3rem;
+                margin-right: 0.5rem;
+                cursor: help;
+            }
+        }
+    }
 }

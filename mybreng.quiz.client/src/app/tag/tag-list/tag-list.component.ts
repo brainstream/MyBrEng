@@ -5,12 +5,16 @@ import { Observable } from 'rxjs';
 import { TagDto } from '@app/web-api';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { TagEditFormComponent } from '../tag-edit-form';
+import { collapseOnLeaveAnimation } from 'angular-animations';
 
 @Component({
     selector: 'app-tag-list',
     standalone: false,
     templateUrl: './tag-list.component.html',
-    styleUrl: './tag-list.component.scss'
+    styleUrl: './tag-list.component.scss',
+    animations: [
+        collapseOnLeaveAnimation()
+    ],
 })
 export class TagListComponent {
     loading$: Observable<boolean>;
@@ -27,9 +31,5 @@ export class TagListComponent {
 
     showCreateTagForm() {
         this.bottomSheet.open(TagEditFormComponent);
-    }
-
-    showEditTagForm(tag: TagDto) {
-        this.bottomSheet.open(TagEditFormComponent, { data: tag });
     }
 }

@@ -1,5 +1,24 @@
 <mat-card>
     <div class="tag" [style.background-color]="color.bg" [style.color]="color.fg">
-        {{ tag.name }}
+        <div class="main-content">
+            <span>{{tag.name}}</span>
+            <div class="icons">
+                @if (tag.isApplicableForQuizzes) {
+                    <mat-icon class="icon" matTooltip="Подходит для тестов">quiz</mat-icon>
+                }
+                @if (tag.isApplicableForStudents) {
+                    <mat-icon class="icon" matTooltip="Подходит для учеников">people</mat-icon>
+                }
+            </div>
+        </div>
+
+        <button mat-icon-button [matMenuTriggerFor]="editMenu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
     </div>
 </mat-card>
+
+<mat-menu #editMenu="matMenu">
+    <button mat-menu-item (click)="edit()"><mat-icon>edit</mat-icon>Редактировать</button>
+    <button mat-menu-item color="warn" (click)="delete()"><mat-icon>delete</mat-icon>Удалить</button>
+</mat-menu>
