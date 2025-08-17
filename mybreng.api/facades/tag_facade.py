@@ -1,17 +1,20 @@
 import uuid
 from database import TagTable, db, StudentTagTable, QuizTagTable
-from dtos import TagDto, TagEditDto
+from dtos import TagDto, TagEditDto, TagQueryDto
 from mappers import map_tag_to_dto
 
 
 # noinspection PyMethodMayBeStatic
 class TagFacade:
-    def get_tags(self, owner_id: str) -> list[TagDto]:
+    def get_tags(self, owner_id: str, query: TagQueryDto) -> list[TagDto]:
         tags = db.session \
             .query(TagTable) \
-            .where(TagTable.owner_id == owner_id) \
-            .all()
-        return [map_tag_to_dto(t) for t in tags]
+            .where(TagTable.owner_id == owner_id)
+        if query.only_applicable_for_quizzes:
+            tags = tags.where(TagTable.is_applicable_for_quizzes)
+        if query.only_applicable_for_students:
+            tags = tags.where(TagTable.is_applicable_for_students)
+        return [map_tag_to_dto(t) for t in tags.all()]
 
     def create_tag(self, owner_id: str, dto: TagEditDto) -> TagDto:
         tag = TagTable()

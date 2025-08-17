@@ -21,7 +21,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly bottomSheet: MatBottomSheet,
-        store$: Store,
+        private readonly store$: Store,
         private readonly router: Router,
         private readonly events: StudentsEventsService,
         titleService: TitleService,
@@ -43,6 +43,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
     }
 
     showCreateStudentForm() {
+        this.store$.dispatch(studentsActions.loadAvailableTags());
         this.bottomSheet.open(StudentEditFormComponent);
     }
 }

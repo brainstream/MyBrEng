@@ -44,7 +44,7 @@ constructor(
             } else {
                 return concat(
                     of(tagsActions.setLoading({ loading: true })),
-                    watchHttpErrors(this.tagService.tagList('events'))
+                    watchHttpErrors(this.tagService.tagList(false, false, 'events'))
                         .pipe(
                             switchMap(tags => from([
                                 tagsActions.listLoaded({ tags }),

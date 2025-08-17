@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { QuizService, RunService, StudentService } from "@app/web-api";
+import { QuizService, RunService, StudentService, TagService } from "@app/web-api";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from "@ngrx/store";
@@ -18,6 +18,7 @@ export class StudentsEffects {
         private readonly studentService: StudentService,
         private readonly quizService: QuizService,
         private readonly runService: RunService,
+        private readonly tagService: TagService,
         private readonly messageService: MessageService,
         private readonly eventsService: StudentsEventsService
     ) {
@@ -219,6 +220,26 @@ export class StudentsEffects {
                         studentsActions.setLoading({ loading: false }),
                         studentsActions.setError({
                             message: 'Во время сохранения заметки произошла ошибка'
+                        })
+                    ]))
+                )
+        ))
+    ));
+
+    loadAvailableTags$ = createEffect(() => this.actions$.pipe(
+        ofType(studentsActions.loadAvailableTags),
+        switchMap(() => concat(
+            of(studentsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.tagService.tagList(true, false, 'events'))
+                .pipe(
+                    switchMap(tags => from([
+                        studentsActions.availableTagsLoaded({ tags }),
+                        studentsActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => from([
+                        studentsActions.setLoading({ loading: false }),
+                        studentsActions.setError({
+                            message: 'Во время загрузки списка доступных тегов произошла ошибка'
                         })
                     ]))
                 )

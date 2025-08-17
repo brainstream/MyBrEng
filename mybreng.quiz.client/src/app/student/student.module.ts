@@ -25,6 +25,7 @@ import { StudentAddRunFormComponent } from './student-add-run-form';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MarkdownModule } from '@app/markdown';
 import { TagModule } from '@app/tag';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import { TagModule } from '@app/tag';
         MatMenuModule,
         MatBottomSheetModule,
         MatAutocompleteModule,
+        MatSelectModule,
         StudentRoutingModule,
         LayoutModule,
         MarkdownModule,

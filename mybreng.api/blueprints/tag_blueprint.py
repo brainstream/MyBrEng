@@ -3,7 +3,7 @@ from flask import make_response, request, jsonify
 from flask.blueprints import Blueprint
 from di import DI
 from flask_login import current_user, login_required
-from dtos import TagDtoSchema, TagEditDtoSchema
+from dtos import TagDtoSchema, TagEditDtoSchema, TagQueryDtoSchema
 from facades import TagFacade
 
 tag_blueprint = Blueprint('tag', __name__)
@@ -18,6 +18,21 @@ def tag_list(tag_facade: TagFacade = Provide[DI.tag_facade]):
       operationId: tag_list
       tags: [Tag]
       description: Returns a list of all user`s tags
+      parameters:
+        - in: query
+          name: onlyApplicableForStudents
+          required: false
+          description: Return only applicable for students tags
+          schema:
+             type: boolean
+             default: false
+        - in: query
+          name: onlyApplicableForQuizzes
+          required: false
+          description: Return only applicable for quizzes tags
+          schema:
+             type: boolean
+             default: false
       responses:
         200:
           description: List of tags
@@ -27,8 +42,10 @@ def tag_list(tag_facade: TagFacade = Provide[DI.tag_facade]):
                 type: array
                 items: TagDto
     """
+    request_schema = TagQueryDtoSchema()
+    query = request_schema.load(request.args)
     schema = TagDtoSchema()
-    tags = tag_facade.get_tags(current_user.id)
+    tags = tag_facade.get_tags(current_user.id, query)
     return jsonify(schema.dump(tags, many=True))
 
 @tag_blueprint.route('/', methods=['POST'])

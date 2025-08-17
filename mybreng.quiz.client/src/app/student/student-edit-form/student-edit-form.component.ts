@@ -1,10 +1,10 @@
 import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { StudentDto, StudentEditDto } from '@app/web-api';
+import { StudentDto, StudentEditDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { StudentsEventsService, studentsActions } from '../store';
-import { Subscription } from 'rxjs';
+import { StudentsEventsService, StudentsSelectors, studentsActions } from '../store';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-student-edit-form',
@@ -17,6 +17,7 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
     private savedSubscription: Subscription | null = null;
 
     form: FormGroup;
+    availableTags$: Observable<TagDto[]>;
 
     constructor(
         formBuilder: FormBuilder,
@@ -26,9 +27,12 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
         @Inject(MAT_BOTTOM_SHEET_DATA) student?: StudentDto
     ) {
         this.studentId = student?.id;
+        this.availableTags$ = store$.select(StudentsSelectors.availableTags)
+        const selectedTags = student?.tags?.map(t => t.id) ?? [];
         this.form = formBuilder.group({
             firstName: [student?.firstName ?? '', Validators.required],
-            lastName: student?.lastName ?? ''
+            lastName: student?.lastName ?? '',
+            tags: [selectedTags]
         });
     }
 
@@ -53,7 +57,8 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
                 student: {
                     id: this.studentId,
                     firstName: this.form.controls['firstName'].value,
-                    lastName: this.form.controls['lastName'].value
+                    lastName: this.form.controls['lastName'].value,
+                    tags: this.form.controls['tags'].value
                 }
             }));
             return true;

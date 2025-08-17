@@ -6,7 +6,8 @@ import {
     StudentDetailedDto,
     StudentDto,
     StudentEditDto,
-    StudentNoteEditDto
+    StudentNoteEditDto,
+    TagDto
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 
@@ -32,6 +33,8 @@ export const studentsActions = createActionGroup({
         'Delete Student': props<{ id: string }>(),
         'Student Deleted': props<{ id: string }>(),
         'Set Note': props<{ dto: StudentNoteEditDto }>(),
-        'Note Saved': props<{ dto: StudentNoteEditDto }>()
+        'Note Saved': props<{ dto: StudentNoteEditDto }>(),
+        'Load Available Tags': emptyProps(),
+        'Available Tags Loaded': props<{ tags: TagDto[] }>()
     }
 });

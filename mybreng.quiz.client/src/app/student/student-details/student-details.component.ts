@@ -66,6 +66,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
     }
 
     editStudent(): void {
+        this.store$.dispatch(studentsActions.loadAvailableTags());
         const student = this.student;
         if (!student) {
             return;

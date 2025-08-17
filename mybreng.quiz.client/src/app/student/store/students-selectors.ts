@@ -9,4 +9,5 @@ export namespace StudentsSelectors {
     export const details = createSelector(feature, state => state.details);
     export const isAvailableQuizzesLoaded = createSelector(feature, state => state.availableQuizzes != null);
     export const availableQuizzes = createSelector(feature, state => state.availableQuizzes ?? []);
+    export const availableTags = createSelector(feature, state => state.availableTags ?? []);
 }

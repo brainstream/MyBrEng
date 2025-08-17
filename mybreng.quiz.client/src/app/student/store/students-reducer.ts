@@ -35,7 +35,8 @@ export const studentsReducer = createReducer(
             ...state.details,
             id: student.id,
             firstName: student.firstName,
-            lastName: student.lastName
+            lastName: student.lastName,
+            tags: student.tags
         } : state.details
     })),
 
@@ -66,6 +67,11 @@ export const studentsReducer = createReducer(
             ...state.details,
             note
         } : state.details
+    })),
+
+    on(studentsActions.availableTagsLoaded, (state, { tags }) => ({
+        ...state,
+        availableTags: tags
     }))
 );
 
@@ -74,7 +80,8 @@ function createDefaultState(): IStudentsState {
         loadingCounter: 0,
         list: null,
         details: null,
-        availableQuizzes: null
+        availableQuizzes: null,
+        availableTags: null
     };
 }
 
