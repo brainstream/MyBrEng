@@ -7,15 +7,22 @@ from mappers import map_quiz_to_detailed_dto, map_quiz_to_dto
 # noinspection PyMethodMayBeStatic
 class QuizFacade:
     def get_quizzes(self, user_id: str) -> list[QuizDto]:
-        return [map_quiz_to_dto(quiz) for quiz in
-                QuizTable.query.filter_by(owner_id=user_id).order_by(QuizTable.title).all()]
+        return [map_quiz_to_dto(quiz) for quiz in QuizTable.query
+            .where(QuizTable.owner_id == user_id)
+            .order_by(QuizTable.title)
+            .all()
+        ]
 
     def get_quiz(self, owner_id: str, quiz_id: str) -> QuizDetailedDto | None:
-        quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
+        quiz = QuizTable.query \
+            .where(QuizTable.id == quiz_id, QuizTable.owner_id == owner_id) \
+            .first()
         return None if quiz is None else map_quiz_to_detailed_dto(quiz)
 
     def edit_quiz(self, owner_id: str, dto: QuizEditDto) -> QuizDto | None:
-        quiz = QuizTable.query.filter_by(id=dto.id, owner_id=owner_id).first()
+        quiz = QuizTable.query \
+            .where(QuizTable.id == dto.id, QuizTable.owner_id == owner_id) \
+            .first()
         if quiz is None:
             return None
         quiz.title = dto.title
@@ -62,10 +69,13 @@ class QuizFacade:
         return map_quiz_to_dto(quiz)
 
     def delete_quiz(self, owner_id: str, quiz_id: str) -> bool:
-        quiz = QuizTable.query.filter_by(id=quiz_id, owner_id=owner_id).first()
+        quiz = QuizTable.query \
+            .where(QuizTable.id == quiz_id, QuizTable.owner_id == owner_id) \
+            .first()
         if quiz is None:
             return False
-        RunTable.query.filter_by(quiz_id=quiz.id).delete()
+        RunTable.query.where(RunTable.quiz_id == quiz.id).delete()
+        QuizTagTable.query.where(QuizTagTable.quiz_id == quiz_id).delete()
         db.session.delete(quiz)
         db.session.commit()
         return True
