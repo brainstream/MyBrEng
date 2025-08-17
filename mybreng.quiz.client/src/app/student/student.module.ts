@@ -60,9 +60,6 @@ import { MatSelectModule } from '@angular/material/select';
         LayoutModule,
         MarkdownModule,
         TagModule
-    ],
-    providers: [
-        StudentsEventsService
     ]
 })
 export class StudentModule { }

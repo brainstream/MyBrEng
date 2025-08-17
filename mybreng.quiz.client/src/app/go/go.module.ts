@@ -54,9 +54,6 @@ import { QuizReportModule } from '@app/quiz-report';
         LayoutModule,
         MarkdownModule,
         QuizReportModule
-    ],
-    providers: [
-        GoEventsService
     ]
 })
 export class GoModule { }

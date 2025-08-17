@@ -20,7 +20,7 @@ export class Event<T> {
         return {
             flush() {
                 event.raise(args);
-            },
+            }
         };
     }
 }

@@ -56,9 +56,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         TagRoutingModule,
         TagComponent,
         TagPaneComponent
-    ],
-    providers: [
-        TagsEventsService
     ]
 })
 export class TagModule { }

@@ -69,9 +69,6 @@ import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-so
         MarkdownModule,
         LayoutModule,
         AppCommonModule
-    ],
-    providers: [
-        QuizzesEventsService
     ]
 })
 export class QuizModule { }
