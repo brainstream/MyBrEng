@@ -43,11 +43,12 @@ export class QuizEditFormComponent implements OnInit, OnDestroy {
         this.savedSubscripion?.unsubscribe();
     }
 
-    cancel() {
+    cancel(): boolean {
         this.bottomSheet.dismiss();
+        return false;
     }
 
-    save() {
+    save(): boolean {
         if (this.form.valid) {
             this.store$.dispatch(quizzesActions.saveDetails({
                 quiz: {
@@ -56,6 +57,8 @@ export class QuizEditFormComponent implements OnInit, OnDestroy {
                     description: this.form.controls['description'].value
                 }
             }));
+            return true;
         }
+        return false;
     }
 }

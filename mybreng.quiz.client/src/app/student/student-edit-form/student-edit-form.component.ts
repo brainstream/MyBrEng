@@ -42,11 +42,12 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
         this.savedSubscription?.unsubscribe();
     }
 
-    cancel() {
+    cancel(): boolean {
         this.bottomSheet.dismiss();
+        return false;
     }
 
-    save() {
+    save(): boolean {
         if (this.form.valid) {
             this.store$.dispatch(studentsActions.saveDetails({
                 student: {
@@ -55,6 +56,8 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
                     lastName: this.form.controls['lastName'].value
                 }
             }));
+            return true;
         }
+        return false;
     }
 }

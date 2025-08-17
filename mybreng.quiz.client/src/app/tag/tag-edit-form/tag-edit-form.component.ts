@@ -15,7 +15,7 @@ import { RGBA } from '@app/shared';
 })
 export class TagEditFormComponent implements OnInit, OnDestroy {
     private readonly tagId?: string;
-    private savedSubscription: Subscription | null = null;
+    private subscriptions: Array<Subscription | null> = [];
 
     form: FormGroup;
 
@@ -26,7 +26,7 @@ export class TagEditFormComponent implements OnInit, OnDestroy {
         private readonly events: TagsEventsService,
         @Inject(MAT_BOTTOM_SHEET_DATA) tag?: TagDto
     ) {
-        let color = tag
+        const color = tag
             ?  RGBA.fromInt32(tag.color ?? 0).toRgbaString()
             : 'rgb(189, 189, 189)';
         this.tagId = tag?.id;
@@ -42,32 +42,34 @@ export class TagEditFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.savedSubscription = this.events.tagSaved$.subscribe(() => {
+        this.subscriptions.push(this.events.tagSaved$.subscribe(() => {
             this.bottomSheet.dismiss();
-        });
-        this.form.controls['color'].valueChanges.subscribe((color) => {
+        }));
+        this.subscriptions.push(this.form.controls['color'].valueChanges.subscribe((color) => {
             if (this.form.controls['colorPicker'].valid) {
                 this.form.controls['colorPicker'].setValue(color, {
                     emitEvent: false,
                 });
             }
-        });
-        this.form.controls['colorPicker'].valueChanges.subscribe(color => {
+        }));
+        this.subscriptions.push(this.form.controls['colorPicker'].valueChanges.subscribe(color => {
             this.form.controls['color'].setValue(color, {
                 emitEvent: false,
             })
-        });
+        }));
     }
 
     ngOnDestroy(): void {
-        this.savedSubscription?.unsubscribe();
+        for (let subscription of this.subscriptions)
+            subscription?.unsubscribe();
     }
 
-    cancel() {
+    cancel(): boolean {
         this.bottomSheet.dismiss();
+        return false;
     }
 
-    save() {
+    save(): boolean {
         if (this.form.valid) {
             const color = RGBA.parseRgbaString(this.form.controls['color'].value) ?? new RGBA();
             this.store$.dispatch(tagsActions.saveTag({
@@ -79,6 +81,8 @@ export class TagEditFormComponent implements OnInit, OnDestroy {
                     isApplicableForStudents: this.form.controls['isApplicableForStudents'].value
                 }
             }));
+            return true;
         }
+        return false;
     }
 }
