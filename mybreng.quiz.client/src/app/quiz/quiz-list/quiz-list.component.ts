@@ -46,6 +46,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
     }
 
     showCreateQuizForm() {
+        this.store$.dispatch(quizzesActions.loadAvailableTags());
         this.bottomSheet.open(QuizEditFormComponent);
     }
 

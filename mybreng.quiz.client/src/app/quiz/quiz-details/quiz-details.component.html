@@ -4,6 +4,10 @@
 
         <div class="description">{{ quiz.description }}</div>
 
+        @if (quiz.tags && quiz.tags.length) {
+            <app-tag-pane class="tags" [tags]="quiz.tags"></app-tag-pane>
+        }
+
         <div class="question-list" *ngIf="quiz.questions">
             <div
                 *ngFor="let question of quiz.questions; index as idx"

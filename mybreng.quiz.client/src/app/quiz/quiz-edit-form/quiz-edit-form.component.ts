@@ -2,10 +2,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { QuizEditDto } from '@app/web-api';
+import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { QuizzesEventsService, quizzesActions } from '../store';
-import { Subscription } from 'rxjs';
+import { QuizzesEventsService, QuizzesSelectors, quizzesActions } from '../store';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-quiz-edit-form',
@@ -14,33 +14,37 @@ import { Subscription } from 'rxjs';
     standalone: false
 })
 export class QuizEditFormComponent implements OnInit, OnDestroy {
-    private savedSubscripion: Subscription | null = null;
+    private savedSubscription: Subscription | null = null;
 
     readonly quizId?: string;
     readonly form: FormGroup;
+    readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
         fb: FormBuilder,
         private readonly bottomSheet: MatBottomSheetRef,
         private readonly store$: Store,
         private readonly events: QuizzesEventsService,
-        @Inject(MAT_BOTTOM_SHEET_DATA) quiz?: QuizEditDto,
+        @Inject(MAT_BOTTOM_SHEET_DATA) quiz?: QuizDto,
     ) {
         this.quizId = quiz?.id;
+        this.availableTags$ = store$.select(QuizzesSelectors.availableTags)
+        const selectedTags = quiz?.tags?.map(t => t.id) ?? [];
         this.form = fb.group({
             title: [quiz?.title ?? '', Validators.required],
-            description: [quiz?.description ?? '']
+            description: [quiz?.description ?? ''],
+            tags: [selectedTags]
         });
     }
 
     ngOnInit(): void {
-        this.savedSubscripion = this.events.quizSaved$.subscribe(() => {
+        this.savedSubscription = this.events.quizSaved$.subscribe(() => {
             this.bottomSheet.dismiss();
         });
     }
 
     ngOnDestroy(): void {
-        this.savedSubscripion?.unsubscribe();
+        this.savedSubscription?.unsubscribe();
     }
 
     cancel(): boolean {
@@ -54,7 +58,8 @@ export class QuizEditFormComponent implements OnInit, OnDestroy {
                 quiz: {
                     id: this.quizId,
                     title: this.form.controls['title'].value,
-                    description: this.form.controls['description'].value
+                    description: this.form.controls['description'].value,
+                    tags: this.form.controls['tags'].value
                 }
             }));
             return true;

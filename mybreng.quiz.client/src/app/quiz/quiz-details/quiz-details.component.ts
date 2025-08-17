@@ -78,6 +78,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
     editQuiz() {
         const quiz = this.quiz;
         if (quiz) {
+            this.store$.dispatch(quizzesActions.loadAvailableTags());
             this.bottomSheet.open(QuizEditFormComponent, { data: quiz });
         }
     }

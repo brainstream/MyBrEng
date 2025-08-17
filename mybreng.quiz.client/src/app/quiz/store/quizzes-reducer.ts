@@ -45,7 +45,8 @@ export const quizzesReducer = createReducer(
             ...state.details,
             id: quiz.id,
             title: quiz.title,
-            description: quiz.description
+            description: quiz.description,
+            tags: quiz.tags
         } : state.details
     })),
 
@@ -85,7 +86,11 @@ export const quizzesReducer = createReducer(
             ...state.details,
             questions: questions
         } : state.details
-    }))
+    })),
 
+    on(quizzesActions.availableTagsLoaded, (state, { tags }) => ({
+        ...state,
+        availableTags: tags
+    }))
 );
 

@@ -8,4 +8,5 @@ export namespace QuizzesSelectors {
     export const list = createSelector(feature, state => applyListFilter(state.list, state.listFilter));
     export const listFilter = createSelector(feature, state => state.listFilter);
     export const details = createSelector(feature, state => state.details);
+    export const availableTags = createSelector(feature, state => state.availableTags ?? []);
 }

@@ -1,4 +1,4 @@
-import { QuizDto, QuizDetailedDto, QuizQuestionDto } from "@app/web-api";
+import { QuizDto, QuizDetailedDto, QuizQuestionDto, TagDto } from "@app/web-api";
 
 export interface IQuizListFilter {
     readonly searchString: string;
@@ -9,6 +9,7 @@ export interface IQuizzesState {
     readonly list: QuizDto[] | null;
     readonly listFilter: IQuizListFilter;
     readonly details: QuizDetailedDto | null;
+    readonly availableTags: TagDto[] | null;
 }
 
 export function createDefaultState(): IQuizzesState {
@@ -18,7 +19,8 @@ export function createDefaultState(): IQuizzesState {
         details: null,
         listFilter: {
             searchString: ''
-        }
+        },
+        availableTags: null
     };
 }
 
@@ -51,9 +53,9 @@ export function applyListFilter(quizzes: QuizDto[] | null, filter: IQuizListFilt
         return quizzes;
     }
     const lowerCaseSearchString = filter.searchString.toLocaleLowerCase();
-    return quizzes.filter(quiz => 
+    return quizzes.filter(quiz =>
         quiz.title.toLocaleLowerCase().includes(lowerCaseSearchString) || (
-            quiz.description && 
+            quiz.description &&
             quiz.description?.toLocaleLowerCase().includes(lowerCaseSearchString)
         )
     );

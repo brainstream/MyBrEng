@@ -1,6 +1,9 @@
 <mat-card>
     <a [routerLink]="quiz.id" mat-list-item class="card-link">
-        <span matListItemTitle>{{quiz.title}}</span>
-        <span *ngIf="quiz.description" matListItemLine>{{quiz.description}}</span>
+        <span class="title">{{quiz.title}}</span>
+        <span class="description text-muted" *ngIf="quiz.description">{{quiz.description}}</span>
+        @if (quiz.tags && quiz.tags.length) {
+            <app-tag-pane class="tags" [tags]="quiz.tags"></app-tag-pane>
+        }
     </a>
 </mat-card>

@@ -1,9 +1,15 @@
 from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable
 from dtos import QuizDto, QuizDetailedDto, QuizQuestionDto, QuizQuestionType, QuizQuestionAnswerDto
+from .tag_mappers import map_tag_to_dto
 
 
 def map_quiz_to_dto(quiz: QuizTable) -> QuizDto:
-    return QuizDto(quiz.id, quiz.title, quiz.description)
+    return QuizDto(
+        quiz.id,
+        quiz.title,
+        quiz.description,
+        [map_tag_to_dto(tag.tag) for tag in quiz.tags]
+    )
 
 
 def map_quiz_to_detailed_dto(quiz: QuizTable) -> QuizDetailedDto:
@@ -11,6 +17,7 @@ def map_quiz_to_detailed_dto(quiz: QuizTable) -> QuizDetailedDto:
         quiz.id,
         quiz.title,
         quiz.description,
+        [map_tag_to_dto(tag.tag) for tag in quiz.tags],
         [map_quiz_question_to_dto(question) for question in quiz.questions]
     )
 

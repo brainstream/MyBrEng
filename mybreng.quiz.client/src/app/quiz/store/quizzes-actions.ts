@@ -5,7 +5,8 @@ import {
     QuizEditDto,
     QuizQuestionDto,
     QuizQuestionEditDto,
-    QuizQuestionPositionDto
+    QuizQuestionPositionDto,
+    TagDto
 } from "@app/web-api";
 import { createActionGroup, emptyProps, props } from "@ngrx/store";
 import { IQuizListFilter } from "./quizzes-state";
@@ -34,6 +35,8 @@ export const quizzesActions = createActionGroup({
         'Reorder Questions': props<{ quizId: string, questions: QuizQuestionPositionDto[] }>(),
         'Questions Reordered': props<{ quizId: string, questions: QuizQuestionDto[] }>(),
         'Delete Quiz': props<{ id: string }>(),
-        'Quiz Deleted': props<{ id: string }>()
+        'Quiz Deleted': props<{ id: string }>(),
+        'Load Available Tags': emptyProps(),
+        'Available Tags Loaded': props<{ tags: TagDto[] }>()
     }
 });

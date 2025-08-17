@@ -23,7 +23,7 @@ import { QuizEditFormComponent } from './quiz-edit-form';
 import { QuizListItemComponent } from './quiz-list-item';
 import { QuizQuestionComponent } from './quiz-question';
 import { StoreModule } from '@ngrx/store';
-import { QuizzesEventsService, quizzesReducer } from './store';
+import { quizzesReducer } from './store';
 import { EffectsModule } from '@ngrx/effects';
 import { QuizzesEffects } from './store/quizzes-effects';
 import { QuestionTypeNamePipe } from './question-type-name.pipe';
@@ -31,6 +31,7 @@ import { QuizQuestionEditFormComponent } from './quiz-question-edit-form';
 import { MarkdownModule } from '@app/markdown';
 import { CommonModule as AppCommonModule } from '@app/common';
 import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-sort.component';
+import { TagModule } from '@app/tag';
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-so
         QuizRoutingModule,
         MarkdownModule,
         LayoutModule,
-        AppCommonModule
+        AppCommonModule,
+        TagModule
     ]
 })
 export class QuizModule { }

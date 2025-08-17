@@ -3,10 +3,21 @@
         <mat-label>Заголовок</mat-label>
         <input matInput type="text" autocomplete="off" formControlName="title" />
     </mat-form-field>
+
     <mat-form-field appearance="fill">
         <mat-label>Описание</mat-label>
         <textarea matInput type="text" formControlName="description" rows="5"></textarea>
     </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Теги</mat-label>
+        <mat-select formControlName="tags" name="tags" multiple>
+            @for (tag of availableTags$ | async; track tag.id) {
+            <mat-option [value]="tag.id">{{tag.name}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
     <div class="buttons">
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
             <mat-icon>save</mat-icon>

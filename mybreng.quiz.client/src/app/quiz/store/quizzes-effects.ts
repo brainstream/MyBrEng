@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { QuizService } from "@app/web-api";
+import { QuizService, TagService } from "@app/web-api";
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from "@ngrx/store";
@@ -17,6 +17,7 @@ export class QuizzesEffects {
         private readonly actions$: Actions,
         private store$: Store,
         private readonly quizService: QuizService,
+        private readonly tagService: TagService,
         private readonly messageService: MessageService,
         private readonly eventsService: QuizzesEventsService
     ) {
@@ -88,11 +89,7 @@ export class QuizzesEffects {
         ofType(quizzesActions.saveDetails),
         switchMap(({ quiz }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
-            watchHttpErrors(this.quizService.quizSave({
-                id: quiz.id,
-                title: quiz.title,
-                description: quiz.description
-            }, 'events'))
+            watchHttpErrors(this.quizService.quizSave(quiz, 'events'))
                 .pipe(
                     switchMap(quiz => from([
                         quizzesActions.detailsSaved({ quiz }),
@@ -227,6 +224,26 @@ export class QuizzesEffects {
                         quizzesActions.setLoading({ loading: false }),
                         quizzesActions.setError({
                             message: 'Во время сохранения порядка вопросов произошла ошибка'
+                        })
+                    ]))
+                )
+        ))
+    ));
+
+    loadAvailableTags$ = createEffect(() => this.actions$.pipe(
+        ofType(quizzesActions.loadAvailableTags),
+        switchMap(() => concat(
+            of(quizzesActions.setLoading({ loading: true })),
+            watchHttpErrors(this.tagService.tagList(false, true, 'events'))
+                .pipe(
+                    switchMap(tags => from([
+                        quizzesActions.availableTagsLoaded({ tags }),
+                        quizzesActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => from([
+                        quizzesActions.setLoading({ loading: false }),
+                        quizzesActions.setError({
+                            message: 'Во время загрузки списка доступных тегов произошла ошибка'
                         })
                     ]))
                 )

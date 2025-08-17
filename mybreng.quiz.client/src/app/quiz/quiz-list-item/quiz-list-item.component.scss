@@ -1,3 +1,19 @@
 .card-link {
-    border-radius: 2px;
+    height: unset;
+    display: block;
+    padding: 1rem;
+
+    .title {
+        display: block;
+    }
+
+    .description {
+        display: block;
+        font-size: 0.9rem;
+        margin-top: -0.1rem;
+    }
+
+    .tags {
+        margin-top: 0.6rem;
+    }
 }

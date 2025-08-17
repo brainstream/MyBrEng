@@ -34,6 +34,7 @@ class QuizTable(db.Model):
     owner_id = db.Column('owner', db.ForeignKey('user.id'))
     owner = db.relationship('UserTable', backref=db.backref('user', uselist=False))
     questions = db.relationship('QuizQuestionTable', back_populates='quiz', order_by="QuizQuestionTable.ordinal_number")
+    tags = db.relationship('QuizTagTable', back_populates='quiz')
 
     def __repr__(self):
         return f'<Quiz: {self.title}>'

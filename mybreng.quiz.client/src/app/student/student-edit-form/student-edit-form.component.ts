@@ -16,8 +16,8 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
     private readonly studentId?: string;
     private savedSubscription: Subscription | null = null;
 
-    form: FormGroup;
-    availableTags$: Observable<TagDto[]>;
+    readonly form: FormGroup;
+    readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
         formBuilder: FormBuilder,
