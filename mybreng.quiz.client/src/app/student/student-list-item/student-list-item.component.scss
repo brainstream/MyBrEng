@@ -1,21 +1,9 @@
-.item {
+.card-link {
+    height: unset;
+    display: block;
     padding: 1rem;
 
-    .card-link {
-        border-radius: 2px;
-        text-decoration: none;
-
-        &:hover {
-            text-decoration: underline;
-            text-decoration-color: var(--mdc-list-list-item-label-text-color, var(--mat-sys-on-surface));;
-        }
-
-        * {
-            font-size: 1.2rem;
-        }
-    }
-
     .tags {
-        margin-top: 0.8rem;
+        margin-top: 0.6rem;
     }
 }

@@ -1,8 +1,8 @@
 <mat-card class="item">
-    <a [routerLink]="student.id" class="card-link">
-        <span matListItemTitle>{{student.firstName}} {{student.lastName}}</span>
+    <a [routerLink]="student.id" mat-list-item class="card-link">
+        <span class="titlex" >{{student.firstName}} {{student.lastName}}</span>
+        @if (student.tags && student.tags.length) {
+            <app-tag-pane class="tags" [tags]="student.tags"></app-tag-pane>
+        }
     </a>
-    @if (student.tags && student.tags.length) {
-        <app-tag-pane class="tags" [tags]="student.tags"></app-tag-pane>
-    }
 </mat-card>
