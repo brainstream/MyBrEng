@@ -1,7 +1,5 @@
 @if (tags && tags.length) {
-    <div class="tags">
-        @for (tag of tags; track $index) {
-            <app-tag class="tag" [tag]="tag"></app-tag>
-        }
-    </div>
+    @for (tag of tags; track $index) {
+        <app-tag class="tag" [tag]="tag"></app-tag>
+    }
 }

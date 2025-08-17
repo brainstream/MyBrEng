@@ -1,7 +1,5 @@
 :host {
-    .tag:not(:last-child) {
-        margin-right: 8px;
-    }
-
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
