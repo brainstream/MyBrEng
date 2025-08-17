@@ -2,44 +2,48 @@
 
 <div class="description text-muted" *ngIf="description">{{description}}</div>
 
-<mat-card *ngIf="currentQuestion">
-    <mat-card-header>
-        <h2 mat-card-subtitle>Вопрос {{currentQuestionIndex + 1}} из {{totalQuestionCount}}</h2>
-    </mat-card-header>
-    <mat-card-content>
-        <app-run-question [question]="currentQuestion" [(answers)]="answers[currentQuestionIndex]"></app-run-question>
-    </mat-card-content>
-</mat-card>
+@if (totalQuestionCount > 0) {
+    <mat-card *ngIf="currentQuestion">
+        <mat-card-header>
+            <h2 mat-card-subtitle>Вопрос {{currentQuestionIndex + 1}} из {{totalQuestionCount}}</h2>
+        </mat-card-header>
+        <mat-card-content>
+            <app-run-question [question]="currentQuestion" [(answers)]="answers[currentQuestionIndex]"></app-run-question>
+        </mat-card-content>
+    </mat-card>
 
-<div class="nav-panel">
-    <div class="back">
-        <button mat-raised-button [disabled]="isCurrentQuestionFirst" (click)="goBack()">
-            <mat-icon>arrow_back</mat-icon>
-            Назад
-        </button>
-    </div>
-    <div class="forward">
-        <button
-            mat-raised-button
-            color="accent"
-            [disabled]="!isCurrentQuestionAnswered"
-            *ngIf="isCurrentQuestionLast; else nextQuestionButton"
-            (click)="finish()"
-        >
-            <mat-icon>send</mat-icon>
-            Отправить
-        </button>
-        <ng-template #nextQuestionButton>
+    <div class="nav-panel">
+        <div class="back">
+            <button mat-raised-button [disabled]="isCurrentQuestionFirst" (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon>
+                Назад
+            </button>
+        </div>
+        <div class="forward">
             <button
                 mat-raised-button
                 color="accent"
-                (click)="goForward()"
                 [disabled]="!isCurrentQuestionAnswered"
+                *ngIf="isCurrentQuestionLast; else nextQuestionButton"
+                (click)="finish()"
             >
-                <mat-icon>arrow_forward</mat-icon>
-                Далее
+                <mat-icon>send</mat-icon>
+                Отправить
             </button>
-        </ng-template>
-    </div>
+            <ng-template #nextQuestionButton>
+                <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="goForward()"
+                    [disabled]="!isCurrentQuestionAnswered"
+                >
+                    <mat-icon>arrow_forward</mat-icon>
+                    Далее
+                </button>
+            </ng-template>
+        </div>
 
-</div>
+    </div>
+} @else {
+    <p class="text-muted">В этом тесте пока нет вопросов</p>
+}
