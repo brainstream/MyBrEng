@@ -32,6 +32,7 @@ import { MarkdownModule } from '@app/markdown';
 import { CommonModule as AppCommonModule } from '@app/common';
 import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-sort.component';
 import { TagModule } from '@app/tag';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     declarations: [
@@ -65,6 +66,7 @@ import { TagModule } from '@app/tag';
         MatCheckboxModule,
         MatTooltipModule,
         MatDialogModule,
+        NgxMatSelectSearchModule,
         DragDropModule,
         QuizRoutingModule,
         MarkdownModule,

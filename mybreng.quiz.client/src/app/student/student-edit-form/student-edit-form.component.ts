@@ -1,10 +1,10 @@
-import { Component, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { StudentDto, StudentEditDto, TagDto } from '@app/web-api';
+import { StudentDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { StudentsEventsService, StudentsSelectors, studentsActions } from '../store';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-student-edit-form',
@@ -27,13 +27,22 @@ export class StudentEditFormComponent implements OnInit, OnDestroy {
         @Inject(MAT_BOTTOM_SHEET_DATA) student?: StudentDto
     ) {
         this.studentId = student?.id;
-        this.availableTags$ = store$.select(StudentsSelectors.availableTags)
         const selectedTags = student?.tags?.map(t => t.id) ?? [];
         this.form = formBuilder.group({
             firstName: [student?.firstName ?? '', Validators.required],
             lastName: student?.lastName ?? '',
-            tags: [selectedTags]
+            tags: [selectedTags],
+            tagsFilter: ''
         });
+        this.availableTags$ = combineLatest([
+                this.store$.select(StudentsSelectors.availableTags),
+                this.form.controls['tagsFilter'].valueChanges.pipe(startWith(''))
+            ]).pipe(
+                map(([tags, filter]) => {
+                    const lcFilter = (filter as string || '').toLowerCase();
+                    return tags.filter(t => t.name.toLowerCase().includes(lcFilter));
+                })
+            );
     }
 
     ngOnInit(): void {

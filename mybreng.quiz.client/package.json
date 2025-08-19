@@ -27,6 +27,7 @@
     "@types/showdown": "^2.0.6",
     "angular-animations": "^0.11.0",
     "ngx-colors": "^3.6.0",
+    "ngx-mat-select-search": "^8.0.2",
     "package": "^1.0.1",
     "rxjs": "~7.8.2",
     "showdown": "^2.1.0",

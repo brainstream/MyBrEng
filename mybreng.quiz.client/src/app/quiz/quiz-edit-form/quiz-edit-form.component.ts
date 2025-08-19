@@ -5,7 +5,7 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bott
 import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { QuizzesEventsService, QuizzesSelectors, quizzesActions } from '../store';
-import { Observable, Subscription } from 'rxjs';
+import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-quiz-edit-form',
@@ -28,13 +28,22 @@ export class QuizEditFormComponent implements OnInit, OnDestroy {
         @Inject(MAT_BOTTOM_SHEET_DATA) quiz?: QuizDto,
     ) {
         this.quizId = quiz?.id;
-        this.availableTags$ = store$.select(QuizzesSelectors.availableTags)
         const selectedTags = quiz?.tags?.map(t => t.id) ?? [];
         this.form = fb.group({
             title: [quiz?.title ?? '', Validators.required],
             description: [quiz?.description ?? ''],
-            tags: [selectedTags]
+            tags: [selectedTags],
+            tagsFilter: ''
         });
+        this.availableTags$ = combineLatest([
+                this.store$.select(QuizzesSelectors.availableTags),
+                this.form.controls['tagsFilter'].valueChanges.pipe(startWith(''))
+            ]).pipe(
+                map(([tags, filter]) => {
+                    const lcFilter = (filter as string || '').toLowerCase();
+                    return tags.filter(t => t.name.toLowerCase().includes(lcFilter));
+                })
+            );
     }
 
     ngOnInit(): void {

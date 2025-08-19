@@ -26,6 +26,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MarkdownModule } from '@app/markdown';
 import { TagModule } from '@app/tag';
 import { MatSelectModule } from '@angular/material/select';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
     declarations: [
@@ -56,6 +57,7 @@ import { MatSelectModule } from '@angular/material/select';
         MatBottomSheetModule,
         MatAutocompleteModule,
         MatSelectModule,
+        NgxMatSelectSearchModule,
         StudentRoutingModule,
         LayoutModule,
         MarkdownModule,

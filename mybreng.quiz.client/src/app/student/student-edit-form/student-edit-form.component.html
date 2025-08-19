@@ -11,6 +11,9 @@
     <mat-form-field>
         <mat-label>Теги</mat-label>
         <mat-select formControlName="tags" name="tags" multiple>
+            <mat-option>
+                <ngx-mat-select-search formControlName="tagsFilter" placeholderLabel="Поиск..."></ngx-mat-select-search>
+            </mat-option>
             @for (tag of availableTags$ | async; track tag.id) {
                 <mat-option [value]="tag.id">{{tag.name}}</mat-option>
             }
