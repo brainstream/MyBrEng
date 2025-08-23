@@ -15,7 +15,9 @@
             &:hover {
                 background-color: #494949;
             }
-        } @else {
+        }
+
+        @else {
             background-color: #dbdbdb;
             color: #828282;
 
@@ -32,7 +34,8 @@
 
 @mixin theme($theme) {
     $color-config: mat.m2-get-color-config($theme);
-    @if $color-config != null {
+
+    @if $color-config !=null {
         @include color($theme);
     }
 }

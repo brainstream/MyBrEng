@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@app/common';
-import { StudentDto } from '@app/web-api';
+import { StudentDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
+import { StudentsSelectors, studentsActions, StudentsEventsService, IStudentListFilter } from '../store';
 import { Observable, Subscription } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
@@ -18,6 +18,8 @@ export class StudentListComponent implements OnInit, OnDestroy {
     readonly students$: Observable<StudentDto[]>;
     readonly loading$: Observable<boolean>;
     studentCreatedSubscription?: Subscription;
+    readonly filter$: Observable<IStudentListFilter>;
+    readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
         private readonly bottomSheet: MatBottomSheet,
@@ -27,9 +29,12 @@ export class StudentListComponent implements OnInit, OnDestroy {
         titleService: TitleService,
     ) {
         titleService.setTitle('Ученики');
-        store$.dispatch(studentsActions.loadList());
         this.students$ = store$.select(StudentsSelectors.list);
+        this.filter$ = store$.select(StudentsSelectors.listFilter);
+        this.availableTags$ = store$.select(StudentsSelectors.availableTags);
         this.loading$ = store$.select(StudentsSelectors.loading);
+        store$.dispatch(studentsActions.loadList());
+        store$.dispatch(studentsActions.loadAvailableTags());
     }
 
     ngOnInit(): void {
@@ -43,7 +48,14 @@ export class StudentListComponent implements OnInit, OnDestroy {
     }
 
     showCreateStudentForm() {
-        this.store$.dispatch(studentsActions.loadAvailableTags());
         this.bottomSheet.open(StudentEditFormComponent);
+    }
+
+    applySearchString(searchString: string): void {
+        this.store$.dispatch(studentsActions.applySearchString({ searchString }));
+    }
+
+    applyTagFilter(tags: string[]): void {
+        this.store$.dispatch(studentsActions.applyTagFilter({ tags }));
     }
 }

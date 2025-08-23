@@ -72,6 +72,22 @@ export const studentsReducer = createReducer(
     on(studentsActions.availableTagsLoaded, (state, { tags }) => ({
         ...state,
         availableTags: tags
+    })),
+
+    on(studentsActions.applySearchString, (state, { searchString }) => ({
+        ...state,
+        listFilter: {
+            ...state.listFilter,
+            searchString
+        }
+    })),
+
+    on(studentsActions.applyTagFilter, (state, { tags }) => ({
+        ...state,
+        listFilter: {
+            ...state.listFilter,
+            tags
+        }
     }))
 );
 
@@ -81,7 +97,11 @@ function createDefaultState(): IStudentsState {
         list: null,
         details: null,
         availableQuizzes: null,
-        availableTags: null
+        availableTags: null,
+        listFilter: {
+            searchString: '',
+            tags: []
+        }
     };
 }
 

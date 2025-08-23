@@ -6,6 +6,7 @@ import { TagDto } from '@app/web-api';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { TagEditFormComponent } from '../tag-edit-form';
 import { collapseOnLeaveAnimation } from 'angular-animations';
+import { TitleService } from '@app/common';
 
 @Component({
     selector: 'app-tag-list',
@@ -22,8 +23,10 @@ export class TagListComponent {
 
     constructor(
         store$: Store,
+        titleService: TitleService,
         private bottomSheet: MatBottomSheet
     ) {
+        titleService.setTitle('Теги');
         store$.dispatch(tagsActions.loadList());
         this.loading$ = store$.select(TagsSelectors.loading);
         this.tags$ = store$.select(TagsSelectors.list);

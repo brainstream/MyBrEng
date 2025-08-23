@@ -1,5 +1,4 @@
 $toolbar-height: 54px;
-$secondary-toolbar-height: 54px;
 
 main {
     position: relative;
@@ -12,7 +11,7 @@ main {
     height: $toolbar-height;
     position: fixed;
 
-    > *:not(:last-child) {
+    >*:not(:last-child) {
         margin-right: 0.5rem;
     }
 
@@ -71,7 +70,7 @@ main {
     display: flex !important;
     flex-direction: column !important;
 
-    > *:not(:last-child) {
+    >*:not(:last-child) {
         margin-bottom: 0.7rem;
     }
 }
@@ -101,7 +100,7 @@ main {
             display: flex;
             flex-direction: column;
 
-            > *:not(:last-child) {
+            >*:not(:last-child) {
                 margin-bottom: 0.8rem;
             }
         }
@@ -109,6 +108,9 @@ main {
 }
 
 .layout-full-secondary-toolbar {
+    $secondary-toolbar-height: 54px;
+    $secondary-toolbar-content-height: 34px;
+
     height: $secondary-toolbar-height;
     position: sticky;
     top: 0;
@@ -116,6 +118,33 @@ main {
     box-shadow: rgba(0, 0, 0, 0.2) 0 1px 4px 0px;
     display: flex;
     align-items: center;
+
+    .mat-form-field-appearance-outline {
+        height: $secondary-toolbar-content-height !important;
+        min-height: $secondary-toolbar-content-height !important;
+
+        .mat-mdc-form-field-infix {
+            height: $secondary-toolbar-content-height !important;
+            min-height: $secondary-toolbar-content-height !important;
+            padding: 5px 0 !important;
+        }
+
+        .mat-mdc-form-field-icon-suffix button {
+            border: none;
+            background: none;
+            line-height: 0;
+            cursor: pointer;
+        }
+
+        .mat-mdc-form-field-flex {
+            height: $secondary-toolbar-content-height !important;
+            min-height: $secondary-toolbar-content-height !important;
+
+            .mat-mdc-floating-label:not(.mdc-floating-label--float-above) {
+                top: 16px;
+            }
+        }
+    }
 }
 
 .layout-full-loading {

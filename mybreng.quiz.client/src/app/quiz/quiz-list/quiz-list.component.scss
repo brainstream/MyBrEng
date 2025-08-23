@@ -17,33 +17,6 @@
     }
 }
 
-::ng-deep .mat-form-field-appearance-outline {
-    height: 34px !important;
-    min-height: 34px !important;
-
-    .mat-mdc-form-field-infix {
-        height: 34px !important;
-        min-height: 34px !important;
-        padding: 5px 0 !important;
-    }
-
-    .mat-mdc-form-field-icon-suffix button {
-        border: none;
-        background: none;
-        line-height: 0;
-        cursor: pointer;
-    }
-
-    .mat-mdc-form-field-flex {
-        height: 34px !important;
-        min-height: 34px !important;
-
-        .mat-mdc-floating-label:not(.mdc-floating-label--float-above) {
-            top: 16px;
-        }
-    }
-}
-
 @media (max-width: 590px) {
     .quiz-list-search {
         margin-right: 0 !important;
