@@ -1,19 +1,18 @@
-<form>
+<form [formGroup]="form">
     <mat-form-field appearance="fill">
         <mat-label>Тест</mat-label>
         <input type="text"
                 matInput
-                [(ngModel)]="selectedQuiz"
-                [ngModelOptions]="{ standalone: true }"
+                formControlName="quiz"
                 [matAutocomplete]="auto">
         <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getQuizTitle">
-            <mat-option *ngFor="let quiz of availableQuizzes$ | async" [value]="quiz">
-                {{quiz.title}}
-            </mat-option>
+            @for (quiz of availableQuizzes$ | async; track quiz.id) {
+                <mat-option [value]="quiz">{{quiz.title}}</mat-option>
+            }
         </mat-autocomplete>
-        </mat-form-field>
+    </mat-form-field>
     <div class="buttons">
-        <button type="submit" mat-raised-button color="accent" [disabled]="!valid" (click)="add()">
+        <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid" (click)="add()">
             <mat-icon>add</mat-icon>
             Добавить
         </button>
