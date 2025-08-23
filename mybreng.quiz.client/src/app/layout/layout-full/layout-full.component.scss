@@ -1,4 +1,9 @@
 $toolbar-height: 54px;
+$secondary-toolbar-height: 54px;
+
+main {
+    position: relative;
+}
 
 .layout-full-toolbar {
     display: flex;
@@ -82,6 +87,7 @@ $toolbar-height: 54px;
     .layout-full-content {
         box-sizing: border-box;
         padding: 0 0.5rem;
+        position: relative;
     }
 
     .layout-full-sidebar {
@@ -100,6 +106,16 @@ $toolbar-height: 54px;
             }
         }
     }
+}
+
+.layout-full-secondary-toolbar {
+    height: $secondary-toolbar-height;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 1px 4px 0px;
+    display: flex;
+    align-items: center;
 }
 
 .layout-full-loading {

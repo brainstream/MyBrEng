@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { QuizDto } from '@app/web-api';
+import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
@@ -20,6 +20,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
     readonly quizzes$: Observable<QuizDto[]>;
     readonly loading$: Observable<boolean>;
     readonly filter$: Observable<IQuizListFilter>;
+    readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
         private readonly store$: Store,
@@ -31,8 +32,10 @@ export class QuizListComponent implements OnInit, OnDestroy {
         this.quizzes$ = store$.select(QuizzesSelectors.list);
         this.loading$ = store$.select(QuizzesSelectors.loading);
         this.filter$ = store$.select(QuizzesSelectors.listFilter);
+        this.availableTags$ = store$.select(QuizzesSelectors.availableTags);
         titleService.setTitle('Тесты');
         store$.dispatch(quizzesActions.loadList());
+        store$.dispatch(quizzesActions.loadAvailableTags());
     }
 
     ngOnInit(): void {
@@ -45,16 +48,15 @@ export class QuizListComponent implements OnInit, OnDestroy {
         this.quizCreatedSubscription?.unsubscribe();
     }
 
-    showCreateQuizForm() {
-        this.store$.dispatch(quizzesActions.loadAvailableTags());
+    showCreateQuizForm(): void {
         this.bottomSheet.open(QuizEditFormComponent);
     }
 
-    applySearchString(searchString: string) {
-        this.store$.dispatch(quizzesActions.applyListFilter({
-            filter: {
-                searchString
-            }
-        }))
+    applySearchString(searchString: string): void {
+        this.store$.dispatch(quizzesActions.applySearchString({ searchString }));
+    }
+
+    applyTagFilter(tags: string[]): void {
+        this.store$.dispatch(quizzesActions.applyTagFilter({ tags }));
     }
 }

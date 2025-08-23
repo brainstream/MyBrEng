@@ -8,6 +8,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { SearchComponent } from './search';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -21,7 +24,10 @@ import { FormsModule } from '@angular/forms';
         MatButtonModule,
         MatIconModule,
         MatDividerModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatInputModule
     ],
     exports: [
         SearchComponent

@@ -71,6 +71,11 @@
 
     <main #scrollContainer>
         <div id="layout-full-container-top"></div>
+        <div *ngIf="secondaryToolbar" class="layout-full-secondary-toolbar">
+            <div class="app-container layout-full-content">
+                <ng-container *ngTemplateOutlet="secondaryToolbar"></ng-container>
+            </div>
+        </div>
         <div class="app-container layout-full-content" [class.invisible]="loading">
             <ng-content></ng-content>
         </div>

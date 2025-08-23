@@ -13,10 +13,15 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { AuthModule } from './auth';
 import { CommonModule as AppCommonModule } from '@app/common';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [
+        AppComponent
+    ],
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         StoreModule.forRoot({}, {}),
@@ -24,8 +29,14 @@ import { CommonModule as AppCommonModule } from '@app/common';
         StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true }),
         AuthModule,
         ApiModule,
-        AppCommonModule], providers: [provideAppInitializer(() => {
-        const initializerFn = (appInitializerFactory)(inject(ThemeService));
-        return initializerFn();
-      }), provideHttpClient(withInterceptorsFromDi())] })
+        AppCommonModule
+    ],
+    providers: [
+        provideAppInitializer(() => {
+            const initializerFn = (appInitializerFactory)(inject(ThemeService));
+            return initializerFn();
+        }),
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+})
 export class AppModule { }

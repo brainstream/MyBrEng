@@ -1,4 +1,4 @@
-<app-layout-full [loading]="loading$ | async" [menu]="editMenu">
+<app-layout-full [loading]="loading$ | async" [menu]="editMenu" [secondaryToolbar]="filterPanel">
     <mat-nav-list>
         <app-quiz-list-item
             class="item"
@@ -6,16 +6,6 @@
             [quiz]="quiz"
         ></app-quiz-list-item>
     </mat-nav-list>
-
-    <ng-container toolbar>
-        <app-search 
-            class="quiz-list-search"
-            placeholder="Поиск"
-            [searchString]="(filter$ | async)?.searchString ?? ''"
-            (searchStringChange)="applySearchString($event)"
-        >
-        </app-search>
-    </ng-container>
 </app-layout-full>
 
 <mat-menu #editMenu="matMenu">
@@ -24,3 +14,26 @@
         Добавить тест
     </button>
 </mat-menu>
+
+<ng-template content-top #filterPanel>
+    <div class="secondary-toolbar-content">
+        <mat-form-field appearance="outline" class="tag-filter">
+            <mat-label>Фильтр по тегам</mat-label>
+            <mat-select multiple [ngModel]="(filter$ | async)?.tags ?? []" (ngModelChange)="applyTagFilter($event)">
+                <mat-option>
+                    <ngx-mat-select-search placeholderLabel="Поиск..."></ngx-mat-select-search>
+                </mat-option>
+                @for (tag of availableTags$ | async; track tag.id) {
+                    <mat-option [value]="tag.id">{{tag.name}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+        <app-search
+            class="search"
+            placeholder="Поиск"
+            [searchString]="(filter$ | async)?.searchString ?? ''"
+            (searchStringChange)="applySearchString($event)"
+        >
+        </app-search>
+    </div>
+</ng-template>

@@ -33,6 +33,7 @@ import { CommonModule as AppCommonModule } from '@app/common';
 import { QuizQuestionSortComponent } from './quiz-question-sort/quiz-question-sort.component';
 import { TagModule } from '@app/tag';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { QuizFilterPanelComponent } from './quiz-filter-panel';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         QuizQuestionComponent,
         QuestionTypeNamePipe,
         QuizQuestionEditFormComponent,
-        QuizQuestionSortComponent
+        QuizQuestionSortComponent,
+        QuizFilterPanelComponent
     ],
     imports: [
         CommonModule,

@@ -2,6 +2,7 @@ import { QuizDto, QuizDetailedDto, QuizQuestionDto, TagDto } from "@app/web-api"
 
 export interface IQuizListFilter {
     readonly searchString: string;
+    readonly tags: string[];
 }
 
 export interface IQuizzesState {
@@ -18,7 +19,8 @@ export function createDefaultState(): IQuizzesState {
         list: null,
         details: null,
         listFilter: {
-            searchString: ''
+            searchString: '',
+            tags: []
         },
         availableTags: null
     };
@@ -49,16 +51,24 @@ export function applyListFilter(quizzes: QuizDto[] | null, filter: IQuizListFilt
     if (!quizzes) {
         return [];
     }
-    if (!filter.searchString) {
+    if (!filter.searchString && filter.tags.length == 0) {
         return quizzes;
     }
     const lowerCaseSearchString = filter.searchString.toLocaleLowerCase();
-    return quizzes.filter(quiz =>
-        quiz.title.toLocaleLowerCase().includes(lowerCaseSearchString) || (
+
+    const isSearchStringMatched = (quiz: QuizDto) => {
+        return quiz.title.toLocaleLowerCase().includes(lowerCaseSearchString) || (
             quiz.description &&
             quiz.description?.toLocaleLowerCase().includes(lowerCaseSearchString)
         )
-    );
+    };
+
+    const isTagFilterMatched = (quiz: QuizDto) => {
+        return filter.tags.length == 0 ||
+            quiz.tags?.find(tag => filter.tags.includes(tag.id));
+    };
+
+    return quizzes.filter(quiz => isSearchStringMatched(quiz) && isTagFilterMatched(quiz));
 }
 
 export function addOrChangeQuestion(

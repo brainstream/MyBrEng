@@ -24,6 +24,10 @@
             }
         }
     }
+
+    .layout-full-secondary-toolbar {
+        background-color: mat.m2-get-color-from-palette($background-palette, "card");
+    }
 }
 
 @mixin theme($theme) {

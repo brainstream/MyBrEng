@@ -21,6 +21,7 @@ import { AuthService } from '@app/auth/auth.service';
 })
 export class LayoutFullComponent implements AfterViewInit {
     @Input() menu: MatMenu | null = null;
+    @Input() secondaryToolbar: TemplateRef<any>;
 
     @ViewChild('loading', { static: true }) loadingTemplate: TemplateRef<any>;
     @ViewChild('navbar', { static: true }) navTemplate: TemplateRef<any>;
@@ -67,7 +68,7 @@ export class LayoutFullComponent implements AfterViewInit {
     scrollTop() {
         this.scrollContainer.nativeElement.scrollTo(0, 0);
     }
-    
+
     logOut() {
         this.auth.logout().then(() => document.location.reload());
     }

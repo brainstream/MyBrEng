@@ -1,21 +1,9 @@
-<div class="prefix" (click)="setFocus()">
-    <mat-icon>search</mat-icon>
-</div>
-<input
-    #search
-    type="search"
-    class="search"
-    [placeholder]="placeholder"
-    [ngModel]="searchString"
-    (ngModelChange)="setSearchString($event)"
-/>
-<div class="suffix" (click)="setFocus()">
-    <mat-icon 
-        class="clear-btn"
-        matTooltip="Стереть"
-        *ngIf="searchString"
-        (click)="setSearchString('')"
-    >
-        clear
-    </mat-icon>
-</div>
+<mat-form-field appearance="outline" class="search">
+    <mat-label>Поиск</mat-label>
+    <input type="text" matInput [ngModel]="searchString" (ngModelChange)="setSearchString($event)" />
+    @if (searchString) {
+        <button matSuffix matIconButton matTooltip="Стереть" (click)="setSearchString('')">
+            <mat-icon>close</mat-icon>
+        </button>
+    }
+</mat-form-field>

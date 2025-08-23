@@ -8,18 +8,12 @@ import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@
 })
 export class SearchComponent {
     @ViewChild('search') private searchElement: ElementRef;
-    
+
     @Input() searchString: string = '';
 
     @Output() searchStringChange = new EventEmitter<string>();
 
     @Input() placeholder: string = '';
-
-    setFocus() {
-        if(!this.searchString) {
-            this.searchElement.nativeElement.focus();
-        }
-    }
 
     setSearchString(value: string) {
         if (this.searchString !== value) {
