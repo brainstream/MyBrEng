@@ -1,3 +1,9 @@
 .search {
     width: 100%;
 }
+
+.clear-btn {
+    &:not(.visible) {
+        visibility: hidden;
+    }
+}
