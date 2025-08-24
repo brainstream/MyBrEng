@@ -74,20 +74,9 @@ export const studentsReducer = createReducer(
         availableTags: tags
     })),
 
-    on(studentsActions.applySearchString, (state, { searchString }) => ({
+    on(studentsActions.applyFilter, (state, { filter }) => ({
         ...state,
-        listFilter: {
-            ...state.listFilter,
-            searchString
-        }
-    })),
-
-    on(studentsActions.applyTagFilter, (state, { tags }) => ({
-        ...state,
-        listFilter: {
-            ...state.listFilter,
-            tags
-        }
+        listFilter: filter
     }))
 );
 

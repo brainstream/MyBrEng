@@ -1,9 +1,5 @@
+import { IListFilter } from "@app/list-filter";
 import { QuizDto, StudentDetailedDto, StudentDto, TagDto } from "@app/web-api";
-
-export interface IStudentListFilter {
-    readonly searchString: string;
-    readonly tags: string[];
-}
 
 export interface IStudentsState {
     readonly loadingCounter: number,
@@ -11,10 +7,10 @@ export interface IStudentsState {
     readonly details: StudentDetailedDto | null;
     readonly availableQuizzes: QuizDto[] | null;
     readonly availableTags: TagDto[] | null;
-    readonly listFilter: IStudentListFilter;
+    readonly listFilter: IListFilter;
 }
 
-export function applyListFilter(students: StudentDto[] | null, filter: IStudentListFilter): StudentDto[] {
+export function applyListFilter(students: StudentDto[] | null, filter: IListFilter): StudentDto[] {
     if (!students) {
         return [];
     }

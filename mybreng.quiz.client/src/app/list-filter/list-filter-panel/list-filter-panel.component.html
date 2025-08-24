@@ -1,0 +1,31 @@
+<form [formGroup]="form" class="list-filter-panel">
+    <mat-form-field appearance="outline" class="tag-filter">
+        <mat-label>Фильтр по тегам...</mat-label>
+        <mat-select multiple formControlName="tags">
+            <mat-option>
+                <ngx-mat-select-search
+                    formControlName="tagsFilter"
+                    noEntriesFoundLabel="Теги не найдены"
+                    placeholderLabel="Поиск...">
+                </ngx-mat-select-search>
+            </mat-option>
+            @for (tag of filteredTags$ | async; track tag.id) {
+                <mat-option [value]="tag.id">{{tag.name}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="search">
+        <mat-label>Поиск...</mat-label>
+        <input type="text" matInput formControlName="searchString" autocomplete="off" />
+        <button
+            matSuffix
+            matIconButton
+            type="button"
+            class="clear-btn"
+            [class.visible]="!isSearchStringEmpty"
+            matTooltip="Стереть" (click)="clearSearchString()"
+        >
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</form>

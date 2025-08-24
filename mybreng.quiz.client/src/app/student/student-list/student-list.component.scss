@@ -1,17 +1,3 @@
-.secondary-toolbar-content {
-    display: flex;
-    justify-content: stretch;
-    gap: 0.4rem;
-
-    .tag-filter {
-        flex-grow: 5;
-    }
-
-    .search {
-        flex-grow: 2;
-    }
-}
-
 .item {
     margin-bottom: 0.5rem;
     display: block;

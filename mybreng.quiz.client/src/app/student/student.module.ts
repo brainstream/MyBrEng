@@ -28,6 +28,7 @@ import { MarkdownModule } from '@app/markdown';
 import { TagModule } from '@app/tag';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { ListFilterModule } from '@app/list-filter';
 
 @NgModule({
     declarations: [
@@ -63,7 +64,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
         LayoutModule,
         AppCommonModule,
         MarkdownModule,
-        TagModule
+        TagModule,
+        ListFilterModule
     ]
 })
 export class StudentModule { }

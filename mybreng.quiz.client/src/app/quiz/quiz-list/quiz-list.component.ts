@@ -4,9 +4,10 @@ import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { quizzesActions, QuizzesSelectors, QuizzesEventsService, IQuizListFilter } from '../store';
+import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
+import { IListFilter } from '@app/list-filter';
 
 @Component({
     selector: 'app-quiz-list',
@@ -19,7 +20,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
 
     readonly quizzes$: Observable<QuizDto[]>;
     readonly loading$: Observable<boolean>;
-    readonly filter$: Observable<IQuizListFilter>;
+    readonly filter$: Observable<IListFilter>;
     readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
@@ -52,11 +53,7 @@ export class QuizListComponent implements OnInit, OnDestroy {
         this.bottomSheet.open(QuizEditFormComponent);
     }
 
-    applySearchString(searchString: string): void {
-        this.store$.dispatch(quizzesActions.applySearchString({ searchString }));
-    }
-
-    applyTagFilter(tags: string[]): void {
-        this.store$.dispatch(quizzesActions.applyTagFilter({ tags }));
+    applyFilter(filter: IListFilter) {
+        this.store$.dispatch(quizzesActions.applyFilter({ filter }));
     }
 }

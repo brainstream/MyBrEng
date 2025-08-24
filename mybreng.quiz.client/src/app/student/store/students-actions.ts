@@ -1,3 +1,4 @@
+import { IListFilter } from "@app/list-filter";
 import { IPostponedEvent } from "@app/shared";
 import {
     QuizDto,
@@ -19,8 +20,7 @@ export const studentsActions = createActionGroup({
         'Flush Events': props<{ events: IPostponedEvent[] }>(),
         'Load List': emptyProps(),
         'List Loaded': props<{ students: StudentDto[] }>(),
-        'Apply Search String': props<{ searchString: string }>(),
-        'Apply Tag Filter': props<{ tags: string[] }>(),
+        'Apply Filter': props<{ filter: IListFilter }>(),
         'Load Details': props<{ id: string }>(),
         'Clean Details': emptyProps(),
         'Details Loaded': props<{ student: StudentDetailedDto }>(),

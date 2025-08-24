@@ -1,14 +1,10 @@
+import { IListFilter } from "@app/list-filter";
 import { QuizDto, QuizDetailedDto, QuizQuestionDto, TagDto } from "@app/web-api";
-
-export interface IQuizListFilter {
-    readonly searchString: string;
-    readonly tags: string[];
-}
 
 export interface IQuizzesState {
     readonly loadingCounter: number;
     readonly list: QuizDto[] | null;
-    readonly listFilter: IQuizListFilter;
+    readonly listFilter: IListFilter;
     readonly details: QuizDetailedDto | null;
     readonly availableTags: TagDto[] | null;
 }
@@ -47,7 +43,7 @@ export function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[
     return sortQuizListInPlace(result);
 }
 
-export function applyListFilter(quizzes: QuizDto[] | null, filter: IQuizListFilter): QuizDto[] {
+export function applyListFilter(quizzes: QuizDto[] | null, filter: IListFilter): QuizDto[] {
     if (!quizzes) {
         return [];
     }

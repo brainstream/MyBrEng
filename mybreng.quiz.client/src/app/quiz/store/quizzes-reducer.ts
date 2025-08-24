@@ -23,20 +23,9 @@ export const quizzesReducer = createReducer(
         list: prepareQuizList(quizzes)
     })),
 
-    on(quizzesActions.applySearchString, (state, { searchString }) => ({
+    on(quizzesActions.applyFilter, (state, { filter }) => ({
         ...state,
-        listFilter: {
-            ...state.listFilter,
-            searchString
-        }
-    })),
-
-    on(quizzesActions.applyTagFilter, (state, { tags }) => ({
-        ...state,
-        listFilter: {
-            ...state.listFilter,
-            tags
-        }
+        listFilter: filter
     })),
 
     on(quizzesActions.cleanDetails, (state) => ({

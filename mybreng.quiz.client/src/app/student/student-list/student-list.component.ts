@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TitleService } from '@app/common';
 import { StudentDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { StudentsSelectors, studentsActions, StudentsEventsService, IStudentListFilter } from '../store';
+import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
 import { Observable, Subscription } from 'rxjs';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { Router } from '@angular/router';
+import { IListFilter } from '@app/list-filter';
 
 @Component({
     selector: 'app-student-list',
@@ -18,7 +19,6 @@ export class StudentListComponent implements OnInit, OnDestroy {
     readonly students$: Observable<StudentDto[]>;
     readonly loading$: Observable<boolean>;
     studentCreatedSubscription?: Subscription;
-    readonly filter$: Observable<IStudentListFilter>;
     readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
@@ -30,7 +30,6 @@ export class StudentListComponent implements OnInit, OnDestroy {
     ) {
         titleService.setTitle('Ученики');
         this.students$ = store$.select(StudentsSelectors.list);
-        this.filter$ = store$.select(StudentsSelectors.listFilter);
         this.availableTags$ = store$.select(StudentsSelectors.availableTags);
         this.loading$ = store$.select(StudentsSelectors.loading);
         store$.dispatch(studentsActions.loadList());
@@ -51,11 +50,7 @@ export class StudentListComponent implements OnInit, OnDestroy {
         this.bottomSheet.open(StudentEditFormComponent);
     }
 
-    applySearchString(searchString: string): void {
-        this.store$.dispatch(studentsActions.applySearchString({ searchString }));
-    }
-
-    applyTagFilter(tags: string[]): void {
-        this.store$.dispatch(studentsActions.applyTagFilter({ tags }));
+    applyFilter(filter: IListFilter) {
+        this.store$.dispatch(studentsActions.applyFilter({ filter }));
     }
 }
