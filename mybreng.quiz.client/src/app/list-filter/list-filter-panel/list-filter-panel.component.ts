@@ -15,6 +15,7 @@ export class ListFilterPanelComponent implements OnInit, OnDestroy {
     private formChangeSubscription: Subscription;
     form: FormGroup;
     filteredTags$: Observable<TagDto[]>;
+    hasFilter: boolean = false;
 
     @Input() set tags(value: TagDto[]) {
         this.tags$.next(value);
@@ -45,10 +46,12 @@ export class ListFilterPanelComponent implements OnInit, OnDestroy {
         this.formChangeSubscription = this.form.valueChanges
             .pipe(
                 tap(() => {
-                    this.filterChanged.emit({
+                    const filter = {
                         searchString: this.form.controls['searchString'].value ?? '',
                         tags: this.form.controls['tags'].value ?? []
-                    })
+                    };
+                    this.hasFilter = filter.searchString.length || filter.tags.length;
+                    this.filterChanged.emit(filter)
                 })
             )
             .subscribe();
@@ -64,5 +67,13 @@ export class ListFilterPanelComponent implements OnInit, OnDestroy {
 
     clearSearchString(): void {
         this.form.controls['searchString'].setValue('');
+    }
+
+    clearFilter(): void {
+        this.form.setValue({
+            searchString: '',
+            tags: [],
+            tagsFilter: ''
+        });
     }
 }
