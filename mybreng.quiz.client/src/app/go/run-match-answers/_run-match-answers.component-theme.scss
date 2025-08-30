@@ -1,0 +1,37 @@
+@use "sass:map";
+@use "sass:color";
+@use "@angular/material" as mat;
+
+@mixin color($theme) {
+    $color-config: mat.m2-get-color-config($theme);
+    $background-palette: map.get($color-config, "background");
+    $is-dark-theme: map.get($color-config, 'is-dark');
+
+    $container-background: mat.m2-get-color-from-palette($background-palette, "disabled-list-option");
+
+    .run-match-answers__answer-variant-container {
+        $border-color: 0;
+        @if $is-dark-theme {
+            $border-color: color.scale($container-background, $lightness: -40%);
+        } @else {
+            $border-color: color.scale($container-background, $lightness: -3%);
+        }
+        border: 1px solid $border-color;
+    }
+
+    .run-match-answers__answer-variant-container,
+    .run-match-answers__answer-slot-placeholder {
+        background-color: $container-background;
+    }
+
+    .run-match-answers__answer-variant {
+        background-color: mat.m2-get-color-from-palette($background-palette, "card");
+    }
+}
+
+@mixin theme($theme) {
+    $color-config: mat.m2-get-color-config($theme);
+    @if $color-config != null {
+        @include color($theme);
+    }
+}

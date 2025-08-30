@@ -1,1 +1,1 @@
-PATH=`pwd`/node_modules/.bin/:$PATH
+PATH=$(pwd)/node_modules/.bin/:$PATH

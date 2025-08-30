@@ -1,0 +1,38 @@
+<div class="answer-slot-container">
+    @for (slot of slots; track slot) {
+        <div class="answer-slot-text">{{slot.text}}</div>
+        <div
+            [id]="'slot-' + $index"
+            class="run-match-answers__answer-slot-placeholder"
+            cdkDropList
+            [cdkDropListData]="slot.answers"
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="dropIds"
+        >
+            @if (slot.answers.length) {
+                <div cdkDrag [cdkDragData]="slot.answers[0]">
+                    <div class="run-match-answers__answer-variant">
+                        <mat-icon>drag_indicator</mat-icon> {{slot.answers[0].text}}
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<div
+    id="answer-list"
+    class="run-match-answers__answer-variant-container"
+    cdkDropList
+    [cdkDropListData]="answers"
+    [cdkDropListConnectedTo]="dropIds"
+    (cdkDropListDropped)="drop($event)"
+>
+    @for (answer of answers; track answer) {
+        <div cdkDrag [cdkDragData]="answer" cdkDragPreviewClass="">
+            <div class="run-match-answers__answer-variant">
+                <mat-icon>drag_indicator</mat-icon> {{answer.text}}
+            </div>
+        </div>
+    }
+</div>

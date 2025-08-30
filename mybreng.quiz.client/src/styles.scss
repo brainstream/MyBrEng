@@ -3,6 +3,8 @@
 @use "app/layout/layout-full/layout-full.component-theme" as layout-full;
 @use "app/quiz/quiz-question-sort/quiz-question-sort.component-theme" as quiz-question-sort;
 @use "app/quiz-report/quiz-report-item/quiz-report-item.component-theme" as quiz-report-item;
+@use "app/go/run-match-answers/_run-match-answers.component-theme" as run-match-answers;
+
 
 mat.$theme-ignore-duplication-warnings: true;
 
@@ -181,6 +183,7 @@ $app-dark-theme: mat.m2-define-dark-theme(
     @include layout-full.theme($app-dark-theme);
     @include quiz-question-sort.theme($app-dark-theme);
     @include quiz-report-item.theme($app-dark-theme);
+    @include run-match-answers.theme($app-dark-theme);
 }
 
 @mixin light-colors {
@@ -188,6 +191,7 @@ $app-dark-theme: mat.m2-define-dark-theme(
     @include layout-full.theme($app-light-theme);
     @include quiz-question-sort.theme($app-light-theme);
     @include quiz-report-item.theme($app-light-theme);
+    @include run-match-answers.theme($app-light-theme);
 }
 
 @media (prefers-color-scheme: dark) {

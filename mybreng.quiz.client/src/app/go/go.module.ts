@@ -23,6 +23,8 @@ import { RunSingleChoiceAnswersComponent } from './run-single-choice-answers';
 import { RunMultipleChoicesAnswersComponent } from './run-multiple-choices-answers';
 import { RunFreeTextAnswerComponent } from './run-free-text-answer';
 import { QuizReportModule } from '@app/quiz-report';
+import { RunMatchAnswersComponent } from './run-match-answers';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
     declarations: [
@@ -33,7 +35,8 @@ import { QuizReportModule } from '@app/quiz-report';
         RunGoComponent,
         RunSingleChoiceAnswersComponent,
         RunMultipleChoicesAnswersComponent,
-        RunFreeTextAnswerComponent
+        RunFreeTextAnswerComponent,
+        RunMatchAnswersComponent
     ],
     imports: [
         CommonModule,
@@ -43,6 +46,7 @@ import { QuizReportModule } from '@app/quiz-report';
         EffectsModule.forFeature([
             GoEffects
         ]),
+        DragDropModule,
         MatButtonModule,
         MatIconModule,
         MatCardModule,

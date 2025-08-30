@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { GoSelectors, goActions } from '../store';
 import { RunDto } from '@app/web-api';
+import { TitleService } from '@app/common';
 
 @Component({
     selector: 'app-run',
@@ -18,9 +19,12 @@ export class RunComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly route: ActivatedRoute,
-        private readonly store$: Store
+        private readonly store$: Store,
+        titleService: TitleService
     ) {
-        this.run$ = store$.select(GoSelectors.run);
+        this.run$ = store$
+            .select(GoSelectors.run)
+            .pipe(tap(run => titleService.setTitle(run?.title)));
     }
 
     ngOnInit(): void {
