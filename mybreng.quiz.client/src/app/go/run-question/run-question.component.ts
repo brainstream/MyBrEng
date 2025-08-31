@@ -12,12 +12,14 @@ export class RunQuestionComponent {
     @Input() answers: string[];
     @Output() answersChange = new EventEmitter<string[]>();
 
-    get type(): 'text' | 'multi' | 'single' {
+    get type(): 'text' | 'multi' | 'single' | 'match' {
         switch (this.question.questionType) {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'text';
             case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
                 return 'multi';
+            case RunQuestionDto.QuestionTypeEnum.Match:
+                return 'match';
             default:
                 return 'single';
         }

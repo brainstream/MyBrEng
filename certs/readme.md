@@ -1,4 +1,4 @@
-Place here 
+Place here
 
 - ca.cert.pem
 - mybreng-mysql.cert.pem

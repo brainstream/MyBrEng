@@ -37,6 +37,8 @@ def map_db_question_type_to_question_type(db_type: int) -> QuizQuestionType:
             return QuizQuestionType.MULTIPLE_CHOICE
         case 2:
             return QuizQuestionType.FREE_TEXT
+        case 3:
+            return QuizQuestionType.MATCH
         case _:
             return QuizQuestionType.SINGLE_CHOICE
 
@@ -47,6 +49,8 @@ def map_question_type_to_db_question_type(q_type: QuizQuestionType) -> int:
             return 1
         case QuizQuestionType.FREE_TEXT:
             return 2
+        case QuizQuestionType.MATCH:
+            return 3
         case _:
             return 0
 
