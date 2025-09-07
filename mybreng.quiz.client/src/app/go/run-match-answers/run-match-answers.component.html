@@ -1,5 +1,5 @@
 <div class="answer-slot-container">
-    @for (slot of slots; track slot) {
+    @for (slot of data$.getValue().slots; track slot) {
         <div class="answer-slot-text">{{slot.text}}</div>
         <div
             [id]="'slot-' + $index"
@@ -7,7 +7,7 @@
             cdkDropList
             [cdkDropListData]="slot.answers"
             (cdkDropListDropped)="drop($event)"
-            [cdkDropListConnectedTo]="dropIds"
+            [cdkDropListConnectedTo]="data$.getValue().dropIds"
         >
             @if (slot.answers.length) {
                 <div cdkDrag [cdkDragData]="slot.answers[0]">
@@ -24,11 +24,11 @@
     id="answer-list"
     class="run-match-answers__answer-variant-container"
     cdkDropList
-    [cdkDropListData]="answers"
-    [cdkDropListConnectedTo]="dropIds"
+    [cdkDropListData]="data$.getValue().answers"
+    [cdkDropListConnectedTo]="data$.getValue().dropIds"
     (cdkDropListDropped)="drop($event)"
 >
-    @for (answer of answers; track answer) {
+    @for (answer of data$.getValue().answers; track answer) {
         <div cdkDrag [cdkDragData]="answer" cdkDragPreviewClass="">
             <div class="run-match-answers__answer-variant">
                 <mat-icon>drag_indicator</mat-icon> {{answer.text}}

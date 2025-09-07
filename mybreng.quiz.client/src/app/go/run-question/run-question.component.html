@@ -3,25 +3,29 @@
 @switch (type) {
     @case ('text') {
         <app-run-free-text-answer
-            [(answer)]="singleAnswer">
+            [(answer)]="singleAnswer"
+            (complete)="complete.emit($event)">
         </app-run-free-text-answer>
     }
     @case ('multi') {
         <app-run-multiple-choices-answers
             [variants]="answerVariants"
-            [(answers)]="allAnswers">
+            [(answers)]="allAnswers"
+            (complete)="complete.emit($event)">
         </app-run-multiple-choices-answers>
     }
     @case ('single') {
         <app-run-single-choice-answers
             [variants]="answerVariants"
-            [(answer)]="singleAnswer">
+            [(answer)]="singleAnswer"
+            (complete)="complete.emit($event)">
         </app-run-single-choice-answers>
     }
     @case ('match') {
         <app-run-match-answers
             [variants]="answerVariants"
-            [(matches)]="allAnswers">
+            [(matches)]="allAnswers"
+            (complete)="complete.emit($event)">
         </app-run-match-answers>
     }
 }

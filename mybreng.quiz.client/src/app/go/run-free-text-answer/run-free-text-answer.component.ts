@@ -9,8 +9,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class RunFreeTextAnswerComponent {
     @Input() answer: string;
     @Output() answerChange = new EventEmitter<string>();
+    @Output() complete = new EventEmitter<boolean>();
 
     setText(text: string) {
         this.answerChange.emit(text);
+        this.complete.emit(text.length > 0);
     }
 }

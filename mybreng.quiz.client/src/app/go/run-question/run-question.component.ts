@@ -11,6 +11,7 @@ export class RunQuestionComponent {
     @Input() question: RunQuestionDto;
     @Input() answers: string[];
     @Output() answersChange = new EventEmitter<string[]>();
+    @Output() complete = new EventEmitter<boolean>();
 
     get type(): 'text' | 'multi' | 'single' | 'match' {
         switch (this.question.questionType) {

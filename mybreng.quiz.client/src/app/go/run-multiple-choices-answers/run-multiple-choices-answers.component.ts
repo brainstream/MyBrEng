@@ -17,12 +17,14 @@ export class RunMultipleChoicesAnswersComponent  {
     }
 
     @Output() answersChange = new EventEmitter<string[]>();
+    @Output() complete = new EventEmitter<boolean>();
 
     isChecked(answer: string): boolean {
         return this._checkedAnswers.includes(answer);
     }
 
     itemChanged(idx: number, checked: boolean): void {
+        const wasComplete = this._checkedAnswers.length > 0;
         const id = this.variants[idx].answerId;
         if (checked) {
             this.addCheckedAnswer(id);
@@ -30,6 +32,10 @@ export class RunMultipleChoicesAnswersComponent  {
             this.removeCheckedAnswer(id);
         }
         this.answersChange.emit(this._checkedAnswers);
+        const complete = this._checkedAnswers.length > 0;
+        if (wasComplete != complete) {
+            this.complete.emit(complete);
+        }
     }
 
     private addCheckedAnswer(answerId: string): void {

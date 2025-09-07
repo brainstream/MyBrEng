@@ -3,6 +3,11 @@ import { RunDto, RunQuestionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { goActions } from '../store';
 
+interface QuestionData {
+    answers: string[],
+    isComplete: boolean
+}
+
 @Component({
     selector: 'app-run-go',
     templateUrl: './run-go.component.html',
@@ -16,7 +21,7 @@ export class RunGoComponent {
     description: string;
     currentQuestionIndex: number = 0;
     totalQuestionCount: number = 0;
-    answers: string[][];
+    questions: QuestionData[];
 
     constructor(private readonly store$: Store) {
     }
@@ -27,7 +32,7 @@ export class RunGoComponent {
         this.description = dto.description;
         this.totalQuestionCount = this._run.questions?.length ?? 0;
         this.currentQuestionIndex = 0;
-        this.answers = this._run.questions?.map(_ => []) ?? [];
+        this.questions = this._run.questions?.map(_ => ({ answers: [], isComplete: false })) ?? [];
     }
 
     get isCurrentQuestionFirst() {
@@ -46,7 +51,11 @@ export class RunGoComponent {
     }
 
     get isCurrentQuestionAnswered(): boolean {
-        return this.answers[this.currentQuestionIndex].length > 0;
+        return this.questions[this.currentQuestionIndex].isComplete;
+    }
+
+    completionChanged(completion: boolean): void {
+        this.questions[this.currentQuestionIndex].isComplete = completion;
     }
 
     goForward(): void {
@@ -70,7 +79,7 @@ export class RunGoComponent {
                 id: this._run.id,
                 questions: this._run.questions.map((q, idx) => ({
                     id: q.questionId,
-                    answers: this.answers[idx]
+                    answers: this.questions[idx].answers
                 }))
             }
         }));

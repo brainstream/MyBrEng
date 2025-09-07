@@ -6,7 +6,7 @@ from .quiz_question_answer_dto import *
 from .user_dto import *
 from .login_dto import *
 from .quiz_edit_dto import *
-from .quiz_quiestion_type import *
+from .quiz_question_type import *
 from .quiz_question_edit_dto import *
 from .quiz_question_position_dto import *
 from .student_dto import *

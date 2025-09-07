@@ -1,6 +1,6 @@
-<mat-radio-group [ngModel]="answer" (ngModelChange)="setAnswer($event)">
+<mat-radio-group [ngModel]="_answer" (ngModelChange)="setAnswer($event)">
     <div *ngFor="let variant of variants">
-        <mat-radio-button [value]="variant.answerId" [checked]="variant.answerId === answer">
+        <mat-radio-button [value]="variant.answerId" [checked]="variant.answerId === _answer">
             {{variant.text}}
         </mat-radio-button>
     </div>

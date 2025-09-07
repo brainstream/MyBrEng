@@ -45,6 +45,12 @@ VALUES (
     1,
     'Select all synonyms for the word "Competence"',
     2
+), (
+    '84be8e31-9c53-411e-bacb-be50d6a0785d',
+    '0ef43d9d-7a81-4d4d-bf16-a7d0aeade076',
+    2,
+    'Enter synonym for the word "Get"',
+    3
 );
 
 INSERT INTO `quiz_answer_variant` (`id`, `question`, `text`, `is_correct`)
@@ -127,6 +133,26 @@ VALUES (
     UUID(),
     'ce8d02f8-e9cb-4b16-ba63-48e66447fd85',
     'Proficiency',
+    1
+), (
+    UUID(),
+    '84be8e31-9c53-411e-bacb-be50d6a0785d',
+    'Acquire',
+    1
+), (
+    UUID(),
+    '84be8e31-9c53-411e-bacb-be50d6a0785d',
+    'Obtain',
+    1
+), (
+    UUID(),
+    '84be8e31-9c53-411e-bacb-be50d6a0785d',
+    'Secure',
+    1
+), (
+    UUID(),
+    '84be8e31-9c53-411e-bacb-be50d6a0785d',
+    'Procure',
     1
 );
 

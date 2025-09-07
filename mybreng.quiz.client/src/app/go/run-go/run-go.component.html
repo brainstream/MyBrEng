@@ -8,7 +8,11 @@
             <h2 mat-card-subtitle>Вопрос {{currentQuestionIndex + 1}} из {{totalQuestionCount}}</h2>
         </mat-card-header>
         <mat-card-content>
-            <app-run-question [question]="currentQuestion" [(answers)]="answers[currentQuestionIndex]"></app-run-question>
+            <app-run-question
+                [question]="currentQuestion"
+                [(answers)]="questions[currentQuestionIndex].answers"
+                (complete)="completionChanged($event)">
+            </app-run-question>
         </mat-card-content>
     </mat-card>
 
