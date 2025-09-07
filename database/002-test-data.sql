@@ -72,37 +72,37 @@ VALUES (
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": "Abundant", "dest": "Plentiful" }', -- TODO: varchar(150)
+    '{ "slot": "Abundant", "answer": "Plentiful" }', -- TODO: varchar(150)
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": "Delicate", "dest": "Sensitive" }', -- TODO: varchar(150)
+    '{ "slot": "Delicate", "answer": "Sensitive" }', -- TODO: varchar(150)
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": "Eager", "dest": "Keen" }', -- TODO: varchar(150)
+    '{ "slot": "Eager", "answer": "Keen" }', -- TODO: varchar(150)
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": "Generous", "dest": "Charitable" }', -- TODO: varchar(150)
+    '{ "slot": "Generous", "answer": "Charitable" }', -- TODO: varchar(150)
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": "Reliable", "dest": "Dependable" }', -- TODO: varchar(150)
+    '{ "slot": "Reliable", "answer": "Dependable" }', -- TODO: varchar(150)
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": null, "dest": "Perfect" }', -- TODO: varchar(150)
+    '{ "slot": null, "answer": "Perfect" }', -- TODO: varchar(150)
     0
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "src": null, "dest": "Bitterness" }', -- TODO: varchar(150)
+    '{ "slot": null, "answer": "Bitterness" }', -- TODO: varchar(150)
     0
 ), (
     UUID(),

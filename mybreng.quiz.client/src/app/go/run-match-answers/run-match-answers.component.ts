@@ -4,8 +4,8 @@ import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
 
 interface AnswerVariantJson {
-    src: string | null;
-    dest: string;
+    answer: string;
+    slot: string | null;
 }
 
 interface AnswerData {
@@ -54,15 +54,15 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         const slots: SlotData[] = [];
         for (const variant of variants) {
             const json: AnswerVariantJson = JSON.parse(variant.text);
-            if (json.src != null) {
+            if (json.slot != null) {
                 slots.push({
-                    text: json.src,
+                    text: json.slot,
                     answers: []
                 });
                 dropIds.push(`slot-${index++}`);
             }
             answers.push({
-                text: json.dest
+                text: json.answer
             });
         }
         this.inputData$.next({
@@ -89,8 +89,8 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         ]).pipe(
             map(([data, matches]) => {
                 for (const match of matches) {
-                    const answerIndex = data.answers.findIndex(a => a.text === match.src);
-                    const slotIndex = data.slots.findIndex(s => s.text == match.dest);
+                    const answerIndex = data.answers.findIndex(a => a.text === match.answer);
+                    const slotIndex = data.slots.findIndex(s => s.text == match.slot);
                     if (answerIndex >= 0 && slotIndex >= 0) {
                         transferArrayItem(
                             data.answers,
@@ -189,13 +189,15 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
                 break;
             }
         }
-        const matches = data.slots.map(s => {
-            const json: AnswerVariantJson = {
-                src: s.answers.length ? s.answers[0].text : null,
-                dest: s.text
-            };
-            return JSON.stringify(json);
-        });
+        const matches = data.slots
+            .filter(s => s.answers.length && s.answers[0].text)
+            .map(s => {
+                const json: AnswerVariantJson = {
+                    answer: s.answers[0].text,
+                    slot: s.text
+                };
+                return JSON.stringify(json);
+            });
         this.matchesChange.emit(matches);
         if (this.isComplete != complete) {
             this.isComplete = complete;

@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable, RunAnswerTable
 from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto, QuizQuestionType, RunReportAnswerDto
 from mappers import \
@@ -24,7 +24,7 @@ class RunFacade:
             .with_entities(QuizTable.title, QuizTable.description) \
             .first()
         if mark_as_started and run.start_date is None:
-            run.start_date = datetime.utcnow()
+            run.start_date = datetime.now(timezone.utc)
             db.session.commit()
         return RunDto(
             run_id,
@@ -44,7 +44,7 @@ class RunFacade:
         run.id = uuid.uuid4()
         run.student_id = dto.student_id
         run.quiz_id = dto.quiz_id
-        run.creation_date = datetime.utcnow()
+        run.creation_date = datetime.now(timezone.utc)
         db.session.add(run)
         db.session.commit()
         return map_run_to_summary_dto(run)
@@ -66,23 +66,24 @@ class RunFacade:
         run = RunTable.query.filter_by(id=dto.id).first()
         if run is None:
             return None
-        run.finish_date = datetime.utcnow()
+        run.finish_date = datetime.now(timezone.utc)
         questions = QuizQuestionTable.query.filter_by(quiz_id=run.quiz_id).all()
 
-        def is_free_text_question(qid):
+        def does_question_require_text_answer(qid):
             question = next(filter(lambda qn: qn.id == qid, questions), None)
             if question is None:
                 return False
-            return map_db_question_type_to_question_type(question.type) == QuizQuestionType.FREE_TEXT
+            question_type = map_db_question_type_to_question_type(question.type)
+            return question_type == QuizQuestionType.FREE_TEXT or question_type == QuizQuestionType.MATCH
 
         for q in dto.questions:
-            is_free_text = is_free_text_question(q.id)
+            requires_text_answer = does_question_require_text_answer(q.id)
             for a in q.answers:
                 answer = RunAnswerTable()
                 answer.id = uuid.uuid4()
                 answer.run_id = run.id
                 answer.question_id = q.id
-                if is_free_text:
+                if requires_text_answer:
                     answer.text = a
                 else:
                     answer.answer_variant_id = a
