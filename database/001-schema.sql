@@ -77,7 +77,7 @@ CREATE TABLE `quiz_question` (
 CREATE TABLE `quiz_answer_variant` (
   `id` char(38) NOT NULL,
   `question` char(38) DEFAULT NULL,
-  `text` varchar(150) DEFAULT NULL,
+  `text` LONGTEXT DEFAULT NULL,
   `is_correct` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `idx_quiz_question_variant_question` (`question`),
@@ -105,7 +105,7 @@ CREATE TABLE `run_answer` (
   `run` char(38) DEFAULT NULL,
   `question` char(38) DEFAULT NULL,
   `variant` char(38) DEFAULT NULL,
-  `text` varchar(150) DEFAULT NULL,
+  `text` LONGTEXT DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_run_answer_run` (`run`),
   KEY `idx_run_answer_question` (`question`),
