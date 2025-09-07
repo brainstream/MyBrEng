@@ -1,13 +1,14 @@
+import { MatchingAnswer } from "@app/shared";
 import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from "@app/web-api";
 
-export interface IQuizRepor {
+export interface IQuizReport {
     readonly title: string;
     readonly description: string;
     readonly items: IQuizReportItem[];
-    readonly summary: IQuizReporSummary;
+    readonly summary: IQuizReportSummary;
 }
 
-export interface IQuizReporSummary {
+export interface IQuizReportSummary {
     totalQuestionCount: number;
     passedQuestionCount: number;
 }
@@ -15,17 +16,17 @@ export interface IQuizReporSummary {
 export interface IQuizReportItem {
     readonly question: string;
     readonly questionType: RunQuestionDto.QuestionTypeEnum;
-    readonly answers: IQuizReporAnswer[];
+    readonly answers: IQuizReportAnswer[];
     readonly isPassed: boolean;
 }
 
-export interface IQuizReporAnswer {
+export interface IQuizReportAnswer {
     readonly text: string;
     readonly isCorrect: boolean;
     readonly isAnswerMatched: boolean;
 }
 
-export function mapRunToReport(run: RunDto): IQuizRepor {
+export function mapRunToReport(run: RunDto): IQuizReport {
     const items = mapRunQuestionsToReportItems(run);
     const summary = items.reduce((sum, item) => {
         ++sum.totalQuestionCount;
@@ -47,7 +48,7 @@ export function mapRunToReport(run: RunDto): IQuizRepor {
 
 function mapRunQuestionsToReportItems(run: RunDto): IQuizReportItem[] {
     return run.questions?.map(q => {
-        const answers = mergeAnswers(
+        const answers = AnswerMerger.mergeAnswers(
             q.questionType,
             q.answerVariants ?? [],
             getRunAnswersForQuestion(run, q.questionId)
@@ -65,49 +66,95 @@ function getRunAnswersForQuestion(run: RunDto, questionId: string): RunAnswerDto
     return run.report?.filter(a => a.questionId === questionId) ?? [];
 }
 
-function mergeAnswers(
-    questionType: RunQuestionDto.QuestionTypeEnum,
-    variants: RunAnswerVariantDto[],
-    runAnswers: RunAnswerDto[]
-): IQuizReporAnswer[] {
-    let hasMatched = false;
-    const result: IQuizReporAnswer[] = [];
-    for (const variant of variants) {
-        const matched = isAnswerMatched(questionType, variant, runAnswers);
-        hasMatched = hasMatched || matched;
-        result.push({
-            text: variant.text,
-            isCorrect: variant.isCorrect ?? false,
-            isAnswerMatched: matched
-        });
+class AnswerMerger {
+    static mergeAnswers(
+        questionType: RunQuestionDto.QuestionTypeEnum,
+        variants: RunAnswerVariantDto[],
+        runAnswers: RunAnswerDto[]
+    ): IQuizReportAnswer[] {
+        return questionType === RunQuestionDto.QuestionTypeEnum.Match
+            ? AnswerMerger.mergeMatchingAnswers(variants, runAnswers)
+            : AnswerMerger.mergeRegularAnswers(questionType, variants, runAnswers);
     }
-    if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText && !hasMatched) {
-        for (const answer of runAnswers) {
+
+    private static mergeRegularAnswers(
+        questionType: RunQuestionDto.QuestionTypeEnum,
+        variants: RunAnswerVariantDto[],
+        runAnswers: RunAnswerDto[]
+    ): IQuizReportAnswer[] {
+        let hasMatched = false;
+        const result: IQuizReportAnswer[] = [];
+        for (const variant of variants) {
+            const matched = AnswerMerger.isAnswerMatched(questionType, variant, runAnswers);
+            hasMatched = hasMatched || matched;
             result.push({
-                text: answer.text ?? '',
+                text: variant.text,
+                isCorrect: variant.isCorrect ?? false,
+                isAnswerMatched: matched
+            });
+        }
+        if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText && !hasMatched) {
+            for (const answer of runAnswers) {
+                result.push({
+                    text: answer.text ?? '',
+                    isCorrect: false,
+                    isAnswerMatched: true
+                });
+            }
+        }
+        return result;
+    }
+
+    private static isAnswerMatched(
+        questionType: RunQuestionDto.QuestionTypeEnum,
+        variant: RunAnswerVariantDto,
+        answers: RunAnswerDto[]
+    ): boolean {
+        if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText) {
+            return answers.some(a => variant.text.trim().toLowerCase() === a.text?.trim().toLowerCase())
+        } else {
+            return answers.some(a => variant.answerId === a.variantId);
+        }
+    }
+
+    private static mergeMatchingAnswers(
+        variants: RunAnswerVariantDto[],
+        runAnswers: RunAnswerDto[]
+    ): IQuizReportAnswer[] {
+        const formatText = (a: MatchingAnswer) => `${a.slot} 🡒 ${a.answer}`;
+        const answers = runAnswers.map(a => {
+            return a.text ? formatText(JSON.parse(a.text) as MatchingAnswer) : '';
+        });
+        const result: IQuizReportAnswer[] = [];
+        for (const variant of variants) {
+            if (!variant.isCorrect) {
+                continue;
+            }
+            const text = formatText(JSON.parse(variant.text) as MatchingAnswer);
+            const answerIndex = answers.findIndex(a => a === text);
+            if (answerIndex >= 0) {
+                answers.splice(answerIndex, 1);
+            }
+            result.push({
+                text,
+                isCorrect: variant.isCorrect ?? false,
+                isAnswerMatched: answerIndex >= 0
+            });
+        }
+        for (const answer of answers) {
+            result.push({
+                text: answer,
                 isCorrect: false,
                 isAnswerMatched: true
             });
         }
-    }
-    return result;
-}
-
-function isAnswerMatched(
-    questionType: RunQuestionDto.QuestionTypeEnum,
-    variant: RunAnswerVariantDto,
-    answers: RunAnswerDto[]
-): boolean {
-    if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText) {
-        return answers.some(a => variant.text.trim().toLowerCase() === a.text?.trim().toLowerCase())
-    } else {
-        return answers.some(a => variant.answerId === a.variantId);
+        return result;
     }
 }
 
 function isQuestionPassed(
     questionType: RunQuestionDto.QuestionTypeEnum,
-    answers: IQuizReporAnswer[]
+    answers: IQuizReportAnswer[]
 ): boolean {
     switch(questionType) {
         case RunQuestionDto.QuestionTypeEnum.SingleChoice:
@@ -117,6 +164,8 @@ function isQuestionPassed(
             return answers.every(a =>
                 (a.isCorrect && a.isAnswerMatched) || (!a.isCorrect && !a.isAnswerMatched)
             );
+        case RunQuestionDto.QuestionTypeEnum.Match:
+            return answers.every(a => a.isCorrect && a.isAnswerMatched);
         default:
             return false;
     }

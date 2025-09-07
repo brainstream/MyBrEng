@@ -31,7 +31,7 @@ VALUES (
     'c6ca0754-aa44-474d-b183-474f6a3e0d9a',
     '0ef43d9d-7a81-4d4d-bf16-a7d0aeade076',
     0,
-    'Find a synonym for the word "Malice"',
+    'Find a synonym for the word **Malice**',
     0
 ), (
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
@@ -43,13 +43,13 @@ VALUES (
     'ce8d02f8-e9cb-4b16-ba63-48e66447fd85',
     '0ef43d9d-7a81-4d4d-bf16-a7d0aeade076',
     1,
-    'Select all synonyms for the word "Competence"',
+    'Select all synonyms for the word **Competence**',
     2
 ), (
     '84be8e31-9c53-411e-bacb-be50d6a0785d',
     '0ef43d9d-7a81-4d4d-bf16-a7d0aeade076',
     2,
-    'Enter synonym for the word "Get"',
+    'Enter synonym for the word **Get**',
     3
 );
 

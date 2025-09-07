@@ -1,12 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { MatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
-
-interface AnswerVariantJson {
-    answer: string;
-    slot: string | null;
-}
 
 interface AnswerData {
     text: string;
@@ -39,7 +35,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         dropIds: []
     });
 
-    private inputMatches$ = new BehaviorSubject<AnswerVariantJson[]>([]);
+    private inputMatches$ = new BehaviorSubject<MatchingAnswer[]>([]);
 
     data$ = new BehaviorSubject<Data>({
         answers: [],
@@ -53,7 +49,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         const answers: AnswerData[] = [];
         const slots: SlotData[] = [];
         for (const variant of variants) {
-            const json: AnswerVariantJson = JSON.parse(variant.text);
+            const json: MatchingAnswer = JSON.parse(variant.text);
             if (json.slot != null) {
                 slots.push({
                     text: json.slot,
@@ -66,15 +62,25 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
             });
         }
         this.inputData$.next({
-            answers,
+            answers: this.shuffleAnswers(answers),
             slots,
             dropIds
         });
     }
 
+    private shuffleAnswers(answers: AnswerData[]) {
+        return answers
+            .map(answer => ({
+                answer,
+                rnd: Math.random()
+            }))
+            .sort((a, b) => a.rnd > b.rnd ? 1 : -1)
+            .map(data => data.answer);
+    }
+
     @Input() set matches(jsons: string[]) {
         this.inputMatches$.next(
-            jsons.map((json) => JSON.parse(json) as AnswerVariantJson)
+            jsons.map((json) => JSON.parse(json) as MatchingAnswer)
         );
     }
 
@@ -192,7 +198,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         const matches = data.slots
             .filter(s => s.answers.length && s.answers[0].text)
             .map(s => {
-                const json: AnswerVariantJson = {
+                const json: MatchingAnswer = {
                     answer: s.answers[0].text,
                     slot: s.text
                 };

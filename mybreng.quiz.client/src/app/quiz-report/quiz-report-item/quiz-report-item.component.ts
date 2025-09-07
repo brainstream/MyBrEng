@@ -23,6 +23,8 @@ export class QuizReportItemComponent {
                 return 'Выбрать все правильные ответы';
             case RunQuestionDto.QuestionTypeEnum.SingleChoice:
                 return 'Выбрать любой правильный ответ';
+            case RunQuestionDto.QuestionTypeEnum.Match:
+                return 'Сопоставить выражения';
             default:
                 return '';
         }
