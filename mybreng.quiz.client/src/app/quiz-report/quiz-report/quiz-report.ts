@@ -127,17 +127,18 @@ class AnswerMerger {
         });
         const result: IQuizReportAnswer[] = [];
         for (const variant of variants) {
-            if (!variant.isCorrect) {
+            const matchingAnswer = JSON.parse(variant.text) as MatchingAnswer;
+            if (matchingAnswer.slot == null) {
                 continue;
             }
-            const text = formatText(JSON.parse(variant.text) as MatchingAnswer);
+            const text = formatText(matchingAnswer);
             const answerIndex = answers.findIndex(a => a === text);
             if (answerIndex >= 0) {
                 answers.splice(answerIndex, 1);
             }
             result.push({
                 text,
-                isCorrect: variant.isCorrect ?? false,
+                isCorrect: true,
                 isAnswerMatched: answerIndex >= 0
             });
         }
