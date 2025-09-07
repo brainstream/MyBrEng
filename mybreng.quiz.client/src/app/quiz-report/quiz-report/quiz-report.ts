@@ -121,7 +121,7 @@ class AnswerMerger {
         variants: RunAnswerVariantDto[],
         runAnswers: RunAnswerDto[]
     ): IQuizReportAnswer[] {
-        const formatText = (a: MatchingAnswer) => `${a.slot} 🡒 ${a.answer}`;
+        const formatText = (a: MatchingAnswer) => `${a.slot} ➡️ ${a.answer}`;
         const answers = runAnswers.map(a => {
             return a.text ? formatText(JSON.parse(a.text) as MatchingAnswer) : '';
         });

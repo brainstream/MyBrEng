@@ -18,7 +18,7 @@ export class QuizQuestionComponent {
     getText(answer: QuizQuestionAnswerDto): string {
         if (this.question.questionType == QuizQuestionDto.QuestionTypeEnum.Match) {
             const matchingAnswer = JSON.parse(answer.text) as MatchingAnswer;
-            const prefix = matchingAnswer.slot ? `${matchingAnswer.slot} 🡒 ` : '';
+            const prefix = matchingAnswer.slot ? `${matchingAnswer.slot} ➡️ ` : '';
             return `${prefix}${matchingAnswer.answer}`;
         }
         return answer.text;
