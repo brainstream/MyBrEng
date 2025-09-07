@@ -14,6 +14,8 @@ export class QuestionTypeNamePipe implements PipeTransform {
                 return 'Выбор нескольких вариантов';
             case QuizQuestionDto.QuestionTypeEnum.FreeText:
                 return 'Ввод текста';
+            case QuizQuestionDto.QuestionTypeEnum.Match:
+                return 'Сопоставление выражений';
             default:
                 return '';
         }
