@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+.matching-answer-edit-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
 .form-validation-error {
     margin: 1rem 0;
 }

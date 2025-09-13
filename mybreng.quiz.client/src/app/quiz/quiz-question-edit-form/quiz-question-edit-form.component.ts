@@ -3,7 +3,8 @@ import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
+import { MatchingAnswer } from '@app/shared';
+import { QuizQuestionAnswerDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 
 
 @Component({
@@ -39,10 +40,23 @@ export class QuizQuestionEditFormComponent {
                 form: 'Вопрос должен содержать хотя бы один ответ'
             };
         }
-        const type = this.form.controls['type'].value as QuizQuestionDto.QuestionTypeEnum;
-        if (type !== 'FREE_TEXT') {
+        const type = this.type;
+        if (type == QuizQuestionDto.QuestionTypeEnum.Match) {
+            let hasSlots = false;
+            for (const answer of answers.controls) {
+                if ((answer as FormGroup).controls['slot'].value) {
+                    hasSlots = true;
+                    break;
+                }
+            }
+            if (!hasSlots) {
+                return {
+                    form: 'Хотя бы один ответ должен содержать слот'
+                }
+            }
+        } else if (type !== QuizQuestionDto.QuestionTypeEnum.FreeText) {
             let hasCorrect: boolean = false;
-            for (let answer of answers.controls) {
+            for (const answer of answers.controls) {
                 if ((answer as FormGroup).controls['isCorrect'].value as boolean) {
                     hasCorrect = true;
                     break;
@@ -64,21 +78,34 @@ export class QuizQuestionEditFormComponent {
         if (q.answers) {
             this.answers.clear();
             q.answers.forEach(a =>
-                this.answers.push(this.createAnswerFormGroup(a.id, a.text, a.isCorrect))
+                this.answers.push(this.createAnswerFormGroup(a))
             );
         }
     }
 
-    private createAnswerFormGroup(id?: string, text?: string, isCorrect?: boolean): FormGroup {
+    private createAnswerFormGroup(answer?: QuizQuestionAnswerDto): FormGroup {
+        let text = answer?.text ?? '';
+        let slot: string | null = null;
+        if (text && this.type === QuizQuestionDto.QuestionTypeEnum.Match) {
+            const ma = JSON.parse(text) as MatchingAnswer;
+            text = ma.answer;
+            slot = ma.slot;
+            console.log(text, slot);
+        }
         return this.formBuilder.group({
-            id: [id],
-            text: [text ?? '', Validators.required],
-            isCorrect: [isCorrect ?? false]
+            id: [answer?.id],
+            slot: [slot],
+            text: [text, Validators.required],
+            isCorrect: [answer?.isCorrect ?? false]
         });
     }
 
     get answers(): FormArray {
         return this.form.get('answers') as FormArray;
+    }
+
+    get type(): string {
+        return (this.form.get('type')?.value as string) ?? '';
     }
 
     isCorrect(answer: AbstractControl): boolean {
@@ -87,19 +114,31 @@ export class QuizQuestionEditFormComponent {
 
     save() {
         const questionType = this.form.controls['type'].value as QuizQuestionDto.QuestionTypeEnum;
+        const getAnswer = (group: FormGroup): QuizQuestionAnswerEditDto => {
+            const result: QuizQuestionAnswerEditDto   = {
+                id: group.controls['id'].value ?? undefined,
+                text: group.controls['text'].value as string,
+                isCorrect: group.controls['isCorrect'].value as boolean
+            };
+            if (questionType === QuizQuestionDto.QuestionTypeEnum.Match) {
+                const ma: MatchingAnswer = {
+                    slot: group.controls['slot'].value as string,
+                    answer: result.text
+                };
+                result.text = JSON.stringify(ma);
+                result.isCorrect = !!ma.slot;
+            }
+            else if (questionType === QuizQuestionDto.QuestionTypeEnum.FreeText) {
+                result.isCorrect = true;
+            }
+            return result;
+        };
         this.saveRequested.emit({
             id: this.questionId,
             quiz_id: this.quizId,
             text: this.form.controls['text'].value,
             questionType: questionType,
-            answers: this.answers.controls.map(a => {
-                const formGroup = a as FormGroup;
-                return {
-                    id: formGroup.controls['id'].value ?? undefined,
-                    isCorrect: formGroup.controls['isCorrect'].value as boolean,
-                    text: formGroup.controls['text'].value as string
-                };
-            })
+            answers: this.answers.controls.map(a => getAnswer(a as FormGroup))
         });
     }
 
@@ -120,7 +159,12 @@ export class QuizQuestionEditFormComponent {
     }
 
     get canAnswersBeMarkedAsCorrect(): boolean {
-        const questionType = this.form.controls['type'].value as QuizQuestionDto.QuestionTypeEnum;
-        return questionType != QuizQuestionDto.QuestionTypeEnum.FreeText;
+        switch (this.type) {
+            case QuizQuestionDto.QuestionTypeEnum.Match:
+            case QuizQuestionDto.QuestionTypeEnum.FreeText:
+                return false;
+            default:
+                return true;
+        }
     }
 }
