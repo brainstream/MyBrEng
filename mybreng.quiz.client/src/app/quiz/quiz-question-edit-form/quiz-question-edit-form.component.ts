@@ -3,7 +3,7 @@ import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { FormBuilder } from '@angular/forms';
-import { MatchingAnswer } from '@app/shared';
+import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 
 
@@ -87,7 +87,7 @@ export class QuizQuestionEditFormComponent {
         let text = answer?.text ?? '';
         let slot: string | null = null;
         if (text && this.type === QuizQuestionDto.QuestionTypeEnum.Match) {
-            const ma = JSON.parse(text) as MatchingAnswer;
+            const ma = parseMatchingAnswer(text);
             text = ma.answer;
             slot = ma.slot;
             console.log(text, slot);

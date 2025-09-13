@@ -1,6 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatchingAnswer } from '@app/shared';
+import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
 
@@ -49,7 +49,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         const answers: AnswerData[] = [];
         const slots: SlotData[] = [];
         for (const variant of variants) {
-            const json: MatchingAnswer = JSON.parse(variant.text);
+            const json: MatchingAnswer = parseMatchingAnswer(variant.text);
             if (json.slot != null) {
                 slots.push({
                     text: json.slot,
@@ -80,7 +80,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
 
     @Input() set matches(jsons: string[]) {
         this.inputMatches$.next(
-            jsons.map((json) => JSON.parse(json) as MatchingAnswer)
+            jsons.map(parseMatchingAnswer)
         );
     }
 

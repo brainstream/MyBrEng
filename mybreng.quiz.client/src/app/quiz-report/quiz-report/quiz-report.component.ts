@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { RunAnswerDto, RunDto } from '@app/web-api';
+import { RunDto } from '@app/web-api';
 import { IQuizReport, mapRunToReport } from './quiz-report';
 
 @Component({

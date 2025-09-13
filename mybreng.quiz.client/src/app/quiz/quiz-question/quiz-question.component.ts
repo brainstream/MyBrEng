@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatchingAnswer } from '@app/shared';
+import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionDto } from '@app/web-api';
 
 @Component({
@@ -17,7 +17,7 @@ export class QuizQuestionComponent {
 
     getText(answer: QuizQuestionAnswerDto): string {
         if (this.question.questionType == QuizQuestionDto.QuestionTypeEnum.Match) {
-            const matchingAnswer = JSON.parse(answer.text) as MatchingAnswer;
+            const matchingAnswer = parseMatchingAnswer(answer.text);
             const prefix = matchingAnswer.slot ? `${matchingAnswer.slot} ➡️ ` : '';
             return `${prefix}${matchingAnswer.answer}`;
         }

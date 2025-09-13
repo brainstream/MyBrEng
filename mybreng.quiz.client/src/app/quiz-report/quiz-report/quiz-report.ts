@@ -1,4 +1,4 @@
-import { MatchingAnswer } from "@app/shared";
+import { MatchingAnswer, parseMatchingAnswer } from "@app/shared";
 import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from "@app/web-api";
 
 export interface IQuizReport {
@@ -121,13 +121,13 @@ class AnswerMerger {
         variants: RunAnswerVariantDto[],
         runAnswers: RunAnswerDto[]
     ): IQuizReportAnswer[] {
-        const formatText = (a: MatchingAnswer) => `${a.slot} ➡️ ${a.answer}`;
+        const formatText = (a: MatchingAnswer) => `${a.slot} → ${a.answer}`;
         const answers = runAnswers.map(a => {
-            return a.text ? formatText(JSON.parse(a.text) as MatchingAnswer) : '';
+            return a.text ? formatText(parseMatchingAnswer(a.text)) : '';
         });
         const result: IQuizReportAnswer[] = [];
         for (const variant of variants) {
-            const matchingAnswer = JSON.parse(variant.text) as MatchingAnswer;
+            const matchingAnswer = parseMatchingAnswer(variant.text);
             if (matchingAnswer.slot == null) {
                 continue;
             }
