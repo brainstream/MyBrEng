@@ -25,3 +25,4 @@ from .run_report_answer_dto import *
 from .tag_dto import *
 from .tag_edit_dto import *
 from .tag_query_dto import *
+from .artifact_dto import *

@@ -1,5 +1,5 @@
 from dependency_injector import containers, providers
-from facades import QuizFacade, UserFacade, QuizQuestionFacade, StudentFacade, RunFacade, TagFacade
+from facades import QuizFacade, UserFacade, QuizQuestionFacade, StudentFacade, RunFacade, TagFacade, ArtifactFacade
 
 
 class DI(containers.DeclarativeContainer):
@@ -8,7 +8,8 @@ class DI(containers.DeclarativeContainer):
         'blueprints.account_blueprint',
         'blueprints.student_blueprint',
         'blueprints.run_blueprint',
-        'blueprints.tag_blueprint'
+        'blueprints.tag_blueprint',
+        'blueprints.artifact_blueprint'
     ])
     config = providers.Configuration()
     quiz_facade = providers.Factory(QuizFacade)
@@ -17,3 +18,4 @@ class DI(containers.DeclarativeContainer):
     student_facade = providers.Factory(StudentFacade)
     run_facade = providers.Factory(RunFacade)
     tag_facade = providers.Factory(TagFacade)
+    artifact_facade = providers.Factory(ArtifactFacade)

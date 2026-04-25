@@ -1,7 +1,8 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.mysql import MEDIUMBLOB
+
 
 db = SQLAlchemy()
-
 
 class UserTable(db.Model):
     __tablename__ = 'user'
@@ -122,3 +123,15 @@ class RunAnswerTable(db.Model):
 
     def __repr__(self):
         return f'<RunAnswer: {self.id}>'
+
+
+class ArtifactTable(db.Model):
+    __tablename__ = 'artifact'
+    id = db.Column('id', db.String(38), primary_key=True)
+    owner_id = db.Column('owner', db.ForeignKey('user.id'))
+    mime = db.Column('mime', db.String(150))
+    name = db.Column('name', db.String(250))
+    content = db.Column('content', MEDIUMBLOB())
+
+    def __repr__(self):
+        return f'<Artifact: {self.id}>'

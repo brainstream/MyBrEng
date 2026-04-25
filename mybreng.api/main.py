@@ -12,6 +12,7 @@ from blueprints import \
     account_logout, \
     quiz_blueprint, \
     tag_blueprint, \
+    artifact_blueprint, \
     quiz_list, \
     quiz_details, \
     quiz_save, \
@@ -33,7 +34,9 @@ from blueprints import \
     run_finish, \
     tag_list, \
     tag_save, \
-    tag_delete
+    tag_delete, \
+    artifact_upload, \
+    artifact_get
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -71,7 +74,8 @@ def create_app() -> Flask:
             "Account",
             "Quiz",
             "Student",
-            "Run"
+            "Run",
+            "Artifacts"
         ],
         servers=[
             dict(
@@ -118,6 +122,7 @@ def create_app() -> Flask:
     flask.register_blueprint(student_blueprint, url_prefix='/api/student')
     flask.register_blueprint(run_blueprint, url_prefix='/api/run')
     flask.register_blueprint(tag_blueprint, url_prefix='/api/tag')
+    flask.register_blueprint(artifact_blueprint, url_prefix='/api/artifact')
     di.init_resources()
     db.init_app(flask)
     login_manager = LoginManager()
@@ -146,6 +151,8 @@ def create_app() -> Flask:
         spec.path(view=tag_list)
         spec.path(view=tag_save)
         spec.path(view=tag_delete)
+        spec.path(view=artifact_upload)
+        spec.path(view=artifact_get)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

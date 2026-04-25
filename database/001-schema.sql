@@ -114,3 +114,14 @@ CREATE TABLE `run_answer` (
   CONSTRAINT `fk_run_answer_run` FOREIGN KEY (`run`) REFERENCES `run` (`id`),
   CONSTRAINT `fk_run_answer_variant` FOREIGN KEY (`variant`) REFERENCES `quiz_answer_variant` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `artifact` (
+  `id` char(38) NOT NULL,
+  `mime` varchar(150) DEFAULT NULL,
+  `name` varchar(250) DEFAULT NULL,
+  `content` MEDIUMBLOB DEFAULT NULL,
+  `owner` char(38) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_artifact_owner` (`owner`),
+  CONSTRAINT `fk_artifact_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
