@@ -1,3 +1,5 @@
+import urllib
+
 from dependency_injector.wiring import inject, Provide
 from flask import Blueprint, request, make_response
 from flask_login import current_user
@@ -78,7 +80,8 @@ def artifact_get(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.
     artifact = artifact_facade.get(current_user.id, artifact_id)
     if artifact is None:
         return make_response(404, '')
+    encoded_filename = urllib.parse.quote(artifact.filename(), encoding='utf-8')
     response = make_response(artifact.content(), 200)
     response.headers.set('Content-Type', artifact.mime())
-    response.headers.set('Content-Disposition', 'attachment', filename=artifact.filename())
+    response.headers.set('Content-Disposition', f'attachment; filename*=UTF-8\'\'{encoded_filename}')
     return response
