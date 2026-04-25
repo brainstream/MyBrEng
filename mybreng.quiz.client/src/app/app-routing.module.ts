@@ -18,6 +18,9 @@ const routes: Routes = [
         path: 'report',
         loadChildren: () => import('@app/quiz-report').then(m => m.QuizReportModule)
     }, {
+        path: 'artifact',
+        loadChildren: () => import('@app/artifact').then(m => m.ArtifactModule)
+    }, {
         path: '**',
         redirectTo: 'quiz'
     }

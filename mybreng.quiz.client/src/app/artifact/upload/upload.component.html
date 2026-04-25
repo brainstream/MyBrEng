@@ -1,0 +1,22 @@
+<app-layout-full [loading]="loading$ | async">
+    <div class="details">
+        <input #fileInput type="file" (change)="onFileSelected($event)" >
+        <button mat-raised-button color="accent" (click)="fileInput.click()">
+            <mat-icon>upload_file</mat-icon> Выбор файла
+        </button>
+        <div *ngIf="markdown$ | async as markdown">
+            <mat-card>
+                <mat-card-content>
+                    <mat-card-title>Код для вставки изображения</mat-card-title>
+                    <pre>{{markdown.image}}</pre>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-content>
+                    <mat-card-title>Код для вставки аудио</mat-card-title>
+                    <pre>{{markdown.audio}}</pre>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</app-layout-full>

@@ -18,6 +18,10 @@
             routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
             Теги
         </button>
+        <button mat-flat-button color="primary" routerLink="/artifact" class="layout-full-toolbar-nav-link"
+                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true  }">
+            Файлы
+        </button>
     </div>
 
     <div class="layout-full-toolbar-spacer"></div>
@@ -56,6 +60,9 @@
                 </button>
                 <button mat-stroked-button routerLink="/tag" class="layout-full-toolbar-nav-link">
                     <mat-icon>tag</mat-icon> Теги
+                </button>
+                <button mat-stroked-button routerLink="/artifact" class="layout-full-toolbar-nav-link">
+                    <mat-icon>cloud</mat-icon> Файлы
                 </button>
             </div>
             <div class="layout-full-sidebar-items">

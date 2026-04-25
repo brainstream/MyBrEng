@@ -5,7 +5,8 @@
     "outDir": "./dist/out-tsc",
     "paths": {
       "@app/*": [
-        "src/app/*"
+        "src/app/*",
+        "src/environments/*"
       ]
     },
     "esModuleInterop": true,

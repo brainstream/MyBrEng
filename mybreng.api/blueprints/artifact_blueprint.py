@@ -27,8 +27,6 @@ def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade
                 file:
                   type: string
                   format: binary
-                description:
-                  type: string
       responses:
         200:
           description: File successfully uploaded
@@ -46,7 +44,9 @@ def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade
     if file.name == '':
         return make_response('No selected file', 401)
     artifact_id = artifact_facade.upload(current_user.id, file)
-    return make_response(artifact_id, 200)
+    response = make_response(artifact_id, 200)
+    response.headers.set('Content-Type', 'text/plain')
+    return response
 
 @artifact_blueprint.route('/<artifact_id>', methods=['GET'])
 @inject
@@ -69,8 +69,9 @@ def artifact_get(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.
           description: The Artifact
           content:
             application/octet-stream:
-              schema: string
-              format: binary
+              schema:
+                type: string
+                format: binary
         404:
           description: An Artifact with specified ID not found
     """

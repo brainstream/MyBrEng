@@ -12,9 +12,9 @@ import { concatLatestFrom } from "@ngrx/operators";
 
 @Injectable()
 export class TagsEffects {
-constructor(
+    constructor(
         private readonly actions$: Actions,
-        private store$: Store,
+        private readonly store$: Store,
         private readonly tagService: TagService,
         private readonly messageService: MessageService,
         private readonly eventsService: TagsEventsService
