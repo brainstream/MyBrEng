@@ -21,6 +21,12 @@
             </mat-card-actions>
         </mat-card>
     }
+
+    @if (hasMore$ | async) {
+        <div class="load-more-panel">
+            <button mat-button (click)="loadMore()">Загрузить ещё</button>
+        </div>
+    }
 </app-layout-full>
 
 <input #fileInput type="file" (change)="onFileSelected($event)" >

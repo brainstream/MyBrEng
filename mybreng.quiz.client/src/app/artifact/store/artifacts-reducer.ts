@@ -19,7 +19,8 @@ export const artifactsReducer = createReducer(
 
     on(artifactsActions.listLoaded, (state, { list }) => ({
         ...state,
-        list: [...state?.list ?? [], ...list.artifacts ?? []]
+        list: [...state.list ?? [], ...list.artifacts ?? []],
+        totalCount: list.totalCount
     })),
 
     on(artifactsActions.fileDeleted, (state, { id }) => ({
@@ -31,6 +32,7 @@ export const artifactsReducer = createReducer(
 function createDefaultState(): IArtifactsState {
     return {
         loadingCounter: 0,
-        list: null
+        list: null,
+        totalCount: 0
     };
 }

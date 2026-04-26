@@ -95,16 +95,16 @@ def artifact_list(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade])
       description: Returns a paginated list of all user artifacts
       parameters:
         - in: query
-          name: pageSize
+          name: take
           required: false
-          description: Count of records to return
+          description: Maximum number of records returned
           schema:
              type: int
              default: 50
         - in: query
-          name: pageIndex
+          name: skip
           required: false
-          description: Page index
+          description: The number of records to skip in the query
           schema:
              type: int
              default: 0
@@ -118,7 +118,7 @@ def artifact_list(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade])
     request_schema = ArtifactListQueryDtoSchema()
     query = request_schema.load(request.args)
     schema = ArtifactListDtoSchema()
-    result = artifact_facade.get_list(current_user.id, query.page_size, query.page_index)
+    result = artifact_facade.get_list(current_user.id, query.take, query.skip)
     return jsonify(schema.dump(result))
 
 @artifact_blueprint.route('/<artifact_id>', methods=['DELETE'])

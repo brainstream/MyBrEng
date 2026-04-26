@@ -25,6 +25,7 @@ interface ArtifactData {
 export class ListComponent {
     loading$: Observable<boolean>;
     artifacts$: Observable<ArtifactData[]>;
+    hasMore$: Observable<boolean>;
 
     constructor(
         titleService: TitleService,
@@ -42,6 +43,7 @@ export class ListComponent {
                     links: new ArtifactLink(a.id, a.filename)
                 })))
             );
+        this.hasMore$ = store$.select(ArtifactSelectors.hasMore);
     }
 
     onFileSelected(event: Event) {
@@ -70,5 +72,9 @@ export class ListComponent {
         if (result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(artifactsActions.deleteFile({ id: artifact.id }));
         }
+    }
+
+    loadMore(): void {
+        this.store$.dispatch(artifactsActions.loadList());
     }
 }

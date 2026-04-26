@@ -62,14 +62,18 @@ export class ArtifactsEffects {
 
     loadList$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.loadList),
-        concatLatestFrom(() => this.store$.select(ArtifactSelectors.isListLoaded)),
-        switchMap(([_, isListLoaded]) => {
-            if (isListLoaded) {
+        concatLatestFrom(() => [
+            this.store$.select(ArtifactSelectors.isListLoaded),
+            this.store$.select(ArtifactSelectors.hasMore),
+            this.store$.select(ArtifactSelectors.list)
+        ]),
+        switchMap(([_, isListLoaded, hasMore, list]) => {
+            if (isListLoaded && !hasMore) {
                 return EMPTY;
             } else {
                 return concat(
                     of(artifactsActions.setLoading({ loading: true })),
-                    watchHttpErrors(this.artifactsService.artifactList(undefined, undefined, 'events'))
+                    watchHttpErrors(this.artifactsService.artifactList(undefined, list.length, 'events'))
                         .pipe(
                             switchMap(list => from([
                                 artifactsActions.listLoaded({ list }),

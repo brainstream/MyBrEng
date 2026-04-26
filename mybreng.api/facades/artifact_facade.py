@@ -32,12 +32,11 @@ class ArtifactFacade:
             return None
         return map_artifact_to_content_dto(artifact)
 
-    def get_list(self, owner_id: str, page_size: int, page_index: int) -> ArtifactListDto:
+    def get_list(self, owner_id: str, take: int, skip: int) -> ArtifactListDto:
         query = ArtifactTable.query.where(ArtifactTable.owner_id == owner_id)
         total_count = query.count()
-        start_index = page_index * page_size
-        page = query.order_by(ArtifactTable.upload_date.desc()).offset(start_index).limit(page_size).all()
-        return map_artifacts_to_list_dto(page, start_index, total_count)
+        page = query.order_by(ArtifactTable.upload_date.desc()).offset(skip).limit(take).all()
+        return map_artifacts_to_list_dto(page, skip, total_count)
 
     def delete_artifact(self, owner_id: str, artifact_id: str) -> bool:
         artifact = ArtifactTable.query \
