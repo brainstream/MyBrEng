@@ -1,14 +1,48 @@
+from dataclasses import dataclass
+from datetime import datetime
+
+from marshmallow import Schema, fields, post_load
+from .id import ID
+
+
+@dataclass
+class ArtifactContentDto:
+    content: bytes
+    filename: str
+    mime: str
+
+
+@dataclass
 class ArtifactDto:
-    def __init__(self, content: bytes, filename: str, mime: str):
-        self.__content = content
-        self.__filename = filename
-        self.__mime = mime
+    id: str
+    filename: str
+    mime: str
+    upload_date: datetime
 
-    def content(self):
-        return self.__content
 
-    def filename(self):
-        return self.__filename
+@dataclass
+class ArtifactListDto:
+    artifacts: list[ArtifactDto]
+    start_index: int
+    total_count: int
 
-    def mime(self):
-        return self.__mime
+
+class ArtifactDtoSchema(Schema):
+    id = ID(required=True)
+    filename = fields.String(required=True)
+    mime = fields.String(required=True)
+    upload_date = fields.DateTime(required=True, data_key='uploadDate', format='rfc')
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> ArtifactDto:
+        return ArtifactDto(**data)
+
+
+class ArtifactListDtoSchema(Schema):
+    artifacts = fields.Nested(ArtifactDtoSchema, many=True)
+    start_index = fields.Integer(required=True, data_key='startIndex')
+    total_count = fields.Integer(required=True, data_key='totalCount')
+
+    @post_load
+    def make_dto(self, data, **kwargs) -> ArtifactListDtoSchema:
+        return ArtifactListDtoSchema(**data)

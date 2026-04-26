@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.mysql import MEDIUMBLOB
-
+from sqlalchemy.orm import deferred
 
 db = SQLAlchemy()
 
@@ -131,7 +131,8 @@ class ArtifactTable(db.Model):
     owner_id = db.Column('owner', db.ForeignKey('user.id'))
     mime = db.Column('mime', db.String(150))
     name = db.Column('name', db.String(250))
-    content = db.Column('content', MEDIUMBLOB())
+    upload_date = db.Column('upload_date', db.Date())
+    content = deferred(db.Column('content', MEDIUMBLOB()))
 
     def __repr__(self):
         return f'<Artifact: {self.id}>'

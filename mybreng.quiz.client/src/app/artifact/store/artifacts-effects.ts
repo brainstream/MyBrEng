@@ -38,11 +38,11 @@ export class ArtifactsEffects {
             of(artifactsActions.setLoading({ loading: true })),
             watchHttpErrors(this.artifactsService.artifactUpload(file, 'events'))
                 .pipe(
-                    switchMap(id => from([
-                        artifactsActions.fileUploaded({ id }),
+                    switchMap(dto => from([
+                        artifactsActions.fileUploaded({ id: dto.id }),
                         artifactsActions.flushEvents({
                             events: [
-                                this.eventsService.artifactSaved$.postpone({ id })
+                                this.eventsService.artifactSaved$.postpone({ id: dto.id }),
                             ]
                         }),
                         artifactsActions.setLoading({ loading: false })

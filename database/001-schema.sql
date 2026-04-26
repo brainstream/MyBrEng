@@ -117,10 +117,11 @@ CREATE TABLE `run_answer` (
 
 CREATE TABLE `artifact` (
   `id` char(38) NOT NULL,
+  `owner` char(38) DEFAULT NULL,
   `mime` varchar(150) DEFAULT NULL,
   `name` varchar(250) DEFAULT NULL,
+  `upload_date` datetime DEFAULT NULL,
   `content` MEDIUMBLOB DEFAULT NULL,
-  `owner` char(38) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_artifact_owner` (`owner`),
   CONSTRAINT `fk_artifact_owner` FOREIGN KEY (`owner`) REFERENCES `user` (`id`)

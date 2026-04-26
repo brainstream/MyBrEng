@@ -1,15 +1,15 @@
-import urllib
-
 from dependency_injector.wiring import inject, Provide
-from flask import Blueprint, request, make_response
-from flask_login import current_user
+from flask import Blueprint, request, make_response, jsonify
+from flask_login import current_user, login_required
 
 from di import DI
+from dtos import ArtifactListDtoSchema, ArtifactListQueryDtoSchema, ArtifactDtoSchema
 from facades import ArtifactFacade
 
 artifact_blueprint = Blueprint('artifact', __name__)
 
 @artifact_blueprint.route('/', methods=['POST'])
+@login_required
 @inject
 def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade]):
     """
@@ -33,10 +33,9 @@ def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade
         200:
           description: File successfully uploaded
           content:
-            text/plain:
-              schema:
-                type: string
-                format: uuid
+          content:
+            application/json:
+              schema: ArtifactDto
         400:
           description: No file part or invalid request
     """
@@ -45,18 +44,18 @@ def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade
     file = request.files['file']
     if file.name == '':
         return make_response('No selected file', 401)
-    artifact_id = artifact_facade.upload(current_user.id, file)
-    response = make_response(artifact_id, 200)
-    response.headers.set('Content-Type', 'text/plain')
-    return response
+    schema = ArtifactDtoSchema()
+    artifact = artifact_facade.upload(current_user.id, file)
+    return jsonify(schema.dump(artifact))
 
 @artifact_blueprint.route('/<artifact_id>', methods=['GET'])
 @inject
-def artifact_get(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.artifact_facade]):
+# anonymous access allowed
+def artifact_content(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.artifact_facade]):
     """
     ---
     get:
-      operationId: artifact_get
+      operationId: artifact_content
       tags: [Artifacts]
       description: Returns an artifact content
       parameters:
@@ -77,11 +76,48 @@ def artifact_get(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.
         404:
           description: An Artifact with specified ID not found
     """
-    artifact = artifact_facade.get(current_user.id, artifact_id)
+    artifact = artifact_facade.get_content(current_user.id, artifact_id)
     if artifact is None:
         return make_response(404, '')
-    encoded_filename = urllib.parse.quote(artifact.filename(), encoding='utf-8')
-    response = make_response(artifact.content(), 200)
-    response.headers.set('Content-Type', artifact.mime())
-    response.headers.set('Content-Disposition', f'attachment; filename*=UTF-8\'\'{encoded_filename}')
+    response = make_response(artifact.content, 200)
+    response.headers.set('Content-Type', artifact.mime)
     return response
+
+@artifact_blueprint.route('/list', methods=['GET'])
+@login_required
+@inject
+def artifact_list(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade]):
+    """
+    ---
+    get:
+      operationId: artifact_list
+      tags: [Artifacts]
+      description: Returns a paginated list of all user artifacts
+      parameters:
+        - in: query
+          name: pageSize
+          required: false
+          description: Count of records to return
+          schema:
+             type: int
+             default: 50
+        - in: query
+          name: pageIndex
+          required: false
+          description: Page index
+          schema:
+             type: int
+             default: 0
+      responses:
+        200:
+          description: List of artifacts
+          content:
+            application/json:
+              schema:
+                items: ArtifactListDto
+    """
+    request_schema = ArtifactListQueryDtoSchema()
+    query = request_schema.load(request.args)
+    schema = ArtifactListDtoSchema()
+    result = artifact_facade.get_list(current_user.id, query.page_size, query.page_index)
+    return jsonify(schema.dump(result))

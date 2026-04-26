@@ -36,7 +36,8 @@ from blueprints import \
     tag_save, \
     tag_delete, \
     artifact_upload, \
-    artifact_get
+    artifact_content, \
+    artifact_list
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -60,7 +61,9 @@ from dtos import \
     RunFinishQuestionDtoSchema, \
     RunReportAnswerDtoSchema, \
     TagDtoSchema, \
-    TagEditDtoSchema
+    TagEditDtoSchema, \
+    ArtifactDtoSchema, \
+    ArtifactListDtoSchema
 from di import DI
 from database import db
 
@@ -112,7 +115,9 @@ def create_app() -> Flask:
         .schema('StudentEditDto', schema=StudentEditDtoSchema) \
         .schema('StudentNoteEditDto', schema=StudentNoteEditDtoSchema) \
         .schema('RunFinishQuestionDto', schema=RunFinishQuestionDtoSchema) \
-        .schema('RunFinishDto', schema=RunFinishDtoSchema)
+        .schema('RunFinishDto', schema=RunFinishDtoSchema) \
+        .schema('ArtifactDto', schema=ArtifactDtoSchema) \
+        .schema('ArtifactListDto', schema=ArtifactListDtoSchema)
 
     di = DI()
     flask = Flask(__name__)
@@ -152,7 +157,8 @@ def create_app() -> Flask:
         spec.path(view=tag_save)
         spec.path(view=tag_delete)
         spec.path(view=artifact_upload)
-        spec.path(view=artifact_get)
+        spec.path(view=artifact_content)
+        spec.path(view=artifact_list)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 
