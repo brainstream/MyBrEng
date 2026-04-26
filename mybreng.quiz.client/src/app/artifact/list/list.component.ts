@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ConfirmDialogButton, ConfirmDialogService, TitleService} from "@app/common";
+import {ConfirmDialogButton, ConfirmDialogService, MessageService, TitleService} from "@app/common";
 import {Store} from "@ngrx/store";
 import {map, Observable} from "rxjs";
 import {ArtifactDto} from "@app/web-api";
@@ -30,7 +30,8 @@ export class ListComponent {
     constructor(
         titleService: TitleService,
         private readonly store$: Store,
-        private readonly confirmDialog: ConfirmDialogService
+        private readonly confirmDialog: ConfirmDialogService,
+        private readonly messageService: MessageService
     ) {
         titleService.setTitle('Файлы');
         store$.dispatch(artifactsActions.loadList());
@@ -50,6 +51,10 @@ export class ListComponent {
         const input = event.target as HTMLInputElement;
         const file = input.files?.[0];
         if (file) {
+            if (file.size > 15728640) {
+                this.messageService.showError('Размер файла не должен превышать 15 МиБ');
+                return;
+            }
             this.store$.dispatch(artifactsActions.uploadFile({file}))
         }
     }

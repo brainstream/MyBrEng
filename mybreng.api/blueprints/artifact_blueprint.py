@@ -38,12 +38,16 @@ def artifact_upload(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade
               schema: ArtifactDto
         400:
           description: No file part or invalid request
+        413:
+          description: "The file size is too large, maximum size: 15 MiB"
     """
     if 'file' not in request.files:
         return make_response('No file part', 401)
     file = request.files['file']
     if file.name == '':
         return make_response('No selected file', 401)
+    if file.content_length > 15728640:
+        return make_response('The file size is too large, maximum size: 15 MiB', 413)
     schema = ArtifactDtoSchema()
     artifact = artifact_facade.upload(current_user.id, file)
     return jsonify(schema.dump(artifact))
