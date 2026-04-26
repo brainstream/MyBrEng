@@ -21,6 +21,11 @@ export const artifactsReducer = createReducer(
         ...state,
         list: [...state?.list ?? [], ...list.artifacts ?? []]
     })),
+
+    on(artifactsActions.fileDeleted, (state, { id }) => ({
+        ...state,
+        list: state.list?.filter(q => q.id !== id) ?? null
+    }))
 );
 
 function createDefaultState(): IArtifactsState {

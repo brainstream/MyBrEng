@@ -1,23 +1,26 @@
 <app-layout-full [loading]="loading$ | async" [menu]="uploadMenu">
-    <mat-card *ngFor="let data of artifacts$ | async">
-        <mat-card-header>
-            <mat-card-title>{{data.artifact.filename}}</mat-card-title>
-            <mat-card-subtitle>{{data.artifact.uploadDate | date:'medium'}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            <mat-card-subtitle class="code-section-title">Код для вставки изображения</mat-card-subtitle>
-            <code>{{data.links.markdownImage}}</code>
-        </mat-card-content>
-        <mat-card-content>
-            <mat-card-subtitle class="code-section-title">Код для вставки аудио</mat-card-subtitle>
-            <code>{{data.links.markdownAudio}}</code>
-        </mat-card-content>
-        <mat-card-footer>
+    @for (data of artifacts$ | async; track data.artifact.id) {
+        <mat-card [@collapseOnLeave]>
+            <mat-card-header>
+                <mat-card-title>{{data.artifact.filename}}</mat-card-title>
+                <mat-card-subtitle>{{data.artifact.uploadDate | date:'medium'}}</mat-card-subtitle>
+            </mat-card-header>
             <mat-card-content>
-                <a target="_blank" href="{{data.links.url}}">Открыть в новой вкладке</a>
+                <div class="code-block">
+                    <mat-card-subtitle class="code-section-title">Код для вставки изображения</mat-card-subtitle>
+                    <code>{{data.links.markdownImage}}</code>
+                </div>
+                <div class="code-block">
+                    <mat-card-subtitle class="code-section-title">Код для вставки аудио</mat-card-subtitle>
+                    <code>{{data.links.markdownAudio}}</code>
+                </div>
             </mat-card-content>
-        </mat-card-footer>
-    </mat-card>
+            <mat-card-actions class="action-panel">
+                <a mat-button target="_blank" href="{{data.links.url}}"><mat-icon>launch</mat-icon> Открыть в новой вкладке</a>
+                <button mat-button (click)="deleteFile(data.artifact)"><mat-icon>delete</mat-icon> Удалить</button>
+            </mat-card-actions>
+        </mat-card>
+    }
 </app-layout-full>
 
 <input #fileInput type="file" (change)="onFileSelected($event)" >

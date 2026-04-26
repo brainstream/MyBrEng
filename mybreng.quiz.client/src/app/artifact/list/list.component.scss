@@ -6,10 +6,24 @@
     }
 }
 
-.code-section-title {
-    margin-top: 0.9rem;
+.code-block {
+    &:first-child {
+        margin-top: 0.9rem;
+    }
+
+    margin-bottom: 0.7rem;
+
+    code {
+        display: block;
+        padding: 0.5rem 0;
+    }
 }
 
 input[type="file"] {
     display: none;
+}
+
+.action-panel {
+    display: flex;
+    justify-content: space-between;
 }

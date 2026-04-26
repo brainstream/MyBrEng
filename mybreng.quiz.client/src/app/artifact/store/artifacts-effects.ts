@@ -86,4 +86,29 @@ export class ArtifactsEffects {
             }
         })
     ));
+
+    delete$ = createEffect(() => this.actions$.pipe(
+        ofType(artifactsActions.deleteFile),
+        switchMap(({ id }) => concat(
+            of(artifactsActions.setLoading({ loading: true })),
+            watchHttpErrors(this.artifactsService.artifactDelete(id, 'events'))
+                .pipe(
+                    switchMap(_ => from([
+                        artifactsActions.fileDeleted({ id }),
+                        artifactsActions.flushEvents({
+                            events: [
+                                this.eventsService.artifactDeleted$.postpone({ id })
+                            ]
+                        }),
+                        artifactsActions.setLoading({ loading: false })
+                    ])),
+                    catchError(() => from([
+                        artifactsActions.setLoading({ loading: false }),
+                        artifactsActions.setError({
+                            message: 'Во время удаления файла произошла ошибка'
+                        })]
+                    ))
+                )
+        ))
+    ));
 }

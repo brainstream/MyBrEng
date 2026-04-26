@@ -4,4 +4,5 @@ import {Event} from "@app/shared";
 @Injectable({ providedIn: 'root' })
 export class ArtifactEventsService {
     readonly artifactSaved$ = new Event<{id: string}>();
+    readonly artifactDeleted$ = new Event<{id: string}>();
 }

@@ -1,3 +1,3 @@
 export const environment = {
-    artifactBaseUrl: ''
+    artifactBaseUrl: '/api/artifact/'
 };

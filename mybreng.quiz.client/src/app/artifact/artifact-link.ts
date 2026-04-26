@@ -4,7 +4,7 @@ export class ArtifactLink {
     private linkUrl: string;
 
     constructor(id: string, private readonly filename: string) {
-        this.linkUrl = environment.artifactBaseUrl + "/api/artifact/" + id;
+        this.linkUrl = environment.artifactBaseUrl + id;
     }
 
     get url(): string {
