@@ -41,7 +41,7 @@ export class ListComponent {
             .pipe(
                 map(artifacts => artifacts.map(a => ({
                     artifact: a,
-                    links: new ArtifactLink(a.id, a.filename)
+                    links: new ArtifactLink(a)
                 })))
             );
         this.hasMore$ = store$.select(ArtifactSelectors.hasMore);
