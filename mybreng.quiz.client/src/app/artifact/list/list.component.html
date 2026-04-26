@@ -1,0 +1,30 @@
+<app-layout-full [loading]="loading$ | async" [menu]="uploadMenu">
+    <mat-card *ngFor="let data of artifacts$ | async">
+        <mat-card-header>
+            <mat-card-title>{{data.artifact.filename}}</mat-card-title>
+            <mat-card-subtitle>{{data.artifact.uploadDate | date:'medium'}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <mat-card-subtitle class="code-section-title">Код для вставки изображения</mat-card-subtitle>
+            <code>{{data.links.markdownImage}}</code>
+        </mat-card-content>
+        <mat-card-content>
+            <mat-card-subtitle class="code-section-title">Код для вставки аудио</mat-card-subtitle>
+            <code>{{data.links.markdownAudio}}</code>
+        </mat-card-content>
+        <mat-card-footer>
+            <mat-card-content>
+                <a target="_blank" href="{{data.links.url}}">Открыть в новой вкладке</a>
+            </mat-card-content>
+        </mat-card-footer>
+    </mat-card>
+</app-layout-full>
+
+<input #fileInput type="file" (change)="onFileSelected($event)" >
+
+<mat-menu #uploadMenu="matMenu">
+    <button mat-menu-item (click)="fileInput.click()">
+        <mat-icon>upload_file</mat-icon>
+        Загрузить файл
+    </button>
+</mat-menu>

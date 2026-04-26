@@ -113,8 +113,7 @@ def artifact_list(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade])
           description: List of artifacts
           content:
             application/json:
-              schema:
-                items: ArtifactListDto
+              schema: ArtifactListDto
     """
     request_schema = ArtifactListQueryDtoSchema()
     query = request_schema.load(request.args)

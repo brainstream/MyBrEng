@@ -1,17 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import {UploadComponent} from "@app/artifact/upload";
+import {ListComponent} from "@app/artifact/list";
 
 const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        component: UploadComponent // TODO: list
-    },
-    {
-        path: 'upload',
-        pathMatch: 'full',
-        component: UploadComponent
+        component: ListComponent
     }
 ];
 

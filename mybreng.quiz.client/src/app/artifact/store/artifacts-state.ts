@@ -1,4 +1,6 @@
+import {ArtifactDto} from "@app/web-api";
+
 export interface IArtifactsState {
     readonly loadingCounter: number;
-    readonly lastUploadedFileId: string | null;
+    readonly list: ArtifactDto[] | null;
 }

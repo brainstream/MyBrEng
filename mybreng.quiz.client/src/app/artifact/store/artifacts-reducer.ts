@@ -12,15 +12,20 @@ export const artifactsReducer = createReducer(
             : (state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1)
     })),
 
-    on(artifactsActions.fileUploaded, (state, { id }) => ({
+    on(artifactsActions.fileUploaded, (state, { artifact }) => ({
         ...state,
-        lastUploadedFileId: id
-    }))
+        list: [ artifact, ...state.list ?? [] ],
+    })),
+
+    on(artifactsActions.listLoaded, (state, { list }) => ({
+        ...state,
+        list: [...state?.list ?? [], ...list.artifacts ?? []]
+    })),
 );
 
 function createDefaultState(): IArtifactsState {
     return {
         loadingCounter: 0,
-        lastUploadedFileId: null
+        list: null
     };
 }
