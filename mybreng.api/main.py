@@ -37,7 +37,8 @@ from blueprints import \
     tag_delete, \
     artifact_upload, \
     artifact_content, \
-    artifact_list
+    artifact_list, \
+    artifact_delete
 from dtos import \
     QuizDtoSchema, \
     QuizQuestionDtoSchema, \
@@ -159,6 +160,7 @@ def create_app() -> Flask:
         spec.path(view=artifact_upload)
         spec.path(view=artifact_content)
         spec.path(view=artifact_list)
+        spec.path(view=artifact_delete)
     with open('./static/swagger.json', 'w') as f:
         json.dump(spec.to_dict(), f)
 

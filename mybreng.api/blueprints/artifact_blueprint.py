@@ -121,3 +121,28 @@ def artifact_list(artifact_facade: ArtifactFacade = Provide[DI.artifact_facade])
     schema = ArtifactListDtoSchema()
     result = artifact_facade.get_list(current_user.id, query.page_size, query.page_index)
     return jsonify(schema.dump(result))
+
+@artifact_blueprint.route('/<artifact_id>', methods=['DELETE'])
+@login_required
+@inject
+def artifact_delete(artifact_id: str, artifact_facade: ArtifactFacade = Provide[DI.artifact_facade]):
+    """
+    ---
+    delete:
+      operationId: artifact_delete
+      tags: [Artifacts]
+      description: Deletes an artifact
+      parameters:
+      - in: path
+        name: artifact_id
+        schema:
+          type: string
+          format: uuid
+          description: Artifact ID to delete
+      responses:
+        200:
+          description: Artifact deleted successful
+        404:
+          description: Artifact with specified ID not found
+    """
+    return make_response('', 200 if artifact_facade.delete_artifact(current_user.id, artifact_id) else 404)

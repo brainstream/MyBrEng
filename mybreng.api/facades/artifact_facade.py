@@ -38,3 +38,13 @@ class ArtifactFacade:
         start_index = page_index * page_size
         page = query.order_by(ArtifactTable.upload_date.desc()).offset(start_index).limit(page_size).all()
         return map_artifacts_to_list_dto(page, start_index, total_count)
+
+    def delete_artifact(self, owner_id: str, artifact_id: str) -> bool:
+        artifact = ArtifactTable.query \
+            .where(ArtifactTable.owner_id == owner_id and ArtifactDto.id == artifact_id) \
+            .first()
+        if artifact is None:
+            return False
+        db.session.delete(artifact)
+        db.session.commit()
+        return True
