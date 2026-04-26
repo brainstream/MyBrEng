@@ -44,5 +44,5 @@ class ArtifactListDtoSchema(Schema):
     total_count = fields.Integer(required=True, data_key='totalCount')
 
     @post_load
-    def make_dto(self, data, **kwargs) -> ArtifactListDtoSchema:
-        return ArtifactListDtoSchema(**data)
+    def make_dto(self, data, **kwargs) -> ArtifactListDto:
+        return ArtifactListDto(**data)
