@@ -8,11 +8,17 @@
             <mat-card-content>
                 <div class="code-block">
                     <mat-card-subtitle class="code-section-title">Код для вставки изображения</mat-card-subtitle>
-                    <code>{{data.links.markdownImage}}</code>
+                    <div class="code-row">
+                        <code>{{data.links.markdownImage}}</code>
+                        <button mat-icon-button matTooltip="Копировать" [cdkCopyToClipboard]="data.links.markdownImage"><mat-icon>content_copy</mat-icon></button>
+                    </div>
                 </div>
                 <div class="code-block">
                     <mat-card-subtitle class="code-section-title">Код для вставки аудио</mat-card-subtitle>
-                    <code>{{data.links.markdownAudio}}</code>
+                    <div class="code-row">
+                        <code>{{data.links.markdownAudio}}</code>
+                        <button mat-icon-button matTooltip="Копировать" [cdkCopyToClipboard]="data.links.markdownAudio"><mat-icon>content_copy</mat-icon></button>
+                    </div>
                 </div>
             </mat-card-content>
             <mat-card-actions class="action-panel">

@@ -10,6 +10,8 @@ import {MatCardModule} from "@angular/material/card";
 import {MatIconModule} from "@angular/material/icon";
 import {ListComponent} from "@app/artifact/list";
 import {MatMenu, MatMenuItem, MatMenuModule} from "@angular/material/menu";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {ClipboardModule} from "@angular/cdk/clipboard";
 
 @NgModule({
     declarations: [
@@ -17,10 +19,12 @@ import {MatMenu, MatMenuItem, MatMenuModule} from "@angular/material/menu";
     ],
     imports: [
         CommonModule,
+        ClipboardModule,
         MatButtonModule,
         MatCardModule,
         MatIconModule,
         MatMenuModule,
+        MatTooltipModule,
         StoreModule.forFeature('artifacts', artifactsReducer),
         EffectsModule.forFeature([
             ArtifactsEffects
