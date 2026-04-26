@@ -36,7 +36,7 @@ $answer-height: 2rem;
 .answer-slot-container {
     flex-grow: 1;
     display: grid;
-    grid-template-columns: min-content auto;
+    grid-template-columns: fit-content(50%) auto;
     row-gap: 0.7rem;
     column-gap: 0.5rem;
     align-items: center;
