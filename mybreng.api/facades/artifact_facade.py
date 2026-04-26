@@ -23,9 +23,9 @@ class ArtifactFacade:
         db.session.commit()
         return map_artifact_to_dto(artifact)
 
-    def get_content(self, owner_id: str, artifact_id: str) -> ArtifactContentDto | None:
+    def get_content(self, artifact_id: str) -> ArtifactContentDto | None:
         artifact = ArtifactTable.query \
-            .where(ArtifactTable.id == artifact_id, ArtifactTable.owner_id == owner_id) \
+            .where(ArtifactTable.id == artifact_id) \
             .options(undefer(ArtifactTable.content)) \
             .first()
         if artifact is None:

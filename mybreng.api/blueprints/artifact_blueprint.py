@@ -80,7 +80,7 @@ def artifact_content(artifact_id: str, artifact_facade: ArtifactFacade = Provide
         404:
           description: An Artifact with specified ID not found
     """
-    artifact = artifact_facade.get_content(current_user.id, artifact_id)
+    artifact = artifact_facade.get_content(artifact_id)
     if artifact is None:
         return make_response(404, '')
     response = make_response(artifact.content, 200)
