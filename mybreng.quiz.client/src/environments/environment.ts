@@ -1,3 +1,3 @@
 export const environment = {
-    artifactBaseUrl: 'https://api.mybreng.ru/api/artifact/'
+    artifactBaseUrl: 'https://api.mybreng.com/api/artifact/'
 };
