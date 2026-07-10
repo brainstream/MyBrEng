@@ -6,18 +6,18 @@ import { tagsActions, TagsEventsService } from '../store';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RGBA } from '@app/shared';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { NgxColorsModule } from 'ngx-colors';
 
 @Component({
     selector: 'app-tag-edit-form',
     templateUrl: './tag-edit-form.component.html',
     styleUrl: './tag-edit-form.component.scss',
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, NgxColorsModule]
+    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatCheckbox, MatSuffix, MatButton, MatIcon, NgxColorsModule]
 })
 export class TagEditFormComponent implements OnInit, OnDestroy {
     private readonly tagId?: string;

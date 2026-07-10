@@ -9,23 +9,22 @@ import {
 } from '@angular/core';
 import { ThemeService } from '@app/common';
 import { MatDialog } from '@angular/material/dialog';
-import { MatMenu } from '@angular/material/menu';
 import { AuthService } from '@app/auth/auth.service';
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDrawerContainer, MatDrawer } from '@angular/material/sidenav';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-layout-full',
     templateUrl: './layout-full.component.html',
     styleUrls: ['./layout-full.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    imports: [NgIf, NgTemplateOutlet, RouterLink, RouterLinkActive, MatToolbarModule, MatIconModule, MatButtonModule, MatMenuModule, MatSidenavModule, MatProgressSpinnerModule]
+    imports: [NgIf, NgTemplateOutlet, RouterLink, RouterLinkActive, MatToolbar, MatIcon, MatIconButton, MatButton, MatMenuTrigger, MatMenu, MatMenuItem, MatDrawerContainer, MatDrawer, MatProgressSpinner]
 })
 export class LayoutFullComponent implements AfterViewInit {
     @Input() menu: MatMenu | null = null;

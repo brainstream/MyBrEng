@@ -2,16 +2,16 @@ import { Component, Inject } from '@angular/core';
 import { IConfirmationDialogData } from './confirmation-dialog-data';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ConfirmDialogButton, IConfirmationDialogResult } from './confirmation_dialog-result';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 
 
 @Component({
     selector: 'app-confirm-dialog',
     templateUrl: './confirm-dialog.component.html',
     styleUrls: ['./confirm-dialog.component.scss'],
-    imports: [MatButtonModule, MatIconModule, MatDividerModule]
+    imports: [MatButton, MatIcon, MatDivider]
 })
 export class ConfirmDialogComponent {
     readonly text: string;

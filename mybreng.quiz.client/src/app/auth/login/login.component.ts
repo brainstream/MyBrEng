@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogContent, MatDialogTitle, MatDialogActions } from '@angular/material/dialog';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [NgIf, FormsModule, MatDialogModule, MatInputModule, MatFormFieldModule, MatButtonModule, MatProgressSpinnerModule]
+    imports: [NgIf, FormsModule, MatDialogContent, MatDialogTitle, MatDialogActions, MatProgressSpinner, MatFormField, MatLabel, MatInput, MatButton]
 })
 export class LoginComponent {
     email: string;

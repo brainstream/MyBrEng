@@ -6,16 +6,17 @@ import { TagEditFormComponent } from '../tag-edit-form';
 import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
 import { Store } from '@ngrx/store';
 import { tagsActions } from '../store';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCard } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
 
 @Component({
     selector: 'app-tag-list-item',
     templateUrl: './tag-list-item.component.html',
     styleUrl: './tag-list-item.component.scss',
-    imports: [MatCardModule, MatMenuModule, MatIconModule, MatTooltipModule]
+    imports: [MatCard, MatIcon, MatTooltip, MatIconButton, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class TagListItemComponent {
     private _tag: TagDto;

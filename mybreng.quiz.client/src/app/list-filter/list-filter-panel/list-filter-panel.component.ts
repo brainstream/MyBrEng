@@ -4,19 +4,19 @@ import { TagDto } from '@app/web-api';
 import { combineLatest, map, Observable, startWith, Subject, Subscription, tap } from 'rxjs';
 import { IListFilter } from '../list-filter';
 import { AsyncPipe } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
+import { MatTooltip } from '@angular/material/tooltip';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @Component({
     selector: 'app-list-filter-panel',
     templateUrl: './list-filter-panel.component.html',
     styleUrl: './list-filter-panel.component.scss',
-    imports: [FormsModule, ReactiveFormsModule, AsyncPipe, MatSelectModule, MatButtonModule, MatIconModule, MatInputModule, MatFormFieldModule, MatTooltipModule, NgxMatSelectSearchModule]
+    imports: [FormsModule, ReactiveFormsModule, AsyncPipe, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatSuffix, MatIconButton, MatIcon, MatTooltip, NgxMatSelectSearchModule]
 })
 export class ListFilterPanelComponent implements OnInit, OnDestroy {
     private tags$ = new Subject<TagDto[]>();

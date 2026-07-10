@@ -12,15 +12,15 @@ import { LayoutFullComponent } from '@app/layout';
 import { StudentListItemComponent } from '../student-list-item';
 import { ListFilterPanelComponent } from '@app/list-filter';
 import { AsyncPipe, NgFor } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatNavList } from '@angular/material/list';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-student-list',
     templateUrl: './student-list.component.html',
     styleUrls: ['./student-list.component.scss'],
-    imports: [LayoutFullComponent, StudentListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatMenuModule, MatIconModule, MatListModule]
+    imports: [LayoutFullComponent, StudentListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatNavList, MatMenu, MatMenuItem, MatIcon]
 })
 export class StudentListComponent implements OnInit, OnDestroy {
     readonly students$: Observable<StudentDto[]>;

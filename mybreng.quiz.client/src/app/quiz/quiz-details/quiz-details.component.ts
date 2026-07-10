@@ -16,8 +16,8 @@ import { QuizQuestionComponent } from '../quiz-question';
 import { QuizQuestionEditFormComponent } from '../quiz-question-edit-form';
 import { TagPaneComponent } from '@app/tag';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-quiz-details',
@@ -26,7 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
     animations: [
         collapseOnLeaveAnimation()
     ],
-    imports: [LayoutFullComponent, QuizQuestionComponent, QuizQuestionEditFormComponent, TagPaneComponent, AsyncPipe, NgFor, NgIf, MatMenuModule, MatIconModule]
+    imports: [LayoutFullComponent, QuizQuestionComponent, QuizQuestionEditFormComponent, TagPaneComponent, AsyncPipe, NgFor, NgIf, MatMenu, MatMenuItem, MatIcon]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

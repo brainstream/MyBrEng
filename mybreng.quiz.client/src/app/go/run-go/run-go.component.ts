@@ -3,9 +3,9 @@ import { RunDto, RunQuestionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { goActions } from '../store';
 import { RunQuestionComponent } from '../run-question';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatCard, MatCardHeader, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 
 interface QuestionData {
@@ -17,7 +17,7 @@ interface QuestionData {
     selector: 'app-run-go',
     templateUrl: './run-go.component.html',
     styleUrls: ['./run-go.component.scss'],
-    imports: [RunQuestionComponent, MatCardModule, MatButtonModule, MatIconModule, NgIf]
+    imports: [RunQuestionComponent, MatCard, MatCardHeader, MatCardSubtitle, MatCardContent, MatButton, MatIcon, NgIf]
 })
 export class RunGoComponent {
     private _run: RunDto;

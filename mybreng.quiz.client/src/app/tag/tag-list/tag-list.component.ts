@@ -10,9 +10,9 @@ import { TitleService } from '@app/common';
 import { LayoutFullComponent } from '@app/layout';
 import { TagListItemComponent } from '../tag-list-item';
 import { AsyncPipe } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatNavList } from '@angular/material/list';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-tag-list',
@@ -21,7 +21,7 @@ import { MatListModule } from '@angular/material/list';
     animations: [
         collapseOnLeaveAnimation()
     ],
-    imports: [LayoutFullComponent, TagListItemComponent, AsyncPipe, MatMenuModule, MatIconModule, MatListModule]
+    imports: [LayoutFullComponent, TagListItemComponent, AsyncPipe, MatNavList, MatMenu, MatMenuItem, MatIcon]
 })
 export class TagListComponent {
     loading$: Observable<boolean>;

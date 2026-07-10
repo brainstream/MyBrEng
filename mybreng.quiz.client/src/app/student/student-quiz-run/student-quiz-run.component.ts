@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { RunSummaryDto } from '@app/web-api';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter, MatCardActions } from '@angular/material/card';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DatePipe, NgIf } from '@angular/common';
 
@@ -13,7 +13,7 @@ import { DatePipe, NgIf } from '@angular/common';
     selector: 'app-student-quiz-run',
     templateUrl: './student-quiz-run.component.html',
     styleUrls: ['./student-quiz-run.component.scss'],
-    imports: [RouterLink, MatCardModule, MatButtonModule, MatMenuModule, MatIconModule, MatDividerModule, ClipboardModule, DatePipe, NgIf]
+    imports: [RouterLink, MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter, MatCardActions, MatIconButton, MatMenuTrigger, MatIcon, MatButton, MatDivider, MatMenu, MatMenuItem, ClipboardModule, DatePipe, NgIf]
 })
 export class StudentQuizRunComponent {
     private _run: RunSummaryDto | null = null;

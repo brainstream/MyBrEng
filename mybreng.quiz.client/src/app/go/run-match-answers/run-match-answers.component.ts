@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIcon } from '@angular/material/icon';
 
 
 interface AnswerData {
@@ -25,7 +25,7 @@ interface Data {
     selector: 'app-run-match-answers',
     templateUrl: './run-match-answers.component.html',
     styleUrl: './run-match-answers.component.scss',
-    imports: [MatIconModule, DragDropModule]
+    imports: [MatIcon, DragDropModule]
 })
 export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     private isComplete: boolean = false;

@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { StudentDto } from '@app/web-api';
 import { TagPaneComponent } from '@app/tag';
-import { MatCardModule } from '@angular/material/card';
-import { MatListModule } from '@angular/material/list';
+import { MatCard } from '@angular/material/card';
+import { MatListItem } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 
 
@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-student-list-item',
     templateUrl: './student-list-item.component.html',
     styleUrls: ['./student-list-item.component.scss'],
-    imports: [TagPaneComponent, MatCardModule, MatListModule, RouterLink]
+    imports: [TagPaneComponent, MatCard, MatListItem, RouterLink]
 })
 export class StudentListItemComponent {
     @Input() student: StudentDto;

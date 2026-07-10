@@ -8,11 +8,11 @@ import {artifactsActions} from "@app/artifact/store/artifacts-actions";
 import {ArtifactLink} from "@app/artifact";
 import {collapseOnLeaveAnimation} from "angular-animations";
 import {LayoutFullComponent} from "@app/layout";
-import {MatCardModule} from "@angular/material/card";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import {MatMenuModule} from "@angular/material/menu";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions} from "@angular/material/card";
+import {MatIconButton, MatButton} from "@angular/material/button";
+import {MatIcon} from "@angular/material/icon";
+import {MatMenu, MatMenuItem} from "@angular/material/menu";
+import {MatTooltip} from "@angular/material/tooltip";
 import {ClipboardModule} from "@angular/cdk/clipboard";
 import {AsyncPipe, DatePipe} from "@angular/common";
 
@@ -28,7 +28,7 @@ interface ArtifactData {
     animations: [
         collapseOnLeaveAnimation()
     ],
-    imports: [LayoutFullComponent, MatCardModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule, ClipboardModule, AsyncPipe, DatePipe]
+    imports: [LayoutFullComponent, MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardActions, MatIconButton, MatTooltip, MatIcon, MatButton, MatMenu, MatMenuItem, ClipboardModule, AsyncPipe, DatePipe]
 })
 export class ListComponent {
     loading$: Observable<boolean>;

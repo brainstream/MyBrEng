@@ -12,15 +12,15 @@ import { LayoutFullComponent } from '@app/layout';
 import { QuizListItemComponent } from '../quiz-list-item';
 import { ListFilterPanelComponent } from '@app/list-filter';
 import { AsyncPipe, NgFor } from '@angular/common';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatNavList } from '@angular/material/list';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-quiz-list',
     templateUrl: './quiz-list.component.html',
     styleUrls: ['./quiz-list.component.scss'],
-    imports: [LayoutFullComponent, QuizListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatMenuModule, MatIconModule, MatListModule]
+    imports: [LayoutFullComponent, QuizListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatNavList, MatMenu, MatMenuItem, MatIcon]
 })
 export class QuizListComponent implements OnInit, OnDestroy {
     private quizCreatedSubscription: Subscription | undefined;

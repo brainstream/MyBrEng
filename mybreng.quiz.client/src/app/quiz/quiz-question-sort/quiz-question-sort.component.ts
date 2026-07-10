@@ -1,14 +1,14 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
 import { IQuizQuestionSortData } from './quiz-question-sort-data';
 import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
 import { QuizQuestionPositionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { QuizzesEventsService, quizzesActions } from '../store';
 import { Subscription } from 'rxjs';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { NgFor } from '@angular/common';
 
 interface IQuestionData {
@@ -20,7 +20,7 @@ interface IQuestionData {
     selector: 'app-quiz-question-sort',
     templateUrl: './quiz-question-sort.component.html',
     styleUrls: ['./quiz-question-sort.component.scss'],
-    imports: [MatDialogModule, MatDividerModule, MatButtonModule, MatIconModule, DragDropModule, NgFor]
+    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatDivider, MatButton, MatIcon, DragDropModule, NgFor]
 })
 export class QuizQuestionSortComponent implements OnInit, OnDestroy {
     private readonly quizId: string;

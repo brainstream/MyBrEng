@@ -3,18 +3,18 @@ import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionDto } from '@app/web-api';
 import { MarkdownComponent } from '@app/markdown';
 import { QuestionTypeNamePipe } from '../question-type-name.pipe';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatCard, MatCardHeader, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatChip } from '@angular/material/chips';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-quiz-question',
     templateUrl: './quiz-question.component.html',
     styleUrls: ['./quiz-question.component.scss'],
-    imports: [MarkdownComponent, QuestionTypeNamePipe, MatCardModule, MatChipsModule, MatMenuModule, MatIconModule, MatButtonModule, NgFor, NgIf]
+    imports: [MarkdownComponent, QuestionTypeNamePipe, MatCard, MatCardHeader, MatChip, MatCardSubtitle, MatIconButton, MatMenuTrigger, MatIcon, MatCardContent, MatMenu, MatMenuItem, NgFor, NgIf]
 })
 export class QuizQuestionComponent {
     @Input() question: QuizQuestionDto;

@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { IQuizReportItem } from '../quiz-report';
 import { RunQuestionDto } from '@app/web-api';
 import { MarkdownComponent } from '@app/markdown';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatChip } from '@angular/material/chips';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
@@ -15,7 +15,7 @@ import { NgFor, NgIf } from '@angular/common';
     host: {
         'class': 'quiz-report-item'
     },
-    imports: [MarkdownComponent, MatCardModule, MatChipsModule, MatIconModule, MatDividerModule, NgFor, NgIf]
+    imports: [MarkdownComponent, MatCard, MatCardHeader, MatCardTitle, MatChip, MatCardSubtitle, MatIcon, MatDivider, MatCardContent, NgFor, NgIf]
 })
 export class QuizReportItemComponent {
     @Input() data: IQuizReportItem;

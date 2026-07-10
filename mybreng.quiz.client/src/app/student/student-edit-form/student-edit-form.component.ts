@@ -5,11 +5,11 @@ import { StudentDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { StudentsEventsService, StudentsSelectors, studentsActions } from '../store';
 import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AsyncPipe } from '@angular/common';
 
@@ -17,7 +17,7 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-student-edit-form',
     templateUrl: './student-edit-form.component.html',
     styleUrls: ['./student-edit-form.component.scss'],
-    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, NgxMatSelectSearchModule, AsyncPipe]
+    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatButton, MatIcon, NgxMatSelectSearchModule, AsyncPipe]
 })
 export class StudentEditFormComponent implements OnInit, OnDestroy {
     private readonly studentId?: string;

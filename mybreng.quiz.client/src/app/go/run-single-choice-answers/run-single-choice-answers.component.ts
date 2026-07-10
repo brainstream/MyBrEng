@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 
@@ -8,7 +8,7 @@ import { NgFor } from '@angular/common';
     selector: 'app-run-single-choice-answers',
     templateUrl: './run-single-choice-answers.component.html',
     styleUrls: ['./run-single-choice-answers.component.scss'],
-    imports: [MatRadioModule, FormsModule, NgFor]
+    imports: [MatRadioGroup, MatRadioButton, FormsModule, NgFor]
 })
 export class RunSingleChoiceAnswersComponent {
     _answer: string;
