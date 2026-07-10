@@ -9,6 +9,13 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { StudentAddRunFormComponent } from '../student-add-run-form';
 import { collapseOnLeaveAnimation } from 'angular-animations';
+import { LayoutFullComponent } from '@app/layout';
+import { TagPaneComponent } from '@app/tag';
+import { StudentNoteComponent } from '../student-note';
+import { StudentQuizRunComponent } from '../student-quiz-run';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -18,7 +25,7 @@ import { collapseOnLeaveAnimation } from 'angular-animations';
     animations: [
         collapseOnLeaveAnimation()
     ],
-    standalone: false
+    imports: [LayoutFullComponent, TagPaneComponent, StudentNoteComponent, StudentQuizRunComponent, AsyncPipe, NgFor, NgIf, MatMenuModule, MatIconModule]
 })
 export class StudentDetailsComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

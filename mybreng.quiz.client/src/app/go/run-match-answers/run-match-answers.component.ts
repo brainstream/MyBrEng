@@ -1,8 +1,10 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+
 
 interface AnswerData {
     text: string;
@@ -21,9 +23,9 @@ interface Data {
 
 @Component({
     selector: 'app-run-match-answers',
-    standalone: false,
     templateUrl: './run-match-answers.component.html',
     styleUrl: './run-match-answers.component.scss',
+    imports: [MatIconModule, DragDropModule]
 })
 export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     private isComplete: boolean = false;

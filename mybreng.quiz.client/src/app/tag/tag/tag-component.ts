@@ -6,7 +6,7 @@ import { TagColor } from "../tag-color";
     selector: 'app-tag',
     templateUrl: './tag.component.html',
     styleUrls: ['./tag.component.scss'],
-    standalone: false
+    imports: []
 })
 export class TagComponent {
     color: TagColor;

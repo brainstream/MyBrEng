@@ -3,7 +3,6 @@ import { MarkdownService } from './markdown.service';
 
 @Pipe({
     name: 'markdown',
-    standalone: false
 })
 export class MarkdownPipe implements PipeTransform {
     constructor(private readonly markdown: MarkdownService) {

@@ -5,12 +5,17 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { GoSelectors, goActions } from '../store';
 import { RunDto } from '@app/web-api';
 import { TitleService } from '@app/common';
+import { LayoutSimpleComponent } from '@app/layout';
+import { RunGoComponent } from '../run-go';
+import { RunNotFoundMessageComponent } from '../run-not-found-message';
+import { QuizReportComponent } from '@app/quiz-report';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-run',
     templateUrl: './run.component.html',
     styleUrls: ['./run.component.scss'],
-    standalone: false
+    imports: [LayoutSimpleComponent, RunGoComponent, RunNotFoundMessageComponent, QuizReportComponent, AsyncPipe, NgIf]
 })
 export class RunComponent implements OnInit, OnDestroy {
     private readonly subscriptions: Subscription[] = [];

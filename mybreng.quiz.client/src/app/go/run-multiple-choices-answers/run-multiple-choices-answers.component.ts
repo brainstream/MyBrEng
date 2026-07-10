@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-run-multiple-choices-answers',
     templateUrl: './run-multiple-choices-answers.component.html',
     styleUrls: ['./run-multiple-choices-answers.component.scss'],
-    standalone: false
+    imports: [MatCheckboxModule, NgFor]
 })
 export class RunMultipleChoicesAnswersComponent  {
     private _checkedAnswers: string[] = [];

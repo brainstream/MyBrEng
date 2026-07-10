@@ -1,12 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RunSummaryDto } from '@app/web-api';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DatePipe, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-student-quiz-run',
     templateUrl: './student-quiz-run.component.html',
     styleUrls: ['./student-quiz-run.component.scss'],
-    standalone: false
+    imports: [RouterLink, MatCardModule, MatButtonModule, MatMenuModule, MatIconModule, MatDividerModule, ClipboardModule, DatePipe, NgIf]
 })
 export class StudentQuizRunComponent {
     private _run: RunSummaryDto | null = null;

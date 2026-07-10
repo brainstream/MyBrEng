@@ -4,6 +4,9 @@ import { watchHttpErrors } from '@app/shared';
 import { ApiModule, RunDto, RunService } from '@app/web-api';
 import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 import { MessageService } from '@app/common';
+import { LayoutFullComponent } from '@app/layout';
+import { QuizReportComponent } from '../quiz-report';
+import { AsyncPipe, NgIf } from '@angular/common';
 
 @Component({
     selector: 'app-quiz-report-standalone',
@@ -12,7 +15,7 @@ import { MessageService } from '@app/common';
     providers: [
         ApiModule
     ],
-    standalone: false
+    imports: [LayoutFullComponent, QuizReportComponent, AsyncPipe, NgIf]
 })
 export class QuizReportStandaloneComponent {
     readonly run$: Observable<RunDto | null>;

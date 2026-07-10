@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
     selector: 'app-run-not-found-message',
     templateUrl: './run-not-found-message.component.html',
     styleUrls: ['./run-not-found-message.component.scss'],
-    standalone: false
+    imports: []
 })
 export class RunNotFoundMessageComponent {
 

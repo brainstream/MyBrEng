@@ -3,12 +3,21 @@ import { StudentDetailedDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { studentsActions, StudentsEventsService } from '../store';
 import { Subscription } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
+import { MarkdownPipe } from '@app/markdown';
 
 @Component({
     selector: 'app-student-note',
     templateUrl: './student-note.component.html',
     styleUrls: ['./student-note.component.scss'],
-    standalone: false
+    imports: [MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatMenuModule, MatIconModule, FormsModule, NgIf, MarkdownPipe]
 })
 export class StudentNoteComponent implements OnInit, OnDestroy {
     private _studentId: string;

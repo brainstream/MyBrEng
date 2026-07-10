@@ -8,12 +8,19 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { Router } from '@angular/router';
 import { IListFilter } from '@app/list-filter';
+import { LayoutFullComponent } from '@app/layout';
+import { StudentListItemComponent } from '../student-list-item';
+import { ListFilterPanelComponent } from '@app/list-filter';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
     selector: 'app-student-list',
     templateUrl: './student-list.component.html',
     styleUrls: ['./student-list.component.scss'],
-    standalone: false
+    imports: [LayoutFullComponent, StudentListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatMenuModule, MatIconModule, MatListModule]
 })
 export class StudentListComponent implements OnInit, OnDestroy {
     readonly students$: Observable<StudentDto[]>;

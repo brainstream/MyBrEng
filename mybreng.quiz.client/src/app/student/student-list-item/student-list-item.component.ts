@@ -1,11 +1,16 @@
 import { Component, Input } from '@angular/core';
 import { StudentDto } from '@app/web-api';
+import { TagPaneComponent } from '@app/tag';
+import { MatCardModule } from '@angular/material/card';
+import { MatListModule } from '@angular/material/list';
+import { RouterLink } from '@angular/router';
+
 
 @Component({
     selector: 'app-student-list-item',
     templateUrl: './student-list-item.component.html',
     styleUrls: ['./student-list-item.component.scss'],
-    standalone: false
+    imports: [TagPaneComponent, MatCardModule, MatListModule, RouterLink]
 })
 export class StudentListItemComponent {
     @Input() student: StudentDto;

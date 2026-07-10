@@ -1,16 +1,23 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { StudentDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { StudentsEventsService, StudentsSelectors, studentsActions } from '../store';
 import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-student-edit-form',
     templateUrl: './student-edit-form.component.html',
     styleUrls: ['./student-edit-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, NgxMatSelectSearchModule, AsyncPipe]
 })
 export class StudentEditFormComponent implements OnInit, OnDestroy {
     private readonly studentId?: string;

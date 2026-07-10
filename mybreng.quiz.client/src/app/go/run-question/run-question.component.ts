@@ -1,11 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto, RunQuestionDto } from '@app/web-api';
+import { MarkdownComponent } from '@app/markdown';
+import { RunFreeTextAnswerComponent } from '../run-free-text-answer';
+import { RunMultipleChoicesAnswersComponent } from '../run-multiple-choices-answers';
+import { RunSingleChoiceAnswersComponent } from '../run-single-choice-answers';
+import { RunMatchAnswersComponent } from '../run-match-answers';
+
 
 @Component({
     selector: 'app-run-question',
     templateUrl: './run-question.component.html',
     styleUrls: ['./run-question.component.scss'],
-    standalone: false
+    imports: [MarkdownComponent, RunFreeTextAnswerComponent, RunMultipleChoicesAnswersComponent, RunSingleChoiceAnswersComponent, RunMatchAnswersComponent]
 })
 export class RunQuestionComponent {
     @Input() question: RunQuestionDto;

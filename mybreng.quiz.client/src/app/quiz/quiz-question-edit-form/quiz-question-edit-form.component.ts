@@ -1,17 +1,24 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
-import { AbstractControl } from '@angular/forms';
-import { Validators } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, ValidationErrors, AbstractControl, Validators, FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
+import { QuestionTypeNamePipe } from '../question-type-name.pipe';
 
 
 @Component({
     selector: 'app-quiz-question-edit-form',
     templateUrl: './quiz-question-edit-form.component.html',
     styleUrls: ['./quiz-question-edit-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatCheckboxModule, MatTooltipModule, MatButtonModule, MatIconModule, NgFor, NgIf, QuestionTypeNamePipe]
 })
 export class QuizQuestionEditFormComponent {
     private questionId?: string;

@@ -1,17 +1,24 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { QuizzesEventsService, QuizzesSelectors, quizzesActions } from '../store';
 import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-quiz-edit-form',
     templateUrl: './quiz-edit-form.component.html',
     styleUrls: ['./quiz-edit-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule, NgxMatSelectSearchModule, AsyncPipe]
 })
 export class QuizEditFormComponent implements OnInit, OnDestroy {
     private savedSubscription: Subscription | null = null;

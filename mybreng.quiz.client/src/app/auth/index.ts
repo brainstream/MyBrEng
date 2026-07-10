@@ -1,3 +1,3 @@
-export * from './auth.interceptor';
-export * from './auth.module';
+export { authInterceptor } from './auth.interceptor';
 export * from './login';
+export * from './auth.service';

@@ -4,13 +4,19 @@ import { StudentsEventsService, StudentsSelectors, studentsActions } from '../st
 import { combineLatest, map, Observable, startWith, Subscription } from 'rxjs';
 import { QuizDto } from '@app/web-api';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-student-add-run-form',
     templateUrl: './student-add-run-form.component.html',
     styleUrls: ['./student-add-run-form.component.scss'],
-    standalone: false
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatButtonModule, MatIconModule, AsyncPipe]
 })
 export class StudentAddRunFormComponent implements OnInit, OnDestroy {
     private createdSubscription: Subscription | null = null;

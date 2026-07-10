@@ -3,7 +3,6 @@ import { QuizQuestionDto } from '@app/web-api';
 
 @Pipe({
     name: 'questionTypeName',
-    standalone: false
 })
 export class QuestionTypeNamePipe implements PipeTransform {
     transform(value: QuizQuestionDto.QuestionTypeEnum): string {

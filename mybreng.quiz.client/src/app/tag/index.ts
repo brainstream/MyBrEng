@@ -1,4 +1,3 @@
-export * from './tags.module';
 export * from './tag';
 export * from './tag-pane';
 export * from './tag-list';

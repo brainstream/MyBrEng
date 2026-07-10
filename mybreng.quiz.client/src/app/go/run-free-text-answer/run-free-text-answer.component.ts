@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-run-free-text-answer',
     templateUrl: './run-free-text-answer.component.html',
     styleUrls: ['./run-free-text-answer.component.scss'],
-    standalone: false
+    imports: [MatFormFieldModule, MatInputModule, FormsModule]
 })
 export class RunFreeTextAnswerComponent {
     @Input() answer: string;

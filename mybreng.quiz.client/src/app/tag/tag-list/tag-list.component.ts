@@ -7,15 +7,21 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { TagEditFormComponent } from '../tag-edit-form';
 import { collapseOnLeaveAnimation } from 'angular-animations';
 import { TitleService } from '@app/common';
+import { LayoutFullComponent } from '@app/layout';
+import { TagListItemComponent } from '../tag-list-item';
+import { AsyncPipe } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
     selector: 'app-tag-list',
-    standalone: false,
     templateUrl: './tag-list.component.html',
     styleUrl: './tag-list.component.scss',
     animations: [
         collapseOnLeaveAnimation()
     ],
+    imports: [LayoutFullComponent, TagListItemComponent, AsyncPipe, MatMenuModule, MatIconModule, MatListModule]
 })
 export class TagListComponent {
     loading$: Observable<boolean>;

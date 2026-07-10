@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
+import { MatRadioModule } from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'app-run-single-choice-answers',
     templateUrl: './run-single-choice-answers.component.html',
     styleUrls: ['./run-single-choice-answers.component.scss'],
-    standalone: false
+    imports: [MatRadioModule, FormsModule, NgFor]
 })
 export class RunSingleChoiceAnswersComponent {
     _answer: string;

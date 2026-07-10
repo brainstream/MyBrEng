@@ -8,12 +8,19 @@ import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
 import { IListFilter } from '@app/list-filter';
+import { LayoutFullComponent } from '@app/layout';
+import { QuizListItemComponent } from '../quiz-list-item';
+import { ListFilterPanelComponent } from '@app/list-filter';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
     selector: 'app-quiz-list',
     templateUrl: './quiz-list.component.html',
     styleUrls: ['./quiz-list.component.scss'],
-    standalone: false
+    imports: [LayoutFullComponent, QuizListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatMenuModule, MatIconModule, MatListModule]
 })
 export class QuizListComponent implements OnInit, OnDestroy {
     private quizCreatedSubscription: Subscription | undefined;

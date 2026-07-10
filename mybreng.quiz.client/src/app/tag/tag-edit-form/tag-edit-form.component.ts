@@ -3,15 +3,21 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bott
 import { TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { tagsActions, TagsEventsService } from '../store';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RGBA } from '@app/shared';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxColorsModule } from 'ngx-colors';
 
 @Component({
     selector: 'app-tag-edit-form',
-    standalone: false,
     templateUrl: './tag-edit-form.component.html',
-    styleUrl: './tag-edit-form.component.scss'
+    styleUrl: './tag-edit-form.component.scss',
+    imports: [FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatCheckboxModule, MatButtonModule, MatIconModule, NgxColorsModule]
 })
 export class TagEditFormComponent implements OnInit, OnDestroy {
     private readonly tagId?: string;
