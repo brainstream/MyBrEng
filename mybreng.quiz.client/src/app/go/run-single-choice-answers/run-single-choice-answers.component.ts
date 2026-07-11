@@ -14,7 +14,7 @@ export class RunSingleChoiceAnswersComponent {
     @Input() public variants: RunAnswerVariantDto[];
     @Output() public answerChange = new EventEmitter<string>();
     @Output() public complete = new EventEmitter<boolean>();
-    private _answer: string;
+    public _answer: string;
 
     @Input() public set answer(value: string) {
         this.setAnswer(value);

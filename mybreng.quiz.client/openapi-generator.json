@@ -3,5 +3,8 @@
     "outputDir": "./src/app/web-api",
     "generatorName": "typescript-angular",
     "supportsES6": true,
-    "fileNaming": "kebab-case"
+    "fileNaming": "kebab-case",
+    "additionalProperties": {
+        "ngVersion": "19.0.0"
+    }
 }
