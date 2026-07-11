@@ -1,27 +1,27 @@
 export class RGBA {
     constructor(
-        public r: number = 0,
-        public g: number = 0,
-        public b: number = 0,
-        public a: number = 1
+        public r = 0,
+        public g = 0,
+        public b = 0,
+        public a = 1
     ) {
     }
 
-    static parseRgbaString(value: string): RGBA | null {
-        const rgba = value.match(/[\d\.]+/g)?.map(Number);
-        return rgba == undefined || rgba.length < 3 ? null : new RGBA(...rgba);
+    public static parseRgbaString(value: string): RGBA | null {
+        const rgba = value.match(/[\d.]+/g)?.map(Number);
+        return rgba === undefined || rgba.length < 3 ? null : new RGBA(...rgba);
     }
 
-    static fromInt32(color: number): RGBA {
-        let int32Color = color | 0; // to signed int32
-        let a = (int32Color & 0xFF) / 255;
-        let b = (int32Color >> 8) & 0xFF;
-        let g = (int32Color >> 16) & 0xFF;
-        let r = (int32Color >> 24) & 0xFF;
+    public static fromInt32(color: number): RGBA {
+        const int32Color = color | 0; // to signed int32
+        const a = (int32Color & 0xFF) / 255;
+        const b = (int32Color >> 8) & 0xFF;
+        const g = (int32Color >> 16) & 0xFF;
+        const r = (int32Color >> 24) & 0xFF;
         return new RGBA(r, g, b, a);
     }
 
-    toInt32() {
+    public toInt32(): number {
         let num = this.r;
         num <<= 8;
         num |= this.g;
@@ -32,9 +32,9 @@ export class RGBA {
         return num | 0; // to signed int32
     }
 
-    toRgbaString(): string {
-        return this.a == 1
-            ? `rgb(${this.r},${this.g},${this.b})`
-            : `rgba(${this.r},${this.g},${this.b},${this.a.toFixed(2)})`;
+    public toRgbaString(): string {
+        return this.a === 1 ?
+            `rgb(${this.r},${this.g},${this.b})` :
+            `rgba(${this.r},${this.g},${this.b},${this.a.toFixed(2)})`;
     }
 }

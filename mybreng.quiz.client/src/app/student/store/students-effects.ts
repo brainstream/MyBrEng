@@ -1,20 +1,20 @@
-import { Injectable } from "@angular/core";
-import { QuizService, RunService, StudentService, TagService } from "@app/web-api";
+import { Injectable } from '@angular/core';
+import { QuizService, RunService, StudentService, TagService } from '@app/web-api';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { Store } from "@ngrx/store";
-import { concat, EMPTY, switchMap, of, catchError, tap, from } from "rxjs";
-import { watchHttpErrors } from "@app/shared";
-import { MessageService } from "@app/common";
-import { studentsActions } from "./students-actions";
-import { StudentsSelectors } from "./students-selectors";
-import { StudentsEventsService } from "./students-events.service";
+import { Store } from '@ngrx/store';
+import { catchError, concat, EMPTY, from, of, switchMap, tap } from 'rxjs';
+import { watchHttpErrors } from '@app/shared';
+import { MessageService } from '@app/common';
+import { studentsActions } from './students-actions';
+import { StudentsSelectors } from './students-selectors';
+import { StudentsEventsService } from './students-events.service';
 
 @Injectable()
 export class StudentsEffects {
     constructor(
         private readonly actions$: Actions,
-        private store$: Store,
+        private readonly store$: Store,
         private readonly studentService: StudentService,
         private readonly quizService: QuizService,
         private readonly runService: RunService,
@@ -24,25 +24,25 @@ export class StudentsEffects {
     ) {
     }
 
-    showError$ = createEffect(() => this.actions$.pipe(
+    public showError$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.setError),
         tap(({ message }) => {
-            this.messageService.showError(message)
+            this.messageService.showError(message);
         })
     ), { dispatch: false });
 
-    flushEvents$ = createEffect(() => this.actions$.pipe(
+    public flushEvents$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.flushEvents),
         tap(({ events }) => {
             events.forEach(e => e.flush());
         })
     ), { dispatch: false });
 
-    loadList$ = createEffect(() => this.actions$.pipe(
+    public loadList$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadList),
         concatLatestFrom(() => this.store$.select(StudentsSelectors.isListLoaded)),
         switchMap(([_, isListLoaded]) => {
-            if (isListLoaded) {
+            if(isListLoaded) {
                 return EMPTY;
             } else {
                 return concat(
@@ -65,7 +65,7 @@ export class StudentsEffects {
         })
     ));
 
-    loadDetails$ = createEffect(() => this.actions$.pipe(
+    public loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadDetails),
         switchMap(({ id }) => concat(
             of(studentsActions.cleanDetails()),
@@ -86,7 +86,7 @@ export class StudentsEffects {
         ))
     ));
 
-    saveDetails$ = createEffect(() => this.actions$.pipe(
+    public saveDetails$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.saveDetails),
         switchMap(({ student }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -111,7 +111,7 @@ export class StudentsEffects {
         ))
     ));
 
-    loadAvailableQuizzes$ = createEffect(() => this.actions$.pipe(
+    public loadAvailableQuizzes$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadAvailableQuizzes),
         switchMap(() => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -131,7 +131,7 @@ export class StudentsEffects {
         ))
     ));
 
-    addRun$ = createEffect(() => this.actions$.pipe(
+    public addRun$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.addRun),
         switchMap(({ run }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -156,7 +156,7 @@ export class StudentsEffects {
         ))
     ));
 
-    deleteRun$ = createEffect(() => this.actions$.pipe(
+    public deleteRun$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.deleteRun),
         switchMap(({ id }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -176,7 +176,7 @@ export class StudentsEffects {
         ))
     ));
 
-    deleteStudent$ = createEffect(() => this.actions$.pipe(
+    public deleteStudent$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.deleteStudent),
         switchMap(({ id }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -195,13 +195,13 @@ export class StudentsEffects {
                         studentsActions.setLoading({ loading: false }),
                         studentsActions.setError({
                             message: 'Во время удаления ученика произошла ошибка'
-                        })]
-                    ))
+                        })
+                    ]))
                 )
         ))
     ));
 
-    setNote$ = createEffect(() => this.actions$.pipe(
+    public setNote$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.setNote),
         switchMap(({ dto }) => concat(
             of(studentsActions.setLoading({ loading: true })),
@@ -226,7 +226,7 @@ export class StudentsEffects {
         ))
     ));
 
-    loadAvailableTags$ = createEffect(() => this.actions$.pipe(
+    public loadAvailableTags$ = createEffect(() => this.actions$.pipe(
         ofType(studentsActions.loadAvailableTags),
         switchMap(() => concat(
             of(studentsActions.setLoading({ loading: true })),

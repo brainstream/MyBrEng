@@ -11,44 +11,52 @@ import { RunMatchAnswersComponent } from '../run-match-answers';
     selector: 'app-run-question',
     templateUrl: './run-question.component.html',
     styleUrls: ['./run-question.component.scss'],
-    imports: [MarkdownComponent, RunFreeTextAnswerComponent, RunMultipleChoicesAnswersComponent, RunSingleChoiceAnswersComponent, RunMatchAnswersComponent]
+    imports: [
+        MarkdownComponent,
+        RunFreeTextAnswerComponent,
+        RunMultipleChoicesAnswersComponent,
+        RunSingleChoiceAnswersComponent,
+        RunMatchAnswersComponent
+    ]
 })
 export class RunQuestionComponent {
-    @Input() question: RunQuestionDto;
-    @Input() answers: string[];
-    @Output() answersChange = new EventEmitter<string[]>();
-    @Output() complete = new EventEmitter<boolean>();
+    @Input() public question: RunQuestionDto;
+    @Input() public answers: string[];
+    @Output() public answersChange = new EventEmitter<string[]>();
+    @Output() public complete = new EventEmitter<boolean>();
 
-    get type(): 'text' | 'multi' | 'single' | 'match' {
-        switch (this.question.questionType) {
+    public get type(): 'text' | 'multi' | 'single' | 'match' {
+        switch(this.question.questionType as string) {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'text';
             case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
                 return 'multi';
             case RunQuestionDto.QuestionTypeEnum.Match:
                 return 'match';
-            default:
+            case RunQuestionDto.QuestionTypeEnum.SingleChoice:
                 return 'single';
+            default:
+                throw new Error(`Unexpected question type: ${this.question.questionType}`);
         }
     }
 
-    get answerVariants(): RunAnswerVariantDto[] {
+    public get answerVariants(): RunAnswerVariantDto[] {
         return this.question.answerVariants ?? [];
     }
 
-    get singleAnswer(): string {
-        return this.answers && this.answers.length > 0 ? this.answers[0] : '';
+    public get singleAnswer(): string {
+        return this.answers.length > 0 ? this.answers[0] : '';
     }
 
-    set singleAnswer(value: string) {
+    public set singleAnswer(value: string) {
         this.answersChange.emit(value ? [value] : []);
     }
 
-    get allAnswers(): string[] {
-        return this.answers ?? [];
+    public get allAnswers(): string[] {
+        return this.answers;
     }
 
-    set allAnswers(values: string[]) {
+    public set allAnswers(values: string[]) {
         this.answersChange.emit(values);
     }
 }

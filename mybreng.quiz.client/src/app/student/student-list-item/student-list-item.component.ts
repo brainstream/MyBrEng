@@ -13,5 +13,5 @@ import { RouterLink } from '@angular/router';
     imports: [TagPaneComponent, MatCard, MatListItem, RouterLink]
 })
 export class StudentListItemComponent {
-    @Input() student: StudentDto;
+    @Input() public student: StudentDto;
 }

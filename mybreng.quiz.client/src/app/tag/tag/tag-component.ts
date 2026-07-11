@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
-import { TagDto } from "@app/web-api";
-import { TagColor } from "../tag-color";
+import { Component, Input } from '@angular/core';
+import { TagDto } from '@app/web-api';
+import { TagColor } from '../tag-color';
 
 @Component({
     selector: 'app-tag',
@@ -9,10 +9,10 @@ import { TagColor } from "../tag-color";
     imports: []
 })
 export class TagComponent {
-    color: TagColor;
-    name: string;
+    public color: TagColor;
+    public name: string;
 
-    @Input() set tag(tag: TagDto) {
+    @Input() public set tag(tag: TagDto) {
         this.color = new TagColor(tag.color);
         this.name = tag.name;
     }

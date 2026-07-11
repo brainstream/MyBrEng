@@ -1,5 +1,5 @@
-import { IListFilter } from "@app/list-filter";
-import { QuizDto, StudentDetailedDto, StudentDto, TagDto } from "@app/web-api";
+import { IListFilter } from '@app/list-filter';
+import { QuizDto, StudentDetailedDto, StudentDto, TagDto } from '@app/web-api';
 
 export interface IStudentsState {
     readonly loadingCounter: number,
@@ -11,24 +11,22 @@ export interface IStudentsState {
 }
 
 export function applyListFilter(students: StudentDto[] | null, filter: IListFilter): StudentDto[] {
-    if (!students) {
+    if(!students) {
         return [];
     }
-    if (!filter.searchString && filter.tags.length == 0) {
+    if(!filter.searchString && filter.tags.length === 0) {
         return students;
     }
     const lowerCaseSearchString = filter.searchString.toLocaleLowerCase();
 
-    const isSearchStringMatched = (student: StudentDto) => {
-        return student.firstName.toLocaleLowerCase().includes(lowerCaseSearchString) || (
-            student.lastName &&
-            student.lastName?.toLocaleLowerCase().includes(lowerCaseSearchString)
-        )
+    const isSearchStringMatched = (student: StudentDto): boolean => {
+        return student.firstName.toLocaleLowerCase().includes(lowerCaseSearchString) ||
+            !!student.lastName?.toLocaleLowerCase().includes(lowerCaseSearchString);
     };
 
-    const isTagFilterMatched = (student: StudentDto) => {
-        return filter.tags.length == 0 ||
-            student.tags?.find(tag => filter.tags.includes(tag.id));
+    const isTagFilterMatched = (student: StudentDto): boolean => {
+        return filter.tags.length === 0 ||
+            !!student.tags?.find(tag => filter.tags.includes(tag.id));
     };
 
     return students.filter(quiz => isSearchStringMatched(quiz) && isTagFilterMatched(quiz));

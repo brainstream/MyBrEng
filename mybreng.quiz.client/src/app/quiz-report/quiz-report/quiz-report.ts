@@ -1,5 +1,5 @@
-import { MatchingAnswer, parseMatchingAnswer } from "@app/shared";
-import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from "@app/web-api";
+import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
+import { RunAnswerDto, RunAnswerVariantDto, RunDto, RunQuestionDto } from '@app/web-api';
 
 export interface IQuizReport {
     readonly title: string;
@@ -30,7 +30,7 @@ export function mapRunToReport(run: RunDto): IQuizReport {
     const items = mapRunQuestionsToReportItems(run);
     const summary = items.reduce((sum, item) => {
         ++sum.totalQuestionCount;
-        if (item.isPassed) {
+        if(item.isPassed) {
             ++sum.passedQuestionCount;
         }
         return sum;
@@ -58,7 +58,7 @@ function mapRunQuestionsToReportItems(run: RunDto): IQuizReportItem[] {
             questionType: q.questionType,
             answers,
             isPassed: isQuestionPassed(q.questionType, answers)
-        }
+        };
     }) ?? [];
 }
 
@@ -67,14 +67,14 @@ function getRunAnswersForQuestion(run: RunDto, questionId: string): RunAnswerDto
 }
 
 class AnswerMerger {
-    static mergeAnswers(
+    public static mergeAnswers(
         questionType: RunQuestionDto.QuestionTypeEnum,
         variants: RunAnswerVariantDto[],
         runAnswers: RunAnswerDto[]
     ): IQuizReportAnswer[] {
-        return questionType === RunQuestionDto.QuestionTypeEnum.Match
-            ? AnswerMerger.mergeMatchingAnswers(variants, runAnswers)
-            : AnswerMerger.mergeRegularAnswers(questionType, variants, runAnswers);
+        return questionType === RunQuestionDto.QuestionTypeEnum.Match ?
+            AnswerMerger.mergeMatchingAnswers(variants, runAnswers) :
+            AnswerMerger.mergeRegularAnswers(questionType, variants, runAnswers);
     }
 
     private static mergeRegularAnswers(
@@ -84,7 +84,7 @@ class AnswerMerger {
     ): IQuizReportAnswer[] {
         let hasMatched = false;
         const result: IQuizReportAnswer[] = [];
-        for (const variant of variants) {
+        for(const variant of variants) {
             const matched = AnswerMerger.isAnswerMatched(questionType, variant, runAnswers);
             hasMatched = hasMatched || matched;
             result.push({
@@ -93,8 +93,8 @@ class AnswerMerger {
                 isAnswerMatched: matched
             });
         }
-        if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText && !hasMatched) {
-            for (const answer of runAnswers) {
+        if(questionType === RunQuestionDto.QuestionTypeEnum.FreeText && !hasMatched) {
+            for(const answer of runAnswers) {
                 result.push({
                     text: answer.text ?? '',
                     isCorrect: false,
@@ -110,8 +110,8 @@ class AnswerMerger {
         variant: RunAnswerVariantDto,
         answers: RunAnswerDto[]
     ): boolean {
-        if (questionType === RunQuestionDto.QuestionTypeEnum.FreeText) {
-            return answers.some(a => variant.text.trim().toLowerCase() === a.text?.trim().toLowerCase())
+        if(questionType === RunQuestionDto.QuestionTypeEnum.FreeText) {
+            return answers.some(a => variant.text.trim().toLowerCase() === a.text?.trim().toLowerCase());
         } else {
             return answers.some(a => variant.answerId === a.variantId);
         }
@@ -121,19 +121,19 @@ class AnswerMerger {
         variants: RunAnswerVariantDto[],
         runAnswers: RunAnswerDto[]
     ): IQuizReportAnswer[] {
-        const formatText = (a: MatchingAnswer) => `${a.slot} → ${a.answer}`;
+        const formatText = (a: MatchingAnswer): string => `${a.slot} → ${a.answer}`;
         const answers = runAnswers.map(a => {
             return a.text ? formatText(parseMatchingAnswer(a.text)) : '';
         });
         const result: IQuizReportAnswer[] = [];
-        for (const variant of variants) {
+        for(const variant of variants) {
             const matchingAnswer = parseMatchingAnswer(variant.text);
-            if (matchingAnswer.slot == null) {
+            if(matchingAnswer.slot === null) {
                 continue;
             }
             const text = formatText(matchingAnswer);
             const answerIndex = answers.findIndex(a => a === text);
-            if (answerIndex >= 0) {
+            if(answerIndex >= 0) {
                 answers.splice(answerIndex, 1);
             }
             result.push({
@@ -142,7 +142,7 @@ class AnswerMerger {
                 isAnswerMatched: answerIndex >= 0
             });
         }
-        for (const answer of answers) {
+        for(const answer of answers) {
             result.push({
                 text: answer,
                 isCorrect: false,
@@ -163,11 +163,10 @@ function isQuestionPassed(
             return answers.some(a => a.isCorrect && a.isAnswerMatched);
         case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
             return answers.every(a =>
-                (a.isCorrect && a.isAnswerMatched) || (!a.isCorrect && !a.isAnswerMatched)
-            );
+                (a.isCorrect && a.isAnswerMatched) || (!a.isCorrect && !a.isAnswerMatched));
         case RunQuestionDto.QuestionTypeEnum.Match:
             return answers.every(a => a.isCorrect && a.isAnswerMatched);
         default:
-            return false;
+            throw new Error(`Unexpected question type: ${questionType as never}`);
     }
 }

@@ -9,33 +9,31 @@ import { NgFor } from '@angular/common';
     styleUrls: ['./run-multiple-choices-answers.component.scss'],
     imports: [MatCheckbox, NgFor]
 })
-export class RunMultipleChoicesAnswersComponent  {
+export class RunMultipleChoicesAnswersComponent {
+    @Input() public variants: RunAnswerVariantDto[];
+    @Output() public answersChange = new EventEmitter<string[]>();
+    @Output() public complete = new EventEmitter<boolean>();
     private _checkedAnswers: string[] = [];
 
-    @Input() variants: RunAnswerVariantDto[];
-
-    @Input() set answers(values: string[]) {
+    @Input() public set answers(values: string[]) {
         this._checkedAnswers = values;
     }
 
-    @Output() answersChange = new EventEmitter<string[]>();
-    @Output() complete = new EventEmitter<boolean>();
-
-    isChecked(answer: string): boolean {
+    public isChecked(answer: string): boolean {
         return this._checkedAnswers.includes(answer);
     }
 
-    itemChanged(idx: number, checked: boolean): void {
+    public itemChanged(idx: number, checked: boolean): void {
         const wasComplete = this._checkedAnswers.length > 0;
         const id = this.variants[idx].answerId;
-        if (checked) {
+        if(checked) {
             this.addCheckedAnswer(id);
         } else {
             this.removeCheckedAnswer(id);
         }
         this.answersChange.emit(this._checkedAnswers);
         const complete = this._checkedAnswers.length > 0;
-        if (wasComplete != complete) {
+        if(wasComplete !== complete) {
             this.complete.emit(complete);
         }
     }
@@ -46,7 +44,7 @@ export class RunMultipleChoicesAnswersComponent  {
 
     private removeCheckedAnswer(answerId: string): void {
         const idx = this._checkedAnswers.findIndex(i => i === answerId);
-        if (idx >= 0) {
+        if(idx >= 0) {
             this._checkedAnswers.splice(idx, 1);
         }
     }

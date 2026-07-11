@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MarkdownService } from './markdown.service';
 
 @Component({
@@ -8,12 +8,12 @@ import { MarkdownService } from './markdown.service';
     imports: []
 })
 export class MarkdownComponent {
+    public html: string;
+
     constructor(private readonly markdown: MarkdownService) {
     }
 
-    @Input() set source(text: string) {
+    @Input() public set source(text: string) {
         this.html = this.markdown.convertToHtml(text);
     }
-
-    html: string;
 }

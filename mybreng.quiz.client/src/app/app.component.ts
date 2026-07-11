@@ -8,5 +8,5 @@ import { RouterOutlet } from '@angular/router';
     imports: [RouterOutlet]
 })
 export class AppComponent {
-    title = 'MyBrEng.Quiz.Client';
+    public title = 'MyBrEng.Quiz.Client';
 }

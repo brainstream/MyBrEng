@@ -1,10 +1,17 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose } from '@angular/material/dialog';
+import {
+    MAT_DIALOG_DATA,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogContent,
+    MatDialogRef,
+    MatDialogTitle
+} from '@angular/material/dialog';
 import { IQuizQuestionSortData } from './quiz-question-sort-data';
-import { CdkDragDrop, moveItemInArray, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { QuizQuestionPositionDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
-import { QuizzesEventsService, quizzesActions } from '../store';
+import { quizzesActions, QuizzesEventsService } from '../store';
 import { Subscription } from 'rxjs';
 import { MatDivider } from '@angular/material/divider';
 import { MatButton } from '@angular/material/button';
@@ -20,13 +27,22 @@ interface IQuestionData {
     selector: 'app-quiz-question-sort',
     templateUrl: './quiz-question-sort.component.html',
     styleUrls: ['./quiz-question-sort.component.scss'],
-    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose, MatDivider, MatButton, MatIcon, DragDropModule, NgFor]
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatDivider,
+        MatButton,
+        MatIcon,
+        DragDropModule,
+        NgFor
+    ]
 })
 export class QuizQuestionSortComponent implements OnInit, OnDestroy {
+    public readonly questions: IQuestionData[];
     private readonly quizId: string;
-    private savedSubscription: Subscription | null = null;
-
-    readonly questions: IQuestionData[];
+    private readonly savedSubscription: Subscription | null = null;
 
     constructor(
         @Inject(MAT_DIALOG_DATA) data: IQuizQuestionSortData,
@@ -41,21 +57,21 @@ export class QuizQuestionSortComponent implements OnInit, OnDestroy {
         }));
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.events.questionsReordered$.subscribe(() => {
             this.dialog.close();
         });
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.savedSubscription?.unsubscribe();
     }
 
-    drop(event: CdkDragDrop<IQuestionData[]>) {
+    public drop(event: CdkDragDrop<IQuestionData[]>): void {
         moveItemInArray(this.questions, event.previousIndex, event.currentIndex);
     }
 
-    save() {
+    public save(): void {
         const result: QuizQuestionPositionDto[] = this.questions.map((q, idx) => ({
             id: q.id,
             index: idx

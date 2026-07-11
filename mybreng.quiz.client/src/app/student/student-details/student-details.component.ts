@@ -4,7 +4,7 @@ import { ConfirmDialogButton, ConfirmDialogService, TitleService } from '@app/co
 import { RunSummaryDto, StudentDetailedDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { StudentsSelectors, studentsActions, StudentsEventsService } from '../store';
+import { studentsActions, StudentsEventsService, StudentsSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { StudentEditFormComponent } from '../student-edit-form';
 import { StudentAddRunFormComponent } from '../student-add-run-form';
@@ -25,13 +25,23 @@ import { MatIcon } from '@angular/material/icon';
     animations: [
         collapseOnLeaveAnimation()
     ],
-    imports: [LayoutFullComponent, TagPaneComponent, StudentNoteComponent, StudentQuizRunComponent, AsyncPipe, NgFor, NgIf, MatMenu, MatMenuItem, MatIcon]
+    imports: [
+        LayoutFullComponent,
+        TagPaneComponent,
+        StudentNoteComponent,
+        StudentQuizRunComponent,
+        AsyncPipe,
+        NgFor,
+        NgIf,
+        MatMenu,
+        MatMenuItem,
+        MatIcon
+    ]
 })
 export class StudentDetailsComponent implements OnInit, OnDestroy {
+    public readonly loading$: Observable<boolean>;
+    public student: StudentDetailedDto | null;
     private readonly subscriptions: Subscription[] = [];
-
-    readonly loading$: Observable<boolean>;
-    student: StudentDetailedDto | null;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -45,45 +55,44 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         this.loading$ = store$.select(StudentsSelectors.loading);
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.subscriptions.push(this.route.paramMap.subscribe(params => {
             const id = params.get('id');
-            if (id) {
-                this.store$.dispatch(studentsActions.loadDetails({ id }))
+            if(id) {
+                this.store$.dispatch(studentsActions.loadDetails({ id }));
             }
         }));
         this.subscriptions.push(this.store$
             .select(StudentsSelectors.details)
             .subscribe(student => {
                 this.student = student;
-                if (student) {
+                if(student) {
                     const latName = student.lastName ? ` ${student.lastName}` : '';
                     this.titleService.setTitle(`${student.firstName}${latName}`);
                 }
-            })
-        );
+            }));
         this.subscriptions.push(this.events.studentDeleted$.subscribe(() => {
             this.router.navigate(['/student']);
         }));
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions.splice(0, this.subscriptions.length);
     }
 
-    editStudent(): void {
+    public editStudent(): void {
         this.store$.dispatch(studentsActions.loadAvailableTags());
         const student = this.student;
-        if (!student) {
+        if(!student) {
             return;
         }
         this.bottomSheet.open(StudentEditFormComponent, { data: student });
     }
 
-    async deleteStudent() {
+    public async deleteStudent(): Promise<void> {
         const studentId = this.student?.id;
-        if (!studentId) {
+        if(!studentId) {
             return;
         }
         const result = await this.confirmDialog.show({
@@ -100,14 +109,14 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        if (result.button === ConfirmDialogButton.Yes) {
+        if(result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(studentsActions.deleteStudent({ id: studentId }));
         }
     }
 
-    addRun(): void {
+    public addRun(): void {
         const studentId = this.student?.id;
-        if (studentId === undefined) {
+        if(studentId === undefined) {
             return;
         }
         this.bottomSheet.open(StudentAddRunFormComponent, {
@@ -115,7 +124,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    async deleteRun(run: RunSummaryDto) {
+    public async deleteRun(run: RunSummaryDto): Promise<void> {
         const result = await this.confirmDialog.show({
             text: `Вы действительно хотите удалить у этого ученика тестирование "${run.quizTitle}"?`,
             buttons: {
@@ -130,7 +139,7 @@ export class StudentDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        if (result.button === ConfirmDialogButton.Yes) {
+        if(result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(studentsActions.deleteRun({ id: run.id }));
         }
     }

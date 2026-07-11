@@ -7,17 +7,18 @@ type MessageType = 'error' | 'info';
     providedIn: 'root'
 })
 export class MessageService {
-    constructor(private readonly snack: MatSnackBar) { }
+    constructor(private readonly snack: MatSnackBar) {
+    }
 
-    showError(message: string) {
+    public showError(message: string): void {
         this.show('error', message);
     }
 
-    showInfo(message: string) {
+    public showInfo(message: string): void {
         this.show('info', message);
     }
 
-    show(type: MessageType, message: string) {
+    public show(type: MessageType, message: string): void {
         this.snack.open(message, 'OK', {
             panelClass: ['system-message', `system-message__${type}`]
         });

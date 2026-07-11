@@ -13,5 +13,5 @@ import { NgIf } from '@angular/common';
     imports: [TagPaneComponent, MatCard, MatListItem, RouterLink, NgIf]
 })
 export class QuizListItemComponent {
-    @Input() quiz: QuizDto;
+    @Input() public quiz: QuizDto;
 }

@@ -3,7 +3,7 @@ import { ThemeService } from './common';
 export function appInitializerFactory(
     theme: ThemeService
 ) {
-    return () => {
+    return (): void => {
         theme.restore();
     };
 }

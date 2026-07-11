@@ -1,6 +1,6 @@
-import { IPostponedEvent } from "@app/shared";
-import { RunDto, RunFinishDto } from "@app/web-api";
-import { createActionGroup, props } from "@ngrx/store";
+import { IPostponedEvent } from '@app/shared';
+import { RunDto, RunFinishDto } from '@app/web-api';
+import { createActionGroup, props } from '@ngrx/store';
 
 export const goActions = createActionGroup({
     source: 'Go',

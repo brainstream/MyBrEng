@@ -17,13 +17,23 @@ import { NgxColorsModule } from 'ngx-colors';
     selector: 'app-tag-edit-form',
     templateUrl: './tag-edit-form.component.html',
     styleUrl: './tag-edit-form.component.scss',
-    imports: [FormsModule, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatCheckbox, MatSuffix, MatButton, MatIcon, NgxColorsModule]
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatCheckbox,
+        MatSuffix,
+        MatButton,
+        MatIcon,
+        NgxColorsModule
+    ]
 })
 export class TagEditFormComponent implements OnInit, OnDestroy {
+    public form: FormGroup;
     private readonly tagId?: string;
-    private subscriptions: Array<Subscription | null> = [];
-
-    form: FormGroup;
+    private readonly subscriptions: Array<Subscription | null> = [];
 
     constructor(
         formBuilder: FormBuilder,
@@ -32,9 +42,9 @@ export class TagEditFormComponent implements OnInit, OnDestroy {
         private readonly events: TagsEventsService,
         @Inject(MAT_BOTTOM_SHEET_DATA) tag?: TagDto
     ) {
-        const color = tag
-            ?  RGBA.fromInt32(tag.color ?? 0).toRgbaString()
-            : 'rgb(189, 189, 189)';
+        const color = tag ?
+            RGBA.fromInt32(tag.color ?? 0).toRgbaString() :
+            'rgb(189, 189, 189)';
         this.tagId = tag?.id;
         this.form = formBuilder.group({
             name: [tag?.name ?? '', Validators.required],
@@ -47,44 +57,45 @@ export class TagEditFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.subscriptions.push(this.events.tagSaved$.subscribe(() => {
             this.bottomSheet.dismiss();
         }));
-        this.subscriptions.push(this.form.controls['color'].valueChanges.subscribe((color) => {
-            if (this.form.controls['colorPicker'].valid) {
+        this.subscriptions.push(this.form.controls['color'].valueChanges.subscribe(color => {
+            if(this.form.controls['colorPicker'].valid) {
                 this.form.controls['colorPicker'].setValue(color, {
-                    emitEvent: false,
+                    emitEvent: false
                 });
             }
         }));
         this.subscriptions.push(this.form.controls['colorPicker'].valueChanges.subscribe(color => {
             this.form.controls['color'].setValue(color, {
-                emitEvent: false,
-            })
+                emitEvent: false
+            });
         }));
     }
 
-    ngOnDestroy(): void {
-        for (let subscription of this.subscriptions)
+    public ngOnDestroy(): void {
+        for(const subscription of this.subscriptions) {
             subscription?.unsubscribe();
+        }
     }
 
-    cancel(): boolean {
+    public cancel(): boolean {
         this.bottomSheet.dismiss();
         return false;
     }
 
-    save(): boolean {
-        if (this.form.valid) {
-            const color = RGBA.parseRgbaString(this.form.controls['color'].value) ?? new RGBA();
+    public save(): boolean {
+        if(this.form.valid) {
+            const color = RGBA.parseRgbaString(this.form.controls['color'].value as string) ?? new RGBA();
             this.store$.dispatch(tagsActions.saveTag({
                 tag: {
                     id: this.tagId,
-                    name: this.form.controls['name'].value,
+                    name: this.form.controls['name'].value as string,
                     color: color.toInt32(),
-                    isApplicableForQuizzes: this.form.controls['isApplicableForQuizzes'].value,
-                    isApplicableForStudents: this.form.controls['isApplicableForStudents'].value
+                    isApplicableForQuizzes: this.form.controls['isApplicableForQuizzes'].value as boolean,
+                    isApplicableForStudents: this.form.controls['isApplicableForStudents'].value as boolean
                 }
             }));
             return true;

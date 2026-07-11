@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { IQuizReportItem } from '../quiz-report';
 import { RunQuestionDto } from '@app/web-api';
 import { MarkdownComponent } from '@app/markdown';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardContent, MatCardHeader, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
 import { MatChip } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
@@ -15,14 +15,26 @@ import { NgFor, NgIf } from '@angular/common';
     host: {
         'class': 'quiz-report-item'
     },
-    imports: [MarkdownComponent, MatCard, MatCardHeader, MatCardTitle, MatChip, MatCardSubtitle, MatIcon, MatDivider, MatCardContent, NgFor, NgIf]
+    imports: [
+        MarkdownComponent,
+        MatCard,
+        MatCardHeader,
+        MatCardTitle,
+        MatChip,
+        MatCardSubtitle,
+        MatIcon,
+        MatDivider,
+        MatCardContent,
+        NgFor,
+        NgIf
+    ]
 })
 export class QuizReportItemComponent {
-    @Input() data: IQuizReportItem;
-    @Input() index: number;
+    @Input() public data: IQuizReportItem;
+    @Input() public index: number;
 
-    get questionDescription(): string {
-        switch (this.data.questionType) {
+    public get questionDescription(): string {
+        switch(this.data.questionType) {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'Вписать ответ';
             case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
@@ -32,7 +44,7 @@ export class QuizReportItemComponent {
             case RunQuestionDto.QuestionTypeEnum.Match:
                 return 'Сопоставить выражения';
             default:
-                return '';
+                throw new Error(`Unexpected question type: ${this.data.questionType as never}`);
         }
     }
 }

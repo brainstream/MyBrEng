@@ -9,8 +9,8 @@ import { tagsActions } from '../store';
 import { MatCard } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { MatTooltip } from '@angular/material/tooltip';
-import { MatIconButton, MatButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
     selector: 'app-tag-list-item',
@@ -19,30 +19,31 @@ import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
     imports: [MatCard, MatIcon, MatTooltip, MatIconButton, MatMenuTrigger, MatMenu, MatMenuItem]
 })
 export class TagListItemComponent {
-    private _tag: TagDto;
-    color: TagColor;
+    public color: TagColor;
 
     constructor(
-        private bottomSheet: MatBottomSheet,
+        private readonly bottomSheet: MatBottomSheet,
         private readonly confirmDialog: ConfirmDialogService,
         private readonly store$: Store
     ) {
     }
 
-    @Input() set tag(value: TagDto) {
+    private _tag: TagDto;
+
+    public get tag(): TagDto {
+        return this._tag;
+    }
+
+    @Input() public set tag(value: TagDto) {
         this._tag = value;
         this.color = new TagColor(value.color);
     }
 
-    get tag() {
-        return this._tag;
-    }
-
-    edit() {
+    public edit(): void {
         this.bottomSheet.open(TagEditFormComponent, { data: this._tag });
     }
 
-    async delete() {
+    public async delete(): Promise<void> {
         const result = await this.confirmDialog.show({
             text: `Вы действительно хотите удалить тег "${this._tag.name}"?`,
             buttons: {
@@ -57,7 +58,7 @@ export class TagListItemComponent {
                 }
             }
         });
-        if (result.button === ConfirmDialogButton.Yes) {
+        if(result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(tagsActions.deleteTag({ id: this._tag.id }));
         }
     }

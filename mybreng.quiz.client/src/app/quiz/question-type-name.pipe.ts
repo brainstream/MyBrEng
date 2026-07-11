@@ -2,11 +2,11 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { QuizQuestionDto } from '@app/web-api';
 
 @Pipe({
-    name: 'questionTypeName',
+    name: 'questionTypeName'
 })
 export class QuestionTypeNamePipe implements PipeTransform {
-    transform(value: QuizQuestionDto.QuestionTypeEnum): string {
-        switch (value) {
+    public transform(value: QuizQuestionDto.QuestionTypeEnum): string {
+        switch(value) {
             case QuizQuestionDto.QuestionTypeEnum.SingleChoice:
                 return 'Выбор единственного варианта';
             case QuizQuestionDto.QuestionTypeEnum.MultipleChoice:
@@ -16,7 +16,7 @@ export class QuestionTypeNamePipe implements PipeTransform {
             case QuizQuestionDto.QuestionTypeEnum.Match:
                 return 'Сопоставление выражений';
             default:
-                return '';
+                throw new Error(`Unexpected question type: ${value as never}`);
         }
     }
 }

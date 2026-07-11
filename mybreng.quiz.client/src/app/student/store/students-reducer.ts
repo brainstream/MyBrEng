@@ -1,24 +1,27 @@
-import { createReducer, on } from "@ngrx/store";
-import { IStudentsState } from "./students-state";
-import { studentsActions } from "./students-actions";
-import { RunSummaryDto, StudentDetailedDto, StudentDto } from "@app/web-api";
+import { createReducer, on } from '@ngrx/store';
+import { IStudentsState } from './students-state';
+import { studentsActions } from './students-actions';
+import { RunSummaryDto, StudentDetailedDto, StudentDto } from '@app/web-api';
 
 export const studentsReducer = createReducer(
     createDefaultState(),
 
-    on(studentsActions.setLoading, (state, { loading }) => ({
-        ...state,
-        loadingCounter: loading
-            ? state.loadingCounter + 1
-            : (state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1)
-    })),
+    on(studentsActions.setLoading, (state, { loading }) => {
+        let loadingCounter: number;
+        if(loading) {
+            loadingCounter = state.loadingCounter + 1;
+        } else {
+            loadingCounter = state.loadingCounter <= 0 ? 0 : state.loadingCounter - 1;
+        }
+        return { ...state, loadingCounter };
+    }),
 
     on(studentsActions.listLoaded, (state, { students }) => ({
         ...state,
         list: prepareStudentList(students)
     })),
 
-    on(studentsActions.cleanDetails, (state) => ({
+    on(studentsActions.cleanDetails, state => ({
         ...state,
         details: null
     })),
@@ -31,13 +34,15 @@ export const studentsReducer = createReducer(
     on(studentsActions.detailsSaved, (state, { student }) => ({
         ...state,
         list: addOrChangeStudent(state.list, student),
-        details: state.details?.id === student.id ? {
-            ...state.details,
-            id: student.id,
-            firstName: student.firstName,
-            lastName: student.lastName,
-            tags: student.tags
-        } : state.details
+        details: state.details?.id === student.id ?
+            {
+                ...state.details,
+                id: student.id,
+                firstName: student.firstName,
+                lastName: student.lastName,
+                tags: student.tags
+            } :
+            state.details
     })),
 
     on(studentsActions.availableQuizzesLoaded, (state, { quizzes }) => ({
@@ -57,16 +62,18 @@ export const studentsReducer = createReducer(
 
     on(studentsActions.studentDeleted, (state, { id }) => ({
         ...state,
-        details: state.details?.id == id ? null : state.details,
+        details: state.details?.id === id ? null : state.details,
         list: state.list?.filter(q => q.id !== id) ?? null
     })),
 
     on(studentsActions.noteSaved, (state, { dto: { studentId, note } }) => ({
         ...state,
-        details: state.details?.id === studentId ? {
-            ...state.details,
-            note
-        } : state.details
+        details: state.details?.id === studentId ?
+            {
+                ...state.details,
+                note
+            } :
+            state.details
     })),
 
     on(studentsActions.availableTagsLoaded, (state, { tags }) => ({
@@ -103,11 +110,11 @@ function sortStudentListInPlace(list: StudentDto[]): StudentDto[] {
 }
 
 function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): StudentDto[] | null {
-    if (list == null) {
+    if(list === null) {
         return null;
     }
     const idx = list.findIndex(s => s.id === student.id);
-    if (idx < 0) {
+    if(idx < 0) {
         return [...list, student];
     }
     const result = [...list];
@@ -116,7 +123,7 @@ function addOrChangeStudent(list: StudentDto[] | null, student: StudentDto): Stu
 }
 
 function addRun(student: StudentDetailedDto | null, run: RunSummaryDto): StudentDetailedDto | null {
-    if (student == null || student.runs === undefined) {
+    if(student?.runs === undefined) {
         return student;
     }
     return {
@@ -126,12 +133,12 @@ function addRun(student: StudentDetailedDto | null, run: RunSummaryDto): Student
 }
 
 function deleteRun(student: StudentDetailedDto | null, id: string): StudentDetailedDto | null {
-    if (student == null || student.runs === undefined) {
+    if(student?.runs === undefined) {
         return student;
     }
     const idx = student.runs.findIndex(r => r.id === id);
     let runs: RunSummaryDto[];
-    if (idx >= 0) {
+    if(idx >= 0) {
         runs = [...student.runs];
         runs.splice(idx, 1);
     } else {

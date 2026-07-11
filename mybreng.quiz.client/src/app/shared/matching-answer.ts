@@ -4,6 +4,8 @@ export interface MatchingAnswer {
 }
 
 export function parseMatchingAnswer(text: string): MatchingAnswer {
-    const result = JSON.parse(text);
-    return result && 'slot' in result && 'answer' in result ? result : { slot: null, answer: '' };
+    const result: unknown = JSON.parse(text);
+    return result && typeof result === 'object' && 'slot' in result && 'answer' in result ?
+        result as MatchingAnswer :
+        { slot: null, answer: '' };
 }

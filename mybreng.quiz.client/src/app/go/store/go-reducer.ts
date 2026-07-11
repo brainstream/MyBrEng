@@ -1,6 +1,6 @@
-import { createReducer, on } from "@ngrx/store";
-import { IGoState } from "./go-state";
-import { goActions } from "./go-actions";
+import { createReducer, on } from '@ngrx/store';
+import { IGoState } from './go-state';
+import { goActions } from './go-actions';
 
 export const goReducer = createReducer(
     createDefaultState(),

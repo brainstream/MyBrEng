@@ -7,16 +7,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class AuthService {
-    private authenticatedSubject = new BehaviorSubject<boolean | undefined>(undefined);
+    private readonly authenticatedSubject = new BehaviorSubject<boolean | undefined>(undefined);
 
-    constructor(private readonly account: AccountService) { }
+    constructor(private readonly account: AccountService) {
+    }
 
     public get authenticated(): Observable<boolean | undefined> {
         return this.authenticatedSubject.asObservable();
     }
 
     public login(email: string, password: string): Promise<boolean> {
-        return new Promise<boolean>((resolve) => {
+        return new Promise<boolean>(resolve => {
             this.account
                 .accountLogin({
                     email,
@@ -35,7 +36,7 @@ export class AuthService {
     }
 
     public logout(): Promise<boolean> {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
             watchHttpErrors(this.account.accountLogout('events'))
                 .subscribe({
                     next: () => {
@@ -44,7 +45,7 @@ export class AuthService {
                     error: () => {
                         resolve(false);
                     }
-                })
+                });
         });
     }
 }

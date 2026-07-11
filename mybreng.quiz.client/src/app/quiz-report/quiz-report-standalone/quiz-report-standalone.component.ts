@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { watchHttpErrors } from '@app/shared';
 import { ApiModule, RunDto, RunService } from '@app/web-api';
-import { Observable, catchError, of, switchMap, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap, tap } from 'rxjs';
 import { MessageService } from '@app/common';
 import { LayoutFullComponent } from '@app/layout';
 import { QuizReportComponent } from '../quiz-report';
@@ -18,9 +18,8 @@ import { AsyncPipe, NgIf } from '@angular/common';
     imports: [LayoutFullComponent, QuizReportComponent, AsyncPipe, NgIf]
 })
 export class QuizReportStandaloneComponent {
-    readonly run$: Observable<RunDto | null>;
-
-    loading: boolean = false;
+    public readonly run$: Observable<RunDto | null>;
+    public loading = false;
 
     constructor(
         activatedRoute: ActivatedRoute,
@@ -31,7 +30,7 @@ export class QuizReportStandaloneComponent {
             .pipe(
                 switchMap(params => {
                     const id = params.get('id');
-                    if (id) {
+                    if(id) {
                         return this.load(id);
                     }
                     return of(null);

@@ -4,13 +4,12 @@ import { QuizDto, TagDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
+import { quizzesActions, QuizzesEventsService, QuizzesSelectors } from '../store';
 import { Router } from '@angular/router';
 import { TitleService } from '@app/common';
-import { IListFilter } from '@app/list-filter';
+import { IListFilter, ListFilterPanelComponent } from '@app/list-filter';
 import { LayoutFullComponent } from '@app/layout';
 import { QuizListItemComponent } from '../quiz-list-item';
-import { ListFilterPanelComponent } from '@app/list-filter';
 import { AsyncPipe, NgFor } from '@angular/common';
 import { MatNavList } from '@angular/material/list';
 import { MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -20,15 +19,24 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-quiz-list',
     templateUrl: './quiz-list.component.html',
     styleUrls: ['./quiz-list.component.scss'],
-    imports: [LayoutFullComponent, QuizListItemComponent, ListFilterPanelComponent, AsyncPipe, NgFor, MatNavList, MatMenu, MatMenuItem, MatIcon]
+    imports: [
+        LayoutFullComponent,
+        QuizListItemComponent,
+        ListFilterPanelComponent,
+        AsyncPipe,
+        NgFor,
+        MatNavList,
+        MatMenu,
+        MatMenuItem,
+        MatIcon
+    ]
 })
 export class QuizListComponent implements OnInit, OnDestroy {
+    public readonly quizzes$: Observable<QuizDto[]>;
+    public readonly loading$: Observable<boolean>;
+    public readonly filter$: Observable<IListFilter>;
+    public readonly availableTags$: Observable<TagDto[]>;
     private quizCreatedSubscription: Subscription | undefined;
-
-    readonly quizzes$: Observable<QuizDto[]>;
-    readonly loading$: Observable<boolean>;
-    readonly filter$: Observable<IListFilter>;
-    readonly availableTags$: Observable<TagDto[]>;
 
     constructor(
         private readonly store$: Store,
@@ -46,21 +54,21 @@ export class QuizListComponent implements OnInit, OnDestroy {
         store$.dispatch(quizzesActions.loadAvailableTags());
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.quizCreatedSubscription = this.events.quizSaved$.subscribe(quiz => {
             this.router.navigate(['/quiz', quiz.id]);
         });
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.quizCreatedSubscription?.unsubscribe();
     }
 
-    showCreateQuizForm(): void {
+    public showCreateQuizForm(): void {
         this.bottomSheet.open(QuizEditFormComponent);
     }
 
-    applyFilter(filter: IListFilter) {
+    public applyFilter(filter: IListFilter): void {
         this.store$.dispatch(quizzesActions.applyFilter({ filter }));
     }
 }

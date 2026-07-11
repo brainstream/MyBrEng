@@ -1,5 +1,5 @@
-import { IListFilter } from "@app/list-filter";
-import { QuizDto, QuizDetailedDto, QuizQuestionDto, TagDto } from "@app/web-api";
+import { IListFilter } from '@app/list-filter';
+import { QuizDetailedDto, QuizDto, QuizQuestionDto, TagDto } from '@app/web-api';
 
 export interface IQuizzesState {
     readonly loadingCounter: number;
@@ -31,11 +31,11 @@ export function sortQuizListInPlace(list: QuizDto[]): QuizDto[] {
 }
 
 export function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[] | null {
-    if (list == null) {
+    if(list === null) {
         return null;
     }
     const idx = list.findIndex(q => q.id === quiz.id);
-    if (idx < 0) {
+    if(idx < 0) {
         return [...list, quiz];
     }
     const result = [...list];
@@ -44,24 +44,24 @@ export function addOrChangeQuiz(list: QuizDto[] | null, quiz: QuizDto): QuizDto[
 }
 
 export function applyListFilter(quizzes: QuizDto[] | null, filter: IListFilter): QuizDto[] {
-    if (!quizzes) {
+    if(!quizzes) {
         return [];
     }
-    if (!filter.searchString && filter.tags.length == 0) {
+    if(!filter.searchString && filter.tags.length === 0) {
         return quizzes;
     }
     const lowerCaseSearchString = filter.searchString.toLocaleLowerCase();
 
-    const isSearchStringMatched = (quiz: QuizDto) => {
-        return quiz.title.toLocaleLowerCase().includes(lowerCaseSearchString) || (
-            quiz.description &&
-            quiz.description?.toLocaleLowerCase().includes(lowerCaseSearchString)
-        )
+    const isSearchStringMatched = (quiz: QuizDto): boolean => {
+        const result = quiz.title.toLocaleLowerCase().includes(lowerCaseSearchString) ||
+            quiz.description?.toLocaleLowerCase().includes(lowerCaseSearchString);
+        return result === true;
     };
 
-    const isTagFilterMatched = (quiz: QuizDto) => {
-        return filter.tags.length == 0 ||
+    const isTagFilterMatched = (quiz: QuizDto): boolean => {
+        const result = filter.tags.length === 0 ||
             quiz.tags?.find(tag => filter.tags.includes(tag.id));
+        return result === true;
     };
 
     return quizzes.filter(quiz => isSearchStringMatched(quiz) && isTagFilterMatched(quiz));
@@ -71,11 +71,11 @@ export function addOrChangeQuestion(
     list: QuizQuestionDto[] | undefined,
     question: QuizQuestionDto
 ): QuizQuestionDto[] {
-    if (list === undefined) {
+    if(list === undefined) {
         return [question];
     }
     const idx = list.findIndex(q => q.id === question.id);
-    if (idx < 0) {
+    if(idx < 0) {
         return [...list, question];
     } else {
         const result = [...list];
@@ -88,12 +88,12 @@ export function excludeQuestion(
     list: QuizQuestionDto[] | undefined,
     id: string
 ): QuizQuestionDto[] | undefined {
-    if (list === undefined) {
+    if(list === undefined) {
         return undefined;
     }
     let result = list;
     const idx = result.findIndex(q => q.id === id);
-    if (idx >= 0) {
+    if(idx >= 0) {
         result = [...result];
         result.splice(idx, 1);
     }

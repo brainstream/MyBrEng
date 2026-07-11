@@ -5,9 +5,9 @@ import { Converter } from 'showdown';
     providedIn: 'root'
 })
 export class MarkdownService {
-    readonly converter = new Converter();
+    private readonly converter = new Converter();
 
-    convertToHtml(text: string): string {
+    public convertToHtml(text: string): string {
         return this.converter.makeHtml(text);
     }
 }

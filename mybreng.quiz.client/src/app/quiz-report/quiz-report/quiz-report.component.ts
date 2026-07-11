@@ -12,9 +12,9 @@ import { NgFor } from '@angular/common';
     imports: [QuizReportItemComponent, MatCard, MatCardContent, NgFor]
 })
 export class QuizReportComponent {
-    report: IQuizReport;
+    public report: IQuizReport;
 
-    @Input() set run(run: RunDto) {
+    @Input() public set run(run: RunDto) {
         this.report = mapRunToReport(run);
     }
 }

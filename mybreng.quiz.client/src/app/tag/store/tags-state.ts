@@ -1,4 +1,4 @@
-import { TagDto } from "@app/web-api";
+import { TagDto } from '@app/web-api';
 
 export interface ITagsState {
     readonly list: TagDto[] | null;

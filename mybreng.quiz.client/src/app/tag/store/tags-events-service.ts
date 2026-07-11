@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { TagDto } from "@app/web-api";
+import { Injectable } from '@angular/core';
+import { TagDto } from '@app/web-api';
 import { Event } from '@app/shared';
 
 @Injectable({ providedIn: 'root' })
 export class TagsEventsService {
-    readonly tagSaved$ = new Event<TagDto>();
-    readonly tagDeleted$ = new Event<{ id: string }>();
+    public readonly tagSaved$ = new Event<TagDto>();
+    public readonly tagDeleted$ = new Event<{ id: string }>();
 }

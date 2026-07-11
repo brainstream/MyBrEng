@@ -14,14 +14,14 @@ import { MatDivider } from '@angular/material/divider';
     imports: [MatButton, MatIcon, MatDivider]
 })
 export class ConfirmDialogComponent {
-    readonly text: string;
-    readonly primaryButton: ConfirmDialogButton;
-    readonly yesText: string;
-    readonly noText: string;
-    readonly yesIcon: string;
-    readonly noIcon: string;
-    readonly yesColor: string;
-    readonly noColor: string;
+    public readonly text: string;
+    public readonly primaryButton: ConfirmDialogButton;
+    public readonly yesText: string;
+    public readonly noText: string;
+    public readonly yesIcon: string;
+    public readonly noIcon: string;
+    public readonly yesColor: string;
+    public readonly noColor: string;
 
     constructor(
         private readonly bottomSheet: MatBottomSheetRef,
@@ -41,11 +41,11 @@ export class ConfirmDialogComponent {
         );
     }
 
-    yes() {
+    public yes(): void {
         this.bottomSheet.dismiss(this.makeResult(ConfirmDialogButton.Yes));
     }
 
-    no() {
+    public no(): void {
         this.bottomSheet.dismiss(this.makeResult(ConfirmDialogButton.No));
     }
 

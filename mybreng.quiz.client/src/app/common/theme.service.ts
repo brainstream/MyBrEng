@@ -10,55 +10,55 @@ export class ThemeService {
     private static readonly darkScheme: Scheme = 'dark';
     private static readonly lightScheme: Scheme = 'light';
 
-    private getPreferredScheme(): Scheme | undefined {
-        return localStorage[ThemeService.lsKey];
-    };
-
-    private setPreferredScheme(scheme?: Scheme): void {
-        if (scheme) {
-            localStorage[ThemeService.lsKey] = scheme;
-        } else {
-            localStorage.removeItem(ThemeService.lsKey);
-        }
-    };
-
-    private setScheme(scheme?: Scheme) {
-        const html = document.getElementsByTagName('html')[0];
-        html.classList.remove(ThemeService.darkScheme, ThemeService.lightScheme);
-        if (scheme) {
-            html.classList.add(scheme);
-        }
-    };
-
-    restore(): void {
+    public restore(): void {
         const scheme = this.getPreferredScheme();
         this.setScheme(scheme);
     }
 
-    setDark(): void {
+    public setDark(): void {
         this.setScheme(ThemeService.darkScheme);
         this.setPreferredScheme(ThemeService.darkScheme);
     }
 
-    setLight(): void {
+    public setLight(): void {
         this.setScheme(ThemeService.lightScheme);
-        this.setPreferredScheme(ThemeService.lightScheme)
+        this.setPreferredScheme(ThemeService.lightScheme);
     }
 
-    setSystem(): void {
+    public setSystem(): void {
         this.setScheme(undefined);
         this.setPreferredScheme(undefined);
     }
 
-    isSystem(): boolean {
+    public isSystem(): boolean {
         return this.getPreferredScheme() === undefined;
     }
 
-    isDark(): boolean {
+    public isDark(): boolean {
         return this.getPreferredScheme() === ThemeService.darkScheme;
     }
 
-    isLight(): boolean {
+    public isLight(): boolean {
         return this.getPreferredScheme() === ThemeService.lightScheme;
+    }
+
+    private getPreferredScheme(): Scheme | undefined {
+        return localStorage[ThemeService.lsKey] as Scheme | undefined;
+    }
+
+    private setPreferredScheme(scheme?: Scheme): void {
+        if(scheme) {
+            localStorage[ThemeService.lsKey] = scheme;
+        } else {
+            localStorage.removeItem(ThemeService.lsKey);
+        }
+    }
+
+    private setScheme(scheme?: Scheme): void {
+        const html = document.getElementsByTagName('html')[0];
+        html.classList.remove(ThemeService.darkScheme, ThemeService.lightScheme);
+        if(scheme) {
+            html.classList.add(scheme);
+        }
     }
 }

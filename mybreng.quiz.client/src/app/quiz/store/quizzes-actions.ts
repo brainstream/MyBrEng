@@ -1,5 +1,5 @@
-import { IListFilter } from "@app/list-filter";
-import { IPostponedEvent } from "@app/shared";
+import { IListFilter } from '@app/list-filter';
+import { IPostponedEvent } from '@app/shared';
 import {
     QuizDetailedDto,
     QuizDto,
@@ -8,8 +8,8 @@ import {
     QuizQuestionEditDto,
     QuizQuestionPositionDto,
     TagDto
-} from "@app/web-api";
-import { createActionGroup, emptyProps, props } from "@ngrx/store";
+} from '@app/web-api';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 
 export const quizzesActions = createActionGroup({

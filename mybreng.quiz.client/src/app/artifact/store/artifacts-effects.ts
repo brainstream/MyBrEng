@@ -1,14 +1,14 @@
-import {Injectable} from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {catchError, concat, EMPTY, from, of, switchMap, tap} from "rxjs";
-import {watchHttpErrors} from "@app/shared";
-import {ArtifactsService} from "@app/web-api";
-import {artifactsActions} from "./artifacts-actions";
-import {ArtifactEventsService} from "./artifact-events-service";
-import {MessageService} from "@app/common";
-import {concatLatestFrom} from "@ngrx/operators";
-import {ArtifactSelectors} from "@app/artifact/store/artifacts-selectors";
-import {Store} from "@ngrx/store";
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, concat, EMPTY, from, of, switchMap, tap } from 'rxjs';
+import { watchHttpErrors } from '@app/shared';
+import { ArtifactsService } from '@app/web-api';
+import { artifactsActions } from './artifacts-actions';
+import { ArtifactEventsService } from './artifact-events-service';
+import { MessageService } from '@app/common';
+import { concatLatestFrom } from '@ngrx/operators';
+import { ArtifactSelectors } from '@app/artifact/store/artifacts-selectors';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ArtifactsEffects {
@@ -21,21 +21,21 @@ export class ArtifactsEffects {
     ) {
     }
 
-    showError$ = createEffect(() => this.actions$.pipe(
+    public showError$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.setError),
         tap(({ message }) => {
-            this.messageService.showError(message)
+            this.messageService.showError(message);
         })
     ), { dispatch: false });
 
-    flushEvents$ = createEffect(() => this.actions$.pipe(
+    public flushEvents$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.flushEvents),
         tap(({ events }) => {
             events.forEach(e => e.flush());
         })
     ), { dispatch: false });
 
-    upload$ = createEffect(() => this.actions$.pipe(
+    public upload$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.uploadFile),
         switchMap(({ file }) => concat(
             of(artifactsActions.setLoading({ loading: true })),
@@ -45,7 +45,7 @@ export class ArtifactsEffects {
                         artifactsActions.fileUploaded({ artifact }),
                         artifactsActions.flushEvents({
                             events: [
-                                this.eventsService.artifactSaved$.postpone({ id: artifact.id }),
+                                this.eventsService.artifactSaved$.postpone({ id: artifact.id })
                             ]
                         }),
                         artifactsActions.setLoading({ loading: false })
@@ -60,7 +60,7 @@ export class ArtifactsEffects {
         ))
     ));
 
-    loadList$ = createEffect(() => this.actions$.pipe(
+    public loadList$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.loadList),
         concatLatestFrom(() => [
             this.store$.select(ArtifactSelectors.isListLoaded),
@@ -68,7 +68,7 @@ export class ArtifactsEffects {
             this.store$.select(ArtifactSelectors.list)
         ]),
         switchMap(([_, isListLoaded, hasMore, list]) => {
-            if (isListLoaded && !hasMore) {
+            if(isListLoaded && !hasMore) {
                 return EMPTY;
             } else {
                 return concat(
@@ -91,7 +91,7 @@ export class ArtifactsEffects {
         })
     ));
 
-    delete$ = createEffect(() => this.actions$.pipe(
+    public delete$ = createEffect(() => this.actions$.pipe(
         ofType(artifactsActions.deleteFile),
         switchMap(({ id }) => concat(
             of(artifactsActions.setLoading({ loading: true })),
@@ -110,8 +110,8 @@ export class ArtifactsEffects {
                         artifactsActions.setLoading({ loading: false }),
                         artifactsActions.setError({
                             message: 'Во время удаления файла произошла ошибка'
-                        })]
-                    ))
+                        })
+                    ]))
                 )
         ))
     ));

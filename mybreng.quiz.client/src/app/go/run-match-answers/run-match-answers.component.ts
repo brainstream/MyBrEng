@@ -1,4 +1,4 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
@@ -28,31 +28,30 @@ interface Data {
     imports: [MatIcon, DragDropModule]
 })
 export class RunMatchAnswersComponent implements OnInit, OnDestroy {
-    private isComplete: boolean = false;
+    public data$ = new BehaviorSubject<Data>({
+        answers: [],
+        slots: [],
+        dropIds: []
+    });
+    @Output() public readonly matchesChange = new EventEmitter<string[]>();
+    @Output() public readonly complete = new EventEmitter<boolean>();
+    private isComplete = false;
     private inputSubscription?: Subscription;
-
-    private inputData$ = new BehaviorSubject<Data>({
+    private readonly inputData$ = new BehaviorSubject<Data>({
         answers: [],
         slots: [],
         dropIds: []
     });
+    private readonly inputMatches$ = new BehaviorSubject<MatchingAnswer[]>([]);
 
-    private inputMatches$ = new BehaviorSubject<MatchingAnswer[]>([]);
-
-    data$ = new BehaviorSubject<Data>({
-        answers: [],
-        slots: [],
-        dropIds: []
-    });
-
-    @Input() set variants(variants: RunAnswerVariantDto[]) {
+    @Input() public set variants(variants: RunAnswerVariantDto[]) {
         let index = 0;
         const dropIds: string[] = ['answer-list'];
         const answers: AnswerData[] = [];
         const slots: SlotData[] = [];
-        for (const variant of variants) {
+        for(const variant of variants) {
             const json: MatchingAnswer = parseMatchingAnswer(variant.text);
-            if (json.slot != null) {
+            if(json.slot !== null) {
                 slots.push({
                     text: json.slot,
                     answers: []
@@ -70,36 +69,22 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         });
     }
 
-    private shuffleAnswers(answers: AnswerData[]) {
-        return answers
-            .map(answer => ({
-                answer,
-                rnd: Math.random()
-            }))
-            .sort((a, b) => a.rnd > b.rnd ? 1 : -1)
-            .map(data => data.answer);
-    }
-
-    @Input() set matches(jsons: string[]) {
+    @Input() public set matches(jsons: string[]) {
         this.inputMatches$.next(
             jsons.map(parseMatchingAnswer)
         );
     }
 
-    @Output() readonly matchesChange = new EventEmitter<string[]>();
-
-    @Output() readonly complete = new EventEmitter<boolean>();
-
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.inputSubscription = combineLatest([
             this.inputData$,
             this.inputMatches$
         ]).pipe(
             map(([data, matches]) => {
-                for (const match of matches) {
+                for(const match of matches) {
                     const answerIndex = data.answers.findIndex(a => a.text === match.answer);
-                    const slotIndex = data.slots.findIndex(s => s.text == match.slot);
-                    if (answerIndex >= 0 && slotIndex >= 0) {
+                    const slotIndex = data.slots.findIndex(s => s.text === match.slot);
+                    if(answerIndex >= 0 && slotIndex >= 0) {
                         transferArrayItem(
                             data.answers,
                             data.slots[slotIndex].answers,
@@ -111,21 +96,21 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
                 return data;
             })
         )
-        .subscribe(this.data$);
+            .subscribe(this.data$);
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.inputSubscription?.unsubscribe();
     }
 
-    drop(event: CdkDragDrop<AnswerData[]>) {
+    public drop(event: CdkDragDrop<AnswerData[]>): void {
         const formSlot = event.previousContainer.id.startsWith('slot-');
         const toSlot = event.container.id.startsWith('slot-');
         console.log(`From slot: ${formSlot}, Tp slot: ${toSlot}`);
-        if (toSlot) {
+        if(toSlot) {
             const isTargetEmpty = event.container.data.length === 0;
-            if (formSlot) {
-                if (isTargetEmpty) {
+            if(formSlot) {
+                if(isTargetEmpty) {
                     transferArrayItem(
                         event.previousContainer.data,
                         event.container.data,
@@ -146,53 +131,59 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
                         0
                     );
                 }
-            } else {
-                if (isTargetEmpty) {
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                } else {
-                    transferArrayItem(
-                        event.container.data,
-                        event.previousContainer.data,
-                        0,
-                        event.container.data.length
-                    );
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                }
-            }
-        } else {
-            if (formSlot) {
+            } else if(isTargetEmpty) {
                 transferArrayItem(
                     event.previousContainer.data,
                     event.container.data,
                     event.previousIndex,
-                    event.currentIndex
+                    0
                 );
             } else {
-                moveItemInArray(
+                transferArrayItem(
+                    event.container.data,
+                    event.previousContainer.data,
+                    0,
+                    event.container.data.length
+                );
+                transferArrayItem(
+                    event.previousContainer.data,
                     event.container.data,
                     event.previousIndex,
-                    event.currentIndex
+                    0
                 );
             }
+        } else if(formSlot) {
+            transferArrayItem(
+                event.previousContainer.data,
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex
+            );
+        } else {
+            moveItemInArray(
+                event.container.data,
+                event.previousIndex,
+                event.currentIndex
+            );
         }
         this.handleMatchChanges();
+    }
+
+    private shuffleAnswers(answers: AnswerData[]): AnswerData[] {
+        return answers
+            .map(answer => ({
+                answer,
+                rnd: Math.random()
+            }))
+            .sort((a, b) => a.rnd > b.rnd ? 1 : -1)
+            .map(data => data.answer);
     }
 
     private handleMatchChanges(): void {
         const data = this.data$.getValue();
         let complete = true;
-        for (const slot of data.slots) {
-            if (slot.answers.length === 0) {
+        for(const slot of data.slots) {
+            if(slot.answers.length === 0) {
                 complete = false;
                 break;
             }
@@ -207,7 +198,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
                 return JSON.stringify(json);
             });
         this.matchesChange.emit(matches);
-        if (this.isComplete != complete) {
+        if(this.isComplete !== complete) {
             this.isComplete = complete;
             this.complete.emit(complete);
         }

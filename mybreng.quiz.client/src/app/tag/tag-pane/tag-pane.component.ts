@@ -1,6 +1,6 @@
-import { Component, Input } from "@angular/core";
-import { TagDto } from "@app/web-api";
-import { TagComponent } from "../tag";
+import { Component, Input } from '@angular/core';
+import { TagDto } from '@app/web-api';
+import { TagComponent } from '../tag';
 
 
 @Component({
@@ -10,5 +10,5 @@ import { TagComponent } from "../tag";
     imports: [TagComponent]
 })
 export class TagPaneComponent {
-    @Input() tags: TagDto[];
+    @Input() public tags: TagDto[];
 }

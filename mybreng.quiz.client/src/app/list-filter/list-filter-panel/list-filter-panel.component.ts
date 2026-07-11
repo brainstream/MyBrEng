@@ -4,7 +4,7 @@ import { TagDto } from '@app/web-api';
 import { combineLatest, map, Observable, startWith, Subject, Subscription, tap } from 'rxjs';
 import { IListFilter } from '../list-filter';
 import { AsyncPipe } from '@angular/common';
-import { MatSelect, MatOption } from '@angular/material/select';
+import { MatOption, MatSelect } from '@angular/material/select';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -16,20 +16,29 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     selector: 'app-list-filter-panel',
     templateUrl: './list-filter-panel.component.html',
     styleUrl: './list-filter-panel.component.scss',
-    imports: [FormsModule, ReactiveFormsModule, AsyncPipe, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatSuffix, MatIconButton, MatIcon, MatTooltip, NgxMatSelectSearchModule]
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        AsyncPipe,
+        MatFormField,
+        MatLabel,
+        MatSelect,
+        MatOption,
+        MatInput,
+        MatSuffix,
+        MatIconButton,
+        MatIcon,
+        MatTooltip,
+        NgxMatSelectSearchModule
+    ]
 })
 export class ListFilterPanelComponent implements OnInit, OnDestroy {
-    private tags$ = new Subject<TagDto[]>();
+    public form: FormGroup;
+    public filteredTags$: Observable<TagDto[]>;
+    public hasFilter = false;
+    @Output() public filterChanged = new EventEmitter<IListFilter>();
+    private readonly tags$ = new Subject<TagDto[]>();
     private formChangeSubscription: Subscription;
-    form: FormGroup;
-    filteredTags$: Observable<TagDto[]>;
-    hasFilter: boolean = false;
-
-    @Input() set tags(value: TagDto[]) {
-        this.tags$.next(value);
-    }
-
-    @Output() filterChanged = new EventEmitter<IListFilter>();
 
     constructor(
         formBuilder: FormBuilder
@@ -40,44 +49,48 @@ export class ListFilterPanelComponent implements OnInit, OnDestroy {
             tagsFilter: ''
         });
         this.filteredTags$ = combineLatest([
-                this.tags$,
-                this.form.controls['tagsFilter'].valueChanges.pipe(startWith(''))
-            ]).pipe(
-                map(([tags, filter]) => {
-                    const lcFilter = (filter as string ?? '').toLowerCase();
-                    return tags.filter(t => t.name.toLowerCase().includes(lcFilter));
-                })
-            );
+            this.tags$,
+            this.form.controls['tagsFilter'].valueChanges.pipe(startWith(''))
+        ]).pipe(
+            map(([tags, filter]) => {
+                const lcFilter = (filter as string).toLowerCase();
+                return tags.filter(t => t.name.toLowerCase().includes(lcFilter));
+            })
+        );
     }
 
-    ngOnInit(): void {
+    @Input() public set tags(value: TagDto[]) {
+        this.tags$.next(value);
+    }
+
+    public get isSearchStringEmpty(): boolean {
+        return (this.form.controls['searchString'].value as string).length === 0;
+    }
+
+    public ngOnInit(): void {
         this.formChangeSubscription = this.form.valueChanges
             .pipe(
                 tap(() => {
-                    const filter = {
-                        searchString: this.form.controls['searchString'].value ?? '',
-                        tags: this.form.controls['tags'].value ?? []
+                    const filter: IListFilter = {
+                        searchString: (this.form.controls['searchString'].value as string),
+                        tags: (this.form.controls['tags'].value as string[])
                     };
-                    this.hasFilter = filter.searchString.length || filter.tags.length;
-                    this.filterChanged.emit(filter)
+                    this.hasFilter = filter.searchString.length > 0 || filter.tags.length > 0;
+                    this.filterChanged.emit(filter);
                 })
             )
             .subscribe();
     }
 
-    ngOnDestroy(): void {
-        this.formChangeSubscription?.unsubscribe();
+    public ngOnDestroy(): void {
+        this.formChangeSubscription.unsubscribe();
     }
 
-    get isSearchStringEmpty(): boolean {
-        return this.form.controls['searchString'].value.length === 0;
-    }
-
-    clearSearchString(): void {
+    public clearSearchString(): void {
         this.form.controls['searchString'].setValue('');
     }
 
-    clearFilter(): void {
+    public clearFilter(): void {
         this.form.setValue({
             searchString: '',
             tags: [],

@@ -1,4 +1,4 @@
-import {ArtifactDto} from "@app/web-api";
+import { ArtifactDto } from '@app/web-api';
 
 export interface IArtifactsState {
     readonly loadingCounter: number;

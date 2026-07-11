@@ -1,5 +1,4 @@
-import { ConfirmDialogButton } from "./confirmation_dialog-result";
-import { MatIcon } from '@angular/material/icon'
+import { ConfirmDialogButton } from './confirmation_dialog-result';
 
 export interface IConfirmationDialogButtonConfiguration {
     text?: string;

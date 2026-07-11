@@ -1,5 +1,5 @@
 export class Queue<T> {
-    private arr: Array<T> = [];
+    private readonly arr: Array<T> = [];
 
     public get length(): number {
         return this.arr.length;

@@ -24,13 +24,13 @@ import { MatIcon } from '@angular/material/icon';
     imports: [LayoutFullComponent, TagListItemComponent, AsyncPipe, MatNavList, MatMenu, MatMenuItem, MatIcon]
 })
 export class TagListComponent {
-    loading$: Observable<boolean>;
-    tags$: Observable<TagDto[]>;
+    public loading$: Observable<boolean>;
+    public tags$: Observable<TagDto[]>;
 
     constructor(
         store$: Store,
         titleService: TitleService,
-        private bottomSheet: MatBottomSheet
+        private readonly bottomSheet: MatBottomSheet
     ) {
         titleService.setTitle('Теги');
         store$.dispatch(tagsActions.loadList());
@@ -38,7 +38,7 @@ export class TagListComponent {
         this.tags$ = store$.select(TagsSelectors.list);
     }
 
-    showCreateTagForm() {
+    public showCreateTagForm(): void {
         this.bottomSheet.open(TagEditFormComponent);
     }
 }

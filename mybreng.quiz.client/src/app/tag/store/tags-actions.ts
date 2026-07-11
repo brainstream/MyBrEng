@@ -1,6 +1,6 @@
-import { IPostponedEvent } from "@app/shared";
-import { TagDto, TagEditDto } from "@app/web-api";
-import { createActionGroup, emptyProps, props } from "@ngrx/store";
+import { IPostponedEvent } from '@app/shared';
+import { TagDto, TagEditDto } from '@app/web-api';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const tagsActions = createActionGroup({
     source: 'Tags',

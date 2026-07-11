@@ -1,21 +1,21 @@
-import { Injectable } from "@angular/core";
-import { QuizService, TagService } from "@app/web-api";
+import { Injectable } from '@angular/core';
+import { QuizService, TagService } from '@app/web-api';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { Store } from "@ngrx/store";
-import { concat, EMPTY, switchMap, of, catchError, tap, from } from "rxjs";
-import { quizzesActions } from "./quizzes-actions";
-import { QuizzesSelectors } from "./quizzes-selectors";
-import { watchHttpErrors } from "@app/shared";
-import { MessageService } from "@app/common";
-import { QuizzesEventsService } from "./quizzes-events.service";
+import { Store } from '@ngrx/store';
+import { catchError, concat, EMPTY, from, of, switchMap, tap } from 'rxjs';
+import { quizzesActions } from './quizzes-actions';
+import { QuizzesSelectors } from './quizzes-selectors';
+import { watchHttpErrors } from '@app/shared';
+import { MessageService } from '@app/common';
+import { QuizzesEventsService } from './quizzes-events.service';
 
 
 @Injectable()
 export class QuizzesEffects {
     constructor(
         private readonly actions$: Actions,
-        private store$: Store,
+        private readonly store$: Store,
         private readonly quizService: QuizService,
         private readonly tagService: TagService,
         private readonly messageService: MessageService,
@@ -23,25 +23,25 @@ export class QuizzesEffects {
     ) {
     }
 
-    showError$ = createEffect(() => this.actions$.pipe(
+    public showError$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.setError),
         tap(({ message }) => {
-            this.messageService.showError(message)
+            this.messageService.showError(message);
         })
     ), { dispatch: false });
 
-    flushEvents$ = createEffect(() => this.actions$.pipe(
+    public flushEvents$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.flushEvents),
         tap(({ events }) => {
             events.forEach(e => e.flush());
         })
     ), { dispatch: false });
 
-    loadList$ = createEffect(() => this.actions$.pipe(
+    public loadList$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.loadList),
         concatLatestFrom(() => this.store$.select(QuizzesSelectors.isListLoaded)),
         switchMap(([_, isListLoaded]) => {
-            if (isListLoaded) {
+            if(isListLoaded) {
                 return EMPTY;
             } else {
                 return concat(
@@ -64,7 +64,7 @@ export class QuizzesEffects {
         })
     ));
 
-    loadDetails$ = createEffect(() => this.actions$.pipe(
+    public loadDetails$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.loadDetails),
         switchMap(({ id }) => concat(
             of(quizzesActions.cleanDetails()),
@@ -85,7 +85,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    saveDetails$ = createEffect(() => this.actions$.pipe(
+    public saveDetails$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.saveDetails),
         switchMap(({ quiz }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -110,7 +110,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    deleteQuiz$ = createEffect(() => this.actions$.pipe(
+    public deleteQuiz$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.deleteQuiz),
         switchMap(({ id }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -135,7 +135,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    saveQuestion$ = createEffect(() => this.actions$.pipe(
+    public saveQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.saveQuestion),
         switchMap(({ question }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -160,7 +160,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    cloneQuestion$ = createEffect(() => this.actions$.pipe(
+    public cloneQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.cloneQuestion),
         switchMap(({ questionId }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -185,7 +185,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    deleteQuestion$ = createEffect(() => this.actions$.pipe(
+    public deleteQuestion$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.deleteQuestion),
         switchMap(({ id }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -205,7 +205,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    reorderQuestions$ = createEffect(() => this.actions$.pipe(
+    public reorderQuestions$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.reorderQuestions),
         switchMap(({ questions, quizId }) => concat(
             of(quizzesActions.setLoading({ loading: true })),
@@ -230,7 +230,7 @@ export class QuizzesEffects {
         ))
     ));
 
-    loadAvailableTags$ = createEffect(() => this.actions$.pipe(
+    public loadAvailableTags$ = createEffect(() => this.actions$.pipe(
         ofType(quizzesActions.loadAvailableTags),
         switchMap(() => concat(
             of(quizzesActions.setLoading({ loading: true })),

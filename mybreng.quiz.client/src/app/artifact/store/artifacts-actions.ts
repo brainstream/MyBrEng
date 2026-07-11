@@ -1,6 +1,6 @@
-import { IPostponedEvent } from "@app/shared";
-import {createActionGroup, emptyProps, props} from "@ngrx/store";
-import {ArtifactDto, ArtifactListDto} from "@app/web-api";
+import { IPostponedEvent } from '@app/shared';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { ArtifactDto, ArtifactListDto } from '@app/web-api';
 
 export const artifactsActions = createActionGroup({
     source: 'Artifacts',

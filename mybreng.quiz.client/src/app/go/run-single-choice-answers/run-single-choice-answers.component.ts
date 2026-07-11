@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
-import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { MatRadioButton, MatRadioGroup } from '@angular/material/radio';
 import { FormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 
@@ -11,19 +11,17 @@ import { NgFor } from '@angular/common';
     imports: [MatRadioGroup, MatRadioButton, FormsModule, NgFor]
 })
 export class RunSingleChoiceAnswersComponent {
-    _answer: string;
+    @Input() public variants: RunAnswerVariantDto[];
+    @Output() public answerChange = new EventEmitter<string>();
+    @Output() public complete = new EventEmitter<boolean>();
+    private _answer: string;
 
-    @Input() variants: RunAnswerVariantDto[]
-
-    @Input() set answer(value: string) {
+    @Input() public set answer(value: string) {
         this.setAnswer(value);
     }
 
-    @Output() answerChange = new EventEmitter<string>();
-    @Output() complete = new EventEmitter<boolean>();
-
-    setAnswer(answer: string): void {
-        if (!this._answer && answer) {
+    public setAnswer(answer: string): void {
+        if(!this._answer && answer) {
             this.complete.emit(true);
         }
         this._answer = answer;

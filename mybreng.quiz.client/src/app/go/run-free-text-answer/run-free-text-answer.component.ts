@@ -10,11 +10,11 @@ import { FormsModule } from '@angular/forms';
     imports: [MatFormField, MatLabel, MatInput, FormsModule]
 })
 export class RunFreeTextAnswerComponent {
-    @Input() answer: string;
-    @Output() answerChange = new EventEmitter<string>();
-    @Output() complete = new EventEmitter<boolean>();
+    @Input() public answer: string;
+    @Output() public answerChange = new EventEmitter<string>();
+    @Output() public complete = new EventEmitter<boolean>();
 
-    setText(text: string) {
+    public setText(text: string): void {
         this.answerChange.emit(text);
         this.complete.emit(text.length > 0);
     }

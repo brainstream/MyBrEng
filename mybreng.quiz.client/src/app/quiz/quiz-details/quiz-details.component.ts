@@ -3,14 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { QuizDetailedDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { quizzesActions, QuizzesSelectors, QuizzesEventsService } from '../store';
+import { quizzesActions, QuizzesEventsService, QuizzesSelectors } from '../store';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { QuizEditFormComponent } from '../quiz-edit-form';
-import { ConfirmDialogButton, ConfirmDialogService } from '@app/common';
+import { ConfirmDialogButton, ConfirmDialogService, TitleService } from '@app/common';
 import { collapseOnLeaveAnimation } from 'angular-animations';
 import { MatDialog } from '@angular/material/dialog';
 import { QuizQuestionSortComponent } from '../quiz-question-sort';
-import { TitleService } from '@app/common';
 import { LayoutFullComponent } from '@app/layout';
 import { QuizQuestionComponent } from '../quiz-question';
 import { QuizQuestionEditFormComponent } from '../quiz-question-edit-form';
@@ -26,15 +25,25 @@ import { MatIcon } from '@angular/material/icon';
     animations: [
         collapseOnLeaveAnimation()
     ],
-    imports: [LayoutFullComponent, QuizQuestionComponent, QuizQuestionEditFormComponent, TagPaneComponent, AsyncPipe, NgFor, NgIf, MatMenu, MatMenuItem, MatIcon]
+    imports: [
+        LayoutFullComponent,
+        QuizQuestionComponent,
+        QuizQuestionEditFormComponent,
+        TagPaneComponent,
+        AsyncPipe,
+        NgFor,
+        NgIf,
+        MatMenu,
+        MatMenuItem,
+        MatIcon
+    ]
 })
 export class QuizDetailsComponent implements OnInit, OnDestroy {
+    public readonly loading$: Observable<boolean>;
+    public quiz: QuizDetailedDto | null;
+    public editQuestionId: string | null = null;
+    public newQuestion: Partial<QuizQuestionDto> | null = null;
     private readonly subscriptions: Subscription[] = [];
-
-    readonly loading$: Observable<boolean>;
-    quiz: QuizDetailedDto | null;
-    editQuestionId: string | null = null;
-    newQuestion: Partial<QuizQuestionDto> | null = null;
 
     constructor(
         private readonly route: ActivatedRoute,
@@ -49,21 +58,19 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         this.loading$ = store$.select(QuizzesSelectors.loading);
     }
 
-    ngOnInit(): void {
+    public ngOnInit(): void {
         this.subscriptions.push(this.route.paramMap.subscribe(params => {
             const id = params.get('id');
-            if (id) {
-                this.store$.dispatch(quizzesActions.loadDetails({ id }))
+            if(id) {
+                this.store$.dispatch(quizzesActions.loadDetails({ id }));
             }
-        })
-        );
+        }));
         this.subscriptions.push(this.store$
             .select(QuizzesSelectors.details)
             .subscribe(quiz => {
                 this.quiz = quiz;
                 this.titleService.setTitle(quiz?.title);
-            })
-        );
+            }));
         this.subscriptions.push(this.events.quizDeleted$.subscribe(() => {
             this.router.navigate(['/quiz']);
         }));
@@ -77,21 +84,21 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         }));
     }
 
-    ngOnDestroy(): void {
+    public ngOnDestroy(): void {
         this.subscriptions.forEach(s => s.unsubscribe());
         this.subscriptions.splice(0, this.subscriptions.length);
     }
 
-    editQuiz() {
+    public editQuiz(): void {
         const quiz = this.quiz;
-        if (quiz) {
+        if(quiz) {
             this.store$.dispatch(quizzesActions.loadAvailableTags());
             this.bottomSheet.open(QuizEditFormComponent, { data: quiz });
         }
     }
 
-    async deleteQuiz() {
-        if (!this.quiz) {
+    public async deleteQuiz(): Promise<void> {
+        if(!this.quiz) {
             return;
         }
         const result = await this.confirmDialog.show({
@@ -108,12 +115,12 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        if (result.button === ConfirmDialogButton.Yes) {
+        if(result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(quizzesActions.deleteQuiz({ id: this.quiz.id }));
         }
     }
 
-    addQuestion() {
+    public addQuestion(): void {
         this.newQuestion = {
             questionType: QuizQuestionDto.QuestionTypeEnum.SingleChoice,
             text: '',
@@ -122,14 +129,14 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         this.scrollTo('bottom');
     }
 
-    cloneQuestion(question: QuizQuestionDto | null) {
-        if (question) {
-            this.store$.dispatch(quizzesActions.cloneQuestion({ questionId: question.id }))
+    public cloneQuestion(question: QuizQuestionDto | null): void {
+        if(question) {
+            this.store$.dispatch(quizzesActions.cloneQuestion({ questionId: question.id }));
             this.scrollTo('bottom');
         }
     }
 
-    scrollTo(id: string) {
+    public scrollTo(id: string): void {
         setTimeout(() => {
             document.getElementById(id)?.scrollIntoView({
                 behavior: 'smooth',
@@ -139,15 +146,15 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         }, 100);
     }
 
-    cancelAddQuestion() {
+    public cancelAddQuestion(): void {
         this.newQuestion = null;
     }
 
-    saveNewQuestion(question: QuizQuestionEditDto) {
+    public saveNewQuestion(question: QuizQuestionEditDto): void {
         this.store$.dispatch(quizzesActions.saveQuestion({ question }));
     }
 
-    reorderQuestion() {
+    public reorderQuestion(): void {
         this.dialog.open(QuizQuestionSortComponent, {
             data: {
                 quizId: this.quiz?.id,
@@ -156,15 +163,15 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    editQuestion(question: QuizQuestionDto | null) {
+    public editQuestion(question: QuizQuestionDto | null): void {
         this.editQuestionId = question?.id ?? null;
     }
 
-    saveQuestion(question: QuizQuestionEditDto) {
+    public saveQuestion(question: QuizQuestionEditDto): void {
         this.store$.dispatch(quizzesActions.saveQuestion({ question }));
     }
 
-    async deleteQuestion(question: QuizQuestionDto) {
+    public async deleteQuestion(question: QuizQuestionDto): Promise<void> {
         const result = await this.confirmDialog.show({
             text: 'Вы действительно хотите удалить вопрос?',
             buttons: {
@@ -179,7 +186,7 @@ export class QuizDetailsComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        if (result.button === ConfirmDialogButton.Yes) {
+        if(result.button === ConfirmDialogButton.Yes) {
             this.store$.dispatch(quizzesActions.deleteQuestion({ id: question.id }));
         }
     }
