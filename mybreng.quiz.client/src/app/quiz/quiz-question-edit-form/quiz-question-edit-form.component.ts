@@ -106,7 +106,7 @@ export class QuizQuestionEditFormComponent {
         const questionType = this.form.controls['type'].value as QuizQuestionDto.QuestionTypeEnum;
         const getAnswer = (group: FormGroup): QuizQuestionAnswerEditDto => {
             const result: QuizQuestionAnswerEditDto = {
-                id: group.controls['id'].value as string,
+                id: group.controls['id'].value as string || undefined,
                 text: group.controls['text'].value as string,
                 isCorrect: group.controls['isCorrect'].value as boolean
             };
@@ -124,7 +124,6 @@ export class QuizQuestionEditFormComponent {
         };
         this.saveRequested.emit({
             id: this.questionId,
-            // eslint-disable-next-line camelcase
             quiz_id: this.quizId,
             text: this.form.controls['text'].value as string,
             questionType: questionType,
