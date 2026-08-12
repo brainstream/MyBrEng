@@ -51,7 +51,7 @@ class TagFacade:
     def _get_tag_by_id(self, owner_id: str, tag_id: str | None) -> TagTable | None:
         return None if tag_id is None else db.session \
             .query(TagTable) \
-            .where(TagTable.id == tag_id and TagTable.owner_id == owner_id) \
+            .where(TagTable.id == tag_id, TagTable.owner_id == owner_id) \
             .first()
 
     def delete_tag(self, owner_id: str, tag_id: str) -> bool:
