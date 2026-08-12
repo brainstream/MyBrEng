@@ -40,7 +40,7 @@ class ArtifactFacade:
 
     def delete_artifact(self, owner_id: str, artifact_id: str) -> bool:
         artifact = ArtifactTable.query \
-            .where(ArtifactTable.owner_id == owner_id and ArtifactDto.id == artifact_id) \
+            .where(ArtifactTable.owner_id == owner_id, ArtifactTable.id == artifact_id) \
             .first()
         if artifact is None:
             return False
