@@ -82,7 +82,7 @@ def artifact_content(artifact_id: str, artifact_facade: ArtifactFacade = Provide
     """
     artifact = artifact_facade.get_content(artifact_id)
     if artifact is None:
-        return make_response(404, '')
+        return make_response('', 404)
     response = make_response(artifact.content, 200)
     response.headers.set('Content-Type', artifact.mime)
     return response
