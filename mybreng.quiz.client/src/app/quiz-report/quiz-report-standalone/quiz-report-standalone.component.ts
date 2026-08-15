@@ -12,9 +12,6 @@ import { AsyncPipe, NgIf } from '@angular/common';
     selector: 'app-quiz-report-standalone',
     templateUrl: './quiz-report-standalone.component.html',
     styleUrls: ['./quiz-report-standalone.component.scss'],
-    providers: [
-        ApiModule
-    ],
     imports: [LayoutFullComponent, QuizReportComponent, AsyncPipe, NgIf]
 })
 export class QuizReportStandaloneComponent {

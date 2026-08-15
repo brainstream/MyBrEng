@@ -188,7 +188,6 @@ export class QuizQuestionEditFormComponent {
             const ma = parseMatchingAnswer(text);
             text = ma.answer;
             slot = ma.slot;
-            console.log(text, slot);
         }
         return this.formBuilder.group({
             id: [answer?.id],
