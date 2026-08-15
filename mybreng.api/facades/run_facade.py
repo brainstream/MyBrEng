@@ -57,7 +57,7 @@ class RunFacade:
         if student is None or quiz is None:
             return None
         run = RunTable()
-        run.id = uuid.uuid4()
+        run.id = str(uuid.uuid4())
         run.student_id = dto.student_id
         run.quiz_id = dto.quiz_id
         run.creation_date = datetime.now(timezone.utc)
@@ -90,13 +90,17 @@ class RunFacade:
             if question is None:
                 return False
             question_type = map_db_question_type_to_question_type(question.type)
-            return question_type == QuizQuestionType.FREE_TEXT or question_type == QuizQuestionType.MATCH
+            return question_type in (
+                QuizQuestionType.FREE_TEXT,
+                QuizQuestionType.MATCH,
+                QuizQuestionType.WORD_FROM_LETTERS,
+            )
 
         for q in dto.questions:
             requires_text_answer = does_question_require_text_answer(q.id)
             for a in q.answers:
                 answer = RunAnswerTable()
-                answer.id = uuid.uuid4()
+                answer.id = str(uuid.uuid4())
                 answer.run_id = run.id
                 answer.question_id = q.id
                 if requires_text_answer:

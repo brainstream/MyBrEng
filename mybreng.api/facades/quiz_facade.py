@@ -35,7 +35,7 @@ class QuizFacade:
         for tag_id in tag_ids:
             if not any(t.tag_id == tag_id for t in quiz.tags):
                 rel = QuizTagTable()
-                rel.student_id = quiz.id
+                rel.quiz_id = quiz.id
                 rel.tag_id = tag_id
                 quiz.tags.append(rel)
                 db.session.add(rel)
@@ -62,7 +62,7 @@ class QuizFacade:
             tags = self.__get_tags(owner_id, dto.tags)
             for tag in tags:
                 rel = QuizTagTable()
-                rel.student_id = quiz.id
+                rel.quiz_id = quiz.id
                 rel.tag_id = tag.id
                 quiz.tags.append(rel)
                 db.session.add(rel)

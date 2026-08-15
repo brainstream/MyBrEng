@@ -1,4 +1,10 @@
-from database import QuizAnswerVariantTable, QuizQuestionTable, QuizTable
+from enum import Enum
+
+from database import (
+    QuizAnswerVariantTable,
+    QuizQuestionTable,
+    QuizTable,
+)
 from dtos import (
     QuizDetailedDto,
     QuizDto,
@@ -8,6 +14,14 @@ from dtos import (
 )
 
 from .tag_mappers import map_tag_to_dto
+
+
+class _QuizQuestionDatabaseType(int, Enum):
+    SINGLE_CHOICE = 0
+    MULTIPLE_CHOICE = 1
+    FREE_TEXT = 2
+    MATCH = 3
+    WORD_FROM_LETTERS = 4
 
 
 def map_quiz_to_dto(quiz: QuizTable) -> QuizDto:
@@ -30,22 +44,26 @@ def map_quiz_to_detailed_dto(quiz: QuizTable) -> QuizDetailedDto:
 
 
 def map_quiz_question_to_dto(question: QuizQuestionTable) -> QuizQuestionDto:
+    word_answer = None if question.word_answer is None else question.word_answer.text
     return QuizQuestionDto(
         question.id,
         question.text,
         map_db_question_type_to_question_type(question.type),
-        [map_answer_variant_to_dto(answer) for answer in question.answers]
+        [map_answer_variant_to_dto(answer) for answer in question.answers],
+        word_answer,
     )
 
 
 def map_db_question_type_to_question_type(db_type: int) -> QuizQuestionType:
     match db_type:
-        case 1:
+        case _QuizQuestionDatabaseType.MULTIPLE_CHOICE:
             return QuizQuestionType.MULTIPLE_CHOICE
-        case 2:
+        case _QuizQuestionDatabaseType.FREE_TEXT:
             return QuizQuestionType.FREE_TEXT
-        case 3:
+        case _QuizQuestionDatabaseType.MATCH:
             return QuizQuestionType.MATCH
+        case _QuizQuestionDatabaseType.WORD_FROM_LETTERS:
+            return QuizQuestionType.WORD_FROM_LETTERS
         case _:
             return QuizQuestionType.SINGLE_CHOICE
 
@@ -53,13 +71,15 @@ def map_db_question_type_to_question_type(db_type: int) -> QuizQuestionType:
 def map_question_type_to_db_question_type(q_type: QuizQuestionType) -> int:
     match q_type:
         case QuizQuestionType.MULTIPLE_CHOICE:
-            return 1
+            return _QuizQuestionDatabaseType.MULTIPLE_CHOICE
         case QuizQuestionType.FREE_TEXT:
-            return 2
+            return _QuizQuestionDatabaseType.FREE_TEXT
         case QuizQuestionType.MATCH:
-            return 3
+            return _QuizQuestionDatabaseType.MATCH
+        case QuizQuestionType.WORD_FROM_LETTERS:
+            return _QuizQuestionDatabaseType.WORD_FROM_LETTERS
         case _:
-            return 0
+            return _QuizQuestionDatabaseType.SINGLE_CHOICE
 
 
 def map_answer_variant_to_dto(answer: QuizAnswerVariantTable) -> QuizQuestionAnswerDto:

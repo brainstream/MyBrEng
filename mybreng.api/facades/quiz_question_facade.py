@@ -6,6 +6,7 @@ from database import (
     QuizAnswerVariantTable,
     QuizQuestionTable,
     QuizTable,
+    QuizWordAnswerTable,
     RunAnswerTable,
     db,
 )
@@ -16,7 +17,11 @@ from dtos import (
     QuizQuestionPositionDto,
     QuizQuestionType,
 )
-from mappers import map_question_type_to_db_question_type, map_quiz_question_to_dto
+from mappers import (
+    map_db_question_type_to_question_type,
+    map_question_type_to_db_question_type,
+    map_quiz_question_to_dto,
+)
 
 
 # noinspection PyMethodMayBeStatic
@@ -32,6 +37,8 @@ class QuizQuestionFacade:
         question.type = map_question_type_to_db_question_type(dto.question_type)
         question.ordinal_number = self._get_next_question_ordinal_number(quiz.id)
         question.answers = [self._create_answer_variant(dto.question_type, a) for a in dto.answers]
+        if dto.question_type == QuizQuestionType.WORD_FROM_LETTERS and dto.word_answer is not None:
+            question.word_answer = self._create_word_answer(dto.word_answer)
         db.session.add(question)
         db.session.commit()
         return map_quiz_question_to_dto(question)
@@ -50,7 +57,12 @@ class QuizQuestionFacade:
         new_question.text = existent_question.text
         new_question.type = existent_question.type
         new_question.ordinal_number = self._get_next_question_ordinal_number(existent_question.quiz.id)
-        new_question.answers = [self._create_answer_variant(existent_question.type, a) for a in existent_question.answers]
+        new_question.answers = [
+            self._create_answer_variant(map_db_question_type_to_question_type(existent_question.type), a)
+            for a in existent_question.answers
+        ]
+        if existent_question.word_answer is not None:
+            new_question.word_answer = self._create_word_answer(existent_question.word_answer.text)
         db.session.add(new_question)
         db.session.commit()
         return map_quiz_question_to_dto(new_question)
@@ -69,7 +81,17 @@ class QuizQuestionFacade:
         answer = QuizAnswerVariantTable()
         answer.id = str(uuid.uuid4())
         answer.text = answer_dto.text
-        answer.is_correct = True if question_type == QuizQuestionType.FREE_TEXT else answer_dto.is_correct
+        if question_type == QuizQuestionType.WORD_FROM_LETTERS:
+            answer.is_correct = False
+        elif question_type == QuizQuestionType.FREE_TEXT:
+            answer.is_correct = True
+        else:
+            answer.is_correct = answer_dto.is_correct
+        return answer
+
+    def _create_word_answer(self, text: str) -> QuizWordAnswerTable:
+        answer = QuizWordAnswerTable()
+        answer.text = text
         return answer
 
     def edit_question(self, owner_id: str, dto: QuizQuestionEditDto) -> QuizQuestionDto | None:
@@ -83,6 +105,10 @@ class QuizQuestionFacade:
         question.text = dto.text
         question.type = map_question_type_to_db_question_type(dto.question_type)
         self._apply_answers_changes(question, dto)
+        if dto.question_type == QuizQuestionType.WORD_FROM_LETTERS:
+            self._apply_word_answer_changes(question, dto.word_answer)
+        else:
+            self._clear_word_answer(question)
         db.session.commit()
         return map_quiz_question_to_dto(question)
 
@@ -93,13 +119,36 @@ class QuizQuestionFacade:
                 db.session.delete(q_answer)
             else:
                 q_answer.text = an.text
-                q_answer.is_correct = dto.question_type == QuizQuestionType.FREE_TEXT or an.is_correct
+                if dto.question_type == QuizQuestionType.WORD_FROM_LETTERS:
+                    q_answer.is_correct = False
+                elif dto.question_type == QuizQuestionType.FREE_TEXT:
+                    q_answer.is_correct = True
+                else:
+                    q_answer.is_correct = an.is_correct
         for an in filter(lambda a: a.id is None, dto.answers):
             an_tbl = QuizAnswerVariantTable()
-            an_tbl.id = uuid.uuid4()
+            an_tbl.id = str(uuid.uuid4())
             an_tbl.text = an.text
-            an_tbl.is_correct = an.is_correct
+            if dto.question_type == QuizQuestionType.WORD_FROM_LETTERS:
+                an_tbl.is_correct = False
+            elif dto.question_type == QuizQuestionType.FREE_TEXT:
+                an_tbl.is_correct = True
+            else:
+                an_tbl.is_correct = an.is_correct
             question.answers.append(an_tbl)
+
+    def _apply_word_answer_changes(self, question: QuizQuestionTable, text: str | None):
+        if text is None:
+            self._clear_word_answer(question)
+            return
+        if question.word_answer is not None:
+            question.word_answer.text = text
+            return
+        question.word_answer = self._create_word_answer(text)
+
+    def _clear_word_answer(self, question: QuizQuestionTable):
+        if question.word_answer is not None:
+            db.session.delete(question.word_answer)
 
     def delete_question(self, owner_id: str, question_id: str) -> bool:
         question = QuizQuestionTable.query \
@@ -109,6 +158,7 @@ class QuizQuestionFacade:
             .first()
         if question is None:
             return False
+        QuizWordAnswerTable.query.filter_by(question_id=question_id).delete()
         RunAnswerTable.query.filter_by(question_id=question_id).delete()
         db.session.delete(question)
         db.session.commit()

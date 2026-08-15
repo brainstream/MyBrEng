@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from marshmallow import Schema, fields, post_load
 
@@ -13,6 +13,7 @@ class QuizQuestionDto:
     text: str
     question_type: QuizQuestionType
     answers: list[QuizQuestionAnswerDto]
+    word_answer: str | None = field(default=None)
 
 
 # noinspection PyTypeChecker
@@ -21,6 +22,7 @@ class QuizQuestionDtoSchema(Schema):
     text = fields.String(required=True)
     question_type = fields.Enum(QuizQuestionType, required=True, data_key='questionType')
     answers = fields.Nested(QuizQuestionAnswerDtoSchema, many=True)
+    word_answer = fields.String(required=False, allow_none=True, data_key='wordAnswer')
 
     @post_load
     def make_dto(self, data, **kwargs) -> QuizQuestionDto:

@@ -23,7 +23,7 @@ class StudentFacade:
 
     def create_student(self, owner_id: str, dto: StudentEditDto) -> StudentDto:
         student = StudentTable()
-        student.id = uuid.uuid4()
+        student.id = str(uuid.uuid4())
         student.first_name = dto.first_name
         student.last_name = dto.last_name
         student.owner_id = owner_id

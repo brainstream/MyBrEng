@@ -19,7 +19,7 @@ class TagFacade:
 
     def create_tag(self, owner_id: str, dto: TagEditDto) -> TagDto:
         tag = TagTable()
-        tag.id = uuid.uuid4()
+        tag.id = str(uuid.uuid4())
         TagFacade._map_edit_dto_to_entity(tag, owner_id, dto)
         db.session.add(tag)
         db.session.commit()

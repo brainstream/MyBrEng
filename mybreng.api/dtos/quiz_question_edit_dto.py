@@ -30,6 +30,7 @@ class QuizQuestionEditDto:
     text: str
     answers: list[QuizQuestionAnswerEditDto]
     id: str | None = field(default=None)
+    word_answer: str | None = field(default=None)
 
 
 # noinspection PyTypeChecker
@@ -39,6 +40,7 @@ class QuizQuestionEditDtoSchema(Schema):
     question_type = fields.Enum(QuizQuestionType, required=True, data_key='questionType')
     text = fields.String(required=True)
     answers = fields.Nested(QuizQuestionAnswerEditDtoSchema, many=True)
+    word_answer = fields.String(required=False, allow_none=True, data_key='wordAnswer')
 
     @post_load
     def make_dto(self, data, **kwargs) -> QuizQuestionEditDto:

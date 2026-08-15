@@ -10,7 +10,7 @@ from .tag_dto import TagDto, TagDtoSchema
 class StudentDto:
     id: str
     first_name: str
-    last_name: str
+    last_name: str | None
     tags: list[TagDto]
 
 

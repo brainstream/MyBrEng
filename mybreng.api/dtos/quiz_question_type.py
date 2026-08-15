@@ -6,3 +6,4 @@ class QuizQuestionType(str, Enum):
     MULTIPLE_CHOICE = 'MULTIPLE_CHOICE'
     FREE_TEXT = 'FREE_TEXT'
     MATCH = 'MATCH'
+    WORD_FROM_LETTERS = 'WORD_FROM_LETTERS'
