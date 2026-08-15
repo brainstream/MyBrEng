@@ -8,7 +8,7 @@ import {
     HttpUserEvent
 } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, Observable, of, Subject } from 'rxjs';
+import { catchError, first, Observable, of, skip, Subject, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from './login';
 import { AuthService } from './auth.service';
@@ -22,28 +22,11 @@ interface SuspendedRequest {
 
 let authenticationRequested = false;
 const requestQueue = new Queue<SuspendedRequest>();
-
-function resendAll(auth: AuthService): void {
-    auth.authenticated.subscribe(ok => {
-        if(ok) {
-            authenticationRequested = false;
-            while(!requestQueue.empty) {
-                const req = requestQueue.pop();
-                if(req) {
-                    req.next(req.request).subscribe(response => {
-                        req.responseHandler$.next(response);
-                    });
-                }
-            }
-        }
-    });
-}
+let resendSubscription: Subscription | null = null;
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const auth = inject(AuthService);
     const dialog = inject(MatDialog);
-
-    resendAll(auth);
 
     const request = req.clone({ withCredentials: true });
     if(request.method === 'POST' && request.url.endsWith('/account/login')) {
@@ -55,7 +38,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(request).pipe(
         catchError(err => {
             if(err instanceof HttpErrorResponse && err.status === 401) {
-                requestAuthentication(dialog);
+                requestAuthentication(dialog, auth);
                 return suspendRequest(request, next);
             }
             return of(err as HttpEvent<unknown>);
@@ -82,15 +65,39 @@ function suspendRequest(
     return handler.asObservable();
 }
 
-function requestAuthentication(dialog: MatDialog): void {
+function requestAuthentication(dialog: MatDialog, auth: AuthService): void {
     if(authenticationRequested) {
         return;
     }
     authenticationRequested = true;
+    ensureResendSubscription(auth);
     dialog.open(LoginComponent, {
         disableClose: true,
         minWidth: '400px',
         autoFocus: 'first-tabbable',
         backdropClass: 'solid'
     });
+}
+
+function ensureResendSubscription(auth: AuthService): void {
+    if(resendSubscription) {
+        return;
+    }
+    resendSubscription = auth.authenticated
+        .pipe(
+            skip(1),
+            first(ok => !!ok)
+        )
+        .subscribe(() => {
+            authenticationRequested = false;
+            resendSubscription = null;
+            while(!requestQueue.empty) {
+                const req = requestQueue.pop();
+                if(req) {
+                    req.next(req.request).subscribe(response => {
+                        req.responseHandler$.next(response);
+                    });
+                }
+            }
+        });
 }
