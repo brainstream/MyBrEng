@@ -1,5 +1,5 @@
 import javaScriptLint from '@eslint/js';
-import stylisticJs from '@stylistic/eslint-plugin-js';
+import stylistic from '@stylistic/eslint-plugin';
 import typeScriptLint from 'typescript-eslint';
 
 const jsRules = {
@@ -90,16 +90,16 @@ const jsRules = {
             'properties': 'always'
         }
     ],
-    '@stylistic/js/brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
-    '@stylistic/js/function-call-spacing': ['error', 'never'],
-    '@stylistic/js/function-call-argument-newline': ['error', 'consistent'],
-    '@stylistic/js/function-paren-newline': ['error', 'consistent'],
-    '@stylistic/js/generator-star-spacing': ['error', { 'before': false, 'after': true }],
-    '@stylistic/js/yield-star-spacing': ['error', 'after'],
-    '@stylistic/js/max-len': ['error', { 'code': 120, 'tabWidth': 4 }],
-    '@stylistic/js/jsx-quotes': ['error', 'prefer-single'],
-    '@stylistic/js/linebreak-style': ['error', 'unix'],
-    '@stylistic/js/lines-between-class-members': [
+    '@stylistic/brace-style': ['error', '1tbs', { 'allowSingleLine': true }],
+    '@stylistic/function-call-spacing': ['error', 'never'],
+    '@stylistic/function-call-argument-newline': ['error', 'consistent'],
+    '@stylistic/function-paren-newline': ['error', 'consistent'],
+    '@stylistic/generator-star-spacing': ['error', { 'before': false, 'after': true }],
+    '@stylistic/yield-star-spacing': ['error', 'after'],
+    '@stylistic/max-len': ['error', { 'code': 120, 'tabWidth': 4 }],
+    '@stylistic/jsx-quotes': ['error', 'prefer-single'],
+    '@stylistic/linebreak-style': ['error', 'unix'],
+    '@stylistic/lines-between-class-members': [
         'error',
         {
             'enforce': [
@@ -108,45 +108,45 @@ const jsRules = {
             ]
         }
     ],
-    '@stylistic/js/wrap-iife': 'off',
-    '@stylistic/js/template-tag-spacing': 'error',
-    '@stylistic/js/template-curly-spacing': 'error',
-    '@stylistic/js/switch-colon-spacing': ['error', { 'after': true, 'before': false }],
-    '@stylistic/js/newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 2 }],
-    '@stylistic/js/no-confusing-arrow': 'off',
-    '@stylistic/js/no-extra-parens': ['error', 'all', { 'nestedBinaryExpressions': false }],
-    '@stylistic/js/no-extra-semi': 'error',
-    '@stylistic/js/no-mixed-operators': 'error',
-    '@stylistic/js/no-mixed-spaces-and-tabs': 'error',
-    '@stylistic/js/no-multi-spaces': 'error',
-    '@stylistic/js/no-multiple-empty-lines': 'error',
-    '@stylistic/js/no-tabs': 'error',
-    '@stylistic/js/no-trailing-spaces': 'error',
-    '@stylistic/js/no-whitespace-before-property': 'error',
-    '@stylistic/js/object-curly-spacing': ['error', 'always'],
-    '@stylistic/js/object-property-newline': ['error', { 'allowAllPropertiesOnSameLine': true }],
-    '@stylistic/js/one-var-declaration-per-line': ['error', 'always'],
-    '@stylistic/js/quotes': ['error', 'single', { 'avoidEscape': true }],
-    '@stylistic/js/quote-props': 'off',
-    '@stylistic/js/rest-spread-spacing': ['error', 'never'],
-    '@stylistic/js/semi': ['error', 'always'],
-    '@stylistic/js/semi-spacing': ['error', { 'before': false, 'after': true }],
-    '@stylistic/js/semi-style': ['error', 'last'],
-    '@stylistic/js/space-before-blocks': ['error', 'always'],
-    '@stylistic/js/space-in-parens': ['error', 'never'],
-    '@stylistic/js/space-infix-ops': 'error',
-    '@stylistic/js/space-unary-ops': 'error',
-    '@stylistic/js/spaced-comment': ['error', 'always'],
-    '@stylistic/js/array-element-newline': ['error', 'consistent'],
-    '@stylistic/js/padded-blocks': ['error', 'never'],
-    '@stylistic/js/multiline-comment-style': 'off',
-    '@stylistic/js/dot-location': ['error', 'property'],
-    '@stylistic/js/array-bracket-newline': ['error', 'consistent'],
-    '@stylistic/js/multiline-ternary': ['error', 'always-multiline'],
-    '@stylistic/js/arrow-parens': ['error', 'as-needed'],
-    '@stylistic/js/implicit-arrow-linebreak': ['off'],
-    '@stylistic/js/operator-linebreak': ['error', 'after'],
-    '@stylistic/js/space-before-function-paren': [
+    '@stylistic/wrap-iife': 'off',
+    '@stylistic/template-tag-spacing': 'error',
+    '@stylistic/template-curly-spacing': 'error',
+    '@stylistic/switch-colon-spacing': ['error', { 'after': true, 'before': false }],
+    '@stylistic/newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 2 }],
+    '@stylistic/no-confusing-arrow': 'off',
+    '@stylistic/no-extra-parens': ['error', 'all', { 'nestedBinaryExpressions': false }],
+    '@stylistic/no-extra-semi': 'error',
+    '@stylistic/no-mixed-operators': 'error',
+    '@stylistic/no-mixed-spaces-and-tabs': 'error',
+    '@stylistic/no-multi-spaces': 'error',
+    '@stylistic/no-multiple-empty-lines': 'error',
+    '@stylistic/no-tabs': 'error',
+    '@stylistic/no-trailing-spaces': 'error',
+    '@stylistic/no-whitespace-before-property': 'error',
+    '@stylistic/object-curly-spacing': ['error', 'always'],
+    '@stylistic/object-property-newline': ['error', { 'allowAllPropertiesOnSameLine': true }],
+    '@stylistic/one-var-declaration-per-line': ['error', 'always'],
+    '@stylistic/quotes': ['error', 'single', { 'avoidEscape': true }],
+    '@stylistic/quote-props': 'off',
+    '@stylistic/rest-spread-spacing': ['error', 'never'],
+    '@stylistic/semi': ['error', 'always'],
+    '@stylistic/semi-spacing': ['error', { 'before': false, 'after': true }],
+    '@stylistic/semi-style': ['error', 'last'],
+    '@stylistic/space-before-blocks': ['error', 'always'],
+    '@stylistic/space-in-parens': ['error', 'never'],
+    '@stylistic/space-infix-ops': 'error',
+    '@stylistic/space-unary-ops': 'error',
+    '@stylistic/spaced-comment': ['error', 'always'],
+    '@stylistic/array-element-newline': ['error', 'consistent'],
+    '@stylistic/padded-blocks': ['error', 'never'],
+    '@stylistic/multiline-comment-style': 'off',
+    '@stylistic/dot-location': ['error', 'property'],
+    '@stylistic/array-bracket-newline': ['error', 'consistent'],
+    '@stylistic/multiline-ternary': ['error', 'always-multiline'],
+    '@stylistic/arrow-parens': ['error', 'as-needed'],
+    '@stylistic/implicit-arrow-linebreak': ['off'],
+    '@stylistic/operator-linebreak': ['error', 'after'],
+    '@stylistic/space-before-function-paren': [
         'error',
         {
             'anonymous': 'never',
@@ -154,12 +154,12 @@ const jsRules = {
             'asyncArrow': 'always'
         }
     ],
-    '@stylistic/js/indent': [
+    '@stylistic/indent': [
         'error',
         4,
         { 'SwitchCase': 1 }
     ],
-    '@stylistic/js/key-spacing': [
+    '@stylistic/key-spacing': [
         'error',
         {
             'beforeColon': false,
@@ -167,7 +167,7 @@ const jsRules = {
             'mode': 'strict'
         }
     ],
-    '@stylistic/js/padding-line-between-statements': [
+    '@stylistic/padding-line-between-statements': [
         'error',
         { 'blankLine': 'always', 'prev': 'class', 'next': '*' },
         { 'blankLine': 'always', 'prev': 'cjs-import', 'next': '*' },
@@ -178,7 +178,7 @@ const jsRules = {
         { 'blankLine': 'always', 'prev': 'export', 'next': '*' },
         { 'blankLine': 'always', 'prev': 'cjs-export', 'next': '*' }
     ],
-    '@stylistic/js/keyword-spacing': [
+    '@stylistic/keyword-spacing': [
         'error',
         {
             'overrides': {
@@ -387,21 +387,28 @@ const config = {
 };
 
 export default [
+    {
+        ignores: [
+            'src/app/web-api/**',
+            'node_modules/**',
+            'dist/**',
+            '.angular/**'
+        ]
+    },
     javaScriptLint.configs.recommended,
-    stylisticJs.configs['all-flat'],
+    stylistic.configs['all-flat'],
     ...typeScriptLint.configs.recommended,
     {
         files: ['**/*.{js,mjs,cjs}'],
         languageOptions: config.jsLanguageOptions,
         plugins: {
-            '@stylistic/js': stylisticJs,
+            '@stylistic': stylistic,
             ...config.jsTsPlugins
         },
         rules: config.jsRules
     },
     {
         files: ['**/*.ts'],
-        ignores: ['src/app/web-api/**'],
         languageOptions: config.tsLanguageOptions,
         plugins: {
             '@typescript-eslint': typeScriptLint.plugin,
