@@ -106,7 +106,6 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     public drop(event: CdkDragDrop<AnswerData[]>): void {
         const formSlot = event.previousContainer.id.startsWith('slot-');
         const toSlot = event.container.id.startsWith('slot-');
-        console.log(`From slot: ${formSlot}, Tp slot: ${toSlot}`);
         if(toSlot) {
             const isTargetEmpty = event.container.data.length === 0;
             if(formSlot) {
