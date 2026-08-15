@@ -396,7 +396,7 @@ export default [
         ]
     },
     javaScriptLint.configs.recommended,
-    stylistic.configs['all-flat'],
+    stylistic.configs.all,
     ...typeScriptLint.configs.recommended,
     {
         files: ['**/*.{js,mjs,cjs}'],
