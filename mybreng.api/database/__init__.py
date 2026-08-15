@@ -100,9 +100,9 @@ class StudentTagTable(db.Model):
 class RunTable(db.Model):
     __tablename__ = 'run'
     id = db.Column('id', db.String(38), primary_key=True)
-    creation_date = db.Column('creation_date', db.Date())
-    start_date = db.Column('start_date', db.Date())
-    finish_date = db.Column('finish_date', db.Date())
+    creation_date = db.Column('creation_date', db.DateTime())
+    start_date = db.Column('start_date', db.DateTime())
+    finish_date = db.Column('finish_date', db.DateTime())
     quiz_id = db.Column('quiz', db.ForeignKey('quiz.id'))
     quiz = db.relationship('QuizTable')
     student_id = db.Column('student', db.ForeignKey('student.id'))
