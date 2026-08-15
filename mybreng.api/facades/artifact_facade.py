@@ -4,9 +4,14 @@ from pathlib import Path
 
 from sqlalchemy.orm import undefer
 from werkzeug.datastructures import FileStorage
-from database import db, ArtifactTable
-from dtos import ArtifactContentDto, ArtifactListDto, ArtifactDto
-from mappers import map_artifact_to_content_dto, map_artifacts_to_list_dto, map_artifact_to_dto
+
+from database import ArtifactTable, db
+from dtos import ArtifactContentDto, ArtifactDto, ArtifactListDto
+from mappers import (
+    map_artifact_to_content_dto,
+    map_artifact_to_dto,
+    map_artifacts_to_list_dto,
+)
 
 
 # noinspection PyMethodMayBeStatic

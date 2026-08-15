@@ -1,72 +1,76 @@
 import json
+
+from apispec import APISpec
+from apispec.ext.marshmallow import MarshmallowPlugin
+from apispec_webframeworks.flask import FlaskPlugin
 from flask import Flask, jsonify
-from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 from flask_login import LoginManager
-from apispec import APISpec
-from apispec_webframeworks.flask import FlaskPlugin
-from apispec.ext.marshmallow import MarshmallowPlugin
-from blueprints import \
-    account_blueprint, \
-    account_login, \
-    account_logout, \
-    quiz_blueprint, \
-    tag_blueprint, \
-    artifact_blueprint, \
-    quiz_list, \
-    quiz_details, \
-    quiz_save, \
-    quiz_delete, \
-    quiz_question_save, \
-    quiz_question_clone, \
-    quiz_question_delete, \
-    quiz_reorder_questions, \
-    student_blueprint, \
-    student_list, \
-    student_details, \
-    student_save, \
-    student_delete, \
-    student_set_note, \
-    run_get, \
-    run_blueprint, \
-    run_create, \
-    run_delete, \
-    run_finish, \
-    tag_list, \
-    tag_save, \
-    tag_delete, \
-    artifact_upload, \
-    artifact_content, \
-    artifact_list, \
-    artifact_delete
-from dtos import \
-    QuizDtoSchema, \
-    QuizQuestionDtoSchema, \
-    QuizDetailedDtoSchema, \
-    UserDtoSchema, \
-    LogInDtoSchema, \
-    QuizEditDtoSchema, \
-    QuizQuestionEditDtoSchema, \
-    QuizQuestionPositionDtoSchema, \
-    StudentDtoSchema, \
-    StudentDetailedDtoSchema, \
-    StudentEditDtoSchema, \
-    StudentNoteEditDtoSchema, \
-    RunSummaryDtoSchema, \
-    RunCreateDtoSchema, \
-    RunQuestionDtoSchema, \
-    RunDtoSchema, \
-    RunAnswerDtoSchema, \
-    RunAnswerVariantDtoSchema, \
-    RunFinishDtoSchema, \
-    RunFinishQuestionDtoSchema, \
-    RunReportAnswerDtoSchema, \
-    TagDtoSchema, \
-    TagEditDtoSchema, \
-    ArtifactDtoSchema, \
-    ArtifactListDtoSchema
-from di import DI
+from flask_swagger_ui import get_swaggerui_blueprint
+
+from blueprints import (
+    account_blueprint,
+    account_login,
+    account_logout,
+    artifact_blueprint,
+    artifact_content,
+    artifact_delete,
+    artifact_list,
+    artifact_upload,
+    quiz_blueprint,
+    quiz_delete,
+    quiz_details,
+    quiz_list,
+    quiz_question_clone,
+    quiz_question_delete,
+    quiz_question_save,
+    quiz_reorder_questions,
+    quiz_save,
+    run_blueprint,
+    run_create,
+    run_delete,
+    run_finish,
+    run_get,
+    student_blueprint,
+    student_delete,
+    student_details,
+    student_list,
+    student_save,
+    student_set_note,
+    tag_blueprint,
+    tag_delete,
+    tag_list,
+    tag_save,
+)
 from database import db
+from di import DI
+from dtos import (
+    ArtifactDtoSchema,
+    ArtifactListDtoSchema,
+    LogInDtoSchema,
+    QuizDetailedDtoSchema,
+    QuizDtoSchema,
+    QuizEditDtoSchema,
+    QuizQuestionDtoSchema,
+    QuizQuestionEditDtoSchema,
+    QuizQuestionPositionDtoSchema,
+    RunAnswerDtoSchema,
+    RunAnswerVariantDtoSchema,
+    RunCreateDtoSchema,
+    RunDtoSchema,
+    RunFinishDtoSchema,
+    RunFinishQuestionDtoSchema,
+    RunQuestionDtoSchema,
+    RunReportAnswerDtoSchema,
+    RunSummaryDtoSchema,
+    StudentDetailedDtoSchema,
+    StudentDtoSchema,
+    StudentEditDtoSchema,
+    StudentNoteEditDtoSchema,
+    TagDtoSchema,
+    TagEditDtoSchema,
+    UserDtoSchema,
+)
 
 
 def create_app() -> Flask:

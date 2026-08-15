@@ -1,15 +1,17 @@
 from dependency_injector.wiring import Provide, inject
 from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
+
 from di import DI
-from dtos import \
-    QuizQuestionEditDtoSchema, \
-    QuizQuestionPositionDtoSchema, \
-    QuizDtoSchema, \
-    QuizDetailedDtoSchema, \
-    QuizEditDtoSchema, \
-    QuizQuestionDtoSchema
+from dtos import (
+    QuizDetailedDtoSchema,
+    QuizDtoSchema,
+    QuizEditDtoSchema,
+    QuizQuestionDtoSchema,
+    QuizQuestionEditDtoSchema,
+    QuizQuestionPositionDtoSchema,
+)
 from facades import QuizFacade, QuizQuestionFacade
 
 quiz_blueprint = Blueprint('quiz', __name__)

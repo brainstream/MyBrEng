@@ -1,8 +1,9 @@
 from dependency_injector.wiring import Provide, inject
-from flask import make_response, request, jsonify
+from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
-from di import DI
 from flask_login import current_user, login_required
+
+from di import DI
 from dtos import TagDtoSchema, TagEditDtoSchema, TagQueryDtoSchema
 from facades import TagFacade
 

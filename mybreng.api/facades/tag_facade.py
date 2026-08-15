@@ -1,5 +1,6 @@
 import uuid
-from database import TagTable, db, StudentTagTable, QuizTagTable
+
+from database import QuizTagTable, StudentTagTable, TagTable, db
 from dtos import TagDto, TagEditDto, TagQueryDto
 from mappers import map_tag_to_dto
 
@@ -47,7 +48,7 @@ class TagFacade:
         TagFacade._map_edit_dto_to_entity(tag, owner_id, dto)
         db.session.commit()
         return map_tag_to_dto(tag)
-    
+
     def _get_tag_by_id(self, owner_id: str, tag_id: str | None) -> TagTable | None:
         return None if tag_id is None else db.session \
             .query(TagTable) \

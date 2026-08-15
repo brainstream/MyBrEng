@@ -1,5 +1,12 @@
-from database import QuizTable, QuizQuestionTable, QuizAnswerVariantTable
-from dtos import QuizDto, QuizDetailedDto, QuizQuestionDto, QuizQuestionType, QuizQuestionAnswerDto
+from database import QuizAnswerVariantTable, QuizQuestionTable, QuizTable
+from dtos import (
+    QuizDetailedDto,
+    QuizDto,
+    QuizQuestionAnswerDto,
+    QuizQuestionDto,
+    QuizQuestionType,
+)
+
 from .tag_mappers import map_tag_to_dto
 
 

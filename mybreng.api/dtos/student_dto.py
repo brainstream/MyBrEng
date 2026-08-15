@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+
 from marshmallow import Schema, fields, post_load
-from .tag_dto import TagDto, TagDtoSchema
+
 from .id import ID
+from .tag_dto import TagDto, TagDtoSchema
 
 
 @dataclass

@@ -1,7 +1,9 @@
 from dataclasses import dataclass, field
+
 from marshmallow import Schema, fields, post_load
-from .quiz_question_type import QuizQuestionType
+
 from .id import ID
+from .quiz_question_type import QuizQuestionType
 
 
 @dataclass

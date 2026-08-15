@@ -1,11 +1,27 @@
 import uuid
 from datetime import datetime, timezone
-from database import db, RunTable, StudentTable, QuizTable, QuizQuestionTable, RunAnswerTable
-from dtos import RunSummaryDto, RunCreateDto, RunDto, RunFinishDto, QuizQuestionType, RunReportAnswerDto
-from mappers import \
-    map_run_to_summary_dto, \
-    map_question_to_question_run_dto, \
-    map_db_question_type_to_question_type
+
+from database import (
+    QuizQuestionTable,
+    QuizTable,
+    RunAnswerTable,
+    RunTable,
+    StudentTable,
+    db,
+)
+from dtos import (
+    QuizQuestionType,
+    RunCreateDto,
+    RunDto,
+    RunFinishDto,
+    RunReportAnswerDto,
+    RunSummaryDto,
+)
+from mappers import (
+    map_db_question_type_to_question_type,
+    map_question_to_question_run_dto,
+    map_run_to_summary_dto,
+)
 
 
 # noinspection PyMethodMayBeStatic

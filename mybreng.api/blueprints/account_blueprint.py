@@ -1,8 +1,9 @@
 from dependency_injector.wiring import Provide, inject
 from flask import make_response, request
 from flask.blueprints import Blueprint
-from di import DI
 from flask_login import login_user, logout_user
+
+from di import DI
 from dtos import LogInDtoSchema
 from facades import UserFacade
 

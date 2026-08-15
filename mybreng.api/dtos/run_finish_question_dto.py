@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 from marshmallow import Schema, fields, post_load
+
 from .id import ID
 
 

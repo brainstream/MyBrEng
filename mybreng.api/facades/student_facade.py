@@ -2,9 +2,9 @@ import uuid
 
 from sqlalchemy.sql.operators import contains
 
-from database import StudentTable, db, RunTable, TagTable, StudentTagTable
-from dtos import StudentDto, StudentDetailedDto, StudentEditDto, StudentNoteEditDto
-from mappers import map_student_to_dto, map_student_to_detailed_dto
+from database import RunTable, StudentTable, StudentTagTable, TagTable, db
+from dtos import StudentDetailedDto, StudentDto, StudentEditDto, StudentNoteEditDto
+from mappers import map_student_to_detailed_dto, map_student_to_dto
 
 
 # noinspection PyMethodMayBeStatic

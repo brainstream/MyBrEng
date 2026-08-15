@@ -1,9 +1,22 @@
 import uuid
-from database import db, QuizTable, QuizQuestionTable, QuizAnswerVariantTable, RunAnswerTable
-from dtos import QuizQuestionEditDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionPositionDto, \
-    QuizQuestionType
-from mappers import map_quiz_question_to_dto, map_question_type_to_db_question_type
+
 from sqlalchemy import func
+
+from database import (
+    QuizAnswerVariantTable,
+    QuizQuestionTable,
+    QuizTable,
+    RunAnswerTable,
+    db,
+)
+from dtos import (
+    QuizQuestionAnswerEditDto,
+    QuizQuestionDto,
+    QuizQuestionEditDto,
+    QuizQuestionPositionDto,
+    QuizQuestionType,
+)
+from mappers import map_question_type_to_db_question_type, map_quiz_question_to_dto
 
 
 # noinspection PyMethodMayBeStatic

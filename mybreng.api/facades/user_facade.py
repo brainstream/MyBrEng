@@ -1,5 +1,6 @@
-from hashlib import sha512
 from base64 import b64encode
+from hashlib import sha512
+
 from database import UserTable
 from dtos import UserDto
 

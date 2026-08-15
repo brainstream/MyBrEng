@@ -1,6 +1,7 @@
 import uuid
-from database import db, QuizTable, RunTable, TagTable, QuizTagTable
-from dtos import QuizDto, QuizEditDto, QuizDetailedDto
+
+from database import QuizTable, QuizTagTable, RunTable, TagTable, db
+from dtos import QuizDetailedDto, QuizDto, QuizEditDto
 from mappers import map_quiz_to_detailed_dto, map_quiz_to_dto
 
 

@@ -1,10 +1,15 @@
 from dependency_injector.wiring import Provide, inject
-from flask import request, make_response, jsonify
+from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask_login import current_user, login_required
 
 from di import DI
-from dtos import RunCreateDtoSchema, RunSummaryDtoSchema, RunDtoSchema, RunFinishDtoSchema
+from dtos import (
+    RunCreateDtoSchema,
+    RunDtoSchema,
+    RunFinishDtoSchema,
+    RunSummaryDtoSchema,
+)
 from facades import RunFacade
 
 run_blueprint = Blueprint('run', __name__)

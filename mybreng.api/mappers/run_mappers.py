@@ -1,5 +1,11 @@
-from database import RunTable, QuizQuestionTable
-from dtos import RunSummaryDto, RunQuestionDto, RunAnswerVariantDto, QuizQuestionType, RunAnswerDto
+from database import QuizQuestionTable, RunTable
+from dtos import (
+    QuizQuestionType,
+    RunAnswerVariantDto,
+    RunQuestionDto,
+    RunSummaryDto,
+)
+
 from .quiz_mappers import map_db_question_type_to_question_type
 
 

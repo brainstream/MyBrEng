@@ -1,4 +1,5 @@
-from dataclasses import field, dataclass
+from dataclasses import dataclass, field
+
 from marshmallow import Schema, fields, post_load
 
 from dtos import ID

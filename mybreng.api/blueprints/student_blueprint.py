@@ -1,9 +1,15 @@
 from dependency_injector.wiring import Provide, inject
 from flask import jsonify, make_response, request
 from flask.blueprints import Blueprint
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
+
 from di import DI
-from dtos import StudentDtoSchema, StudentDetailedDtoSchema, StudentEditDtoSchema, StudentNoteEditDtoSchema
+from dtos import (
+    StudentDetailedDtoSchema,
+    StudentDtoSchema,
+    StudentEditDtoSchema,
+    StudentNoteEditDtoSchema,
+)
 from facades import StudentFacade
 
 student_blueprint = Blueprint('student', __name__)

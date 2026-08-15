@@ -1,5 +1,5 @@
 from database import ArtifactTable
-from dtos import ArtifactContentDto, ArtifactListDto, ArtifactDto
+from dtos import ArtifactContentDto, ArtifactDto, ArtifactListDto
 
 
 def map_artifact_to_content_dto(artifact: ArtifactTable) -> ArtifactContentDto:

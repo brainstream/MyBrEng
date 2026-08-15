@@ -1,9 +1,9 @@
-from dependency_injector.wiring import inject, Provide
-from flask import Blueprint, request, make_response, jsonify
+from dependency_injector.wiring import Provide, inject
+from flask import Blueprint, jsonify, make_response, request
 from flask_login import current_user, login_required
 
 from di import DI
-from dtos import ArtifactListDtoSchema, ArtifactListQueryDtoSchema, ArtifactDtoSchema
+from dtos import ArtifactDtoSchema, ArtifactListDtoSchema, ArtifactListQueryDtoSchema
 from facades import ArtifactFacade
 
 artifact_blueprint = Blueprint('artifact', __name__)

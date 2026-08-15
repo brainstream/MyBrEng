@@ -1,6 +1,7 @@
 from database import StudentTable
-from dtos import StudentDto, StudentDetailedDto
+from dtos import StudentDetailedDto, StudentDto
 from mappers.tag_mappers import map_tag_to_dto
+
 from .run_mappers import map_run_to_summary_dto
 
 

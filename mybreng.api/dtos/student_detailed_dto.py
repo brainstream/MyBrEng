@@ -1,5 +1,7 @@
 from dataclasses import dataclass
+
 from marshmallow import fields, post_load
+
 from .run_summary_dto import RunSummaryDto, RunSummaryDtoSchema
 from .student_dto import StudentDto, StudentDtoSchema
 from .tag_dto import TagDto, TagDtoSchema

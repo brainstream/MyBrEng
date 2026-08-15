@@ -1,5 +1,14 @@
 from dependency_injector import containers, providers
-from facades import QuizFacade, UserFacade, QuizQuestionFacade, StudentFacade, RunFacade, TagFacade, ArtifactFacade
+
+from facades import (
+    ArtifactFacade,
+    QuizFacade,
+    QuizQuestionFacade,
+    RunFacade,
+    StudentFacade,
+    TagFacade,
+    UserFacade,
+)
 
 
 class DI(containers.DeclarativeContainer):
