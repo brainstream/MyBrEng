@@ -17,10 +17,14 @@
             <mat-form-field class="full-width">
                 <mat-label>Эталонное слово</mat-label>
                 <input matInput type="text" autocomplete="off" formControlName="wordAnswer" />
+                <button matSuffix
+                    mat-icon-button
+                    matTooltip="Создать ответы для недостающих букв"
+                    (click)="addWordAnswerLetters()"
+                    class="answer-input-btn">
+                    <mat-icon>playlist_add</mat-icon>
+                </button>
             </mat-form-field>
-            <mat-label class="word-answer-hint text-muted">
-                Буквы из этого слова будут доступны ученику автоматически. Добавьте ниже только дополнительные буквы, если нужно.
-            </mat-label>
         }
 
         <div *ngFor="let answer of answers.controls; let idx=index" formArrayName="answers">
@@ -37,24 +41,25 @@
                             mat-icon-button
                             matTooltip="Удалить ответ"
                             (click)="deleteAnswer(idx)"
-                            class="delete-answer-btn">
+                            class="answer-input-btn">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </mat-form-field>
                 </div>
             } @else {
                 <mat-form-field class="full-width" [formGroupName]="idx">
-                    <mat-checkbox matPrefix *ngIf="canAnswersBeMarkedAsCorrect" formControlName="isCorrect"
-                        [matTooltip]="isCorrect(answer) ? 'Правильный ответ' : 'Неправильный ответ'"
-                        class="correct-answer-mark">
-                    </mat-checkbox>
+                    @if (canAnswersBeMarkedAsCorrect) {
+                        <mat-checkbox matPrefix formControlName="isCorrect" class="correct-answer-mark"
+                            [matTooltip]="isCorrect(answer) ? 'Правильный ответ' : 'Неправильный ответ'">
+                        </mat-checkbox>
+                    }
                     <mat-label>Ответ</mat-label>
                     <input matInput type="text" autocomplete="off" required formControlName="text" />
                     <button matSuffix
                         mat-icon-button
                         matTooltip="Удалить ответ"
                         (click)="deleteAnswer(idx)"
-                        class="delete-answer-btn">
+                        class="answer-input-btn">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </mat-form-field>

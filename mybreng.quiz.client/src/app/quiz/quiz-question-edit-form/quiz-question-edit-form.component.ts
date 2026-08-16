@@ -127,19 +127,22 @@ export class QuizQuestionEditFormComponent {
             } else if(questionType === QuizQuestionDto.QuestionTypeEnum.FreeText) {
                 result.isCorrect = true;
             } else if(questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters) {
+                result.text = result.text.trim().toUpperCase();
                 result.isCorrect = false;
             }
             return result;
         };
+        const answers = this.answers.controls.map(a => getAnswer(a as FormGroup));
+        const wordAnswer = questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters ?
+            (this.form.controls['wordAnswer'].value as string || '').trim().toUpperCase() :
+            null;
         this.saveRequested.emit({
             id: this.questionId,
             quizId: this.quizId,
             text: this.form.controls['text'].value as string,
             questionType: questionType,
-            answers: this.answers.controls.map(a => getAnswer(a as FormGroup)),
-            wordAnswer: questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters ?
-                (this.form.controls['wordAnswer'].value as string || '').trim() :
-                null
+            answers,
+            wordAnswer
         });
     }
 
@@ -151,16 +154,32 @@ export class QuizQuestionEditFormComponent {
         this.answers.push(this.createAnswerFormGroup());
     }
 
+    public addWordAnswerLetters(): void {
+        const word = (this.form.controls['wordAnswer'].value as string || '').trim().toUpperCase();
+        if(!word) {
+            return;
+        }
+        for(const letter of this.getMissingWordLetters(word)) {
+            this.answers.push(this.createAnswerFormGroup({ text: letter, isCorrect: false }));
+        }
+    }
+
     public deleteAnswer(index: number): void {
         this.answers.removeAt(index);
     }
 
     private validateForm(): ValidationErrors | null {
         if(this.type === QuizQuestionDto.QuestionTypeEnum.WordFromLetters) {
-            const wordAnswer = (this.form.controls['wordAnswer'].value as string || '').trim();
+            const wordAnswer = (this.form.controls['wordAnswer'].value as string || '').trim().toUpperCase();
             if(!wordAnswer) {
                 return {
                     form: 'Укажите эталонное слово'
+                };
+            }
+            const missing = this.getMissingWordLetters(wordAnswer);
+            if(missing && missing.length > 0) {
+                return {
+                    form: `Все буквы эталонного слова должны быть включены в ответы. Не хватает: ${missing.join(', ')}`
                 };
             }
             return null;
@@ -200,7 +219,22 @@ export class QuizQuestionEditFormComponent {
         return null;
     }
 
-    private createAnswerFormGroup(answer?: QuizQuestionAnswerDto): FormGroup {
+    private getMissingWordLetters(word: string): string[] {
+        let missingWordLetters = [];
+        for(const letter of word.toUpperCase()) {
+            missingWordLetters.push(letter);
+        }
+        for(const answer of this.answers.controls) {
+            const letter = ((answer as FormGroup).controls['text'].value as string || '').trim().toUpperCase();
+            const idx = missingWordLetters.indexOf(letter);
+            if(idx >= 0) {
+                missingWordLetters.splice(idx, 1);
+            }
+        }
+        return missingWordLetters;
+    }
+
+    private createAnswerFormGroup(answer?: Partial<QuizQuestionAnswerDto>): FormGroup {
         let text = answer?.text ?? '';
         let slot: string | null = null;
         if(text && this.type === QuizQuestionDto.QuestionTypeEnum.Match) {

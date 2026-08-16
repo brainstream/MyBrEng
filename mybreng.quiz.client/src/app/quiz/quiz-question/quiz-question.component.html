@@ -16,9 +16,6 @@
             @if (question.answers && question.answers.length > 0) {
                 <div class="answers">
                     <div class="letters-row">
-                        @for (letter of (question.wordAnswer ?? ''); track letter) {
-                            <mat-chip disabled>{{letter}}</mat-chip>
-                        }
                         @for (answer of question.answers; track answer.id) {
                             <mat-chip>{{answer.text}}</mat-chip>
                         }
