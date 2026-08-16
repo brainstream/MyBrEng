@@ -17,3 +17,5 @@ export * from './run-single-choice-answers';
 export * from './run-free-text-answer';
 
 export * from './run-match-answers';
+
+export * from './run-word-from-letters-answers';

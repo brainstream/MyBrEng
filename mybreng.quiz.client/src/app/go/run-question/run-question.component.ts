@@ -5,6 +5,7 @@ import { RunFreeTextAnswerComponent } from '../run-free-text-answer';
 import { RunMultipleChoicesAnswersComponent } from '../run-multiple-choices-answers';
 import { RunSingleChoiceAnswersComponent } from '../run-single-choice-answers';
 import { RunMatchAnswersComponent } from '../run-match-answers';
+import { RunWordFromLettersAnswersComponent } from '../run-word-from-letters-answers';
 
 
 @Component({
@@ -16,7 +17,8 @@ import { RunMatchAnswersComponent } from '../run-match-answers';
         RunFreeTextAnswerComponent,
         RunMultipleChoicesAnswersComponent,
         RunSingleChoiceAnswersComponent,
-        RunMatchAnswersComponent
+        RunMatchAnswersComponent,
+        RunWordFromLettersAnswersComponent
     ]
 })
 export class RunQuestionComponent {
@@ -25,7 +27,7 @@ export class RunQuestionComponent {
     @Output() public answersChange = new EventEmitter<string[]>();
     @Output() public complete = new EventEmitter<boolean>();
 
-    public get type(): 'text' | 'multi' | 'single' | 'match' {
+    public get type(): 'text' | 'multi' | 'single' | 'match' | 'letters' {
         switch(this.question.questionType as string) {
             case RunQuestionDto.QuestionTypeEnum.FreeText:
                 return 'text';
@@ -35,6 +37,8 @@ export class RunQuestionComponent {
                 return 'match';
             case RunQuestionDto.QuestionTypeEnum.SingleChoice:
                 return 'single';
+            case RunQuestionDto.QuestionTypeEnum.WordFromLetters:
+                return 'letters';
             default:
                 throw new Error(`Unexpected question type: ${this.question.questionType}`);
         }

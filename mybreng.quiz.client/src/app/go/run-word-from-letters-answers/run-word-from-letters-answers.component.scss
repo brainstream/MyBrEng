@@ -1,0 +1,52 @@
+$slot-size: 3rem;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+}
+
+.run-word-from-letters-answers__slot-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.run-word-from-letters-answers__slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $slot-size;
+    height: $slot-size;
+    border-radius: 6px;
+}
+
+.run-word-from-letters-answers__pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    min-height: $slot-size + 0.4rem;
+    padding: 0.8rem;
+    border-radius: 6px;
+}
+
+.run-word-from-letters-answers__chip {
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $slot-size;
+    height: $slot-size;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.cdk-drag-placeholder {
+    opacity: 0.5;
+}
+
+.cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
