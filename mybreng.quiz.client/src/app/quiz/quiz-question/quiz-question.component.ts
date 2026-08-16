@@ -47,6 +47,10 @@ export class QuizQuestionComponent {
         return answer.text;
     }
 
+    public get wordAnswer(): string | null {
+        return this.question.wordAnswer ?? null;
+    }
+
     public edit(): void {
         this.editRequested.emit(this.question);
     }

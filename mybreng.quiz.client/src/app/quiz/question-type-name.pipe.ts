@@ -15,6 +15,8 @@ export class QuestionTypeNamePipe implements PipeTransform {
                 return 'Ввод текста';
             case QuizQuestionDto.QuestionTypeEnum.Match:
                 return 'Сопоставление выражений';
+            case QuizQuestionDto.QuestionTypeEnum.WordFromLetters:
+                return 'Составление слова из букв';
             default:
                 throw new Error(`Unexpected question type: ${value as never}`);
         }

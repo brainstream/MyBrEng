@@ -60,6 +60,7 @@ export class QuizQuestionEditFormComponent {
         this.form = formBuilder.group({
             text: [Validators.required],
             type: [Validators.required],
+            wordAnswer: [''],
             answers: formBuilder.array([])
         });
         this.form.addValidators(_ => this.validateForm());
@@ -69,6 +70,7 @@ export class QuizQuestionEditFormComponent {
         this.questionId = q.id;
         this.form.controls['text'].setValue(q.text);
         this.form.controls['type'].setValue(q.questionType);
+        this.form.controls['wordAnswer'].setValue(q.wordAnswer ?? '');
         if(q.answers) {
             this.answers.clear();
             q.answers.forEach(a =>
@@ -84,6 +86,10 @@ export class QuizQuestionEditFormComponent {
         return this.form.get('type')?.value as string;
     }
 
+    public get showWordAnswer(): boolean {
+        return this.type === QuizQuestionDto.QuestionTypeEnum.WordFromLetters;
+    }
+
     public get questionTypes(): QuizQuestionDto.QuestionTypeEnum[] {
         return Object.values(QuizQuestionDto.QuestionTypeEnum);
     }
@@ -92,6 +98,7 @@ export class QuizQuestionEditFormComponent {
         switch(this.type) {
             case QuizQuestionDto.QuestionTypeEnum.Match:
             case QuizQuestionDto.QuestionTypeEnum.FreeText:
+            case QuizQuestionDto.QuestionTypeEnum.WordFromLetters:
                 return false;
             default:
                 return true;
@@ -119,15 +126,20 @@ export class QuizQuestionEditFormComponent {
                 result.isCorrect = !!ma.slot;
             } else if(questionType === QuizQuestionDto.QuestionTypeEnum.FreeText) {
                 result.isCorrect = true;
+            } else if(questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters) {
+                result.isCorrect = false;
             }
             return result;
         };
         this.saveRequested.emit({
             id: this.questionId,
-            quiz_id: this.quizId,
+            quizId: this.quizId,
             text: this.form.controls['text'].value as string,
             questionType: questionType,
-            answers: this.answers.controls.map(a => getAnswer(a as FormGroup))
+            answers: this.answers.controls.map(a => getAnswer(a as FormGroup)),
+            wordAnswer: questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters ?
+                (this.form.controls['wordAnswer'].value as string || '').trim() :
+                null
         });
     }
 
@@ -144,16 +156,23 @@ export class QuizQuestionEditFormComponent {
     }
 
     private validateForm(): ValidationErrors | null {
-        const answers = this.answers;
-        if(answers.length === 0) {
+        if(this.type === QuizQuestionDto.QuestionTypeEnum.WordFromLetters) {
+            const wordAnswer = (this.form.controls['wordAnswer'].value as string || '').trim();
+            if(!wordAnswer) {
+                return {
+                    form: 'Укажите эталонное слово'
+                };
+            }
+            return null;
+        }
+        if(this.answers.length === 0) {
             return {
                 form: 'Вопрос должен содержать хотя бы один ответ'
             };
         }
-        const type = this.type;
-        if(type === QuizQuestionDto.QuestionTypeEnum.Match) {
+        if(this.type === QuizQuestionDto.QuestionTypeEnum.Match) {
             let hasSlots = false;
-            for(const answer of answers.controls) {
+            for(const answer of this.answers.controls) {
                 if((answer as FormGroup).controls['slot'].value) {
                     hasSlots = true;
                     break;
@@ -164,9 +183,9 @@ export class QuizQuestionEditFormComponent {
                     form: 'Хотя бы один ответ должен содержать слот'
                 };
             }
-        } else if(type !== QuizQuestionDto.QuestionTypeEnum.FreeText) {
+        } else if(this.type !== QuizQuestionDto.QuestionTypeEnum.FreeText) {
             let hasCorrect = false;
-            for(const answer of answers.controls) {
+            for(const answer of this.answers.controls) {
                 if((answer as FormGroup).controls['isCorrect'].value as boolean) {
                     hasCorrect = true;
                     break;

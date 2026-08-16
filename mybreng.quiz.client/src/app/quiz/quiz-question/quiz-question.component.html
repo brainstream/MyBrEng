@@ -12,19 +12,34 @@
     </mat-card-header>
     <mat-card-content>
         <app-markdown class="question-text" [source]="question.text"></app-markdown>
-        <div class="answers">
-            <div class="answer-row" *ngFor="let answer of question.answers">
-                <span class="answer-mark">
-                    <mat-icon *ngIf="answer.isCorrect; else notCorrect">check</mat-icon>
-                    <ng-template #notCorrect>
-                        <mat-icon>clear</mat-icon>
-                    </ng-template>
-                </span>
-                <div class="answer-text">
-                    {{getText(answer)}}
+        @if (question.questionType === 'WORD_FROM_LETTERS') {
+            @if (question.answers && question.answers.length > 0) {
+                <div class="answers">
+                    <div class="letters-row">
+                        @for (letter of (question.wordAnswer ?? ''); track letter) {
+                            <mat-chip disabled>{{letter}}</mat-chip>
+                        }
+                        @for (answer of question.answers; track answer.id) {
+                            <mat-chip>{{answer.text}}</mat-chip>
+                        }
+                    </div>
+                </div>
+            }
+        } @else {
+            <div class="answers">
+                <div class="answer-row" *ngFor="let answer of question.answers">
+                    <span class="answer-mark">
+                        <mat-icon *ngIf="answer.isCorrect; else notCorrect">check</mat-icon>
+                        <ng-template #notCorrect>
+                            <mat-icon>clear</mat-icon>
+                        </ng-template>
+                    </span>
+                    <div class="answer-text">
+                        {{getText(answer)}}
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </mat-card-content>
 </mat-card>
 

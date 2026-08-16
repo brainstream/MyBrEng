@@ -13,6 +13,16 @@
             <textarea matInput rows="5" formControlName="text" required=""></textarea>
         </mat-form-field>
 
+        @if (showWordAnswer) {
+            <mat-form-field class="full-width">
+                <mat-label>Эталонное слово</mat-label>
+                <input matInput type="text" autocomplete="off" formControlName="wordAnswer" />
+            </mat-form-field>
+            <mat-label class="word-answer-hint text-muted">
+                Буквы из этого слова будут доступны ученику автоматически. Добавьте ниже только дополнительные буквы, если нужно.
+            </mat-label>
+        }
+
         <div *ngFor="let answer of answers.controls; let idx=index" formArrayName="answers">
             @if (type == 'MATCH') {
                 <div class="matching-answer-edit-row">

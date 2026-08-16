@@ -35,7 +35,7 @@ class QuizQuestionEditDto:
 
 # noinspection PyTypeChecker
 class QuizQuestionEditDtoSchema(Schema):
-    quiz_id = ID(required=True)
+    quiz_id = ID(required=True, data_key='quizId')
     id = ID(required=False)
     question_type = fields.Enum(QuizQuestionType, required=True, data_key='questionType')
     text = fields.String(required=True)

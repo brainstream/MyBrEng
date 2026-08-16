@@ -56,13 +56,13 @@ def map_quiz_question_to_dto(question: QuizQuestionTable) -> QuizQuestionDto:
 
 def map_db_question_type_to_question_type(db_type: int) -> QuizQuestionType:
     match db_type:
-        case _QuizQuestionDatabaseType.MULTIPLE_CHOICE:
+        case _QuizQuestionDatabaseType.MULTIPLE_CHOICE.value:
             return QuizQuestionType.MULTIPLE_CHOICE
-        case _QuizQuestionDatabaseType.FREE_TEXT:
+        case _QuizQuestionDatabaseType.FREE_TEXT.value:
             return QuizQuestionType.FREE_TEXT
-        case _QuizQuestionDatabaseType.MATCH:
+        case _QuizQuestionDatabaseType.MATCH.value:
             return QuizQuestionType.MATCH
-        case _QuizQuestionDatabaseType.WORD_FROM_LETTERS:
+        case _QuizQuestionDatabaseType.WORD_FROM_LETTERS.value:
             return QuizQuestionType.WORD_FROM_LETTERS
         case _:
             return QuizQuestionType.SINGLE_CHOICE
@@ -71,15 +71,15 @@ def map_db_question_type_to_question_type(db_type: int) -> QuizQuestionType:
 def map_question_type_to_db_question_type(q_type: QuizQuestionType) -> int:
     match q_type:
         case QuizQuestionType.MULTIPLE_CHOICE:
-            return _QuizQuestionDatabaseType.MULTIPLE_CHOICE
+            return _QuizQuestionDatabaseType.MULTIPLE_CHOICE.value
         case QuizQuestionType.FREE_TEXT:
-            return _QuizQuestionDatabaseType.FREE_TEXT
+            return _QuizQuestionDatabaseType.FREE_TEXT.value
         case QuizQuestionType.MATCH:
-            return _QuizQuestionDatabaseType.MATCH
+            return _QuizQuestionDatabaseType.MATCH.value
         case QuizQuestionType.WORD_FROM_LETTERS:
-            return _QuizQuestionDatabaseType.WORD_FROM_LETTERS
+            return _QuizQuestionDatabaseType.WORD_FROM_LETTERS.value
         case _:
-            return _QuizQuestionDatabaseType.SINGLE_CHOICE
+            return _QuizQuestionDatabaseType.SINGLE_CHOICE.value
 
 
 def map_answer_variant_to_dto(answer: QuizAnswerVariantTable) -> QuizQuestionAnswerDto:
