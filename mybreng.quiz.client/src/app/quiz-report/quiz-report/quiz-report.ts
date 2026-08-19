@@ -51,7 +51,8 @@ function mapRunQuestionsToReportItems(run: RunDto): IQuizReportItem[] {
         const answers = AnswerMerger.mergeAnswers(
             q.questionType,
             q.answerVariants ?? [],
-            getRunAnswersForQuestion(run, q.questionId)
+            getRunAnswersForQuestion(run, q.questionId),
+            q.wordAnswer
         );
         return {
             question: q.text,
@@ -70,11 +71,50 @@ class AnswerMerger {
     public static mergeAnswers(
         questionType: RunQuestionDto.QuestionTypeEnum,
         variants: RunAnswerVariantDto[],
-        runAnswers: RunAnswerDto[]
+        runAnswers: RunAnswerDto[],
+        wordAnswer?: string | null
     ): IQuizReportAnswer[] {
+        if(questionType === RunQuestionDto.QuestionTypeEnum.WordFromLetters) {
+            return AnswerMerger.mergeWordFromLettersAnswers(runAnswers, wordAnswer);
+        }
         return questionType === RunQuestionDto.QuestionTypeEnum.Match ?
             AnswerMerger.mergeMatchingAnswers(variants, runAnswers) :
             AnswerMerger.mergeRegularAnswers(questionType, variants, runAnswers);
+    }
+
+    private static mergeWordFromLettersAnswers(
+        runAnswers: RunAnswerDto[],
+        wordAnswer?: string | null
+    ): IQuizReportAnswer[] {
+        const studentAnswer = runAnswers
+            .map(a => a.text ?? '')
+            .join('')
+            .trim();
+        const correctWord = wordAnswer?.trim() ?? '';
+        const isCorrect = !!correctWord && studentAnswer.toLowerCase() === correctWord.toLowerCase();
+        if(isCorrect) {
+            return [{
+                text: correctWord,
+                isCorrect: true,
+                isAnswerMatched: true
+            }];
+        }
+        const result: IQuizReportAnswer[] = [];
+        if(studentAnswer) {
+            result.push({
+                text: studentAnswer,
+                isCorrect: false,
+                isAnswerMatched: true
+            });
+        }
+        if(correctWord) {
+            result.push({
+                text: correctWord,
+                isCorrect: true,
+                isAnswerMatched: false
+            });
+        }
+        return result;
     }
 
     private static mergeRegularAnswers(
@@ -160,6 +200,7 @@ function isQuestionPassed(
     switch(questionType) {
         case RunQuestionDto.QuestionTypeEnum.SingleChoice:
         case RunQuestionDto.QuestionTypeEnum.FreeText:
+        case RunQuestionDto.QuestionTypeEnum.WordFromLetters:
             return answers.some(a => a.isCorrect && a.isAnswerMatched);
         case RunQuestionDto.QuestionTypeEnum.MultipleChoice:
             return answers.every(a =>
@@ -167,6 +208,6 @@ function isQuestionPassed(
         case RunQuestionDto.QuestionTypeEnum.Match:
             return answers.every(a => a.isCorrect && a.isAnswerMatched);
         default:
-            throw new Error(`Unexpected question type: ${questionType as never}`);
+            throw new Error(`Unexpected question type: ${questionType}`);
     }
 }

@@ -43,6 +43,8 @@ export class QuizReportItemComponent {
                 return 'Выбрать любой правильный ответ';
             case RunQuestionDto.QuestionTypeEnum.Match:
                 return 'Сопоставить выражения';
+            case RunQuestionDto.QuestionTypeEnum.WordFromLetters:
+                return 'Составить слово из букв';
             default:
                 throw new Error(`Unexpected question type: ${this.data.questionType as never}`);
         }

@@ -28,10 +28,14 @@ def map_question_to_question_run_dto(question: QuizQuestionTable, for_report: bo
     slots = len(question.word_answer.text) \
         if question_type == QuizQuestionType.WORD_FROM_LETTERS and question.word_answer is not None \
         else None
+    word_answer = question.word_answer.text \
+        if for_report and question_type == QuizQuestionType.WORD_FROM_LETTERS and question.word_answer is not None \
+        else None
     return RunQuestionDto(
         question.id,
         question.text,
         question_type,
         answer_variants,
         slots,
+        word_answer,
     )

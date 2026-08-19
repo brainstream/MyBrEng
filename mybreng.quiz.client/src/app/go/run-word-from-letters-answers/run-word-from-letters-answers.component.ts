@@ -54,7 +54,7 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
         this.rebuild();
     }
 
-    @Input() public set answer(words: string[]) {
+    @Input() public set answers(words: string[]) {
         this.inputAnswers$.next(words);
     }
 
