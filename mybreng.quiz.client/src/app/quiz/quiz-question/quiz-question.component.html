@@ -14,13 +14,18 @@
         <app-markdown class="question-text" [source]="question.text"></app-markdown>
         @if (question.questionType === 'WORD_FROM_LETTERS') {
             @if (question.answers && question.answers.length > 0) {
-                <div class="answers">
-                    <div class="letters-row">
+                <div class="answers word-from-letters">
+                    <div class="answer-text">
+                        <span class="text-muted">Эталонное слово:</span>
+                        <span class="answer-letters">{{question.wordAnswer ?? ''}}</span>
+                    </div>
+                    <div class="letters-row answer-letters">
                         @for (answer of question.answers; track answer.id) {
                             <mat-chip>{{answer.text}}</mat-chip>
                         }
                     </div>
                 </div>
+
             }
         } @else {
             <div class="answers">

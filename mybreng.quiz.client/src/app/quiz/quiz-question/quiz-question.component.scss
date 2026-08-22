@@ -34,11 +34,22 @@
         }
     }
 
+    .answer-letters {
+        text-transform: uppercase;
+    }
+
     .letters-row {
         padding: 0.5rem 0;
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        text-transform: uppercase;
+    }
+
+    &.word-from-letters {
+        .answer-text {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
     }
 }
