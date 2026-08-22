@@ -52,7 +52,7 @@ function mapRunQuestionsToReportItems(run: RunDto): IQuizReportItem[] {
             q.questionType,
             q.answerVariants ?? [],
             getRunAnswersForQuestion(run, q.questionId),
-            q.wordAnswer
+            q.wordAnswer?.answer
         );
         return {
             question: q.text,

@@ -31,7 +31,7 @@
     @case ('letters') {
         <app-run-word-from-letters-answers
             [variants]="answerVariants"
-            [slotCount]="question.slots ?? 0"
+            [slotCount]="question.wordAnswer?.slots ?? 0"
             [(answers)]="allAnswers"
             (complete)="complete.emit($event)">
         </app-run-word-from-letters-answers>

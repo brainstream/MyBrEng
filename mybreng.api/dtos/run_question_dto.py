@@ -8,14 +8,23 @@ from .run_answer_variant_dto import RunAnswerVariantDto, RunAnswerVariantDtoSche
 
 
 @dataclass
+class RunWordAnswerDto:
+    slots: int
+    answer: str | None = field(default=None)
+
+@dataclass
 class RunQuestionDto:
     question_id: str
     text: str
     question_type: QuizQuestionType
     answer_variants: list[RunAnswerVariantDto] | None
-    slots: int | None = field(default=None)
-    word_answer: str | None = field(default=None)
+    word_answer: RunWordAnswerDto | None = field(default=None)
 
+
+# noinspection PyTypeChecker
+class RunWordAnswerDtoSchema(Schema):
+    slots = fields.Integer(required=True)
+    answer = fields.String(required=True)
 
 # noinspection PyTypeChecker
 class RunQuestionDtoSchema(Schema):
@@ -23,8 +32,7 @@ class RunQuestionDtoSchema(Schema):
     text = fields.String(required=True)
     question_type = fields.Enum(QuizQuestionType, required=True, data_key='questionType')
     answer_variants = fields.Nested(RunAnswerVariantDtoSchema, many=True, required=False, data_key='answerVariants')
-    slots = fields.Integer(required=False, allow_none=True)
-    word_answer = fields.String(required=False, allow_none=True, data_key='wordAnswer')
+    word_answer = fields.Nested(RunWordAnswerDtoSchema, required=False, data_key='wordAnswer')
 
     @post_load
     def make_dto(self, data, **kwargs) -> RunQuestionDto:
