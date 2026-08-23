@@ -1,3 +1,5 @@
+import random
+
 from database import QuizQuestionTable, RunTable
 from dtos import (
     QuizQuestionType,
@@ -52,6 +54,7 @@ def _map_answer_variants(
                 slot_text,
             )
         )
+    random.shuffle(result)
     return result
 
 
@@ -80,8 +83,8 @@ def _map_match_answer(
 ) -> RunMatchDto | None:
     if question_type != QuizQuestionType.MATCH:
         return None
-    return RunMatchDto(
-        slots=[
-            a.slot.text for a in question.answers if a.slot is not None and a.slot.text
-        ]
-    )
+    slots = [
+        a.slot.text for a in question.answers if a.slot is not None and a.slot.text
+    ]
+    random.shuffle(slots)
+    return RunMatchDto(slots)
