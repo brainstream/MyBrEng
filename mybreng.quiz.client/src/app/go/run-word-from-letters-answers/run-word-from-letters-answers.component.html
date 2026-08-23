@@ -2,17 +2,16 @@
     @for (slot of data$.getValue().slots; track $index) {
         <div
             [id]="'slot-' + $index"
-            class="run-word-from-letters-answers__slot"
+            class="run-word-from-letters-answers__slot-placeholder"
             cdkDropList
+            cdkDropListOrientation="horizontal"
             [cdkDropListData]="slot.answers"
             (cdkDropListDropped)="drop($event)"
             [cdkDropListConnectedTo]="data$.getValue().dropIds"
         >
             @if (slot.answers.length) {
-                <div cdkDrag [cdkDragData]="slot.answers[0]">
-                    <div class="run-word-from-letters-answers__chip">
-                        {{slot.answers[0].text}}
-                    </div>
+                <div cdkDrag [cdkDragData]="slot.answers[0]" class="run-word-from-letters-answers__chip">
+                    {{slot.answers[0].text}}
                 </div>
             }
         </div>
@@ -23,15 +22,19 @@
     id="answer-list"
     class="run-word-from-letters-answers__pool"
     cdkDropList
+    cdkDropListOrientation="horizontal"
     [cdkDropListData]="data$.getValue().answers"
     [cdkDropListConnectedTo]="data$.getValue().dropIds"
     (cdkDropListDropped)="drop($event)"
 >
     @for (answer of data$.getValue().answers; track answer) {
-        <div cdkDrag [cdkDragData]="answer" cdkDragPreviewClass="">
-            <div class="run-word-from-letters-answers__chip">
-                {{answer.text}}
-            </div>
+        <div
+            class="run-word-from-letters-answers__chip"
+            cdkDrag
+            [cdkDragData]="answer"
+            cdkDragPreviewClass=""
+        >
+            {{answer.text}}
         </div>
     }
 </div>

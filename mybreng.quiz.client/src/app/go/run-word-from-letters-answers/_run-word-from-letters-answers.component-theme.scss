@@ -8,20 +8,25 @@
     $is-dark-theme: map.get($color-config, 'is-dark');
 
     $container-background: mat.m2-get-color-from-palette($background-palette, "disabled-list-option");
+    $border-color: 0;
+    @if $is-dark-theme {
+        $border-color: color.scale($container-background, $lightness: -40%);
+    } @else {
+        $border-color: color.scale($container-background, $lightness: -3%);
+    }
 
     .run-word-from-letters-answers__pool {
-        $border-color: 0;
-        @if $is-dark-theme {
-            $border-color: color.scale($container-background, $lightness: -40%);
-        } @else {
-            $border-color: color.scale($container-background, $lightness: -3%);
-        }
         border: 1px solid $border-color;
     }
 
     .run-word-from-letters-answers__pool,
-    .run-word-from-letters-answers__slot {
+    .run-word-from-letters-answers__slot-placeholder {
         background-color: $container-background;
+    }
+
+    .run-word-from-letters-answers__slot-placeholder {
+        outline: 1px solid $border-color;
+        outline-offset: -1px;
     }
 
     .run-word-from-letters-answers__chip {
