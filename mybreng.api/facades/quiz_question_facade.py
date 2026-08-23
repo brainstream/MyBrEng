@@ -108,13 +108,7 @@ class QuizQuestionFacade:
         elif question_type == QuizQuestionType.FREE_TEXT:
             answer.is_correct = True
         elif question_type == QuizQuestionType.MATCH:
-            slot_text = self._get_slot_text(answer_dto_or_table)
-            if slot_text:
-                slot = QuizAnswerSlotTable()
-                slot.id = str(uuid.uuid4())
-                slot.text = slot_text
-                slot.answer_variant_id = answer.id
-                db.session.add(slot)
+            self._sync_slot(answer, self._get_slot_text(answer_dto_or_table))
         else:
             answer.is_correct = answer_dto_or_table.is_correct
         return answer
@@ -179,16 +173,13 @@ class QuizQuestionFacade:
             elif dto.question_type == QuizQuestionType.FREE_TEXT:
                 an_tbl.is_correct = True
             elif dto.question_type == QuizQuestionType.MATCH:
-                slot = QuizAnswerSlotTable()
-                slot.id = str(uuid.uuid4())
-                slot.text = an.slot
-                slot.answer_variant_id = an_tbl.id
-                db.session.add(slot)
+                self._sync_slot(an_tbl, an.slot)
             else:
                 an_tbl.is_correct = an.is_correct
             question.answers.append(an_tbl)
 
     def _sync_slot(self, answer: QuizAnswerVariantTable, slot_text: str | None):
+        answer.is_correct = bool(slot_text)
         existing_slot = answer.slot
         if slot_text:
             if existing_slot is not None:

@@ -39,9 +39,8 @@ export class QuizQuestionComponent {
 
     public getText(answer: QuizQuestionAnswerDto): string {
         if(this.question.questionType === QuizQuestionDto.QuestionTypeEnum.Match) {
-            const slot = answer.slot ?? null;
-            const prefix = slot ? `${slot} → ` : '';
-            return `${prefix}${answer.text}`;
+            const slot = answer.slot ?? '□';
+            return `${slot} → ${answer.text}`;
         }
         return answer.text;
     }
