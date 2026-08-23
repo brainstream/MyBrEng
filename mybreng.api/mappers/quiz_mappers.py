@@ -83,4 +83,9 @@ def map_question_type_to_db_question_type(q_type: QuizQuestionType) -> int:
 
 
 def map_answer_variant_to_dto(answer: QuizAnswerVariantTable) -> QuizQuestionAnswerDto:
-    return QuizQuestionAnswerDto(answer.id, answer.text, answer.is_correct)
+    return QuizQuestionAnswerDto(
+        answer.id,
+        answer.text,
+        answer.is_correct,
+        answer.slot.text if answer.slot else None,
+    )

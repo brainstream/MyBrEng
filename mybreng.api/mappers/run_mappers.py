@@ -17,17 +17,24 @@ def map_run_to_summary_dto(run: RunTable) -> RunSummaryDto:
         run.quiz.title,
         run.creation_date,
         run.start_date,
-        run.finish_date
+        run.finish_date,
     )
 
 
-def map_question_to_question_run_dto(question: QuizQuestionTable, for_report: bool) -> RunQuestionDto:
+def map_question_to_question_run_dto(
+    question: QuizQuestionTable, for_report: bool
+) -> RunQuestionDto:
     question_type = map_db_question_type_to_question_type(question.type)
-    answer_variants = None \
-        if question_type == QuizQuestionType.FREE_TEXT and not for_report \
-        else [RunAnswerVariantDto(a.id, a.text, a.is_correct if for_report else None) for a in question.answers]
+    answer_variants = (
+        None
+        if question_type == QuizQuestionType.FREE_TEXT and not for_report
+        else _map_answer_variants(question, for_report)
+    )
     word_answer: RunWordAnswerDto | None = None
-    if question_type == QuizQuestionType.WORD_FROM_LETTERS and question.word_answer is not None:
+    if (
+        question_type == QuizQuestionType.WORD_FROM_LETTERS
+        and question.word_answer is not None
+    ):
         word_answer = RunWordAnswerDto(len(question.word_answer.text))
         if for_report:
             word_answer.answer = question.word_answer.text
@@ -38,3 +45,20 @@ def map_question_to_question_run_dto(question: QuizQuestionTable, for_report: bo
         answer_variants,
         word_answer,
     )
+
+
+def _map_answer_variants(
+    question: QuizQuestionTable, for_report: bool
+) -> list[RunAnswerVariantDto]:
+    result: list[RunAnswerVariantDto] = []
+    for a in question.answers:
+        slot_text = a.slot.text if (for_report and a.slot is not None) else None
+        result.append(
+            RunAnswerVariantDto(
+                a.id,
+                a.text,
+                a.is_correct if for_report else None,
+                slot_text,
+            )
+        )
+    return result

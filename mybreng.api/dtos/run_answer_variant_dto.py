@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from marshmallow import Schema, fields, post_load
 
@@ -10,12 +10,14 @@ class RunAnswerVariantDto:
     answer_id: str
     text: str
     is_correct: bool | None
+    slot: str | None = field(default=None)
 
 
 class RunAnswerVariantDtoSchema(Schema):
     answer_id = ID(required=True, data_key='answerId')
     text = fields.String(required=True)
     is_correct = fields.Boolean(required=False, data_key='isCorrect')
+    slot = fields.String(required=False, allow_none=True)
 
     @post_load
     def make_dto(self, data, **kwargs) -> RunAnswerVariantDto:

@@ -11,12 +11,14 @@ class QuizQuestionAnswerEditDto:
     text: str
     is_correct: bool
     id: str | None = field(default=None)
+    slot: str | None = field(default=None)
 
 
 class QuizQuestionAnswerEditDtoSchema(Schema):
     id = ID(required=False)
     text = fields.String(required=True)
     is_correct = fields.Boolean(data_key='isCorrect', required=False)
+    slot = fields.String(required=False, allow_none=True)
 
     @post_load
     def make_dto(self, data, **kwargs) -> QuizQuestionAnswerEditDto:

@@ -94,6 +94,11 @@ class QuizAnswerVariantTable(db.Model):
     text: Mapped[str] = mapped_column('text', String(150))
     is_correct: Mapped[bool] = mapped_column('is_correct', Boolean)
     question_id: Mapped[str] = mapped_column('question', ForeignKey('quiz_question.id'))
+    slot: Mapped["QuizAnswerSlotTable | None"] = relationship(
+        'QuizAnswerSlotTable',
+        back_populates='answer_variant',
+        uselist=False,
+    )
 
     @override
     def __repr__(self):
@@ -110,6 +115,24 @@ class QuizWordAnswerTable(db.Model):
     @override
     def __repr__(self):
         return f'<QuizWordAnswer: q={self.question_id} text={self.text}>'
+
+
+class QuizAnswerSlotTable(db.Model):
+    __tablename__: str = 'quiz_answer_slot'
+    id: Mapped[str] = mapped_column('id', String(38), primary_key=True)
+    text: Mapped[str | None] = mapped_column('text', String(150))
+    answer_variant_id: Mapped[str] = mapped_column(
+        'answer_variant', String(38),
+        ForeignKey('quiz_answer_variant.id'), unique=True
+    )
+    answer_variant: Mapped["QuizAnswerVariantTable"] = relationship(
+        'QuizAnswerVariantTable',
+        back_populates='slot',
+    )
+
+    @override
+    def __repr__(self):
+        return f'<QuizAnswerSlot: {self.text}>'
 
 
 class StudentTable(db.Model):

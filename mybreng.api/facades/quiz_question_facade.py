@@ -1,8 +1,9 @@
 import uuid
 
-from sqlalchemy import func
+from sqlalchemy import func, select
 
 from database import (
+    QuizAnswerSlotTable,
     QuizAnswerVariantTable,
     QuizQuestionTable,
     QuizTable,
@@ -24,10 +25,15 @@ from mappers import (
 )
 
 
-# noinspection PyMethodMayBeStatic
 class QuizQuestionFacade:
-    def create_question(self, owner_id: str, dto: QuizQuestionEditDto) -> QuizQuestionDto | None:
-        quiz = QuizTable.query.filter_by(id=dto.quiz_id, owner_id=owner_id).first()
+    def create_question(
+        self, owner_id: str, dto: QuizQuestionEditDto
+    ) -> QuizQuestionDto | None:
+        quiz = (
+            db.session.query(QuizTable)
+            .filter_by(id=dto.quiz_id, owner_id=owner_id)
+            .first()
+        )
         if quiz is None:
             return None
         question = QuizQuestionTable()
@@ -36,19 +42,26 @@ class QuizQuestionFacade:
         question.text = dto.text
         question.type = map_question_type_to_db_question_type(dto.question_type)
         question.ordinal_number = self._get_next_question_ordinal_number(quiz.id)
-        question.answers = [self._create_answer_variant(dto.question_type, a) for a in dto.answers]
-        if dto.question_type == QuizQuestionType.WORD_FROM_LETTERS and dto.word_answer is not None:
+        question.answers = [
+            self._create_answer_variant(dto.question_type, a) for a in dto.answers
+        ]
+        if (
+            dto.question_type == QuizQuestionType.WORD_FROM_LETTERS
+            and dto.word_answer is not None
+        ):
             question.word_answer = self._create_word_answer(dto.word_answer)
         db.session.add(question)
         db.session.commit()
         return map_quiz_question_to_dto(question)
 
     def clone_question(self, owner_id: str, question_id: str) -> QuizQuestionDto | None:
-        existent_question = QuizQuestionTable.query \
-            .filter_by(id=question_id) \
-            .join(QuizQuestionTable.quiz) \
-            .filter(QuizTable.owner_id == owner_id) \
+        existent_question = (
+            db.session.query(QuizQuestionTable)
+            .filter_by(id=question_id)
+            .join(QuizQuestionTable.quiz)
+            .filter(QuizTable.owner_id == owner_id)
             .first()
+        )
         if existent_question is None:
             return None
         new_question = QuizQuestionTable()
@@ -56,13 +69,19 @@ class QuizQuestionFacade:
         new_question.quiz_id = existent_question.quiz_id
         new_question.text = existent_question.text
         new_question.type = existent_question.type
-        new_question.ordinal_number = self._get_next_question_ordinal_number(existent_question.quiz.id)
+        new_question.ordinal_number = self._get_next_question_ordinal_number(
+            existent_question.quiz.id
+        )
         new_question.answers = [
-            self._create_answer_variant(map_db_question_type_to_question_type(existent_question.type), a)
+            self._create_answer_variant(
+                map_db_question_type_to_question_type(existent_question.type), a
+            )
             for a in existent_question.answers
         ]
         if existent_question.word_answer is not None:
-            new_question.word_answer = self._create_word_answer(existent_question.word_answer.text)
+            new_question.word_answer = self._create_word_answer(
+                existent_question.word_answer.text
+            )
         db.session.add(new_question)
         db.session.commit()
         return map_quiz_question_to_dto(new_question)
@@ -70,36 +89,58 @@ class QuizQuestionFacade:
     def _get_next_question_ordinal_number(self, quiz_id: str | None) -> int:
         if quiz_id is None:
             return 0
-        max_ord = db.session.query(func.max(QuizQuestionTable.ordinal_number)).filter_by(quiz_id=quiz_id).scalar()
+        stmt = select(func.max(QuizQuestionTable.ordinal_number)).filter_by(
+            quiz_id=quiz_id
+        )
+        max_ord = db.session.scalars(stmt).first()
         return 0 if max_ord is None else max_ord + 1
 
     def _create_answer_variant(
-            self,
-            question_type: QuizQuestionType,
-            answer_dto: QuizQuestionAnswerEditDto | QuizAnswerVariantTable
+        self,
+        question_type: QuizQuestionType,
+        answer_dto_or_table: QuizQuestionAnswerEditDto | QuizAnswerVariantTable,
     ) -> QuizAnswerVariantTable:
         answer = QuizAnswerVariantTable()
         answer.id = str(uuid.uuid4())
-        answer.text = answer_dto.text
+        answer.text = answer_dto_or_table.text
         if question_type == QuizQuestionType.WORD_FROM_LETTERS:
             answer.is_correct = False
         elif question_type == QuizQuestionType.FREE_TEXT:
             answer.is_correct = True
+        elif question_type == QuizQuestionType.MATCH:
+            slot_text = self._get_slot_text(answer_dto_or_table)
+            if slot_text:
+                slot = QuizAnswerSlotTable()
+                slot.id = str(uuid.uuid4())
+                slot.text = slot_text
+                slot.answer_variant_id = answer.id
+                db.session.add(slot)
         else:
-            answer.is_correct = answer_dto.is_correct
+            answer.is_correct = answer_dto_or_table.is_correct
         return answer
+
+    def _get_slot_text(
+        self, answer_dto_or_table: QuizQuestionAnswerEditDto | QuizAnswerVariantTable
+    ) -> str | None:
+        if isinstance(answer_dto_or_table, QuizAnswerVariantTable):
+            return None if answer_dto_or_table.slot is None else answer_dto_or_table.slot.text
+        return answer_dto_or_table.slot
 
     def _create_word_answer(self, text: str) -> QuizWordAnswerTable:
         answer = QuizWordAnswerTable()
         answer.text = text
         return answer
 
-    def edit_question(self, owner_id: str, dto: QuizQuestionEditDto) -> QuizQuestionDto | None:
-        question = QuizQuestionTable.query \
-            .filter_by(id=dto.id, quiz_id=dto.quiz_id) \
-            .join(QuizQuestionTable.quiz) \
-            .filter(QuizTable.owner_id == owner_id) \
+    def edit_question(
+        self, owner_id: str, dto: QuizQuestionEditDto
+    ) -> QuizQuestionDto | None:
+        question = (
+            db.session.query(QuizQuestionTable)
+            .filter_by(id=dto.id, quiz_id=dto.quiz_id)
+            .join(QuizQuestionTable.quiz)
+            .filter(QuizTable.owner_id == owner_id)
             .first()
+        )
         if question is None:
             return None
         question.text = dto.text
@@ -112,7 +153,9 @@ class QuizQuestionFacade:
         db.session.commit()
         return map_quiz_question_to_dto(question)
 
-    def _apply_answers_changes(self, question: QuizQuestionTable, dto: QuizQuestionEditDto):
+    def _apply_answers_changes(
+        self, question: QuizQuestionTable, dto: QuizQuestionEditDto
+    ):
         for q_answer in question.answers:
             an = next(filter(lambda a: a.id == q_answer.id, dto.answers), None)
             if an is None:
@@ -123,6 +166,8 @@ class QuizQuestionFacade:
                     q_answer.is_correct = False
                 elif dto.question_type == QuizQuestionType.FREE_TEXT:
                     q_answer.is_correct = True
+                elif dto.question_type == QuizQuestionType.MATCH:
+                    self._sync_slot(q_answer, an.slot)
                 else:
                     q_answer.is_correct = an.is_correct
         for an in filter(lambda a: a.id is None, dto.answers):
@@ -133,9 +178,29 @@ class QuizQuestionFacade:
                 an_tbl.is_correct = False
             elif dto.question_type == QuizQuestionType.FREE_TEXT:
                 an_tbl.is_correct = True
+            elif dto.question_type == QuizQuestionType.MATCH:
+                slot = QuizAnswerSlotTable()
+                slot.id = str(uuid.uuid4())
+                slot.text = an.slot
+                slot.answer_variant_id = an_tbl.id
+                db.session.add(slot)
             else:
                 an_tbl.is_correct = an.is_correct
             question.answers.append(an_tbl)
+
+    def _sync_slot(self, answer: QuizAnswerVariantTable, slot_text: str | None):
+        existing_slot = answer.slot
+        if slot_text:
+            if existing_slot is not None:
+                existing_slot.text = slot_text
+            else:
+                new_slot = QuizAnswerSlotTable()
+                new_slot.id = str(uuid.uuid4())
+                new_slot.text = slot_text
+                new_slot.answer_variant_id = answer.id
+                db.session.add(new_slot)
+        elif existing_slot is not None:
+            db.session.delete(existing_slot)
 
     def _apply_word_answer_changes(self, question: QuizQuestionTable, text: str | None):
         if text is None:
@@ -151,30 +216,34 @@ class QuizQuestionFacade:
             db.session.delete(question.word_answer)
 
     def delete_question(self, owner_id: str, question_id: str) -> bool:
-        question = QuizQuestionTable.query \
-            .filter_by(id=question_id) \
-            .join(QuizQuestionTable.quiz) \
-            .filter(QuizTable.owner_id == owner_id) \
+        question = (
+            db.session.query(QuizQuestionTable)
+            .filter_by(id=question_id)
+            .join(QuizQuestionTable.quiz)
+            .filter(QuizTable.owner_id == owner_id)
             .first()
+        )
         if question is None:
             return False
-        QuizWordAnswerTable.query.filter_by(question_id=question_id).delete()
-        RunAnswerTable.query.filter_by(question_id=question_id).delete()
+        _ = QuizWordAnswerTable.query.filter_by(question_id=question_id).delete()
+        _ = RunAnswerTable.query.filter_by(question_id=question_id).delete()
         db.session.delete(question)
         db.session.commit()
         return True
 
     def reorder_questions(
-            self,
-            owner_id: str,
-            quiz_id: str,
-            questions_positions: list[QuizQuestionPositionDto]
+        self,
+        owner_id: str,
+        quiz_id: str,
+        questions_positions: list[QuizQuestionPositionDto],
     ) -> list[QuizQuestionDto] | None:
-        questions = QuizQuestionTable.query \
-            .join(QuizQuestionTable.quiz) \
-            .filter(QuizTable.owner_id == owner_id, QuizTable.id == quiz_id) \
+        questions = (
+            db.session.query(QuizQuestionTable)
+            .join(QuizQuestionTable.quiz)
+            .filter(QuizTable.owner_id == owner_id, QuizTable.id == quiz_id)
             .all()
-        if questions is None:
+        )
+        if len(questions) == 0:
             return None
         for idx, qp in enumerate(sorted(questions_positions, key=lambda q: q.index)):
             question = next(filter(lambda q: q.id == qp.id, questions), None)
@@ -182,4 +251,7 @@ class QuizQuestionFacade:
                 return None
             question.ordinal_number = idx
         db.session.commit()
-        return [map_quiz_question_to_dto(q) for q in sorted(questions, key=lambda q: q.ordinal_number)]
+        return [
+            map_quiz_question_to_dto(q)
+            for q in sorted(questions, key=lambda q: q.ordinal_number)
+        ]
