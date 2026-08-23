@@ -60,17 +60,18 @@ export function handleDragDropSlotTransfer(
                 0
             );
         } else {
+            const poolIndex = event.previousIndex;
             transferArrayItem(
-                event.container.data,
                 event.previousContainer.data,
-                0,
-                event.container.data.length
+                event.container.data,
+                poolIndex,
+                0
             );
             transferArrayItem(
-                event.previousContainer.data,
                 event.container.data,
-                event.previousIndex,
-                0
+                event.previousContainer.data,
+                1,
+                poolIndex
             );
         }
     } else if(formSlot) {
