@@ -1,22 +1,14 @@
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
-
-
-interface AnswerData {
-    text: string;
-}
-
-interface SlotData {
-    answers: AnswerData[];
-}
-
-interface Data {
-    answers: AnswerData[];
-    slots: SlotData[];
-    dropIds: string[];
-}
+import {
+    createSlotDropIds,
+    DragDropAnswersData,
+    DragDropAnswerItem,
+    DragDropSlotItem,
+    handleDragDropSlotTransfer
+} from '../shared';
 
 @Component({
     selector: 'app-run-word-from-letters-answers',
@@ -25,7 +17,7 @@ interface Data {
     imports: [DragDropModule]
 })
 export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
-    public readonly data$ = new BehaviorSubject<Data>({
+    public readonly data$ = new BehaviorSubject<DragDropAnswersData>({
         answers: [],
         slots: [],
         dropIds: []
@@ -34,7 +26,7 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
     @Output() public readonly complete = new EventEmitter<boolean>();
     private isComplete = false;
     private inputSubscription?: Subscription;
-    private readonly inputData$ = new BehaviorSubject<Data>({
+    private readonly inputData$ = new BehaviorSubject<DragDropAnswersData>({
         answers: [],
         slots: [],
         dropIds: []
@@ -78,96 +70,32 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
         this.inputSubscription?.unsubscribe();
     }
 
-    public drop(event: CdkDragDrop<AnswerData[]>): void {
-        const formSlot = event.previousContainer.id.startsWith('slot-');
-        const toSlot = event.container.id.startsWith('slot-');
-        if(toSlot) {
-            const isTargetEmpty = event.container.data.length === 0;
-            if(formSlot) {
-                if(isTargetEmpty) {
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                } else {
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                    transferArrayItem(
-                        event.container.data,
-                        event.previousContainer.data,
-                        1,
-                        0
-                    );
-                }
-            } else if(isTargetEmpty) {
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-            } else {
-                transferArrayItem(
-                    event.container.data,
-                    event.previousContainer.data,
-                    0,
-                    event.container.data.length
-                );
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-            }
-        } else if(formSlot) {
-            transferArrayItem(
-                event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex
-            );
-        } else {
-            moveItemInArray(
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex
-            );
-        }
+    public drop(event: CdkDragDrop<DragDropAnswerItem[]>): void {
+        handleDragDropSlotTransfer(event);
         this.handleAnswersChanges();
     }
 
     private rebuild(): void {
+        this.restored = false;
         this.inputData$.next(this.createData());
     }
 
-    private createData(): Data {
-        const dropIds: string[] = ['answer-list'];
-        const answers: AnswerData[] = this.shuffleAnswers(
-            this._variants.map(v => ({ text: v.text.toUpperCase() }))
-        );
-        const slots: SlotData[] = [];
+    private createData(): DragDropAnswersData {
+        const slots: DragDropSlotItem[] = [];
         for(let i = 0; i < this._slotCount; ++i) {
             slots.push({
                 answers: []
             });
-            dropIds.push(`slot-${i}`);
         }
         return {
-            answers,
+            answers: this._variants.map(v => ({ text: v.text })),
             slots,
-            dropIds
+            dropIds: createSlotDropIds(slots.length)
         };
     }
 
-    private restore(data: Data, words: string[]): Data {
-        const word = words.length > 0 ? words[0].toUpperCase() : '';
+    private restore(data: DragDropAnswersData, words: string[]): DragDropAnswersData {
+        const word = words.length > 0 ? words[0] : '';
         if(!word) {
             return data;
         }
@@ -189,16 +117,6 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
             emptySlot.answers.push(letter);
         }
         return data;
-    }
-
-    private shuffleAnswers(answers: AnswerData[]): AnswerData[] {
-        return answers
-            .map(answer => ({
-                answer,
-                rnd: Math.random()
-            }))
-            .sort((a, b) => a.rnd > b.rnd ? 1 : -1)
-            .map(data => data.answer);
     }
 
     private handleAnswersChanges(): void {

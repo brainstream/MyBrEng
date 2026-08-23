@@ -1,25 +1,16 @@
-import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
-
-
-interface AnswerData {
-    text: string;
-}
-
-interface SlotData {
-    text: string;
-    answers: AnswerData[];
-}
-
-interface Data {
-    answers: AnswerData[];
-    slots: SlotData[];
-    dropIds: string[];
-}
+import {
+    createSlotDropIds,
+    DragDropAnswersData,
+    DragDropAnswerItem,
+    DragDropSlotItem,
+    handleDragDropSlotTransfer
+} from '../shared';
 
 @Component({
     selector: 'app-run-match-answers',
@@ -28,7 +19,7 @@ interface Data {
     imports: [MatIcon, DragDropModule]
 })
 export class RunMatchAnswersComponent implements OnInit, OnDestroy {
-    public data$ = new BehaviorSubject<Data>({
+    public data$ = new BehaviorSubject<DragDropAnswersData>({
         answers: [],
         slots: [],
         dropIds: []
@@ -37,7 +28,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     @Output() public readonly complete = new EventEmitter<boolean>();
     private isComplete = false;
     private inputSubscription?: Subscription;
-    private readonly inputData$ = new BehaviorSubject<Data>({
+    private readonly inputData$ = new BehaviorSubject<DragDropAnswersData>({
         answers: [],
         slots: [],
         dropIds: []
@@ -83,68 +74,8 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         this.inputSubscription?.unsubscribe();
     }
 
-    public drop(event: CdkDragDrop<AnswerData[]>): void {
-        const formSlot = event.previousContainer.id.startsWith('slot-');
-        const toSlot = event.container.id.startsWith('slot-');
-        if(toSlot) {
-            const isTargetEmpty = event.container.data.length === 0;
-            if(formSlot) {
-                if(isTargetEmpty) {
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                } else {
-                    transferArrayItem(
-                        event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        0
-                    );
-                    transferArrayItem(
-                        event.container.data,
-                        event.previousContainer.data,
-                        1,
-                        0
-                    );
-                }
-            } else if(isTargetEmpty) {
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-            } else {
-                transferArrayItem(
-                    event.container.data,
-                    event.previousContainer.data,
-                    0,
-                    event.container.data.length
-                );
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-            }
-        } else if(formSlot) {
-            transferArrayItem(
-                event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex
-            );
-        } else {
-            moveItemInArray(
-                event.container.data,
-                event.previousIndex,
-                event.currentIndex
-            );
-        }
+    public drop(event: CdkDragDrop<DragDropAnswerItem[]>): void {
+        handleDragDropSlotTransfer(event);
         this.handleMatchChanges();
     }
 
@@ -153,49 +84,28 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         this.inputData$.next(this.createData());
     }
 
-    private createData(): Data {
-        const dropIds: string[] = ['answer-list'];
-        const answers: AnswerData[] = this.shuffleAnswers(
-            this._variants.map(v => ({ text: v.text }))
-        );
-        const slotData: SlotData[] = this._slots.map(label => ({
+    private createData(): DragDropAnswersData {
+        const slotData: DragDropSlotItem[] = this._slots.map(label => ({
             text: label,
             answers: []
         }));
-        for(let i = 0; i < slotData.length; ++i) {
-            dropIds.push(`slot-${i}`);
-        }
         return {
-            answers,
+            answers: this._variants.map(v => ({ text: v.text })),
             slots: slotData,
-            dropIds
+            dropIds: createSlotDropIds(slotData.length)
         };
     }
 
-    private restore(data: Data, matches: MatchingAnswer[]): Data {
+    private restore(data: DragDropAnswersData, matches: MatchingAnswer[]): DragDropAnswersData {
         for(const match of matches) {
             const answerIndex = data.answers.findIndex(a => a.text === match.answer);
             const slotIndex = data.slots.findIndex(s => s.text === match.slot);
             if(answerIndex >= 0 && slotIndex >= 0) {
-                transferArrayItem(
-                    data.answers,
-                    data.slots[slotIndex].answers,
-                    answerIndex,
-                    0
-                );
+                const answer = data.answers.splice(answerIndex, 1)[0];
+                data.slots[slotIndex].answers.push(answer);
             }
         }
         return data;
-    }
-
-    private shuffleAnswers(answers: AnswerData[]): AnswerData[] {
-        return answers
-            .map(answer => ({
-                answer,
-                rnd: Math.random()
-            }))
-            .sort((a, b) => a.rnd > b.rnd ? 1 : -1)
-            .map(data => data.answer);
     }
 
     private handleMatchChanges(): void {
@@ -212,7 +122,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
             .map(s => {
                 const json: MatchingAnswer = {
                     answer: s.answers[0].text,
-                    slot: s.text
+                    slot: s.text!
                 };
                 return JSON.stringify(json);
             });
