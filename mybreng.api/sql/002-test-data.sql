@@ -70,39 +70,39 @@ VALUES (
     'Delicate',
     0
 ), (
-    UUID(),
+    '00000000-0000-4000-8000-000000000001',
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": "Abundant", "answer": "Plentiful" }', -- TODO: varchar(150)
+    'Plentiful',
+    1
+), (
+    '00000000-0000-4000-8000-000000000002',
+    '0d146c43-c51e-46a4-8f8c-d32657971afb',
+    'Sensitive',
+    1
+), (
+    '00000000-0000-4000-8000-000000000003',
+    '0d146c43-c51e-46a4-8f8c-d32657971afb',
+    'Keen',
+    1
+), (
+    '00000000-0000-4000-8000-000000000004',
+    '0d146c43-c51e-46a4-8f8c-d32657971afb',
+    'Charitable',
+    1
+), (
+    '00000000-0000-4000-8000-000000000005',
+    '0d146c43-c51e-46a4-8f8c-d32657971afb',
+    'Dependable',
     1
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": "Delicate", "answer": "Sensitive" }', -- TODO: varchar(150)
-    1
-), (
-    UUID(),
-    '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": "Eager", "answer": "Keen" }', -- TODO: varchar(150)
-    1
-), (
-    UUID(),
-    '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": "Generous", "answer": "Charitable" }', -- TODO: varchar(150)
-    1
-), (
-    UUID(),
-    '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": "Reliable", "answer": "Dependable" }', -- TODO: varchar(150)
-    1
-), (
-    UUID(),
-    '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": null, "answer": "Perfect" }', -- TODO: varchar(150)
+    'Perfect',
     0
 ), (
     UUID(),
     '0d146c43-c51e-46a4-8f8c-d32657971afb',
-    '{ "slot": null, "answer": "Bitterness" }', -- TODO: varchar(150)
+    'Bitterness',
     0
 ), (
     UUID(),
@@ -154,6 +154,29 @@ VALUES (
     '84be8e31-9c53-411e-bacb-be50d6a0785d',
     'Procure',
     1
+);
+
+INSERT INTO `quiz_answer_slot` (`id`, `text`, `answer_variant`)
+VALUES (
+    UUID(),
+    'Abundant',
+    '00000000-0000-4000-8000-000000000001'
+), (
+    UUID(),
+    'Delicate',
+    '00000000-0000-4000-8000-000000000002'
+), (
+    UUID(),
+    'Eager',
+    '00000000-0000-4000-8000-000000000003'
+), (
+    UUID(),
+    'Generous',
+    '00000000-0000-4000-8000-000000000004'
+), (
+    UUID(),
+    'Reliable',
+    '00000000-0000-4000-8000-000000000005'
 );
 
 INSERT INTO `student` (`id`, `first_name`, `last_name`, `owner`)

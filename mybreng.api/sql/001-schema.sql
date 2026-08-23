@@ -84,6 +84,17 @@ CREATE TABLE `quiz_answer_variant` (
   CONSTRAINT `fk_quiz_question_variant_quiz` FOREIGN KEY (`question`) REFERENCES `quiz_question` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE `quiz_answer_slot` (
+  `id` char(38) NOT NULL,
+  `text` varchar(150) DEFAULT NULL,
+  `answer_variant` char(38) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_quiz_answer_slot_variant` (`answer_variant`),
+  KEY `idx_quiz_answer_slot_variant` (`answer_variant`),
+  CONSTRAINT `fk_quiz_answer_slot_variant` FOREIGN KEY (`answer_variant`)
+      REFERENCES `quiz_answer_variant` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `quiz_word_answer` (
     `question` VARCHAR(38) NOT NULL,
     `text` VARCHAR(150) NOT NULL,
