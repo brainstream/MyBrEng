@@ -25,7 +25,13 @@
     }
 
     .run-match-answers__answer-variant {
-        background-color: mat.m2-get-color-from-palette($background-palette, "card");
+
+
+        @if $is-dark-theme {
+            background-color: mat.m2-get-color-from-palette($background-palette, "app-bar");
+        } @else {
+            background-color: mat.m2-get-color-from-palette($background-palette, "status-bar");
+        }
     }
 }
 
