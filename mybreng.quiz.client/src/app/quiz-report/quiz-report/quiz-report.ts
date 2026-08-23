@@ -167,10 +167,14 @@ class AnswerMerger {
         });
         const result: IQuizReportAnswer[] = [];
         for(const variant of variants) {
-            const matchingAnswer = parseMatchingAnswer(variant.text);
-            if(matchingAnswer.slot === null) {
+            const slotText = variant.slot ?? null;
+            if(slotText === null) {
                 continue;
             }
+            const matchingAnswer: MatchingAnswer = {
+                slot: slotText,
+                answer: variant.text
+            };
             const text = formatText(matchingAnswer);
             const answerIndex = answers.findIndex(a => a === text);
             if(answerIndex >= 0) {

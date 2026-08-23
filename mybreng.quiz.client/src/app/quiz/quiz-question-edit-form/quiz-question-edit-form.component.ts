@@ -9,7 +9,6 @@ import {
     ValidationErrors,
     Validators
 } from '@angular/forms';
-import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionAnswerEditDto, QuizQuestionDto, QuizQuestionEditDto } from '@app/web-api';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { MatFormField, MatLabel, MatPrefix, MatSuffix } from '@angular/material/form-field';
@@ -118,12 +117,9 @@ export class QuizQuestionEditFormComponent {
                 isCorrect: group.controls['isCorrect'].value as boolean
             };
             if(questionType === QuizQuestionDto.QuestionTypeEnum.Match) {
-                const ma: MatchingAnswer = {
-                    slot: group.controls['slot'].value as string,
-                    answer: result.text
-                };
-                result.text = JSON.stringify(ma);
-                result.isCorrect = !!ma.slot;
+                const slotValue = group.controls['slot'].value as string | null;
+                result.slot = slotValue || undefined;
+                result.isCorrect = !!slotValue;
             } else if(questionType === QuizQuestionDto.QuestionTypeEnum.FreeText) {
                 result.isCorrect = true;
             } else if(questionType === QuizQuestionDto.QuestionTypeEnum.WordFromLetters) {
@@ -235,17 +231,10 @@ export class QuizQuestionEditFormComponent {
     }
 
     private createAnswerFormGroup(answer?: Partial<QuizQuestionAnswerDto>): FormGroup {
-        let text = answer?.text ?? '';
-        let slot: string | null = null;
-        if(text && this.type === QuizQuestionDto.QuestionTypeEnum.Match) {
-            const ma = parseMatchingAnswer(text);
-            text = ma.answer;
-            slot = ma.slot;
-        }
         return this.formBuilder.group({
             id: [answer?.id],
-            slot: [slot],
-            text: [text, Validators.required],
+            slot: [answer?.slot ?? null],
+            text: [answer?.text ?? '', Validators.required],
             isCorrect: [answer?.isCorrect ?? false]
         });
     }

@@ -12,6 +12,12 @@ class RunWordAnswerDto:
     slots: int
     answer: str | None = field(default=None)
 
+
+@dataclass
+class RunMatchDto:
+    slots: list[str]
+
+
 @dataclass
 class RunQuestionDto:
     question_id: str
@@ -19,12 +25,19 @@ class RunQuestionDto:
     question_type: QuizQuestionType
     answer_variants: list[RunAnswerVariantDto] | None
     word_answer: RunWordAnswerDto | None = field(default=None)
+    match_answer: RunMatchDto | None = field(default=None)
 
 
 # noinspection PyTypeChecker
 class RunWordAnswerDtoSchema(Schema):
     slots = fields.Integer(required=True)
-    answer = fields.String(required=True)
+    answer = fields.String(required=False, allow_none=True)
+
+
+# noinspection PyTypeChecker
+class RunMatchDtoSchema(Schema):
+    slots = fields.List(fields.String(), required=True)
+
 
 # noinspection PyTypeChecker
 class RunQuestionDtoSchema(Schema):
@@ -33,6 +46,7 @@ class RunQuestionDtoSchema(Schema):
     question_type = fields.Enum(QuizQuestionType, required=True, data_key='questionType')
     answer_variants = fields.Nested(RunAnswerVariantDtoSchema, many=True, required=False, data_key='answerVariants')
     word_answer = fields.Nested(RunWordAnswerDtoSchema, required=False, data_key='wordAnswer')
+    match_answer = fields.Nested(RunMatchDtoSchema, required=False, data_key='matchAnswer')
 
     @post_load
     def make_dto(self, data, **kwargs) -> RunQuestionDto:

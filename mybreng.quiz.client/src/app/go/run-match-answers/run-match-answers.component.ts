@@ -43,30 +43,18 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
         dropIds: []
     });
     private readonly inputMatches$ = new BehaviorSubject<MatchingAnswer[]>([]);
+    private _variants: RunAnswerVariantDto[] = [];
+    private _slots: string[] = [];
+    private restored = false;
 
     @Input() public set variants(variants: RunAnswerVariantDto[]) {
-        let index = 0;
-        const dropIds: string[] = ['answer-list'];
-        const answers: AnswerData[] = [];
-        const slots: SlotData[] = [];
-        for(const variant of variants) {
-            const json: MatchingAnswer = parseMatchingAnswer(variant.text);
-            if(json.slot !== null) {
-                slots.push({
-                    text: json.slot,
-                    answers: []
-                });
-                dropIds.push(`slot-${index++}`);
-            }
-            answers.push({
-                text: json.answer
-            });
-        }
-        this.inputData$.next({
-            answers: this.shuffleAnswers(answers),
-            slots,
-            dropIds
-        });
+        this._variants = variants;
+        this.rebuild();
+    }
+
+    @Input() public set slots(slots: string[]) {
+        this._slots = slots;
+        this.rebuild();
     }
 
     @Input() public set matches(jsons: string[]) {
@@ -81,17 +69,9 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
             this.inputMatches$
         ]).pipe(
             map(([data, matches]) => {
-                for(const match of matches) {
-                    const answerIndex = data.answers.findIndex(a => a.text === match.answer);
-                    const slotIndex = data.slots.findIndex(s => s.text === match.slot);
-                    if(answerIndex >= 0 && slotIndex >= 0) {
-                        transferArrayItem(
-                            data.answers,
-                            data.slots[slotIndex].answers,
-                            answerIndex,
-                            0
-                        );
-                    }
+                if(!this.restored) {
+                    this.restore(data, matches);
+                    this.restored = true;
                 }
                 return data;
             })
@@ -166,6 +146,46 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
             );
         }
         this.handleMatchChanges();
+    }
+
+    private rebuild(): void {
+        this.restored = false;
+        this.inputData$.next(this.createData());
+    }
+
+    private createData(): Data {
+        const dropIds: string[] = ['answer-list'];
+        const answers: AnswerData[] = this.shuffleAnswers(
+            this._variants.map(v => ({ text: v.text }))
+        );
+        const slotData: SlotData[] = this._slots.map(label => ({
+            text: label,
+            answers: []
+        }));
+        for(let i = 0; i < slotData.length; ++i) {
+            dropIds.push(`slot-${i}`);
+        }
+        return {
+            answers,
+            slots: slotData,
+            dropIds
+        };
+    }
+
+    private restore(data: Data, matches: MatchingAnswer[]): Data {
+        for(const match of matches) {
+            const answerIndex = data.answers.findIndex(a => a.text === match.answer);
+            const slotIndex = data.slots.findIndex(s => s.text === match.slot);
+            if(answerIndex >= 0 && slotIndex >= 0) {
+                transferArrayItem(
+                    data.answers,
+                    data.slots[slotIndex].answers,
+                    answerIndex,
+                    0
+                );
+            }
+        }
+        return data;
     }
 
     private shuffleAnswers(answers: AnswerData[]): AnswerData[] {

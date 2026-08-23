@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { parseMatchingAnswer } from '@app/shared';
 import { QuizQuestionAnswerDto, QuizQuestionDto } from '@app/web-api';
 import { MarkdownComponent } from '@app/markdown';
 import { QuestionTypeNamePipe } from '../question-type-name.pipe';
@@ -40,9 +39,9 @@ export class QuizQuestionComponent {
 
     public getText(answer: QuizQuestionAnswerDto): string {
         if(this.question.questionType === QuizQuestionDto.QuestionTypeEnum.Match) {
-            const matchingAnswer = parseMatchingAnswer(answer.text);
-            const prefix = matchingAnswer.slot ? `${matchingAnswer.slot} → ` : '';
-            return `${prefix}${matchingAnswer.answer}`;
+            const slot = answer.slot ?? null;
+            const prefix = slot ? `${slot} → ` : '';
+            return `${prefix}${answer.text}`;
         }
         return answer.text;
     }
