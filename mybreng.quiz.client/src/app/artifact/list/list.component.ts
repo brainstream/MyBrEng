@@ -16,7 +16,7 @@ import {
     MatCardSubtitle,
     MatCardTitle
 } from '@angular/material/card';
-import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatButton, MatIconButton, MatAnchor } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatTooltip } from '@angular/material/tooltip';
@@ -44,6 +44,7 @@ interface ArtifactData {
         MatCardContent,
         MatCardActions,
         MatIconButton,
+        MatAnchor,
         MatTooltip,
         MatIcon,
         MatButton,

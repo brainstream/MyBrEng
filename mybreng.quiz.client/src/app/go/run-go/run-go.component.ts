@@ -8,8 +8,8 @@ import { MatIcon } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 
 interface QuestionData {
-    answers: string[],
-    isComplete: boolean
+    answers: string[];
+    isComplete: boolean;
 }
 
 @Component({
