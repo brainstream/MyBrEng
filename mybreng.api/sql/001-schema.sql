@@ -96,7 +96,7 @@ CREATE TABLE `quiz_answer_slot` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `quiz_word_answer` (
-    `question` VARCHAR(38) NOT NULL,
+    `question` CHAR(38) NOT NULL,
     `text` VARCHAR(150) NOT NULL,
     PRIMARY KEY (`question`),
     FOREIGN KEY (`question`) REFERENCES `quiz_question`(`id`) ON
