@@ -17,3 +17,16 @@ services:
     - --ssl-ca=/etc/mysql/certs/ca.cert.pem
     - --ssl-cert=/etc/mysql/certs/mybreng-mysql.cert.pem
     - --ssl-key=/etc/mysql/certs/mybreng-mysql.key.pem
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+    - 8298:80
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 128M
+      MEMORY_LIMIT: 256M
+    depends_on:
+    - db
