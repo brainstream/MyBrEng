@@ -180,18 +180,17 @@ class QuizQuestionFacade:
 
     def _sync_slot(self, answer: QuizAnswerVariantTable, slot_text: str | None):
         answer.is_correct = bool(slot_text)
-        existing_slot = answer.slot
         if slot_text:
-            if existing_slot is not None:
-                existing_slot.text = slot_text
+            if answer.slot is not None:
+                answer.slot.text = slot_text
             else:
                 new_slot = QuizAnswerSlotTable()
                 new_slot.id = str(uuid.uuid4())
                 new_slot.text = slot_text
-                new_slot.answer_variant_id = answer.id
+                answer.slot = new_slot
                 db.session.add(new_slot)
-        elif existing_slot is not None:
-            db.session.delete(existing_slot)
+        else:
+            answer.slot = None
 
     def _apply_word_answer_changes(self, question: QuizQuestionTable, text: str | None):
         if text is None:

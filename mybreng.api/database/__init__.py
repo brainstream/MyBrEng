@@ -98,6 +98,8 @@ class QuizAnswerVariantTable(db.Model):
         'QuizAnswerSlotTable',
         back_populates='answer_variant',
         uselist=False,
+        cascade='all, delete-orphan',
+        single_parent=True,
     )
 
     @override
