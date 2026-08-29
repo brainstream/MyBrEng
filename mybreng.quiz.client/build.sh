@@ -1,3 +1,6 @@
-./generate-web-api.sh -u https://api.mybreng.com
-npm run build
+#!/bin/bash
+
+set -euo pipefail
+
 ./generate-web-api.sh
+npm run build

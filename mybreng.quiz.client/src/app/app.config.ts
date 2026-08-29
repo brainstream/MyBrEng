@@ -10,6 +10,7 @@ import { authInterceptor } from '@app/auth/auth.interceptor';
 import { ThemeService } from '@app/common/theme.service';
 import { appInitializerFactory } from '@app/app-initializer-factory';
 import { provideApi } from '@app/web-api/provide-api';
+import { environment } from '@app/environment';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
         provideStore({}),
         provideEffects([]),
         provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true }),
-        provideApi({}),
+        provideApi(environment.apiBaseUrl),
         provideAppInitializer(() => {
             const initializerFn = appInitializerFactory(inject(ThemeService));
             return initializerFn();
