@@ -71,9 +71,11 @@ export class ListFilterPanelComponent implements OnInit, OnDestroy {
         this.formChangeSubscription = this.form.valueChanges
             .pipe(
                 tap(() => {
+                    const searchString = this.form.controls['searchString'];
+                    const tags = this.form.controls['tags'];
                     const filter: IListFilter = {
-                        searchString: (this.form.controls['searchString'].value as string),
-                        tags: (this.form.controls['tags'].value as string[])
+                        searchString: searchString.value === null ? '' : searchString.value as string,
+                        tags: tags.value === null ? [] : tags.value as string[]
                     };
                     this.hasFilter = filter.searchString.length > 0 || filter.tags.length > 0;
                     this.filterChanged.emit(filter);
