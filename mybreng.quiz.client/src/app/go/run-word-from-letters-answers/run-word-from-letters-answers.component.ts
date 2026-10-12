@@ -1,7 +1,7 @@
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
-import { BehaviorSubject, combineLatest, map, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import {
     createSlotDropIds,
     DragDropAnswersData,
@@ -16,7 +16,7 @@ import {
     styleUrl: './run-word-from-letters-answers.component.scss',
     imports: [DragDropModule]
 })
-export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
+export class RunWordFromLettersAnswersComponent {
     public readonly data$ = new BehaviorSubject<DragDropAnswersData>({
         answers: [],
         slots: [],
@@ -25,16 +25,9 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
     @Output() public readonly answersChange = new EventEmitter<string[]>();
     @Output() public readonly complete = new EventEmitter<boolean>();
     private isComplete = false;
-    private inputSubscription?: Subscription;
-    private readonly inputData$ = new BehaviorSubject<DragDropAnswersData>({
-        answers: [],
-        slots: [],
-        dropIds: []
-    });
-    private readonly inputAnswers$ = new BehaviorSubject<string[]>([]);
+    private _answers: string[] = [];
     private _variants: RunAnswerVariantDto[] = [];
     private _slotCount = 0;
-    private restored = false;
 
     @Input() public set variants(variants: RunAnswerVariantDto[]) {
         this._variants = variants;
@@ -47,27 +40,8 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
     }
 
     @Input() public set answers(words: string[]) {
-        this.inputAnswers$.next(words);
-    }
-
-    public ngOnInit(): void {
-        this.inputSubscription = combineLatest([
-            this.inputData$,
-            this.inputAnswers$
-        ]).pipe(
-            map(([data, words]) => {
-                if(!this.restored) {
-                    this.restore(data, words);
-                    this.restored = true;
-                }
-                return data;
-            })
-        )
-            .subscribe(this.data$);
-    }
-
-    public ngOnDestroy(): void {
-        this.inputSubscription?.unsubscribe();
+        this._answers = words;
+        this.rebuild();
     }
 
     public drop(event: CdkDragDrop<DragDropAnswerItem[]>): void {
@@ -76,8 +50,9 @@ export class RunWordFromLettersAnswersComponent implements OnInit, OnDestroy {
     }
 
     private rebuild(): void {
-        this.restored = false;
-        this.inputData$.next(this.createData());
+        const data = this.createData();
+        this.restore(data, this._answers);
+        this.data$.next(data);
     }
 
     private createData(): DragDropAnswersData {
