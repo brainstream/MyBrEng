@@ -3,6 +3,9 @@
         <div
             [id]="'slot-' + $index"
             class="run-word-from-letters-answers__slot-placeholder"
+            [class.run-word-from-letters-answers__slot-placeholder--empty]="slot.answers.length === 0"
+            [class.run-word-from-letters-answers__slot-placeholder--dragging]="isSlotDragging($index)"
+            [cdkDropListEnterPredicate]="canEnterSlot"
             cdkDropList
             cdkDropListOrientation="horizontal"
             [cdkDropListData]="slot.answers"
@@ -10,7 +13,9 @@
             [cdkDropListConnectedTo]="data$.getValue().dropIds"
         >
             @if (slot.answers.length) {
-                <div cdkDrag [cdkDragData]="slot.answers[0]" class="run-word-from-letters-answers__chip">
+                <div cdkDrag [cdkDragData]="slot.answers[0]" class="run-word-from-letters-answers__chip"
+                    (cdkDragStarted)="dragStarted($index)"
+                    (cdkDragEnded)="dragEnded()">
                     {{slot.answers[0].text}}
                 </div>
             }

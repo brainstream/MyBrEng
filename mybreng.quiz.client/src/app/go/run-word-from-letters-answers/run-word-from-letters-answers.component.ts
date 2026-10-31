@@ -1,4 +1,4 @@
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { RunAnswerVariantDto } from '@app/web-api';
 import { BehaviorSubject } from 'rxjs';
@@ -28,6 +28,7 @@ export class RunWordFromLettersAnswersComponent {
     private _answers: string[] = [];
     private _variants: RunAnswerVariantDto[] = [];
     private _slotCount = 0;
+    private draggingSlotIndex: number | null = null;
 
     @Input() public set variants(variants: RunAnswerVariantDto[]) {
         this._variants = variants;
@@ -44,12 +45,30 @@ export class RunWordFromLettersAnswersComponent {
         this.rebuild();
     }
 
+    public readonly canEnterSlot = (_drag: CdkDrag, drop: CdkDropList<DragDropAnswerItem[]>): boolean =>
+        drop.data.length === 0;
+
     public drop(event: CdkDragDrop<DragDropAnswerItem[]>): void {
         handleDragDropSlotTransfer(event);
         this.handleAnswersChanges();
     }
 
+    public dragStarted(index: number): void {
+        this.draggingSlotIndex = index;
+    }
+
+    public dragEnded(): void {
+        this.draggingSlotIndex = null;
+    }
+
+    public isSlotDragging(index: number): boolean {
+        return this.draggingSlotIndex === index;
+    }
+
     private rebuild(): void {
+        if(this.isUpToDate()) {
+            return;
+        }
         const data = this.createData();
         this.restore(data, this._answers);
         this.data$.next(data);
@@ -105,5 +124,28 @@ export class RunWordFromLettersAnswersComponent {
             this.isComplete = complete;
             this.complete.emit(complete);
         }
+    }
+
+    private isUpToDate(): boolean {
+        const current = this.data$.getValue();
+        if(current.slots.length !== this._slotCount) {
+            return false;
+        }
+        const shownWord = current.slots
+            .map(s => s.answers.length > 0 ? s.answers[0].text : '')
+            .join('');
+        const incomingWord = this._answers.length > 0 ? this._answers[0] : '';
+        if(shownWord !== incomingWord) {
+            return false;
+        }
+        const shownLetters = [
+            ...current.answers,
+            ...current.slots.flatMap(s => s.answers)
+        ].map(a => a.text).sort();
+        const incomingLetters = this._variants.map(v => v.text).sort();
+        if(shownLetters.length !== incomingLetters.length) {
+            return false;
+        }
+        return shownLetters.every((text, index) => text === incomingLetters[index]);
     }
 }

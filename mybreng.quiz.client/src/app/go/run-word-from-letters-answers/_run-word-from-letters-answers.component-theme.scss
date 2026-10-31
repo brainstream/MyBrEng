@@ -20,11 +20,13 @@
     }
 
     .run-word-from-letters-answers__pool,
-    .run-word-from-letters-answers__slot-placeholder {
+    .run-word-from-letters-answers__slot-placeholder--empty,
+    .run-word-from-letters-answers__slot-placeholder--dragging {
         background-color: $container-background;
     }
 
-    .run-word-from-letters-answers__slot-placeholder {
+    .run-word-from-letters-answers__slot-placeholder--empty,
+    .run-word-from-letters-answers__slot-placeholder--dragging {
         outline: 1px solid $border-color;
         outline-offset: -1px;
     }

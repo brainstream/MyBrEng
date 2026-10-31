@@ -26,55 +26,19 @@ export function createSlotDropIds(slotCount: number): string[] {
 export function handleDragDropSlotTransfer(
     event: CdkDragDrop<DragDropAnswerItem[]>
 ): void {
-    const formSlot = event.previousContainer.id.startsWith('slot-');
+    const fromSlot = event.previousContainer.id.startsWith('slot-');
     const toSlot = event.container.id.startsWith('slot-');
     if(toSlot) {
-        const isTargetEmpty = event.container.data.length === 0;
-        if(formSlot) {
-            if(isTargetEmpty) {
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-            } else {
-                transferArrayItem(
-                    event.previousContainer.data,
-                    event.container.data,
-                    event.previousIndex,
-                    0
-                );
-                transferArrayItem(
-                    event.container.data,
-                    event.previousContainer.data,
-                    1,
-                    0
-                );
-            }
-        } else if(isTargetEmpty) {
-            transferArrayItem(
-                event.previousContainer.data,
-                event.container.data,
-                event.previousIndex,
-                0
-            );
-        } else {
-            const poolIndex = event.previousIndex;
-            transferArrayItem(
-                event.previousContainer.data,
-                event.container.data,
-                poolIndex,
-                0
-            );
-            transferArrayItem(
-                event.container.data,
-                event.previousContainer.data,
-                1,
-                poolIndex
-            );
+        if(event.container.data.length > 0) {
+            return;
         }
-    } else if(formSlot) {
+        transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            0
+        );
+    } else if(fromSlot) {
         transferArrayItem(
             event.previousContainer.data,
             event.container.data,
@@ -82,6 +46,9 @@ export function handleDragDropSlotTransfer(
             event.currentIndex
         );
     } else {
+        if(!event.isPointerOverContainer) {
+            return;
+        }
         moveItemInArray(
             event.container.data,
             event.previousIndex,

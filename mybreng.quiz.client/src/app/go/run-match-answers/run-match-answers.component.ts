@@ -1,4 +1,4 @@
-import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatchingAnswer, parseMatchingAnswer } from '@app/shared';
 import { RunAnswerVariantDto } from '@app/web-api';
@@ -37,6 +37,7 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     private _variants: RunAnswerVariantDto[] = [];
     private _slots: string[] = [];
     private restored = false;
+    private draggingSlotIndex: number | null = null;
 
     @Input() public set variants(variants: RunAnswerVariantDto[]) {
         this._variants = variants;
@@ -53,6 +54,9 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
             jsons.map(parseMatchingAnswer)
         );
     }
+
+    public readonly canEnterSlot = (_drag: CdkDrag, drop: CdkDropList<DragDropAnswerItem[]>): boolean =>
+        drop.data.length === 0;
 
     public ngOnInit(): void {
         this.inputSubscription = combineLatest([
@@ -77,6 +81,18 @@ export class RunMatchAnswersComponent implements OnInit, OnDestroy {
     public drop(event: CdkDragDrop<DragDropAnswerItem[]>): void {
         handleDragDropSlotTransfer(event);
         this.handleMatchChanges();
+    }
+
+    public dragStarted(index: number): void {
+        this.draggingSlotIndex = index;
+    }
+
+    public dragEnded(): void {
+        this.draggingSlotIndex = null;
+    }
+
+    public isSlotDragging(index: number): boolean {
+        return this.draggingSlotIndex === index;
     }
 
     private rebuild(): void {

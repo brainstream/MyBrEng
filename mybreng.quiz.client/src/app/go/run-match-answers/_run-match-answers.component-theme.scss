@@ -20,7 +20,8 @@
     }
 
     .run-match-answers__answer-variant-container,
-    .run-match-answers__answer-slot-placeholder {
+    .run-match-answers__answer-slot-placeholder--empty,
+    .run-match-answers__answer-slot-placeholder--dragging {
         background-color: $container-background;
     }
 

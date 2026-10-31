@@ -39,6 +39,10 @@ $answer-height: 2rem;
         flex-grow: 2;
         height: $answer-height;
         border-radius: 4px;
+
+        &--dragging ::ng-deep .cdk-drag-placeholder {
+            visibility: hidden;
+        }
     }
 }
 
